@@ -6,35 +6,36 @@
 	Description     : This is the module for the overall fetch stage of the processor.
 */
 
-module fetch (nextAddr, nextInstrAddr, instr, err, clk, rst, halt, Done, Stall, flush, savedflush);
+module fetch (clk, rst, in_PC_next, stall, flush, INT, INT_INST, out_PC_next, instr, ACK);
 	input clk, rst_n;
-	input [31:0] PC_next;
+	input [31:0] in_PC_next;
 	input stall, flush;
+	// for interrupts
 	input INT;
 	input [31:0] INT_INST;
 
-	output [15:0] nextInstrAddr;
+	output [15:0] out_PC_next;
 	output [15:0] instr;
-	output err;
-	output Done, Stall;
+	// for interrupts
+	output ACK;
 
 	wire [15:0] addr;
-	wire [15:0] nextPC;
+	wire [15:0] PC_next;
 
-	wire flushedWhenStalled;
+	cla_16b adder(.A(32'd4), .B(addr), .C_in(1'b0), .S(nextInstrAddr), .C_out(PC_next));
+	regDFF PC(.regQ(addr), .regD(), .clk(clk), .rst(rst), .writeEn(1'b1));
+	
+	
 
-	cla_16b adder(.A(16'd2), .B(addr), .C_in(1'b0), .S(nextInstrAddr), .C_out());
-	regDFF PC(.regQ(addr), .regD(nextPC), .clk(clk), .rst(rst), .writeEn(1'b1));
-
-	// earlier perfect memory
+	// using perfect memory
 	//memory2c instructionMem(.data_out(instr), .data_in(), .addr(addr), .enable(1'b1), .wr(1'b0), .createdump(halt), .clk(clk), .rst(rst));
 	//assign Done = 1'b1;
 	//assign Stall = 1'b0;
-	// test with
+	// test with stalling mem
 //	stallmem instructionMem_good(.DataOut(instr), .Done(Done), .Stall(Stall), .CacheHit(), .err(err), .Addr(addr), 
 //					.DataIn(), .Rd(1'b1), .Wr(1'b0), .createdump(halt), .clk(clk), .rst(rst));
 
-	// change to 
+	// final mem
 	 mem_system instructionMem(.DataOut(instr), .Done(Done), .Stall(Stall), .CacheHit(), .err(err), .Addr(addr), 
 					.DataIn(), .Rd(1'b1), .Wr(1'b0), .createdump(halt), .clk(clk), .rst(rst));
 
