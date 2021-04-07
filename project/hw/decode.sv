@@ -41,6 +41,7 @@ module decode (instr, regWriteData, writeRegAddrIn, writeRegAddrOut, nextInstrIn
 	output err;
 */
 	
+	// todo: write this module
 	regFile_bypass registers(.read1Data(reg1Data), .read2Data(reg2Data), .err(err), .clk(clk), .rst(rst), 
 .read1RegSel(instr[10:8]), .read2RegSel(instr[7:5]), .writeRegSel(writeRegAddrIn), .writeData(regWriteData), .writeEn(writeEn));
 	signextender extender(.maxImm(instr[10:0]), .sizeSlc(sizeslc), .extSlc(extslc), .exImm(exImm));
