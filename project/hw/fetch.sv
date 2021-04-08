@@ -1,3 +1,4 @@
+
 /*
 	ECE 554
 	Project: RGB Set Me Free!
@@ -6,39 +7,47 @@
 	Description     : This is the module for the overall fetch stage of the processor.
 */
 
-module fetch (nextAddr, nextInstrAddr, instr, err, clk, rst, halt, Done, Stall, flush, savedflush);
+//		12345678901234567890123456789012
+`define NOP 32'b01111xxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+module fetch (clk, rst_n, in_PC_next, stall, flush, INT, INT_INST, out_PC_next, instr, Done, ACK);
 	input clk, rst_n;
-	input [31:0] PC_next;
+	input [31:0] in_PC_next;
 	input stall, flush;
+	// for interrupts
 	input INT;
 	input [31:0] INT_INST;
 
-	output [15:0] nextInstrAddr;
-	output [15:0] instr;
-	output err;
-	output Done, Stall;
+	output [31:0] out_PC_next;
+	output [31:0] instr;
+	output Done;
+	// for interrupts
+	output ACK;
 
-	wire [15:0] addr;
-	wire [15:0] nextPC;
+	// todo: interrupts and flush
 
-	wire flushedWhenStalled;
+	reg [31:0] PC;
+	wire [31:0] PC_next;
+	always_ff @(posedge clk) begin
+		if (!rst_n) 
+			PC <= 32'h2000; //this is where our instruction memory starts
+		else 
+			PC <= PC_next;
+	end
 
-	cla_16b adder(.A(16'd2), .B(addr), .C_in(1'b0), .S(nextInstrAddr), .C_out());
-	regDFF PC(.regQ(addr), .regD(nextPC), .clk(clk), .rst(rst), .writeEn(1'b1));
+	assign PC_next = stall ? PC : in_PC_next; 
+	// todo flush in logic? 
+	// when flushing its cause we branched, and want the PC to update, so 
+	// PC_next should update even when flush is true
+	// perhaps need (stall && ~flush), not sure
 
-	// earlier perfect memory
-	//memory2c instructionMem(.data_out(instr), .data_in(), .addr(addr), .enable(1'b1), .wr(1'b0), .createdump(halt), .clk(clk), .rst(rst));
-	//assign Done = 1'b1;
-	//assign Stall = 1'b0;
-	// test with
-//	stallmem instructionMem_good(.DataOut(instr), .Done(Done), .Stall(Stall), .CacheHit(), .err(err), .Addr(addr), 
-//					.DataIn(), .Rd(1'b1), .Wr(1'b0), .createdump(halt), .clk(clk), .rst(rst));
+	assign out_PC_next = flush ? `NOP : PC;
 
-	// change to 
-	 mem_system instructionMem(.DataOut(instr), .Done(Done), .Stall(Stall), .CacheHit(), .err(err), .Addr(addr), 
-					.DataIn(), .Rd(1'b1), .Wr(1'b0), .createdump(halt), .clk(clk), .rst(rst));
+	// instruction memory access
+	memsystem instructionMem(.clk(clk), .rst_n(rst_n), .addr(PC), .data_in(), .wr(1'b0), .en(1'b1), .data_valid(Done), .data_out(instr));
 
-	// halt
-	
-	assign nextPC = ((halt & ~flush) | savedflush) ? addr : nextAddr;
+	// 552 mem
+	//mem_system instructionMem(.DataOut(instr), .Done(Done), .Stall(Stall), .CacheHit(), .err(err), .Addr(addr), 
+	//				.DataIn(), .Rd(1'b1), .Wr(1'b0), .createdump(halt), .clk(clk), .rst(rst));
+
 endmodule
