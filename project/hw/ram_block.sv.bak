@@ -4,10 +4,10 @@
 */
 module ram_block (
     input clk,
-    input logic [13:0] addr,
-    input logic [7:0] d,
+    input logic addr [13:0],
+    input logic d [7:0],
     input logic WrEn,
-    output logic [7:0] q
+    output logic q[7:0]
 );
 
     reg [7:0] mem [16383:0];

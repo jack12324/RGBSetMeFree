@@ -19,7 +19,6 @@ module mem_system
     genvar i;
     generate for (i = 0; i < 3; i = i + 1) begin 
         ram_block ram (.clk(clk), .addr(addr[15:2]), .d(data_in[8*i - 1: i]), .q(q[i]));
-	end
     endgenerate
 
     assign data_valid = ~wr;
