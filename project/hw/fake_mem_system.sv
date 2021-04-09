@@ -1,48 +1,34 @@
 // for faking memory to test fetch
+// v1.0 Simulates single cycle memory
 module mem_system
-// this was copied in from a quartus RAM template
-	#(parameter int
-		WORDS = 256,
-		RW = 8,
-		WW = 32)
 	(
-	input we, 
+	//Memory System does not need reset
 	input clk,
-	input [$clog2((RW < WW) ? WORDS : (WORDS * RW)/WW) - 1 : 0] waddr, 
-	input [WW-1:0] wdata, 
-	input [$clog2((RW < WW) ? (WORDS * WW)/RW : WORDS) - 1 : 0] raddr, 
-	output logic [RW-1:0] q
+	input wr, 
+	input [31 : 0] addr, 
+	input [31 : 0] data_in, 
+	output logic [31:0] data_out,
+	output logic data_valid
 	);
-   
-	// Use a multi-dimensional packed array to model the different read/write
-	// width
-	localparam int R = (RW < WW) ? WW/RW : RW/WW;
-	localparam int B = (RW < WW) ? RW: WW;
 
-	logic [R-1:0][B-1:0] ram[0:WORDS-1];
+	//Addr must be from 0x2000 to 0x2FFF
+	logic [31:0] ram_addr;
+	assign ram_addr = {addr[23:2], 2'b0};	//Rounded Down Word Alignment
 
-	generate if(RW < WW) begin
-		// Smaller read?
-		always_ff@(posedge clk)
-		begin
-			if(we) ram[waddr] <= wdata;
-			q <= ram[raddr / R][raddr % R];
+	always_ff @(posedge clk) begin
+		if(wr) begin
+			test_memory[ram_addr] <= data_in;
+			data_valid = 1'b0;
+		end
+		else begin
+			data_out <= test_memory[ram_addr];
+			data_valid = 1'b1;
 		end
 	end
-	else begin 
-		// Smaller write?
-		always_ff@(posedge clk)
-		begin
-			if(we) ram[waddr / R][waddr % R] <= wdata;
-			q <= ram[raddr];
-		end
-	end 
-	endgenerate
-
 
 // instructor recommends the tutorial https://projectf.io/posts/initialize-memory-in-verilog/    
 // which says to do this:
-	reg [7:0] test_memory [0:15]; 
+	reg [31:0] test_memory [0:4095]; 
 	initial begin 
 		$display("Loading rom."); 
 		$readmemh("rom_image.mem", test_memory); 
