@@ -1,5 +1,6 @@
 // for faking memory to test fetch
 // v1.0 Simulates single cycle memory
+// v2.0 :: TODO Integrate Cache to Read from Rom Image and Mem_system has variable cycle output
 module mem_system
 	(
 	//Memory System does not need reset
