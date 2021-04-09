@@ -11,6 +11,8 @@ module mem_system
 	output logic data_valid
 	);
 
+	reg [31:0] test_memory [0:4095]; 
+
 	//Addr must be from 0x2000 to 0x2FFF
 	logic [31:0] ram_addr;
 	assign ram_addr = {addr[23:2], 2'b0};	//Rounded Down Word Alignment
@@ -28,7 +30,7 @@ module mem_system
 
 // instructor recommends the tutorial https://projectf.io/posts/initialize-memory-in-verilog/    
 // which says to do this:
-	reg [31:0] test_memory [0:4095]; 
+	
 	initial begin 
 		$display("Loading rom."); 
 		$readmemh("rom_image.mem", test_memory); 
