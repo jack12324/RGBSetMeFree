@@ -8,14 +8,14 @@ module FilterMAC_tb();
 
 	logic [7:0] array0 [8:0];
 	logic signed [7:0] array1 [8:0];
+	logic signed [8:0] array0_signed [8:0];
 	logic [7:0] result_pixel;
 
 	always #5 clk = ~clk; 
 
-	integer errors, i, j, expected_result_pixel;
-	signed integer expected_sum;
+	int errors, i, j, expected_result_pixel, expected_sum, test;
 	
-	FilterMac mac(.*);
+	FilterMAC mac(.*);
 
 	initial begin
 		clk = 1'b0;
@@ -31,21 +31,66 @@ module FilterMAC_tb();
 			$display("Error, reset fail. Expected: %d, Got: %d", 0, result_pixel);
 		end
 
+		//unconstrained random testing
 		for(i = 0; i < 1000; i++) begin	
+			expected_sum = 0;
 
-			array0 = $random();
-			array1 = $random();
-
-			for(j = 0; j<8; j++) begin
-				expected_sum += (array0[j] * array1[j]);
+			for(j = 0; j<9; j++) begin
+				array0[j] = $random();
+				array0_signed[j] = array0[j];
+				array1[j] = $random();
 			end
 
-			if(expected_sum <== 0)begin
+
+			for(j = 0; j<9; j++) begin
+				expected_sum += (array0_signed[j] * array1[j]);
+			end
+
+			if(expected_sum <= 0)begin
 				expected_result_pixel = 0;
-			end else if (expected_sum >== 255)begin
+			end else if (expected_sum >= 255)begin
 				expected_result_pixel = 255;
 			end else begin
 				expected_result_pixel = expected_sum;
+			end
+			
+			if(expected_result_pixel >0 && expected_result_pixel<255)begin
+				test++;
+			end
+
+			@(posedge clk)
+			#1
+			if(expected_result_pixel !== result_pixel) begin
+				errors++;
+				$display("Error, incorrect value recorded. Expected: %d, Got: %d", expected_result_pixel, result_pixel);
+			end
+		end
+
+		//contrained random testing, filter values limited between [-1,1]
+		for(i = 0; i < 1000; i++) begin	
+			expected_sum = 0;
+
+			for(j = 0; j<9; j++) begin
+				array0[j] = $random();
+				array0_signed[j] = array0[j];
+				array1[j] = $urandom_range(0,2)-1;
+			end
+
+
+			for(j = 0; j<9; j++) begin
+				expected_sum += (array0_signed[j] * array1[j]);
+			end
+
+			if(expected_sum <= 0)begin
+				expected_result_pixel = 0;
+			end else if (expected_sum >= 255)begin
+				expected_result_pixel = 255;
+			end else begin
+				expected_result_pixel = expected_sum;
+			end
+			
+			if(expected_result_pixel >0 && expected_result_pixel<255)begin
+				test++;
 			end
 
 			@(posedge clk)
@@ -57,6 +102,7 @@ module FilterMAC_tb();
 		end
 
 		$display("Errors: %d", errors);
+		$display("%d", test);
 
 		if(!errors) begin
 			$display("YAHOO!!! All tests passed.");
