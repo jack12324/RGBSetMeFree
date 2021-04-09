@@ -14,79 +14,36 @@ module regFile (
 	// register width
 	parameter N = 32;
 
-	input clk, rst_n;
-   	input [2:0]  read1RegSel;
-   	input [2:0]  read2RegSel;
-   	input [2:0]  reg_wrt_sel;
-   	input [N-1:0] reg_wrt_data;
-   	input reg_wrt_en;
+	input logic clk, rst_n;
+   	input logic [4:0]  read1RegSel;
+   	input logic [4:0]  read2RegSel;
+   	input logic [4:0]  reg_wrt_sel;
+   	input logic [N-1:0] reg_wrt_data;
+   	input logic reg_wrt_en;
 
-   	output reg [N-1:0] read1Data;
-   	output reg [N-1:0] read2Data;
+   	output logic [N-1:0] read1Data;
+   	output logic [N-1:0] read2Data;
 
 	// 32 N-bit registers
-	reg [N-1:0] register[31:0];
- 	wire [N-1:0] register_next[31:0];
+	logic [N-1:0] register[31:0];
+ 	logic [N-1:0] register_next[31:0];
+	int i;
 	// N registers of N bits
 	always_ff @(posedge clk) begin
 		if (!rst_n)
-			register = '0;
+			for (i = 0; i < 32; i+=1)
+				register[i] = 0;
 		else
-			registeer = register_next;
+			for (i = 0; i < 32; i+=1)
+				register[i] = register_next[i];
 	end 
 
-	//genvar x;
-	//generate for (x = 0; x < 16; x+=1)	
-	//endgenerate
+	genvar x;
+	generate for (x = 0; x < 32; x+=1)	
+		assign register_next[x] = (x==reg_wrt_sel && reg_wrt_en) ? reg_wrt_data : register[x];
+	endgenerate
 	
-	
-	// mux to select read1 output
-	always @* begin
-		case (read1RegSel)
-			3'd0: read1Data = regOutputs[0];
-			3'd1: read1Data = regOutputs[1];
-			3'd2: read1Data = regOutputs[2];
-			3'd3: read1Data = regOutputs[3];
-			3'd4: read1Data = regOutputs[4];
-			3'd5: read1Data = regOutputs[5];
-			3'd6: read1Data = regOutputs[6];
-			3'd7: read1Data = regOutputs[7];
-		endcase
-	end
+	assign read1Data = register[read1RegSel];
+	assign read2Data = register[read2RegSel];
 
-	// mux to select read2 output
-	always @* begin
-		err = 0;
-		case (read2RegSel)
-			3'd0: read2Data = regOutputs[0];
-			3'd1: read2Data = regOutputs[1];
-			3'd2: read2Data = regOutputs[2];
-			3'd3: read2Data = regOutputs[3];
-			3'd4: read2Data = regOutputs[4];
-			3'd5: read2Data = regOutputs[5];
-			3'd6: read2Data = regOutputs[6];
-			3'd7: read2Data = regOutputs[7];
-			default: err = 1;
-		endcase
-	end
-
-
-	// a decoder hooked up to 8 AND gates with writeEn as the other signal
-	always @* begin
-		writeEnSel = 8'd0;
-		err = 0;
-		case (writeRegSel)
-			3'd0: writeEnSel[0] = writeEn;
-			3'd1: writeEnSel[1] = writeEn;
-			3'd2: writeEnSel[2] = writeEn;
-			3'd3: writeEnSel[3] = writeEn;
-			3'd4: writeEnSel[4] = writeEn;
-			3'd5: writeEnSel[5] = writeEn;
-			3'd6: writeEnSel[6] = writeEn;
-			3'd7: writeEnSel[7] = writeEn;
-			default: err = 1;
-		endcase
-	end
-
-	
 endmodule

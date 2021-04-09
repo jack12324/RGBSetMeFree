@@ -8,15 +8,15 @@ module regFile_bypass (
                        // Inputs
                        clk, rst_n, read1RegSel, read2RegSel, reg_wrt_sel, reg_wrt_data, reg_wrt_en
                        );
-   input        clk, rst_n;
-   input [5:0]  read1RegSel;
-   input [5:0]  read2RegSel;
-   input [5:0]  reg_wrt_sel;
-   input [31:0] reg_wrt_data;
-   input        reg_wrt_en;
+   	input logic clk, rst_n;
+   	input logic [4:0]  read1RegSel;
+   	input logic [4:0]  read2RegSel;
+   	input logic [4:0]  reg_wrt_sel;
+   	input logic [31:0] reg_wrt_data;
+   	input logic        reg_wrt_en;
 
-   output [31:0] read1Data;
-   output [31:0] read2Data;
+   	output logic [31:0] read1Data;
+   	output logic [31:0] read2Data;
 
 	wire [31:0] noBypassRead1, noBypassRead2;
 	regFile registersNoBypass(.read1Data(noBypassRead1), .read2Data(noBypassRead2), .err(err), 
