@@ -164,26 +164,26 @@ module decode (
 				ALU_src = 2'd0;
 				Jump = 1;
 			end
-			// RIN, note the OP skips to last value
+			// RIN
 			`RIN: begin
 				// like a NOP, does nothing
 			end
 
 			// error
 			default: begin
-				// make all control at 0 to signal error
+				// make all control 1 to signal error
 				// control for Execute
-				ALU_src = 2'd0;  
-				ALU_OP = 5'd0; 
-				Branch = 0;
-				Jump = 0;
+				ALU_src = 2'b11;  
+				ALU_OP = 5'b11111; 
+				Branch = 1;
+				Jump = 1;
 				// control for Memory
-				mem_wrt = 0;
-				mem_en = 0;
+				mem_wrt = 1;
+				mem_en = 1;
 				// control for Writeback
-				result_sel = 2'd0;
-				next_reg_wrt_en = 0;
-				next_reg_wrt_sel = 0;
+				result_sel = 2'b11;
+				next_reg_wrt_en = 1;
+				next_reg_wrt_sel = 1;
 			end
 		endcase
 	end
