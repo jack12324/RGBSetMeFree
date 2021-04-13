@@ -7,7 +7,7 @@
 	Description     : This is the module for the overall fetch stage of the processor.
 */
 
-//		12345678901234567890123456789012
+
 `define NOP 32'b01111xxxxxxxxxxxxxxxxxxxxxxxxxxx
 
 module fetch (clk, rst_n, in_PC_next, stall, flush, INT, INT_INST, out_PC_next, instr, Done, ACK);
@@ -35,16 +35,21 @@ module fetch (clk, rst_n, in_PC_next, stall, flush, INT, INT_INST, out_PC_next, 
 			PC <= PC_next;
 	end
 
-	assign PC_next = stall ? PC : in_PC_next; 
-	// todo flush in logic? 
-	// when flushing its cause we branched, and want the PC to update, so 
-	// PC_next should update even when flush is true
-	// perhaps need (stall && ~flush), not sure
+	assign PC_next = (stall && ~flush) ? PC : in_PC_next; 
+	// flush and stall updating PC register truth table 
+	// FLUSH	STALL 		UPDATE PC?
+	//   0		  0		    1
+	//   0	 	  1		    0
+	//   1		  0		    1
+	//   1	 	  1		    1
+	// when flushing, it's cause we branched, and we need the PC to update, so 
+	// PC_next should update even when stalling
 
+	// if flushing, everything becomes NOP
 	assign out_PC_next = flush ? `NOP : PC;
 
 	// instruction memory access
-	memsystem instructionMem(.clk(clk), .rst_n(rst_n), .addr(PC), .data_in(), .wr(1'b0), .en(1'b1), .data_valid(Done), .data_out(instr));
+	mem_system instructionMem(.clk(clk), .rst_n(rst_n), .addr(PC), .data_in(), .wr(1'b0), .en(1'b1), .data_valid(Done), .data_out(instr));
 
 	// 552 mem
 	//mem_system instructionMem(.DataOut(instr), .Done(Done), .Stall(Stall), .CacheHit(), .err(err), .Addr(addr), 
