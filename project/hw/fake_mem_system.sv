@@ -33,11 +33,15 @@ module mem_system
 // which says to do this:
 	
 	initial begin 
-		$display("Loading rom."); 
-		$readmemh("rom_image.mem", test_memory); 
-	end
+	        $display("Loading rom."); 
+	        $readmemh("rom_image.mem", test_memory); 
+		// relative file path form same place where work is
+	        $display("Contents of Memory: "); // display
 
-
+   	    	for (int i=0; i<10; i++) begin
+        	    $display("%x :: %x", test_memory[i], (i+32'h2000));
+        	end
+    	end
 endmodule : mem_system
 
 

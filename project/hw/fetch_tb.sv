@@ -25,8 +25,6 @@ module fetch_tb();
 	
 	fetch DUT(.*);
 
-
-
 	initial begin
 		errors = '0;
 		clk = 0;
