@@ -36,9 +36,9 @@ module mem_system
 		$display("Loading rom."); 
 		$readmemh("rom_image.mem", test_memory); 
 
-		$display("Contents of Memory: "); // display
+		$display("Contents of Memory: "); 
 		for(int i=0; i< 4096; i++) begin
-			$display("%x \n", test_memory[i]) // display
+			$display("%x \n", test_memory[i]);
 		end
 	end
 
