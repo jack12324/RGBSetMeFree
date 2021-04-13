@@ -1,5 +1,7 @@
-ECE554.mpf
-ECE554.cr.mti
+*.mpf
+*.cr.mti
+transcript
+*.wlf
 work/
 *.bak
 ECE552/
