@@ -63,6 +63,32 @@ module FPUMAC_tb();
 			end
 		end
 
+		//contrained random testing, filter values limited to [-1, 0, 1]
+		for(i = 0; i < 1000; i++) begin	
+			for(j = 0; j < COL_WIDTH; j++) begin
+				col0[j] = $random();
+				col1[j] = $random();
+				col2[j] = $random();
+			end
+
+			for(j = 0; j < 9; j++) begin
+				filter[j] = $urandom_range(0,2)-1;
+			end
+
+			for(j = 0; j < COL_WIDTH-3; j++)begin
+				expected_result_pixels[j] = calc_MAC(assemble(col0, col1, col2, j), filter);
+			end
+
+			@(posedge clk)
+			#1
+			for(j = 0; j < COL_WIDTH-3; j++) begin
+				if(expected_result_pixels[j] !== result_pixels[j])begin
+					errors++;
+					$display("Error, incorrect value recorded. Expected: %d, Got: %d", expected_result_pixels[j], result_pixels[j]);
+				end
+			end
+		end
+
 		$display("Errors: %d", errors);
 
 		if(!errors) begin
@@ -95,7 +121,6 @@ module FPUMAC_tb();
 			    col2[index+1], col1[index+1], col0[index+1],
 		            col2[index+2], col1[index+2], col0[index+2] };
 		return {<<8{assemble}};	
-		//assemble.reverse();
 	endfunction
 
 

@@ -13,7 +13,7 @@ module FilterMAC_tb();
 
 	always #5 clk = ~clk; 
 
-	int errors, i, j, expected_result_pixel, expected_sum, test;
+	int errors, i, j, expected_result_pixel, expected_sum;
 	
 	FilterMAC mac(.*);
 
@@ -54,10 +54,6 @@ module FilterMAC_tb();
 				expected_result_pixel = expected_sum;
 			end
 			
-			if(expected_result_pixel >0 && expected_result_pixel<255)begin
-				test++;
-			end
-
 			@(posedge clk)
 			#1
 			if(expected_result_pixel !== result_pixel) begin
@@ -66,7 +62,7 @@ module FilterMAC_tb();
 			end
 		end
 
-		//contrained random testing, filter values limited between [-1,1]
+		//contrained random testing, filter values limited to [-1, 0, 1]
 		for(i = 0; i < 1000; i++) begin	
 			expected_sum = 0;
 
@@ -89,10 +85,6 @@ module FilterMAC_tb();
 				expected_result_pixel = expected_sum;
 			end
 			
-			if(expected_result_pixel >0 && expected_result_pixel<255)begin
-				test++;
-			end
-
 			@(posedge clk)
 			#1
 			if(expected_result_pixel !== result_pixel) begin
@@ -102,7 +94,6 @@ module FilterMAC_tb();
 		end
 
 		$display("Errors: %d", errors);
-		$display("%d", test);
 
 		if(!errors) begin
 			$display("YAHOO!!! All tests passed.");
@@ -112,7 +103,6 @@ module FilterMAC_tb();
 		end
 
 		$stop;
-
 	end
 
 endmodule
