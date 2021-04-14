@@ -1,5 +1,3 @@
-// FIFO Testbench
-
 module FilterMAC_tb();
 
 	// Clock

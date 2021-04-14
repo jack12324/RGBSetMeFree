@@ -30,7 +30,7 @@ module FPUMAC_tb();
 		rst_n = 1'b1;
 	
 		#1
-		for(i = 0; i < COL_WIDTH-3; i++)begin
+		for(i = 0; i < COL_WIDTH-2; i++)begin
 			if( result_pixels[i] !== 0 ) begin
 				errors++;
 				$display("Error, reset fail. Expected: %d, Got: %d", 0, result_pixels[i]);
@@ -49,13 +49,13 @@ module FPUMAC_tb();
 				filter[j] = $random();
 			end
 
-			for(j = 0; j < COL_WIDTH-3; j++)begin
+			for(j = 0; j < COL_WIDTH-2; j++)begin
 				expected_result_pixels[j] = calc_MAC(assemble(col0, col1, col2, j), filter);
 			end
 
 			@(posedge clk)
 			#1
-			for(j = 0; j < COL_WIDTH-3; j++) begin
+			for(j = 0; j < COL_WIDTH-2; j++) begin
 				if(expected_result_pixels[j] !== result_pixels[j])begin
 					errors++;
 					$display("Error, incorrect value recorded. Expected: %d, Got: %d", expected_result_pixels[j], result_pixels[j]);
@@ -75,13 +75,13 @@ module FPUMAC_tb();
 				filter[j] = $urandom_range(0,2)-1;
 			end
 
-			for(j = 0; j < COL_WIDTH-3; j++)begin
+			for(j = 0; j < COL_WIDTH-2; j++)begin
 				expected_result_pixels[j] = calc_MAC(assemble(col0, col1, col2, j), filter);
 			end
 
 			@(posedge clk)
 			#1
-			for(j = 0; j < COL_WIDTH-3; j++) begin
+			for(j = 0; j < COL_WIDTH-2; j++) begin
 				if(expected_result_pixels[j] !== result_pixels[j])begin
 					errors++;
 					$display("Error, incorrect value recorded. Expected: %d, Got: %d", expected_result_pixels[j], result_pixels[j]);
