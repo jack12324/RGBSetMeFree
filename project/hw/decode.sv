@@ -61,6 +61,15 @@ module decode (
 	output logic [31:0] reg_1_data;
 	output logic [31:0] reg_2_data;
 	output logic [31:0] imm;
+	// special register stuff
+	output logic [31:0] LR;
+	output logic [1:0] FL;
+	// control for special registers
+	output logic LR_read;
+	output logic LR_write;
+	output logic FL_read;
+	output logic FL_write;
+
 	// control for Execute
 	output logic [1:0] ALU_src;
 	output logic [4:0] ALU_OP;
@@ -78,14 +87,15 @@ module decode (
 	regFile_bypass registers(.clk(clk), .rst(rst_n), .read1Data(reg_1_data), .read2Data(reg_2_data), 
 				.read1RegSel(instr[21:17]), .read2RegSel(instr[16:12]), 
 				.reg_wrt_sel(reg_wrt_sel), .reg_wrt_data(reg_wrt_data), .reg_wrt_en(reg_wrt_en));
-	
-	// todo: handle immediate (output 32 bits)
-	assign imm = 32'd0;//?
+	// todo: update LR (register 30) and FL (register 31), always_ff block and _next and stuff
+	// todo: R0 (register 0) should not be written to
+	// register 29 is ESP (stack pointer for interrupts)
 
 	// set all other outputs
 	assign out_PC_next = in_PC_next;	
 	always_comb begin
-		// defaults for control
+		// defaults
+		imm = 32'd0;
 		// control for Execute
 		ALU_src = 2'd1;  // use immediate=0, doesn't use immediate=1
 		ALU_OP = instr[31:27]; // just the op code
@@ -97,44 +107,87 @@ module decode (
 		// control for Writeback
 		result_sel = 2'd0;
 		next_reg_wrt_en = 0;
-		next_reg_wrt_sel = 0;
+		next_reg_wrt_sel = 0; // todo
+		// control for special registers
+		LR_read = 0; // todo, within certain instructions: (read1RegSel==29 || read2RegSel || other LR reads???);// todo
+		LR_write = 0; // todo
+		FL_read = 0; // todo, within certain instructions: (read1RegSel==29 || read2RegSel || other LR reads???);// todo
+		FL_write = 0; // todo
 
 		casex (instr)
 			//ALU
 			`ADD: begin
+				next_reg_wrt_en = 1;
+				next_reg_wrt_sel = instr[26:22]; 
 			end
 			`ADDI: begin
 				ALU_src = 2'd0;
+				imm = {{20{instr[11]}, instr[10:0]}; // sign extend 12 bit immediate to 32 bits
+				next_reg_wrt_en = 1;
+				next_reg_wrt_sel = instr[26:22];
 			end
 			`SUB: begin
+				next_reg_wrt_en = 1;
+				next_reg_wrt_sel = instr[26:22];
 			end
 			`SUBI: begin
 				ALU_src = 2'd0;
+				imm = {{20{instr[11]}, instr[10:0]}; // sign extend 12 bit immediate to 32 bits
+				next_reg_wrt_en = 1;
+				next_reg_wrt_sel = instr[26:22];
 			end
 			`AND: begin
+				next_reg_wrt_en = 1;
+				next_reg_wrt_sel = instr[26:22];
 			end
 			`OR: begin
+				next_reg_wrt_en = 1;
+				next_reg_wrt_sel = instr[26:22];
 			end
 			`XOR: begin
+				next_reg_wrt_en = 1;
+				next_reg_wrt_sel = instr[26:22];
 			end
 			`NEG: begin
+				next_reg_wrt_en = 1;
+				next_reg_wrt_sel = instr[26:22];
 			end
 			`SLL: begin
+				next_reg_wrt_en = 1;
+				next_reg_wrt_sel = instr[26:22];
 			end
 			`SLR: begin
+				next_reg_wrt_en = 1;
+				next_reg_wrt_sel = instr[26:22];
 			end
 			`SAR: begin
+				next_reg_wrt_en = 1;
+				next_reg_wrt_sel = instr[26:22];
 			end
 			// mem stuff
 			`LD: begin
+				mem_en = 1;
+				result_sel = 2'b01;
+				next_reg_wrt_en = 1;
+				next_reg_wrt_sel = instr[26:22];
 			end
 			`LDI: begin
 				ALU_src = 2'd0;
+				imm = {{16{0}, instr[15:0]}; // 16 bit immediate to 32 bits, ignore top 16 bits anyway
+				mem_en = 1;
+				result_sel = 2'b01;
+				next_reg_wrt_en = 1;
+				next_reg_wrt_sel = instr[26:22];
 			end
 			`ST: begin
+				mem_en = 1;
+				mem_wrt = 1;
 			end
 			`STI: begin
 				ALU_src = 2'd0;
+				imm = {{16{0}, instr[15:0]}; // 16 bit immediate to 32 bits, ignore top 16 bits anyway
+				mem_en = 1;
+				mem_wrt = 1;
 			end
 			// NOP
 			`NOP: begin
@@ -143,26 +196,35 @@ module decode (
 			// Control stuff
 			`BEQ: begin
 				Branch = 1;
+				result_sel = 2'b10;
 			end
 			`BNE: begin
 				Branch = 1;
+				result_sel = 2'b10;
 			end
 			`BON: begin
 				Branch = 1;
+				result_sel = 2'b10;
 			end
 			`BNN: begin
 				Branch = 1;
+				result_sel = 2'b10;
 			end
 			`J: begin
 				ALU_src = 2'd0;
 				Jump = 1;
+				imm = {16'h1000, instr[13:0], 2'b0}; // prefix where inst. mem. starts, postfix is byte addressable
+				result_sel = 2'b10;
 			end
 			`JR: begin
 				Jump = 1;
+				result_sel = 2'b10;
 			end
 			`JAL: begin
 				ALU_src = 2'd0;
 				Jump = 1;
+				imm = {16'h1000, instr[13:0], 2'b0}; // prefix where inst. mem. starts, postfix is byte addressable
+				result_sel = 2'b10;
 			end
 			// RIN
 			`RIN: begin
@@ -171,7 +233,8 @@ module decode (
 
 			// error
 			default: begin
-				// make all control 1 to signal error
+				// make all 1s to signal error
+				imm = 32'hFFFFFFFF;
 				// control for Execute
 				ALU_src = 2'b11;  
 				ALU_OP = 5'b11111; 
@@ -184,6 +247,11 @@ module decode (
 				result_sel = 2'b11;
 				next_reg_wrt_en = 1;
 				next_reg_wrt_sel = 1;
+				// control for special registers
+				LR_read = 1; 
+				LR_write = 1;
+				FL_read = 1; 
+				FL_write = 1; 
 			end
 		endcase
 	end

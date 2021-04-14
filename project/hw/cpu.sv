@@ -362,20 +362,20 @@ module proc (/*AUTOARG*/
 			ExMe_outResult : (((DeEx_outRs==MeWb_outWriteRegAddr) & MeWb_outWriteEn) ? regWriteData : DeEx_outReg1);
 	assign ExInput2 = ((DeEx_outRt==ExMe_outWriteRegAddr) & ExMe_outWriteEn) ? 
 			ExMe_outResult : (((DeEx_outRt==MeWb_outWriteRegAddr) & MeWb_outWriteEn) ? regWriteData : DeEx_outReg2);
-
 	// predicting/stalling
 	assign ExMe_inBranchOrJump = DeEx_outBranchOrJump;
-	
-	
+
 	assign IDOutput = (rst | ExMe_inPCSrc2 | savedbranchflushout /*| ~FeDone*/) ? 16'b0000100000000000 : FeDe_outInstr;
  	assign IFInput = (rst | ExMe_inPCSrc2  | FeStall | savedbranchflushout | (DeEx_inMemRead & DeEx_inWriteEn)) ? 16'b0000100000000000 : FeDe_inInstr;
 
 	// stalling logic
 	assign delay = MeStall | FeStall | (valid & DeEx_inHalt) | (DeEx_inMemRead & DeEx_inWriteEn);
 
+	// todo: forwarding, stalling for LR and FL
+
 	// flushing logic
 	// whenever ExMe_inPCSrc2 is high, we have to flush what is in Fetch and Decode
-
+	
 	always @(*) begin
 		// defaults for control is all off/0
 		// decode

@@ -37,9 +37,14 @@ module fetch_tb();
 
 		repeat (2) @(posedge clk);
 		rst_n = 1; // reset is off, begin
-
-
-		// todo: test fetch somehow, have to set memory and then test it's read correctly
+		
+		// test fetch 
+		// check outputs
+		out_PC_next;
+		instr;
+		Done;
+		// check output interrupts
+		ACK;
 		repeat (40) @(posedge clk);
 
 		if(errors == 0)

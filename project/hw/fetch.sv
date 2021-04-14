@@ -24,7 +24,7 @@ module fetch (clk, rst_n, in_PC_next, stall, flush, INT, INT_INST, out_PC_next, 
 	// for interrupts
 	output ACK;
 
-	// todo: interrupts and flush
+	// todo: interrupts
 
 	reg [31:0] PC;
 	wire [31:0] PC_next;
