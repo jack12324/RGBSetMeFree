@@ -2,7 +2,7 @@ module FilterMAC (clk, rst_n, array1, array0, result_pixel);
 	input clk, rst_n;
 	input [7:0] array0 [8:0];
 	input signed [7:0] array1 [8:0];
-	output logic [7:0] result_pixel;
+	output reg [7:0] result_pixel;
 
 	logic signed [8:0] array0_signed [8:0];
 	logic signed [15:0] mult_res [8:0];

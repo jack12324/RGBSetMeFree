@@ -13,9 +13,11 @@ module FPUMAC_tb();
 	logic signed [7:0] filter [8:0];
 	logic [7:0] result_pixels [COL_WIDTH-3:0];
 
+ 	logic [7:0] expected_result_pixels [COL_WIDTH-3:0];
+
 	always #5 clk = ~clk; 
 
-	int errors, i, j, expected_result_pixels;
+	int errors, i, j;
 	
 	FPUMAC mac(.*);
 
@@ -48,14 +50,16 @@ module FPUMAC_tb();
 			end
 
 			for(j = 0; j < COL_WIDTH-3; j++)begin
-				expected_result_pixels[j] = calc_MAC({col0[j+2:j], col1[j+2:j], col2[j+2:j]}, filter);
+				expected_result_pixels[j] = calc_MAC(assemble(col0, col1, col2, j), filter);
 			end
 
 			@(posedge clk)
 			#1
 			for(j = 0; j < COL_WIDTH-3; j++) begin
-				errors++;
-				$display("Error, incorrect value recorded. Expected: %d, Got: %d", expected_result_pixels[j], result_pixels[j]);
+				if(expected_result_pixels[j] !== result_pixels[j])begin
+					errors++;
+					$display("Error, incorrect value recorded. Expected: %d, Got: %d", expected_result_pixels[j], result_pixels[j]);
+				end
 			end
 		end
 
@@ -72,15 +76,27 @@ module FPUMAC_tb();
 
 	end
 
-	function int calc_MAC(input[7:0] array0 [8:0], input signed [7:0] array1 [8:0]);
-		calc_MAC = 0;
+	function automatic [7:0] calc_MAC(input[7:0] array0 [8:0], input signed [7:0] array1 [8:0]);
+		int sum = 0;
 		for(int i = 0; i < 9; i++)begin
-			calc_MAC += signed'({1'b0, array0[i]}) * array1[i];
+			sum += signed'({1'b0, array0[i]}) * array1[i];
 		end
-		if(calc_MAC< 0)
-			calc_MAC = 0;
-		else if (calc_MAC > 255)
-			calc_MAC = 255;
+		if(sum < 0)
+			return 0;
+		else if (sum > 255)
+			return 255;
+		return sum;
 	endfunction
+
+
+	typedef logic [7:0]test_def[8:0];
+	function automatic test_def assemble(input [7:0] col0 [COL_WIDTH-1:0], input [7:0] col1 [COL_WIDTH-1:0], input [7:0] col2 [COL_WIDTH-1:0], input int index);
+		assemble = {col2[index  ], col1[index  ], col0[index  ],
+			    col2[index+1], col1[index+1], col0[index+1],
+		            col2[index+2], col1[index+2], col0[index+2] };
+		return {<<8{assemble}};	
+		//assemble.reverse();
+	endfunction
+
 
 endmodule
