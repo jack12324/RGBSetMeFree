@@ -40,10 +40,16 @@ module decode (
 		clk, rst_n,
 		instr, in_PC_next,
 		reg_wrt_en, reg_wrt_sel, reg_wrt_data,
+		in_LR_wrt_data,
+		in_FL_wrt_data,
 		flush,
+		in_LR_write,
+		in_FL_write,
 		// outputs
 		out_PC_next,
 		reg_1_data, reg_2_data, imm,
+		LR, FL,
+		LR_read, LR_write, FL_read, FL_write,
 		ALU_src, ALU_OP, Branch, Jump,
 		mem_wrt, mem_en,
 		result_sel, next_reg_wrt_en, next_reg_wrt_sel
@@ -54,8 +60,14 @@ module decode (
 	input logic reg_wrt_en;
 	input logic [4:0] reg_wrt_sel;
 	input logic [31:0] reg_wrt_data;
+	// special register stuff
+	input logic [31:0] in_LR_wrt_data;
+	input logic [1:0]  in_FL_wrt_data;
 	// control
 	input logic flush;
+	// control for special register stuff
+	input logic in_LR_write;
+	input logic in_FL_write;
 
 	output logic [31:0] out_PC_next;
 	output logic [31:0] reg_1_data;
@@ -86,10 +98,27 @@ module decode (
 	// read/write registers
 	regFile_bypass registers(.clk(clk), .rst(rst_n), .read1Data(reg_1_data), .read2Data(reg_2_data), 
 				.read1RegSel(instr[21:17]), .read2RegSel(instr[16:12]), 
-				.reg_wrt_sel(reg_wrt_sel), .reg_wrt_data(reg_wrt_data), .reg_wrt_en(reg_wrt_en));
-	// todo: update LR (register 30) and FL (register 31), always_ff block and _next and stuff
-	// todo: R0 (register 0) should not be written to
-	// register 29 is ESP (stack pointer for interrupts)
+				.reg_wrt_sel(reg_wrt_sel), .reg_wrt_data(reg_wrt_data), .reg_wrt_en(legal_en));
+	// R0, LR, and FL (register 0, 30, 31) cannot be written to (NOP trying to)
+	assign legal_en = (reg_wrt_sel==0 || reg_wrt_sel==30 || reg_wrt_sel==31) ? 0 : reg_wrt_en;
+	// ESP (register 29) is stack pointer for interrupts, acts like normal register
+	
+	//  update LR (register 30) and FL (register 31)
+	logic [31:0] LR_next;
+	logic [1:0]  FL_next;
+	always_ff @(posedge clk, negedge rst_n) begin
+		if (!rst_n) begin 
+			LR <= 32'd0;
+			FL <= 2'd0;
+		end
+		else begin 
+			LR <= LR_next;
+			FL <= FL_next;
+		end
+	end
+	assign LR_next = in_LR_write ? in_LR_wrt_data : LR;
+	assign FL_next = in_FL_write ? in_FL_wrt_data : FL;
+	
 
 	// set all other outputs
 	assign out_PC_next = in_PC_next;	
@@ -107,62 +136,84 @@ module decode (
 		// control for Writeback
 		result_sel = 2'd0;
 		next_reg_wrt_en = 0;
-		next_reg_wrt_sel = 0; // todo
+		next_reg_wrt_sel = 0;
 		// control for special registers
-		LR_read = 0; // todo, within certain instructions: (read1RegSel==29 || read2RegSel || other LR reads???);// todo
-		LR_write = 0; // todo
-		FL_read = 0; // todo, within certain instructions: (read1RegSel==29 || read2RegSel || other LR reads???);// todo
-		FL_write = 0; // todo
+		LR_read = 0; 
+		LR_write = 0;
+		FL_read = 0; 
+		FL_write = 0; 
 
 		casex (instr)
 			//ALU
 			`ADD: begin
 				next_reg_wrt_en = 1;
 				next_reg_wrt_sel = instr[26:22]; 
+				LR_read = instr[21:17]==30 || instr[16:12]==30;
+				FL_read = instr[21:17]==31 || instr[16:12]==31;
 			end
 			`ADDI: begin
 				ALU_src = 2'd0;
-				imm = {{20{instr[11]}, instr[10:0]}; // sign extend 12 bit immediate to 32 bits
+				imm = {{20{instr[11]}}, instr[10:0]}; // sign extend 12 bit immediate to 32 bits
 				next_reg_wrt_en = 1;
 				next_reg_wrt_sel = instr[26:22];
+				LR_read = instr[21:17]==30;
+				FL_read = instr[21:17]==31;
 			end
 			`SUB: begin
 				next_reg_wrt_en = 1;
 				next_reg_wrt_sel = instr[26:22];
+				LR_read = instr[21:17]==30 || instr[16:12]==30;
+				FL_read = instr[21:17]==31 || instr[16:12]==31;
 			end
 			`SUBI: begin
 				ALU_src = 2'd0;
-				imm = {{20{instr[11]}, instr[10:0]}; // sign extend 12 bit immediate to 32 bits
+				imm = {{20{instr[11]}}, instr[10:0]}; // sign extend 12 bit immediate to 32 bits
 				next_reg_wrt_en = 1;
 				next_reg_wrt_sel = instr[26:22];
+				LR_read = instr[21:17]==30;
+				FL_read = instr[21:17]==31;
 			end
 			`AND: begin
 				next_reg_wrt_en = 1;
 				next_reg_wrt_sel = instr[26:22];
+				LR_read = instr[21:17]==30 || instr[16:12]==30;
+				FL_read = instr[21:17]==31 || instr[16:12]==31;
 			end
 			`OR: begin
 				next_reg_wrt_en = 1;
 				next_reg_wrt_sel = instr[26:22];
+				LR_read = instr[21:17]==30 || instr[16:12]==30;
+				FL_read = instr[21:17]==31 || instr[16:12]==31;
 			end
 			`XOR: begin
 				next_reg_wrt_en = 1;
 				next_reg_wrt_sel = instr[26:22];
+				LR_read = instr[21:17]==30 || instr[16:12]==30;
+				FL_read = instr[21:17]==31 || instr[16:12]==31;
 			end
 			`NEG: begin
 				next_reg_wrt_en = 1;
 				next_reg_wrt_sel = instr[26:22];
+				LR_read = instr[21:17]==30;
+				FL_read = instr[21:17]==31;
 			end
 			`SLL: begin
 				next_reg_wrt_en = 1;
 				next_reg_wrt_sel = instr[26:22];
+				LR_read = instr[21:17]==30 || instr[16:12]==309;
+				FL_read = instr[21:17]==31 || instr[16:12]==31;
 			end
 			`SLR: begin
 				next_reg_wrt_en = 1;
 				next_reg_wrt_sel = instr[26:22];
+				LR_read = instr[21:17]==30 || instr[16:12]==30;
+				FL_read = instr[21:17]==31 || instr[16:12]==31;
 			end
 			`SAR: begin
 				next_reg_wrt_en = 1;
 				next_reg_wrt_sel = instr[26:22];
+				LR_read = instr[21:17]==30 || instr[16:12]==30;
+				FL_read = instr[21:17]==31 || instr[16:12]==31;
 			end
 			// mem stuff
 			`LD: begin
@@ -170,10 +221,12 @@ module decode (
 				result_sel = 2'b01;
 				next_reg_wrt_en = 1;
 				next_reg_wrt_sel = instr[26:22];
+				LR_read = instr[21:17]==30;
+				FL_read = instr[21:17]==31;
 			end
 			`LDI: begin
 				ALU_src = 2'd0;
-				imm = {{16{0}, instr[15:0]}; // 16 bit immediate to 32 bits, ignore top 16 bits anyway
+				imm = {{16{0}}, instr[15:0]}; // 16 bit immediate to 32 bits, ignore top 16 bits anyway
 				mem_en = 1;
 				result_sel = 2'b01;
 				next_reg_wrt_en = 1;
@@ -182,10 +235,12 @@ module decode (
 			`ST: begin
 				mem_en = 1;
 				mem_wrt = 1;
+				LR_read = instr[21:17]==30;
+				FL_read = instr[21:17]==31;
 			end
 			`STI: begin
 				ALU_src = 2'd0;
-				imm = {{16{0}, instr[15:0]}; // 16 bit immediate to 32 bits, ignore top 16 bits anyway
+				imm = {{16{0}}, instr[15:0]}; // 16 bit immediate to 32 bits, ignore top 16 bits anyway
 				mem_en = 1;
 				mem_wrt = 1;
 			end
@@ -197,18 +252,26 @@ module decode (
 			`BEQ: begin
 				Branch = 1;
 				result_sel = 2'b10;
+				LR_read = instr[21:17]==30;
+				FL_read = 1;
 			end
 			`BNE: begin
 				Branch = 1;
 				result_sel = 2'b10;
+				LR_read = instr[21:17]==30;
+				FL_read = 1;
 			end
 			`BON: begin
 				Branch = 1;
 				result_sel = 2'b10;
+				LR_read = instr[21:17]==30;
+				FL_read = 1;
 			end
 			`BNN: begin
 				Branch = 1;
 				result_sel = 2'b10;
+				LR_read = instr[21:17]==30;
+				FL_read = 1;
 			end
 			`J: begin
 				ALU_src = 2'd0;
@@ -219,12 +282,15 @@ module decode (
 			`JR: begin
 				Jump = 1;
 				result_sel = 2'b10;
+				LR_read = instr[21:17]==30;
+				FL_read = instr[21:17]==31;
 			end
 			`JAL: begin
 				ALU_src = 2'd0;
 				Jump = 1;
 				imm = {16'h1000, instr[13:0], 2'b0}; // prefix where inst. mem. starts, postfix is byte addressable
 				result_sel = 2'b10;
+				LR_write = 1; 
 			end
 			// RIN
 			`RIN: begin
@@ -246,7 +312,7 @@ module decode (
 				// control for Writeback
 				result_sel = 2'b11;
 				next_reg_wrt_en = 1;
-				next_reg_wrt_sel = 1;
+				next_reg_wrt_sel = 5'b11111;
 				// control for special registers
 				LR_read = 1; 
 				LR_write = 1;

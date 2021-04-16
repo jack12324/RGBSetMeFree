@@ -39,12 +39,11 @@ module fetch_tb();
 		rst_n = 1; // reset is off, begin
 		
 		// test fetch 
+		// do something
 		// check outputs
-		out_PC_next;
-		instr;
-		Done;
-		// check output interrupts
-		ACK;
+		// out_PC_next==?, instr==?, Done==?
+		// check interrupt output
+		// ACK==?
 		repeat (40) @(posedge clk);
 
 		if(errors == 0)

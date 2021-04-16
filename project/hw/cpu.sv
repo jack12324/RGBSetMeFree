@@ -1,3 +1,7 @@
+// top level CPU file
+// TODO: everything, this is 552 file
+
+
 // OP CODE defines
 // termination
 `define HALT 16'b00000xxxxxxxxxxx

@@ -28,7 +28,7 @@ module fetch (clk, rst_n, in_PC_next, stall, flush, INT, INT_INST, out_PC_next, 
 
 	reg [31:0] PC;
 	wire [31:0] PC_next;
-	always_ff @(posedge clk) begin
+	always_ff @(posedge clk, negedge rst_n) begin
 		if (!rst_n) 
 			PC <= 32'h10002000; // this is where our instruction memory starts
 		else 

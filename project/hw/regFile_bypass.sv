@@ -22,7 +22,7 @@ module regFile_bypass (
 	regFile registersNoBypass(.read1Data(noBypassRead1), .read2Data(noBypassRead2), .err(err), 
 					.clk(clk), .rst(rst), .read1RegSel(read1RegSel), .read2RegSel(read2RegSel), 
 					.writeRegSel(writeRegSel), .writeData(writeData), .writeEn(writeEn));
-	
+
 	// bypassing
 	assign read1Data = (writeEn & (read1RegSel==writeRegSel)) ? writeData : noBypassRead1;
 	assign read2Data = (writeEn & (read2RegSel==writeRegSel)) ? writeData : noBypassRead2;
