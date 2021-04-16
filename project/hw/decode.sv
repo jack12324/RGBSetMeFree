@@ -141,7 +141,7 @@ module decode (
 		LR_read = 0; 
 		LR_write = 0;
 		FL_read = 0; 
-		FL_write = 0; 
+		FL_write = 1; // most do
 
 		casex (instr)
 			//ALU
@@ -237,16 +237,19 @@ module decode (
 				mem_wrt = 1;
 				LR_read = instr[21:17]==30;
 				FL_read = instr[21:17]==31;
+				FL_write = 0;
 			end
 			`STI: begin
 				ALU_src = 2'd0;
 				imm = {{16{0}}, instr[15:0]}; // 16 bit immediate to 32 bits, ignore top 16 bits anyway
 				mem_en = 1;
 				mem_wrt = 1;
+				FL_write = 0;
 			end
 			// NOP
 			`NOP: begin
 				// nothing
+				FL_write = 0;
 			end
 			// Control stuff
 			`BEQ: begin
@@ -254,36 +257,42 @@ module decode (
 				result_sel = 2'b10;
 				LR_read = instr[21:17]==30;
 				FL_read = 1;
+				FL_write = 0;
 			end
 			`BNE: begin
 				Branch = 1;
 				result_sel = 2'b10;
 				LR_read = instr[21:17]==30;
 				FL_read = 1;
+				FL_write = 0;
 			end
 			`BON: begin
 				Branch = 1;
 				result_sel = 2'b10;
 				LR_read = instr[21:17]==30;
 				FL_read = 1;
+				FL_write = 0;
 			end
 			`BNN: begin
 				Branch = 1;
 				result_sel = 2'b10;
 				LR_read = instr[21:17]==30;
 				FL_read = 1;
+				FL_write = 0;
 			end
 			`J: begin
 				ALU_src = 2'd0;
 				Jump = 1;
 				imm = {16'h1000, instr[13:0], 2'b0}; // prefix where inst. mem. starts, postfix is byte addressable
 				result_sel = 2'b10;
+				FL_write = 0;
 			end
 			`JR: begin
 				Jump = 1;
 				result_sel = 2'b10;
 				LR_read = instr[21:17]==30;
 				FL_read = instr[21:17]==31;
+				FL_write = 0;
 			end
 			`JAL: begin
 				ALU_src = 2'd0;
@@ -291,10 +300,12 @@ module decode (
 				imm = {16'h1000, instr[13:0], 2'b0}; // prefix where inst. mem. starts, postfix is byte addressable
 				result_sel = 2'b10;
 				LR_write = 1; 
+				FL_write = 0;
 			end
 			// RIN
 			`RIN: begin
 				// like a NOP, does nothing
+				FL_write = 0;
 			end
 
 			// error
