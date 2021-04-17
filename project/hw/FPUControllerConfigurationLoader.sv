@@ -1,7 +1,10 @@
-module FPUControllerConfigurationLoader (clk, rst_n, FPUConfig_if config_if);
+module FPUControllerConfigurationLoader #(M_STARTSIG_ADDRESS = 32'h1000_0120, M_FILTER_ADDRESS = 32'h1000_0040, M_DIMS_ADDRESS = 32'h1000_0000, M_START_ADDRESS = 32'h1000_0020, M_RESULT_ADDRESS = 32'h1000_0100)(clk, rst_n, config_if);
+	input clk, rst_n;
+	FPUConfig_if config_if;
+	
 	logic wr_filter1, wr_filter2, wr_filter3, wr_dims, wr_start_addr, wr_res_addr; 
 
-	typedef enum {IDLE, LOAD_FILTER, LOAD_DIMS, LOAD_START_ADDR, LOAD_RESULT_ADDR, DONE, XXX} state_e;
+	typedef enum {IDLE, LOAD_FILTER1, LOAD_FILTER2, LOAD_FILTER3, LOAD_DIMS, LOAD_START_ADDR, LOAD_RESULT_ADDR, DONE, XXX} state_e;
 
 	state_e state, next;
 
@@ -11,7 +14,7 @@ module FPUControllerConfigurationLoader (clk, rst_n, FPUConfig_if config_if);
 	
 	//decide next state	
 	always_comb begin
-		next_state = XXX;
+		next = XXX;
 		case(state)
 			IDLE: if(config_if.load_config_start)						next = LOAD_FILTER1;
 			      else									next = IDLE;			//@loopback
@@ -25,7 +28,7 @@ module FPUControllerConfigurationLoader (clk, rst_n, FPUConfig_if config_if);
 				    else								next = LOAD_DIMS;		//@loopback
 			LOAD_START_ADDR: if(config_if.mapped_data_valid)				next = LOAD_RESULT_ADDR;
 					 else								next = LOAD_START_ADDR;		//@loopback
-			LOAD_RESULT_ADDR: if(config_if.mapped_data_valid)				next = INITITAL_MEM_REQ1;
+			LOAD_RESULT_ADDR: if(config_if.mapped_data_valid)				next = DONE;
 					  else								next = LOAD_RESULT_ADDR;	//@loopback
 			DONE:										next = IDLE;
 			default:									next = XXX;
@@ -51,7 +54,7 @@ module FPUControllerConfigurationLoader (clk, rst_n, FPUConfig_if config_if);
 			wr_res_addr <= 0;
 
 			case(state)
-				IDLE: config_if.address_mem <= M_START_ADDRESS;
+				IDLE: config_if.address_mem <= M_STARTSIG_ADDRESS;
 				LOAD_FILTER1: begin
 					config_if.address_mem <= M_FILTER_ADDRESS;
 					wr_filter1 <= 1;
@@ -77,7 +80,7 @@ module FPUControllerConfigurationLoader (clk, rst_n, FPUConfig_if config_if);
 					wr_res_addr <= 1;
 					end
 				DONE:	config_if.load_config_done <= 1;
-				default: 
+				default: begin end
 			endcase
 		end
 	end	
@@ -85,15 +88,15 @@ module FPUControllerConfigurationLoader (clk, rst_n, FPUConfig_if config_if);
 	//registers to hold configuration values
 	always_ff @(posedge clk, negedge rst_n)begin
 		if (!rst_n) begin
-			config_if.filter <= '0;
+			config_if.filter <= '{default:'0};
 			config_if.image_width <= '0;
 			config_if.image_height <= '0;
 			config_if.start_address <= '0;
 			config_if.result_address <= '0;
 		end
 		else begin
-			if(wr_filter1) config_if.filter[0:3] <= config_if.data_mem;
-			else if(wr_filter2) config_if.filter[4:7] <= config_if.data_mem;
+			if(wr_filter1) config_if.filter[3:0] <= {config_if.data_mem[7:0], config_if.data_mem[15:8], config_if.data_mem[23:16], config_if.data_mem[31:24]};
+			else if(wr_filter2) config_if.filter[7:4] <= {config_if.data_mem[7:0], config_if.data_mem[15:8], config_if.data_mem[23:16], config_if.data_mem[31:24]};
 			else if(wr_filter3) config_if.filter[8] <= config_if.data_mem[31:24];
 			
 			if(wr_dims) begin
