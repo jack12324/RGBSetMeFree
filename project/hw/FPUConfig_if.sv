@@ -1,6 +1,6 @@
 interface FPUConfig_if();
 	logic load_config_start, load_config_done, mapped_data_valid;
-	logic [7:0] filter [8:0];
+	logic signed [7:0] filter [8:0];
 	logic [15:0] image_width;
 	logic [15:0] image_height;
 	logic [31:0] start_address;

@@ -20,7 +20,9 @@ module FPUController_tb();
 
 	always #5 clk = ~clk; 
 
-	int errors, i, j, width, height, start_address, result_address, start_sig;
+	int errors, i, j;
+	logic [31:0] start_address, result_address, start_sig;
+	logic [15:0] width, height;
 	logic signed [7:0] filter_conf [8:0];
 	
 	FPUController controller(.*);
@@ -38,6 +40,7 @@ module FPUController_tb();
 		start_sig = 1'b1;
 		
 		@(posedge controller.conf.load_config_done);	
+		check_config_vars();
 		
 
 		$display("Errors: %d", errors);
@@ -62,26 +65,37 @@ module FPUController_tb();
 			filter_conf[i] = $urandom_range(0,2)-1;
 	endtask
 
+	task automatic check_config_vars();
+		if (controller.conf.image_width != width) $display("Configuration Load Error %d: expected image width = %d, got: %d", errors++, width, controller.conf.image_width);
+		if (controller.conf.image_height != height) $display("Configuration Load Error %d: expected image height = %d, got: %d", errors++, height, controller.conf.image_height);
+		if (controller.conf.start_address != start_address) $display("Configuration Load Error %d: expected image start_address = %h, got: %h", errors++, start_address, controller.conf.start_address);
+		if (controller.conf.result_address != result_address) $display("Configuration Load Error %d: expected image result_address = %h, got: %h", errors++, result_address, controller.conf.result_address);
+		for (int i = 0; i < 9; i++)
+			if (controller.conf.filter[i]!= filter_conf[i]) $display("Configuration Load Error %d: expected image filter slot %d = %d, got: %d", errors++, i, filter_conf[i], controller.conf.filter[i]);
+	endtask
+
 	task automatic get_mapped_mem(); 	
 		int M_STARTSIG_ADDRESS = 32'h1000_0120;
 		int M_FILTER_ADDRESS = 32'h1000_0040;
 		int M_DIMS_ADDRESS = 32'h1000_0000;
 		int M_START_ADDRESS = 32'h1000_0020;
 		int M_RESULT_ADDRESS = 32'h1000_0100;
+		int noise = $random();
 		mapped_data_valid = 0;
 		for(int i = 0; i < $urandom_range(1,10); i++)
 			@(posedge clk)
 		case (address_mem)
 			M_STARTSIG_ADDRESS: data_mem = start_sig;
-			M_FILTER_ADDRESS: data_mem = {filter_conf[8],filter_conf[7],filter_conf[6],filter_conf[5]};
-			M_FILTER_ADDRESS+4: data_mem = {filter_conf[4],filter_conf[3],filter_conf[2],filter_conf[1]};
-			M_FILTER_ADDRESS+8: data_mem = {filter_conf[0], $random()};
+			M_FILTER_ADDRESS: data_mem = {filter_conf[0],filter_conf[1],filter_conf[2],filter_conf[3]};
+			M_FILTER_ADDRESS+4: data_mem = {filter_conf[4],filter_conf[5],filter_conf[6],filter_conf[7]};
+			M_FILTER_ADDRESS+8: data_mem = {filter_conf[8], noise[23:0]};
 			M_DIMS_ADDRESS: data_mem = {width, height};
 			M_START_ADDRESS: data_mem = start_address;
 			M_RESULT_ADDRESS: data_mem = result_address;
 			default: data_mem = 'x;
 		endcase
 		mapped_data_valid = 1;
+		@(posedge clk);
 	endtask
 
 	function automatic [7:0] calc_MAC(input[7:0] array0 [8:0], input signed [7:0] array1 [8:0]);

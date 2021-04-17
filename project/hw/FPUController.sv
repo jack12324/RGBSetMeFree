@@ -4,7 +4,7 @@ module FPUController #(COL_WIDTH = 10, MEM_BUFFER_WIDTH = 512, M_STARTSIG_ADDRES
 	input [31:0] data_mem;
 
 	output logic shift_cols, done, request_write, request_read, rd_buffer_sel, wr_buffer_sel, wr_en_wr_buffer;
-	output [7:0] filter [8:0];
+	output signed [7:0] filter [8:0];
 	output logic [31:0] read_address;
 	output logic [31:0] write_address;
 	output logic [8:0] write_col_address;
@@ -134,8 +134,8 @@ module FPUController #(COL_WIDTH = 10, MEM_BUFFER_WIDTH = 512, M_STARTSIG_ADDRES
 			set_remaining_height <= 0;
 			set_remaining_width <= 0;
 
-			case(state)
-				IDLE: address_mem <= M_START_ADDRESS;
+			case(next)
+				IDLE: address_mem <= M_STARTSIG_ADDRESS;
 				LOAD_CONFIG: begin
 					address_mem <= conf.address_mem;
 					conf.load_config_start <= 1;

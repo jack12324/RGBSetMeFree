@@ -44,6 +44,9 @@ module FPUControllerConfigurationLoader #(M_STARTSIG_ADDRESS = 32'h1000_0120, M_
 			wr_dims <= 0;
 			wr_start_addr <= 0;
 			wr_res_addr <= 0;
+
+			config_if.address_mem <= '0;
+			config_if.load_config_done <= 0;
 		end
 		else begin
 			wr_filter1 <= '0;
@@ -53,7 +56,10 @@ module FPUControllerConfigurationLoader #(M_STARTSIG_ADDRESS = 32'h1000_0120, M_
 			wr_start_addr <= 0;
 			wr_res_addr <= 0;
 
-			case(state)
+			config_if.address_mem <= '0;
+			config_if.load_config_done <= 0;
+
+			case(next)
 				IDLE: config_if.address_mem <= M_STARTSIG_ADDRESS;
 				LOAD_FILTER1: begin
 					config_if.address_mem <= M_FILTER_ADDRESS;
