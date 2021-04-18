@@ -2,6 +2,7 @@
 
 module FPUController_tb();
 	parameter COL_WIDTH = 10;
+	parameter MEM_BUFFER_WIDTH = 512;
 
 	// Clock
 	logic clk;
@@ -20,17 +21,26 @@ module FPUController_tb();
 
 	always #5 clk = ~clk; 
 
-	int errors, i, j;
+	int errors;
 	logic [31:0] start_address, result_address, start_sig;
 	logic [15:0] width, height;
 	logic signed [7:0] filter_conf [8:0];
+
+	logic [7:0] input_memory [(2**22):0];
+	logic [7:0] output_memory[(2**22):0];
+	logic [7:0] ref_output_memory[(2**22)-1:0];
+
+	logic [MEM_BUFFER_WIDTH-1:0][7:0] read_buff0 [COL_WIDTH-1:0];
+	logic [MEM_BUFFER_WIDTH-1:0][7:0] read_buff1 [COL_WIDTH-1:0];
 	
 	FPUController controller(.*);
 
 	initial forever get_mapped_mem();
+	initial forever handle_requests();
 
 	initial begin
 		set_config_vars();	
+		initialize_memories();
 		clk = 1'b0;
 		rst_n = 1'b0;
 		errors = 0;
@@ -42,6 +52,7 @@ module FPUController_tb();
 		@(posedge controller.conf.load_config_done);	
 		check_config_vars();
 		
+		for(int i = 0; i <10000; i++) @(posedge clk);	
 
 		$display("Errors: %d", errors);
 
@@ -55,12 +66,48 @@ module FPUController_tb();
 		$stop;
 
 	end
+
+	task automatic handle_requests();
+		@(posedge clk)
+		if(request_read) begin
+			making_request = 1;
+			fill_buffer(!rd_buffer_sel, read_address);
+			for(int stall_cyc = 0; stall_cyc < $urandom_range(1,100); stall_cyc++) @(posedge clk);
+			making_request = 0;
+		end
+	endtask
+
+	task automatic fill_buffer(bit buffer, int strt_address);
+		for(int row = 0; row < COL_WIDTH; row++)begin
+			for(int col = 0; col < MEM_BUFFER_WIDTH; col++)begin
+				if(buffer) read_buff1[row][col] = input_memory[strt_address + row * (width+2)*3 + col];	
+				else read_buff0[row][col] = input_memory[strt_address + row * (width+2)*3 + col];	
+			end
+		end
+	endtask
+	
+	task automatic initialize_memories();
+		int input_row_width = (width+2)*3;
+		int output_row_width = (width)*3 + 4;
+		for (int i = start_address; i < start_address + (input_row_width*(height+2)); i++)begin
+			input_memory[i] = $random();
+		end
+		for (int i = 0; i < height; i++)begin
+			for (int j = 0; j < input_row_width - 2; j++)begin
+				int input_base = start_address + (i * input_row_width) + j;
+				int output_base = result_address + (i * output_row_width) + j;
+				ref_output_memory[output_base] = calc_MAC({<<8{	input_memory[input_base], input_memory[input_base +1], input_memory[input_base + 2],
+									 	input_memory[input_row_width + input_base], input_memory[input_row_width + input_base + 1], input_memory[input_row_width + input_base + 2],
+									 	input_memory[2*input_row_width + input_base], input_memory[2*input_row_width + input_base + 1], input_memory[2*input_row_width + input_base + 2]}}, filter_conf);
+			end	
+		end
+	endtask
 	
 	task automatic set_config_vars();
-		width = $random();
-		height = $random();
-		start_address = $random();
-		result_address = $random();
+		width = 400;
+		height = 5;
+		start_address = $urandom_range(0,65535);
+		result_address = $urandom_range(0,65535);
 		for(int i = 0; i < 9; i++)
 			filter_conf[i] = $urandom_range(0,2)-1;
 	endtask
@@ -118,6 +165,12 @@ module FPUController_tb();
 		            col2[index+2], col1[index+2], col0[index+2] };
 		return {<<8{assemble}};	
 	endfunction
+
+	task automatic displayArray(input[7:0] array0 [8:0], input signed [7:0] array1 [8:0]);
+		for(int i = 0; i < 9; i++)begin
+			$display("index: %d arr0: %d filter: %d", i, array0[i], array1[i]);
+		end
+	endtask
 
 
 endmodule

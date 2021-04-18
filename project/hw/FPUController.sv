@@ -43,13 +43,14 @@ module FPUController #(COL_WIDTH = 10, MEM_BUFFER_WIDTH = 512, M_STARTSIG_ADDRES
 			LOAD_CONFIG: if(conf.load_config_done)								next = FILL_BUFF1;
 					else										next = LOAD_CONFIG;			//@loopback
 
-			FILL_BUFF1: if(!making_request && (total_width > MEM_BUFFER_WIDTH))				next = FILL_BUFF2_ALL;
-					  else if(!making_request && (total_width <= MEM_BUFFER_WIDTH))        		next = FILL_BUFF2_CHUNK;
-					  else										next = FILL_BUFF1;	 		//@loopback
+			FILL_BUFF1: if(total_width > MEM_BUFFER_WIDTH)							next = FILL_BUFF2_ALL;
+				else 									       		next = FILL_BUFF2_CHUNK;
 
-			FILL_BUFF2_ALL:											next = NEW_ROW;
+			FILL_BUFF2_ALL: if(!making_request)								next = NEW_ROW;
+				else											next = FILL_BUFF2_ALL;			//@loopback
 
-			FILL_BUFF2_CHUNK:										next = NEW_ROW;
+			FILL_BUFF2_CHUNK: if(!making_request)								next = NEW_ROW;
+				else											next = FILL_BUFF2_CHUNK;		//@loopback
 
 			NEW_ROW: if(read_col_address == 4) 								next = OPERATE;
 				 	else										next = NEW_ROW;				//@loopback
@@ -142,21 +143,24 @@ module FPUController #(COL_WIDTH = 10, MEM_BUFFER_WIDTH = 512, M_STARTSIG_ADDRES
 				end
 				FILL_BUFF1: begin
 					set_remaining_height <= 1;
-					set_remaining_width <= 1;;
+					set_remaining_width <= 1;
 					request_read <= 1;
 					read_address <= conf.start_address;
+					rd_buffer_sel <= 1; //loads oposite so fills buffer 0
 				end
 				FILL_BUFF2_ALL: begin
 					request_read <= 1;	
 					read_address <= conf.start_address + MEM_BUFFER_WIDTH;
 					read_rst <= 1;
 					write_rst <= 1;
+					rd_buffer_sel <= 0; //loads oposite so fills buffer 1
 				end
 				FILL_BUFF2_CHUNK: begin
 					request_read <= 1;	
 					read_address <= conf.start_address + (total_width * COL_WIDTH);
 					read_rst <= 1;
 					write_rst <= 1;
+					rd_buffer_sel <= 0; //loads oposite so fills buffer 1
 				end
 				NEW_ROW: begin
 					shift_cols <= 1;
