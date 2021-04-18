@@ -26,20 +26,34 @@ module FPUController_tb();
 	logic [15:0] width, height;
 	logic signed [7:0] filter_conf [8:0];
 
-	logic [7:0] input_memory [(2**22):0];
-	logic [7:0] output_memory[(2**22):0];
+	logic [7:0] input_memory [(2**22)-1:0];
+	logic [7:0] output_memory[(2**22)-1:0];
 	logic [7:0] ref_output_memory[(2**22)-1:0];
 
 	logic [MEM_BUFFER_WIDTH-1:0][7:0] read_buff0 [COL_WIDTH-1:0];
 	logic [MEM_BUFFER_WIDTH-1:0][7:0] read_buff1 [COL_WIDTH-1:0];
-	
-	FPUController controller(.*);
+
+	logic [MEM_BUFFER_WIDTH-1:0][7:0] write_buff0[COL_WIDTH-1:0];
+	logic [MEM_BUFFER_WIDTH-1:0][7:0] write_buff1[COL_WIDTH-1:0];
+
+	logic [7:0] col_new [COL_WIDTH - 1:0];
+	logic [7:0] col0   [COL_WIDTH - 1:0];
+	logic [7:0] col1   [COL_WIDTH - 1:0];
+	logic [7:0] col2   [COL_WIDTH - 1:0];
+	logic [7:0] result_pixels [COL_WIDTH-3:0];
+
+	FPUController #(.MEM_BUFFER_WIDTH(MEM_BUFFER_WIDTH), .COL_WIDTH(COL_WIDTH))controller(.*);
+
+	FPUMAC #(.COL_WIDTH(COL_WIDTH)) mac(.*);
+	FPUBuffers #(.COL_WIDTH(COL_WIDTH)) buff(.*);
 
 	initial forever get_mapped_mem();
 	initial forever handle_requests();
-
+	initial forever write_buffer();
+	initial forever read_buffer();
+		
 	initial begin
-		set_config_vars();	
+		set_config_vars(160, 5);	
 		initialize_memories();
 		clk = 1'b0;
 		rst_n = 1'b0;
@@ -50,9 +64,25 @@ module FPUController_tb();
 		start_sig = 1'b1;
 		
 		@(posedge controller.conf.load_config_done);	
+		start_sig = 1'b0;
 		check_config_vars();
 		
-		for(int i = 0; i <10000; i++) @(posedge clk);	
+		@(posedge done);
+		compare_memories();
+		@(posedge clk);
+
+		set_config_vars(100, 7);	
+		initialize_memories();
+
+		@(posedge clk);
+		start_sig = 1'b1;
+		
+		@(posedge controller.conf.load_config_done);	
+		start_sig = 1'b0;
+		check_config_vars();
+		
+		@(posedge done);
+		compare_memories();
 
 		$display("Errors: %d", errors);
 
@@ -67,11 +97,48 @@ module FPUController_tb();
 
 	end
 
+	task automatic compare_memories();
+		for(int i = 0; i < (2**22)-1; i++)begin
+			if(output_memory[i] !== ref_output_memory[i])begin
+				$display("location: %d expected: %d actual: %d", i, ref_output_memory[i], output_memory[i]);
+			end
+		end		
+	endtask
+
+	task automatic read_buffer();
+		@(posedge clk)
+		for(int row = 0; row < COL_WIDTH; row++)begin
+			if(rd_buffer_sel) col_new[row] = read_buff1[row][read_col_address];
+			else col_new[row] = read_buff0[row][read_col_address];
+		end
+	endtask
+
+	task automatic write_buffer();
+		@(posedge clk)
+		if(wr_en_wr_buffer)begin
+			for(int row = 0; row < COL_WIDTH; row++)begin
+				if(wr_buffer_sel) write_buff1[row][write_col_address] = result_pixels[row];
+				else write_buff0[row][write_col_address] = result_pixels[row];
+			end
+		end
+	endtask
+
 	task automatic handle_requests();
 		@(posedge clk)
-		if(request_read) begin
+		if(request_read && request_write) begin
+			making_request = 1;
+			empty_buffer(!rd_buffer_sel, write_address);
+			fill_buffer(!rd_buffer_sel, read_address);
+			for(int stall_cyc = 0; stall_cyc < $urandom_range(1,100); stall_cyc++) @(posedge clk);
+			making_request = 0;
+		end else if (request_read && !request_write)begin
 			making_request = 1;
 			fill_buffer(!rd_buffer_sel, read_address);
+			for(int stall_cyc = 0; stall_cyc < $urandom_range(1,100); stall_cyc++) @(posedge clk);
+			making_request = 0;
+		end else if (!request_read && request_write)begin
+			making_request = 1;
+			empty_buffer(!rd_buffer_sel, write_address);
 			for(int stall_cyc = 0; stall_cyc < $urandom_range(1,100); stall_cyc++) @(posedge clk);
 			making_request = 0;
 		end
@@ -82,6 +149,15 @@ module FPUController_tb();
 			for(int col = 0; col < MEM_BUFFER_WIDTH; col++)begin
 				if(buffer) read_buff1[row][col] = input_memory[strt_address + row * (width+2)*3 + col];	
 				else read_buff0[row][col] = input_memory[strt_address + row * (width+2)*3 + col];	
+			end
+		end
+	endtask
+
+	task automatic empty_buffer(bit buffer, int res_address);
+		for(int row = 0; row < COL_WIDTH; row++)begin
+			for(int col = 0; col < MEM_BUFFER_WIDTH; col++)begin
+				if(buffer) output_memory[res_address + row * (width*3+4) + col] = write_buff1[row][col];	
+				else output_memory[res_address + row * (width*3+4) + col] = write_buff0[row][col];	
 			end
 		end
 	endtask
@@ -103,9 +179,9 @@ module FPUController_tb();
 		end
 	endtask
 	
-	task automatic set_config_vars();
-		width = 400;
-		height = 5;
+	task automatic set_config_vars(int w, int h);
+		width = w;
+		height = h;
 		start_address = $urandom_range(0,65535);
 		result_address = $urandom_range(0,65535);
 		for(int i = 0; i < 9; i++)
