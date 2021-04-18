@@ -7,8 +7,8 @@ module FPUController #(COL_WIDTH = 10, MEM_BUFFER_WIDTH = 512, M_STARTSIG_ADDRES
 	output signed [7:0] filter [8:0];
 	output logic [31:0] read_address;
 	output logic [31:0] write_address;
-	output logic [8:0] write_col_address;
-	output logic [8:0] read_col_address;
+	output logic [$clog2(MEM_BUFFER_WIDTH)-1:0] write_col_address;
+	output logic [$clog2(MEM_BUFFER_WIDTH)-1:0] read_col_address;
 	output logic [31:0] address_mem;
 	output logic [16:0] write_request_size;
 
@@ -67,7 +67,7 @@ module FPUController #(COL_WIDTH = 10, MEM_BUFFER_WIDTH = 512, M_STARTSIG_ADDRES
 				else if (making_request)								next = UPDATE_WIDTH;			
 				else											next = CHUNK_END;			//@loopback
 
-			CHUNK_DONE: if(remaining_width - 512 < 3)							next = WAIT_FINAL;
+			CHUNK_DONE: if(remaining_width - MEM_BUFFER_WIDTH < 3)						next = WAIT_FINAL;
 				else										 	next = OPERATE;
 			
 			UPDATE_HEIGHT:											next = ROW_END;
@@ -195,7 +195,7 @@ module FPUController #(COL_WIDTH = 10, MEM_BUFFER_WIDTH = 512, M_STARTSIG_ADDRES
 					wr_buffer_sel <= rd_buffer_sel;
 					request_read <= 1;
 					request_write <= 1;
-					read_address <= '1;//TODO
+					read_address <= read_address + ((remaining_width -MEM_BUFFER_WIDTH) < MEM_BUFFER_WIDTH ? remaining_width - MEM_BUFFER_WIDTH: MEM_BUFFER_WIDTH);
 					update_write_address <= 2;
 					width_dec <= 1;
 				end

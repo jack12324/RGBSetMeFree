@@ -15,8 +15,8 @@ module FPUController_tb();
 	logic signed [7:0] filter [8:0];
 	logic [31:0] read_address;
 	logic [31:0] write_address;
-	logic [8:0] write_col_address;
-	logic [8:0] read_col_address;
+	logic [$clog2(MEM_BUFFER_WIDTH)-1:0] write_col_address;
+	logic [$clog2(MEM_BUFFER_WIDTH)-1:0] read_col_address;
 	logic [31:0] address_mem;
 	logic [16:0] write_request_size;
 
@@ -61,9 +61,13 @@ module FPUController_tb();
 		@(posedge clk);
 		rst_n = 1'b1;
 
-		test_with_image_size(160, 5);
-		test_with_image_size(169, 5);
-		test_with_image_size(200, 5);
+		//test_with_image_size(160, 5);
+		//test_with_image_size(169, 5);
+		//test_with_image_size(200, 5);
+		//test_with_image_size(400, 5);
+		//test_with_image_size(2048, 5);
+		test_with_image_size(160, 8);
+		
 		
 		$display("Errors: %d", errors);
 
@@ -91,8 +95,6 @@ module FPUController_tb();
 		
 		@(posedge done);
 		compare_memories();
-		@(posedge clk);
-		@(posedge clk);
 		@(posedge clk);
 
 	endtask
