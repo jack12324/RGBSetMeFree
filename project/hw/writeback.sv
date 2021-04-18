@@ -6,7 +6,7 @@ module writeback(
   MeWb_out_PC_next,
   MeWb_out_result_sel,
   // Output
-  reg_wrt_data,
+  reg_wrt_data
   );
 
   input clk, rst_n;
@@ -20,7 +20,6 @@ module writeback(
   output logic [31:0] reg_wrt_data;
 
   always_comb begin
-    // TODO: get the MeWb_out_result_sel value from decode 
     case (MeWb_out_result_sel)
       2'b00: reg_wrt_data = MeWb_out_alu_out;  
       2'b01: reg_wrt_data = MeWb_out_mem_data;
