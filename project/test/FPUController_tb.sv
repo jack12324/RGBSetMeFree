@@ -18,6 +18,7 @@ module FPUController_tb();
 	logic [8:0] write_col_address;
 	logic [8:0] read_col_address;
 	logic [31:0] address_mem;
+	logic [16:0] write_request_size;
 
 	always #5 clk = ~clk; 
 
@@ -53,37 +54,17 @@ module FPUController_tb();
 	initial forever read_buffer();
 		
 	initial begin
-		set_config_vars(160, 5);	
-		initialize_memories();
 		clk = 1'b0;
 		rst_n = 1'b0;
 		errors = 0;
 
 		@(posedge clk);
 		rst_n = 1'b1;
-		start_sig = 1'b1;
-		
-		@(posedge controller.conf.load_config_done);	
-		start_sig = 1'b0;
-		check_config_vars();
-		
-		@(posedge done);
-		compare_memories();
-		@(posedge clk);
 
-		set_config_vars(100, 7);	
-		initialize_memories();
-
-		@(posedge clk);
-		start_sig = 1'b1;
+		test_with_image_size(160, 5);
+		test_with_image_size(169, 5);
+		test_with_image_size(200, 5);
 		
-		@(posedge controller.conf.load_config_done);	
-		start_sig = 1'b0;
-		check_config_vars();
-		
-		@(posedge done);
-		compare_memories();
-
 		$display("Errors: %d", errors);
 
 		if(!errors) begin
@@ -96,7 +77,26 @@ module FPUController_tb();
 		$stop;
 
 	end
+	
+	task automatic test_with_image_size(int width, int height);
+		set_config_vars(width, height);	
+		initialize_memories();
 
+		@(posedge clk);
+		start_sig = 1'b1;
+		
+		@(posedge controller.conf.load_config_done);	
+		start_sig = 1'b0;
+		check_config_vars();
+		
+		@(posedge done);
+		compare_memories();
+		@(posedge clk);
+		@(posedge clk);
+		@(posedge clk);
+
+	endtask
+	
 	task automatic compare_memories();
 		for(int i = 0; i < (2**22)-1; i++)begin
 			if(output_memory[i] !== ref_output_memory[i])begin
@@ -127,7 +127,7 @@ module FPUController_tb();
 		@(posedge clk)
 		if(request_read && request_write) begin
 			making_request = 1;
-			empty_buffer(!rd_buffer_sel, write_address);
+			empty_buffer(!rd_buffer_sel, write_address, write_request_size);
 			fill_buffer(!rd_buffer_sel, read_address);
 			for(int stall_cyc = 0; stall_cyc < $urandom_range(1,100); stall_cyc++) @(posedge clk);
 			making_request = 0;
@@ -138,7 +138,7 @@ module FPUController_tb();
 			making_request = 0;
 		end else if (!request_read && request_write)begin
 			making_request = 1;
-			empty_buffer(!rd_buffer_sel, write_address);
+			empty_buffer(!rd_buffer_sel, write_address, write_request_size);
 			for(int stall_cyc = 0; stall_cyc < $urandom_range(1,100); stall_cyc++) @(posedge clk);
 			making_request = 0;
 		end
@@ -153,9 +153,9 @@ module FPUController_tb();
 		end
 	endtask
 
-	task automatic empty_buffer(bit buffer, int res_address);
+	task automatic empty_buffer(bit buffer, int res_address, int size);
 		for(int row = 0; row < COL_WIDTH; row++)begin
-			for(int col = 0; col < MEM_BUFFER_WIDTH; col++)begin
+			for(int col = 0; col < size; col++)begin
 				if(buffer) output_memory[res_address + row * (width*3+4) + col] = write_buff1[row][col];	
 				else output_memory[res_address + row * (width*3+4) + col] = write_buff0[row][col];	
 			end
@@ -183,7 +183,7 @@ module FPUController_tb();
 		width = w;
 		height = h;
 		start_address = $urandom_range(0,65535);
-		result_address = $urandom_range(0,65535);
+		result_address = 0;//$urandom_range(0,65535);
 		for(int i = 0; i < 9; i++)
 			filter_conf[i] = $urandom_range(0,2)-1;
 	endtask
@@ -205,8 +205,8 @@ module FPUController_tb();
 		int M_RESULT_ADDRESS = 32'h1000_0100;
 		int noise = $random();
 		mapped_data_valid = 0;
-		for(int i = 0; i < $urandom_range(1,10); i++)
-			@(posedge clk)
+		for(int i = 0; i < $urandom_range(2,10); i++)
+			@(posedge clk);
 		case (address_mem)
 			M_STARTSIG_ADDRESS: data_mem = start_sig;
 			M_FILTER_ADDRESS: data_mem = {filter_conf[0],filter_conf[1],filter_conf[2],filter_conf[3]};
@@ -217,6 +217,7 @@ module FPUController_tb();
 			M_RESULT_ADDRESS: data_mem = result_address;
 			default: data_mem = 'x;
 		endcase
+		@(posedge clk);
 		mapped_data_valid = 1;
 		@(posedge clk);
 	endtask
