@@ -62,18 +62,18 @@ module FPUController_tb();
 		@(posedge clk);
 		rst_n = 1'b1;
 
-		////tests thats height fits in one buffer but width is larger
+		//tests thats height fits in one buffer but width is larger
 		//test_with_image_size(160, 5);
 		//test_with_image_size(169, 5);
-		//test_with_image_size(200, 5);
+		test_with_image_size(210, 5);
+		test_with_image_size(200, 5);
 		//test_with_image_size(400, 5);
-		//test_with_image_size(1920, 5);
 
 		////tests that width fit in one buffer but height is larger
 		//test_with_image_size(160, 9);
-		//test_with_image_size(160, 20);
 		//test_with_image_size(160, 1080);
-		test_with_image_size(300, 10);
+		//test_with_image_size(160, 20);
+		//test_with_image_size(300, 10);
 		
 		
 		$display("Errors: %d", errors);
@@ -163,8 +163,10 @@ module FPUController_tb();
 	endtask
 
 	task automatic empty_buffer(bit buffer, int res_address, int size_w, int size_h);
+		$display("from buffer %d  fill starting %d  width %d  height %d", buffer, res_address, size_w, size_h);
 		for(int row = 0; row < size_h; row++)begin
 			for(int col = 0; col < size_w; col++)begin
+				if(res_address + row * (width*3+4) + col == 8190) $display("what");
 				if(buffer) output_memory[res_address + row * (width*3+4) + col] = write_buff1[row][col];	
 				else output_memory[res_address + row * (width*3+4) + col] = write_buff0[row][col];	
 			end
@@ -191,8 +193,8 @@ module FPUController_tb();
 	task automatic set_config_vars(int w, int h);
 		width = w;
 		height = h;
-		start_address = $urandom_range(0,65535);
-		result_address = 0;//$urandom_range(0,65535);
+		start_address = 0;//$urandom_range(0,65535);
+		result_address = 5168;//$urandom_range(0,65535);
 		for(int i = 0; i < 9; i++)
 			filter_conf[i] = $urandom_range(0,2)-1;
 	endtask
