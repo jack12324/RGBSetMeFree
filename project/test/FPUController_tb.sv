@@ -18,7 +18,8 @@ module FPUController_tb();
 	logic [$clog2(MEM_BUFFER_WIDTH)-1:0] write_col_address;
 	logic [$clog2(MEM_BUFFER_WIDTH)-1:0] read_col_address;
 	logic [31:0] address_mem;
-	logic [16:0] write_request_size;
+	logic [16:0] write_request_width;
+	logic [8:0] write_request_height;
 
 	always #5 clk = ~clk; 
 
@@ -61,12 +62,18 @@ module FPUController_tb();
 		@(posedge clk);
 		rst_n = 1'b1;
 
+		////tests thats height fits in one buffer but width is larger
 		//test_with_image_size(160, 5);
 		//test_with_image_size(169, 5);
 		//test_with_image_size(200, 5);
 		//test_with_image_size(400, 5);
-		//test_with_image_size(2048, 5);
-		test_with_image_size(160, 8);
+		//test_with_image_size(1920, 5);
+
+		////tests that width fit in one buffer but height is larger
+		//test_with_image_size(160, 9);
+		//test_with_image_size(160, 20);
+		//test_with_image_size(160, 1080);
+		test_with_image_size(300, 10);
 		
 		
 		$display("Errors: %d", errors);
@@ -129,7 +136,7 @@ module FPUController_tb();
 		@(posedge clk)
 		if(request_read && request_write) begin
 			making_request = 1;
-			empty_buffer(!rd_buffer_sel, write_address, write_request_size);
+			empty_buffer(!rd_buffer_sel, write_address, write_request_width, write_request_height);
 			fill_buffer(!rd_buffer_sel, read_address);
 			for(int stall_cyc = 0; stall_cyc < $urandom_range(1,100); stall_cyc++) @(posedge clk);
 			making_request = 0;
@@ -140,7 +147,7 @@ module FPUController_tb();
 			making_request = 0;
 		end else if (!request_read && request_write)begin
 			making_request = 1;
-			empty_buffer(!rd_buffer_sel, write_address, write_request_size);
+			empty_buffer(!rd_buffer_sel, write_address, write_request_width, write_request_height);
 			for(int stall_cyc = 0; stall_cyc < $urandom_range(1,100); stall_cyc++) @(posedge clk);
 			making_request = 0;
 		end
@@ -155,9 +162,9 @@ module FPUController_tb();
 		end
 	endtask
 
-	task automatic empty_buffer(bit buffer, int res_address, int size);
-		for(int row = 0; row < COL_WIDTH; row++)begin
-			for(int col = 0; col < size; col++)begin
+	task automatic empty_buffer(bit buffer, int res_address, int size_w, int size_h);
+		for(int row = 0; row < size_h; row++)begin
+			for(int col = 0; col < size_w; col++)begin
 				if(buffer) output_memory[res_address + row * (width*3+4) + col] = write_buff1[row][col];	
 				else output_memory[res_address + row * (width*3+4) + col] = write_buff0[row][col];	
 			end
