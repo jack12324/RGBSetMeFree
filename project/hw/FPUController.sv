@@ -65,7 +65,7 @@ module FPUController #(COL_WIDTH = 10, MEM_BUFFER_WIDTH = 512, M_STARTSIG_ADDRES
 			NEW_ROW: if(read_col_address == 4) 								next = OPERATE;
 				 	else										next = NEW_ROW;				//@loopback
 
-			OPERATE: if(read_col_address >= remaining_width)						next = UPDATE_HEIGHT;
+			OPERATE: if(read_col_address >= remaining_width)						next = ROW_END;
 				else if(read_col_address == MEM_BUFFER_WIDTH-1)						next = CHUNK_END;
 				else											next = OPERATE;				//@loopback
 
@@ -246,6 +246,7 @@ module FPUController #(COL_WIDTH = 10, MEM_BUFFER_WIDTH = 512, M_STARTSIG_ADDRES
 					request_read <= 1;
 					request_write <= 1;
 					set_remaining_width <= 1;
+					height_dec <= 1;
 				end
 				UPDATE_WRITE: begin
 					base_write_address <= base_write_address + ((conf.image_width * 3) + 4) * (COL_WIDTH-2);
@@ -274,7 +275,7 @@ module FPUController #(COL_WIDTH = 10, MEM_BUFFER_WIDTH = 512, M_STARTSIG_ADDRES
 	end
 	always_ff @(posedge clk, negedge rst_n) begin
 		if(!rst_n) remaining_height <= 0;
-		else if (set_remaining_height) remaining_height <= conf.image_height + COL_WIDTH;
+		else if (set_remaining_height) remaining_height <= conf.image_height + 2; 
 		else if (height_dec) remaining_height -= (COL_WIDTH - 2);
 	end
 	always_ff @(posedge clk, negedge rst_n) begin
