@@ -9,3 +9,6 @@ FilterMAC.sv
 FPUBuffers.sv
 ccip_std_afu.sv
 ccip_interface_reg.sv
+ReadBank.sv
+WriteBank.sv
+Single_RAM.sv
