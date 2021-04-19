@@ -95,11 +95,11 @@ module afu
 	.wr_buffer_sel(tx.c1.data[3]), 
 	.wr_en_wr_buffer(tx.c1.data[4]), 
 	.address_mem(tx.c1.data[127:96]), 
-	.stall(0), 
+	.stall(1'b0), 
 	.data_mem(tx.c2.data[63:32]), 
 	.making_request(rx.c0.data[8]), 
 	.write_request_width(tx.c2.data[16:0]), 
-	.write_request_height(tx.c2.data[24:17]));
+	.write_request_height(tx.c2.data[25:17]));
 
    FPUMAC #(.COL_WIDTH(COL_WIDTH)) mac(.clk(clk), .rst_n(!rst), .*);
    FPUBuffers #(.COL_WIDTH(COL_WIDTH)) buff(.*, .rst_n(!rst));

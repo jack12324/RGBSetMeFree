@@ -19,7 +19,7 @@ module FPUController #(COL_WIDTH = 10, MEM_BUFFER_WIDTH = 512, M_STARTSIG_ADDRES
 	FPUConfig_if conf();
 	FPUControllerConfigurationLoader ConfLoader(.*, .config_if(conf.Loader));
 
-	logic [17:0] total_width, remaining_width;
+	logic [18:0] total_width, remaining_width;
 	logic [16:0] remaining_height;
 	logic [1:0] update_write_address;
 
@@ -115,7 +115,6 @@ module FPUController #(COL_WIDTH = 10, MEM_BUFFER_WIDTH = 512, M_STARTSIG_ADDRES
 			wr_buffer_sel <= 0;
 			wr_en_wr_buffer <= 0;
 			read_address <= '0;
-			write_address <= '0;
 			address_mem <= '0;
 
 			conf.load_config_start <= 0;
