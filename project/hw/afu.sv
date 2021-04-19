@@ -108,7 +108,7 @@ module afu
    //this is not correct, just trying to hook something up to test synthesis
    generate
 	for(i = 0; i < COL_WIDTH; i++) begin
-		col_new[i] = rx.c0.data[7:0]; 
+		assign col_new[i] = rx.c0.data[7:0]; 
 	end
    endgenerate
 endmodule
