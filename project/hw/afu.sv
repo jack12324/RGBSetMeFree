@@ -88,15 +88,15 @@ module afu
 	.request_read(tx.c1.data[0]), 
 	.read_address(tx.c1.data[63:32]), 
 	.request_write(tx.c1.data[1]), 
-	.write_address(tx.c1.data[95:64], 
+	.write_address(tx.c1.data[95:64]), 
 	.write_col_address(write_col_address), 
 	.read_col_address(read_col_address), 
-	.rd_buffer_sel(tx.c1.data[2], 
-	.wr_buffer_sel(tx.c1.data[3], 
-	.wr_en_wr_buffer(tx.c1.data[4], 
-	.address_mem(tx.c1.data[127:96], 
+	.rd_buffer_sel(tx.c1.data[2]), 
+	.wr_buffer_sel(tx.c1.data[3]), 
+	.wr_en_wr_buffer(tx.c1.data[4]), 
+	.address_mem(tx.c1.data[127:96]), 
 	.stall(0), 
-	.data_mem(tx.c2.data[63:32], 
+	.data_mem(tx.c2.data[63:32]), 
 	.making_request(rx.c0.data[8]), 
 	.write_request_width(tx.c2.data[16:0]), 
 	.write_request_height(tx.c2.data[24:17]));
@@ -107,11 +107,8 @@ module afu
    genvar i;
    //this is not correct, just trying to hook something up to test synthesis
    generate
-	for(i = 0; i < COL_WIDTH; i++)begin
+	for(i = 0; i < COL_WIDTH; i++) begin
 		col_new[i] = rx.c0.data[7:0]; 
 	end
    endgenerate
-
-   
-
 endmodule
