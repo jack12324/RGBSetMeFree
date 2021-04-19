@@ -1,0 +1,7 @@
+syn_test.sv
+FPUController.sv
+FPUControllerConfigurationLoader.sv
+FPUConfig_if.sv
+FPUMAC.sv
+FilterMAC.sv
+FPUBuffers.sv
