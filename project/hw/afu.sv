@@ -104,6 +104,13 @@ module afu
    FPUMAC #(.COL_WIDTH(COL_WIDTH)) mac(.clk(clk), .rst_n(!rst), .*);
    FPUBuffers #(.COL_WIDTH(COL_WIDTH)) buff(.*, .rst_n(!rst));
 
+   ReadBank #(.BANK_WIDTH(COL_WIDTH), .MEM_BUFFER_DEPTH_BYTES(MEM_BUFFER_WIDTH))r1(.rst_n(!rst), .clk(clk));
+   ReadBank #(.BANK_WIDTH(COL_WIDTH), .MEM_BUFFER_DEPTH_BYTES(MEM_BUFFER_WIDTH))r2(.rst_n(!rst), .clk(clk));
+
+   WriteBank #(.BANK_WIDTH(COL_WIDTH), .MEM_BUFFER_DEPTH_BYTES(MEM_BUFFER_WIDTH))w1(.rst_n(!rst), .clk(clk));
+   WriteBank #(.BANK_WIDTH(COL_WIDTH), .MEM_BUFFER_DEPTH_BYTES(MEM_BUFFER_WIDTH))w2(.rst_n(!rst), .clk(clk));
+
+
    genvar i;
    //this is not correct, just trying to hook something up to test synthesis
    generate
