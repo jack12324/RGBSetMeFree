@@ -1,7 +1,10 @@
-syn_test.sv
+afu.json
+
+afu.sv
 FPUController.sv
 FPUControllerConfigurationLoader.sv
 FPUConfig_if.sv
 FPUMAC.sv
 FilterMAC.sv
 FPUBuffers.sv
+ccip_std_afu.sv

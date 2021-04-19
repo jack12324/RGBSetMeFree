@@ -2,7 +2,7 @@
 
 module FPUController_tb();
 	parameter COL_WIDTH = 10;
-	parameter MEM_BUFFER_WIDTH = 256;
+	parameter MEM_BUFFER_WIDTH = 512;
 
 	// Clock
 	logic clk;
