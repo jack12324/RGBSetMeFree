@@ -62,21 +62,23 @@ module FPUController_tb();
 		@(posedge clk);
 		rst_n = 1'b1;
 
+		//test fits completely in one buffer
+		//test_with_image_size(160, 5);
+
 		//tests thats height fits in one buffer but width is larger
-		test_with_image_size(160, 5);
-		test_with_image_size(169, 5);
+		//test_with_image_size(169, 5);
 		test_with_image_size(210, 5);
-		test_with_image_size(200, 5);
-		test_with_image_size(400, 5);
+		//test_with_image_size(200, 5);
+		//test_with_image_size(400, 5);
 
 		//tests that width fit in one buffer but height is larger
-		test_with_image_size(160, 9);
-		test_with_image_size(160, 1080);
-		test_with_image_size(160, 20);
+		//test_with_image_size(160, 9);
+		//test_with_image_size(160, 200);
+		//test_with_image_size(160, 20);
 
-		//tests that fill both ways
-		test_with_image_size(300, 10);
-		test_with_image_size(1000, 600);
+		////tests that fill both ways
+		//test_with_image_size(300, 10);
+		//test_with_image_size(1000, 600);
 		
 		
 		$display("Errors: %d", errors);
@@ -141,17 +143,17 @@ module FPUController_tb();
 			making_request = 1;
 			empty_buffer(!rd_buffer_sel, write_address, write_request_width, write_request_height);
 			fill_buffer(!rd_buffer_sel, read_address);
-			for(int stall_cyc = 0; stall_cyc < $urandom_range(1,100); stall_cyc++) @(posedge clk);
+			for(int stall_cyc = 0; stall_cyc < $urandom_range(600,1000); stall_cyc++) @(posedge clk);
 			making_request = 0;
 		end else if (request_read && !request_write)begin
 			making_request = 1;
 			fill_buffer(!rd_buffer_sel, read_address);
-			for(int stall_cyc = 0; stall_cyc < $urandom_range(1,100); stall_cyc++) @(posedge clk);
+			for(int stall_cyc = 0; stall_cyc < $urandom_range(600,1000); stall_cyc++) @(posedge clk);
 			making_request = 0;
 		end else if (!request_read && request_write)begin
 			making_request = 1;
 			empty_buffer(!rd_buffer_sel, write_address, write_request_width, write_request_height);
-			for(int stall_cyc = 0; stall_cyc < $urandom_range(1,100); stall_cyc++) @(posedge clk);
+			for(int stall_cyc = 0; stall_cyc < $urandom_range(600,1000); stall_cyc++) @(posedge clk);
 			making_request = 0;
 		end
 	endtask

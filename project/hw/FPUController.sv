@@ -13,7 +13,7 @@ module FPUController #(COL_WIDTH = 10, MEM_BUFFER_WIDTH = 512, M_STARTSIG_ADDRES
 	output logic [16:0] write_request_width;
 	output logic [8:0] write_request_height;
 
-	typedef enum {IDLE, LOAD_CONFIG, FILL_BUFF1, ADDR_ALL, ADDR_CHUNK, FILL_BUFF2, NEW_ROW, OPERATE, CHUNK_END, UPDATE_BASE, UPDATE_HEIGHT, UPDATE_WRITE, UPDATE_READ, ROW_END, ROW_DONE_WAIT, CHUNK_DONE, FINAL_REQUEST, WAIT_FINAL, DONE, XXX} state_e;
+	typedef enum {IDLE, LOAD_CONFIG, FILL_BUFF1, ADDR_ALL, ADDR_CHUNK, FILL_BUFF2, NEW_ROW, OPERATE, CHUNK_END, UPDATE_BASE, UPDATE_HEIGHT, UPDATE_WRITE, UPDATE_READ, ROW_END, ROW_DONE_WAIT, CHUNK_DONE, PRE_FINAL, FINAL_REQUEST, WAIT_FINAL, DONE, XXX} state_e;
 	state_e state, next;
 
 	FPUConfig_if conf();
@@ -84,13 +84,15 @@ module FPUController #(COL_WIDTH = 10, MEM_BUFFER_WIDTH = 512, M_STARTSIG_ADDRES
 	
 			ROW_END: if(write_col_address >= remaining_width-2)begin
 					if(remaining_height > COL_WIDTH)						next = UPDATE_READ;
-					else										next = FINAL_REQUEST;
+					else										next = PRE_FINAL;
 				end else										next = ROW_END;				//@loopback
 
 			ROW_DONE_WAIT: if(!making_request)								next = UPDATE_WRITE;
 				else											next = ROW_DONE_WAIT;			//@loopback
 	
 			UPDATE_WRITE:											next = NEW_ROW;
+
+			PRE_FINAL:											next = FINAL_REQUEST;
 
 			FINAL_REQUEST:	if(!making_request)								next = WAIT_FINAL;
 				else											next = FINAL_REQUEST;			//@loopback
@@ -245,16 +247,18 @@ module FPUController #(COL_WIDTH = 10, MEM_BUFFER_WIDTH = 512, M_STARTSIG_ADDRES
 					request_read <= 1;
 					request_write <= 1;
 					set_remaining_width <= 1;
-					height_dec <= 1;
 				end
 				UPDATE_WRITE: begin
 					base_write_address <= base_write_address + ((conf.image_width * 3) + 4) * (COL_WIDTH-2);
 					update_write_address <= 3;
 					read_rst <= 1;
 					write_rst <= 1;
+					height_dec <= 1;
+				end
+				PRE_FINAL: begin
+					rd_buffer_sel <= !rd_buffer_sel;
 				end
 				FINAL_REQUEST: begin
-					rd_buffer_sel <= !rd_buffer_sel;
 					request_write <= 1;
 				end
 				WAIT_FINAL: begin end
