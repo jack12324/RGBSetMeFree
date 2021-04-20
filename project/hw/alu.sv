@@ -8,8 +8,6 @@ module alu (A, B, Op, Out);
     input invB;
     input sign;
     output [15:0] Out;
-    // output Cout;
-    output eq, ne, lt, geq;
 
     always_comb begin
         casex (Op)
