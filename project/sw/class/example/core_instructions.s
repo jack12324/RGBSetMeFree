@@ -4,23 +4,25 @@
 ; instruction in the MIPS core instruction set
 
 ; Adds and Subtractions
-addi $s0, $s0, 100 ; $s0 = 100
-addiu $s1, $s0, 200 ; $s1 = 300
-add $t0, $s0, $s1 ; $to = $s0 + $s1 (400)
-addu $t9, $s1, $s0 ; $t9 = 400
-sub $at, $s1, $s0 ; $at = 200
-subu $a3, $at, $s0 ; $a3 = 100
+addi $r1, $r1, 100 ; $r1 = 100
+addi $r1, $r1, 200 ; $r1 = 300
+addi $r9, $R0, 1 ; $r9 = 1
+add $r2, $R0, $r1 ; $r2 = 0 + $r1 (300)
+add $r2, $r1, $R0 ; $r2 = 300
+sub $r3, $r2, 50 ;
+subi $r3, 50, $r2 ;
 
 ; Ors and Ands (Basic Logic)
-ori $v0, $zero, 777 ; $v0 = 777
-or $v1, $v0, $zero ; $v1 = 777
-nor $a0 $a1, $a2 ; $a0 = -1 (signed)
-andi $a1, $a0, 2 ; $a1 = 2
-and $a2, $a0, $v1 ; $a2 = 777
+or $r1, $R0, $r1 ; $r1 = 300
+or $r2, $R0, $R0 ; $r2 = 0
+xor $r3, $r1, $r2 ; $r3 = 300
+and $r4, $r2, $r1 ; $r4 = 0
+and $r4, $r1, $r3 ; $r4 = 300
+neg $r5, $r4 ; $r5 = -300
 
 ; Shifts
-sll $s1, $a1, 1 ; $s1 = 4
-srl $s2, $a1, 1 ; $s2 = 1
+sll $r2, $r9, ? ; $r2 = 1<<?
+srl $r4, $a1, 1 ; $s2 = 1
 
 ; Stores
 sb $a0, 1024($zero)
