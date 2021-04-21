@@ -1,26 +1,46 @@
-module Branch_Jump(clk, rst_n, branch, jump, pc, pc_2, pc_immi, PC);
+module Branch_Jump(clk, rst_n,
+                    branch, jump, op_code,
+                    FL,
+                    pc_4, pc_immi, reg_a, immi,
+                    PC, LR_write, LR_write_val);
 
     input clk, rst_n;
     input branch, jump;
-    input [31:0] pc, pc_2, pc_immi;
+    input [1:0] FL;
+    input [31:0] pc, pc_4, pc_immi, reg_a, immi;
 
-    output [31:0] PC;
+    output [31:0] PC, LR_write_val;
+    output LR_write;
 
-    logic [31:0] readN_Z;
-    // logic [31:0] readZ;
+    logic [31:0] newPC;
+    logic N, Z;
 
-    regFile_bypass i_regFile_bypass (
-        .clk         (clk         ),
-        .rst_n       (rst_n       ),
-        .read1RegSel (read1RegSel ),    // set to FL
-        .read2RegSel (read2RegSel ),    // set to FL
-        .reg_wrt_sel (5'd0        ),
-        .reg_wrt_data(32'd0       ),
-        .reg_wrt_en  (1'b0        ),
-        .read1Data   (readN_Z     ),
-        .read2Data   (            )
-    );
+    assign N = FL[1];
+    assign Z = FL[0];
 
-    PC =
+    assign PC = (branch && ~jump) ? ((op_code == 2'd0 && Z == 1) ? (pc_4 + reg_a)
+                            :  (op_code == 2'd1 && Z == 0) ? (pc_4 + reg_a)
+                                : (op_code == 2'd2 && N == 1) ? (pc_4 + reg_a)
+                                    : (op_code == 2'd3 && N == 0) ? (pc_4 + reg_a) : pc_4)
+                : (jump ? ((op_code == 2'd0 || op_code == 2'd2) ? (immi << 2)
+                            : ((op_code == 2'd1) ? (reg_a << 2)
+                                : pc_4))  : pc_4);
 
+    assign LR_write = (jump && (op_code == 2'd0 || op_code == 2'd1 || op_code == 2'd2)) ? 1'b1 : 1'b0;
 endmodule
+
+
+// if(branch){
+//     if(op_code == 2'd0 && Z == 1){
+//         newPC = pc_4 + reg_a;
+//     }
+//     else if (op_code == 2'd1 && Z == 0){
+//         newPC = pc_4 + reg_a;
+//     }
+//     else if (op_code == 2'd2 && N == 1){
+//         newPC = pc_4 + reg_a;
+//     } else if (op_code == 2'd3 && N == 0){
+//         newPC = pc_4 + reg_a;
+//     } else
+//         newPC = pc_4;
+// }

@@ -5,6 +5,8 @@ module mem_system
 	(
 	//Memory System does not need reset
 	input clk,
+	input rst_n,
+	input en,
 	input wr, 
 	input [31 : 0] addr, 
 	input [31 : 0] data_in, 
