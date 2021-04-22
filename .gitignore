@@ -5,3 +5,6 @@
 *.swm
 synth
 *.jack
+*.mti
+*.mpf
+*transcript
