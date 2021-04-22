@@ -61,24 +61,26 @@ module FPUController_tb();
 
 		@(posedge clk);
 		rst_n = 1'b1;
+	
+		test_from_file(225, 225);	
 
 		//test fits completely in one buffer
-		test_with_image_size(160, 5);
+		//test_with_image_size(160, 5);
 
-		//tests thats height fits in one buffer but width is larger
-		test_with_image_size(169, 5);
-		test_with_image_size(210, 5);
-		test_with_image_size(200, 5);
-		test_with_image_size(400, 5);
+		////tests thats height fits in one buffer but width is larger
+		//test_with_image_size(169, 5);
+		//test_with_image_size(210, 5);
+		//test_with_image_size(200, 5);
+		//test_with_image_size(400, 5);
 
-		//tests that width fit in one buffer but height is larger
-		test_with_image_size(160, 9);
-		test_with_image_size(160, 200);
-		test_with_image_size(160, 20);
+		////tests that width fit in one buffer but height is larger
+		//test_with_image_size(160, 9);
+		//test_with_image_size(160, 200);
+		//test_with_image_size(160, 20);
 
-		//tests that fill both ways
-		test_with_image_size(300, 10);
-		test_with_image_size(1000, 600);
+		////tests that fill both ways
+		//test_with_image_size(300, 10);
+		//test_with_image_size(1000, 600);
 		
 		
 		$display("Errors: %d", errors);
@@ -93,6 +95,54 @@ module FPUController_tb();
 		$stop;
 
 	end
+	
+	task automatic test_from_file(int width, int height);
+		set_config_vars(width, height);	
+		for(int i = 0; i < 9; i++)
+			filter_conf[i] = -1;
+		filter_conf[4] = 8;
+		load_and_init_memories();
+
+		@(posedge clk);
+		start_sig = 1'b1;
+		
+		@(posedge controller.conf.load_config_done);	
+		start_sig = 1'b0;
+		check_config_vars();
+		
+		@(posedge done);
+		compare_memories();
+		@(posedge clk);
+		write_result(width, height);
+
+	endtask
+
+	task automatic write_result(int width, int height);
+		integer outfile;
+		outfile = $fopen("output.txt", "w");
+		for(int i = result_address; i < result_address + height * ((width*3)+4); i++)begin
+			$fdisplay(outfile, "%d",output_memory[i]);
+		end
+		$fclose(outfile);
+	endtask
+	
+	task automatic load_and_init_memories();
+		int input_row_width = (width+2)*3;
+		int output_row_width = (width)*3 + 4;
+
+		$readmemh("test.txt", input_memory, start_address);
+
+		for (int i = 0; i < height; i++)begin
+			for (int j = 0; j < input_row_width - 2; j++)begin
+				int input_base = start_address + (i * input_row_width) + j;
+				int output_base = result_address + (i * output_row_width) + j;
+				ref_output_memory[output_base] = calc_MAC({<<8{	input_memory[input_base], input_memory[input_base +1], input_memory[input_base + 2],
+									 	input_memory[input_row_width + input_base], input_memory[input_row_width + input_base + 1], input_memory[input_row_width + input_base + 2],
+									 	input_memory[2*input_row_width + input_base], input_memory[2*input_row_width + input_base + 1], input_memory[2*input_row_width + input_base + 2]}}, filter_conf);
+			end	
+		end
+	endtask
+
 	
 	task automatic test_with_image_size(int width, int height);
 		set_config_vars(width, height);	
