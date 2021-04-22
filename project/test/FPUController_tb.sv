@@ -11,15 +11,11 @@ module FPUController_tb();
 	logic stall, mapped_data_valid, making_request;
 	logic [31:0] data_mem;
 
-	logic shift_cols, done, request_write, request_read, rd_buffer_sel, wr_buffer_sel, wr_en_wr_buffer;
+	logic shift_cols, done, rd_buffer_sel, wr_buffer_sel, wr_en_wr_buffer;
 	logic signed [7:0] filter [8:0];
-	logic [31:0] read_address;
-	logic [31:0] write_address;
 	logic [$clog2(MEM_BUFFER_WIDTH)-1:0] write_col_address;
 	logic [$clog2(MEM_BUFFER_WIDTH)-1:0] read_col_address;
 	logic [31:0] address_mem;
-	logic [16:0] write_request_width;
-	logic [8:0] write_request_height;
 
 	always #5 clk = ~clk; 
 
@@ -44,7 +40,9 @@ module FPUController_tb();
 	logic [7:0] col2   [COL_WIDTH - 1:0];
 	logic [7:0] result_pixels [COL_WIDTH-3:0];
 
-	FPUController #(.MEM_BUFFER_WIDTH(MEM_BUFFER_WIDTH), .COL_WIDTH(COL_WIDTH))controller(.*);
+	FPUCntrlReq_if req_if();
+
+	FPUController #(.MEM_BUFFER_WIDTH(MEM_BUFFER_WIDTH), .COL_WIDTH(COL_WIDTH))controller(.*, .req_if(req_if.CONTROLLER));
 
 	FPUMAC #(.COL_WIDTH(COL_WIDTH)) mac(.*);
 	FPUBuffers #(.COL_WIDTH(COL_WIDTH)) buff(.*);
@@ -62,25 +60,25 @@ module FPUController_tb();
 		@(posedge clk);
 		rst_n = 1'b1;
 	
-		test_from_file(225, 225);	
+		//test_from_file(225, 225);	
 
 		//test fits completely in one buffer
-		//test_with_image_size(160, 5);
+		test_with_image_size(160, 5);
 
-		////tests thats height fits in one buffer but width is larger
-		//test_with_image_size(169, 5);
-		//test_with_image_size(210, 5);
-		//test_with_image_size(200, 5);
-		//test_with_image_size(400, 5);
+		//tests thats height fits in one buffer but width is larger
+		test_with_image_size(169, 5);
+		test_with_image_size(210, 5);
+		test_with_image_size(200, 5);
+		test_with_image_size(400, 5);
 
-		////tests that width fit in one buffer but height is larger
-		//test_with_image_size(160, 9);
-		//test_with_image_size(160, 200);
-		//test_with_image_size(160, 20);
+		//tests that width fit in one buffer but height is larger
+		test_with_image_size(160, 9);
+		test_with_image_size(160, 200);
+		test_with_image_size(160, 20);
 
-		////tests that fill both ways
-		//test_with_image_size(300, 10);
-		//test_with_image_size(1000, 600);
+		//tests that fill both ways
+		test_with_image_size(300, 10);
+		test_with_image_size(1000, 600);
 		
 		
 		$display("Errors: %d", errors);
@@ -191,20 +189,20 @@ module FPUController_tb();
 		int max_stall = 1000;
 		int min_stall = 10;
 		@(posedge clk)
-		if(request_read && request_write) begin
+		if(req_if.read && req_if.write) begin
 			making_request = 1;
-			empty_buffer(!rd_buffer_sel, write_address, write_request_width, write_request_height);
-			fill_buffer(!rd_buffer_sel, read_address);
+			empty_buffer(!rd_buffer_sel, req_if.write_address, req_if.width, req_if.height);
+			fill_buffer(!rd_buffer_sel, req_if.read_address);
 			for(int stall_cyc = 0; stall_cyc < $urandom_range(min_stall,max_stall); stall_cyc++) @(posedge clk);
 			making_request = 0;
-		end else if (request_read && !request_write)begin
+		end else if (req_if.read && !req_if.write)begin
 			making_request = 1;
-			fill_buffer(!rd_buffer_sel, read_address);
+			fill_buffer(!rd_buffer_sel, req_if.read_address);
 			for(int stall_cyc = 0; stall_cyc < $urandom_range(min_stall,max_stall); stall_cyc++) @(posedge clk);
 			making_request = 0;
-		end else if (!request_read && request_write)begin
+		end else if (!req_if.read && req_if.write)begin
 			making_request = 1;
-			empty_buffer(!rd_buffer_sel, write_address, write_request_width, write_request_height);
+			empty_buffer(!rd_buffer_sel, req_if.write_address, req_if.width, req_if.height);
 			for(int stall_cyc = 0; stall_cyc < $urandom_range(min_stall,max_stall); stall_cyc++) @(posedge clk);
 			making_request = 0;
 		end

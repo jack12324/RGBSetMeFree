@@ -1,17 +1,14 @@
-module FPUController #(COL_WIDTH = 10, MEM_BUFFER_WIDTH = 512, M_STARTSIG_ADDRESS = 32'h1000_0120, M_FILTER_ADDRESS = 32'h1000_0040, M_DIMS_ADDRESS = 32'h1000_0000, M_START_ADDRESS = 32'h1000_0020, M_RESULT_ADDRESS = 32'h1000_0100)(clk, rst_n, mapped_data_valid, shift_cols, filter, done, request_read, read_address, request_write, write_address, write_col_address, read_col_address, rd_buffer_sel, wr_buffer_sel, wr_en_wr_buffer, address_mem, stall, data_mem, making_request, write_request_width, write_request_height);
+module FPUController #(COL_WIDTH = 10, MEM_BUFFER_WIDTH = 512, M_STARTSIG_ADDRESS = 32'h1000_0120, M_FILTER_ADDRESS = 32'h1000_0040, M_DIMS_ADDRESS = 32'h1000_0000, M_START_ADDRESS = 32'h1000_0020, M_RESULT_ADDRESS = 32'h1000_0100)(clk, rst_n, mapped_data_valid, shift_cols, filter, done, write_col_address, read_col_address, rd_buffer_sel, wr_buffer_sel, wr_en_wr_buffer, address_mem, stall, data_mem, making_request, req_if);
 
 	input clk, rst_n, stall, mapped_data_valid, making_request;
 	input [31:0] data_mem;
 
-	output logic shift_cols, done, request_write, request_read, rd_buffer_sel, wr_buffer_sel, wr_en_wr_buffer;
+	output logic shift_cols, done, rd_buffer_sel, wr_buffer_sel, wr_en_wr_buffer;
 	output signed [7:0] filter [8:0];
-	output logic [31:0] read_address;
-	output logic [31:0] write_address;
 	output logic [$clog2(MEM_BUFFER_WIDTH)-1:0] write_col_address;
 	output logic [$clog2(MEM_BUFFER_WIDTH)-1:0] read_col_address;
 	output logic [31:0] address_mem;
-	output logic [16:0] write_request_width;
-	output logic [8:0] write_request_height;
+	FPUCntrlReq_if req_if;
 
 	typedef enum {IDLE, LOAD_CONFIG, FILL_BUFF1, ADDR_ALL, ADDR_CHUNK, FILL_BUFF2, NEW_ROW, OPERATE, PRE_PAUSE, PRE_CHUNK_END1, PRE_CHUNK_END2, PRE_CHUNK_END3, CHUNK_END, PAUSE_CHUNK, UPDATE_BASE, UPDATE_HEIGHT, UPDATE_WRITE, UPDATE_READ, ROW_END, ROW_DONE_WAIT, CHUNK_DONE, PRE_FINAL, FINAL_REQUEST, WAIT_FINAL, DONE, XXX} state_e;
 	state_e state, next;
@@ -31,8 +28,8 @@ module FPUController #(COL_WIDTH = 10, MEM_BUFFER_WIDTH = 512, M_STARTSIG_ADDRES
 	assign filter = conf.filter;
 
 	assign total_width = (conf.image_width + 2)*3;
-	assign write_request_width = MEM_BUFFER_WIDTH > remaining_width - 2 ? remaining_width - 2: MEM_BUFFER_WIDTH;
-	assign write_request_height = COL_WIDTH > remaining_height ? remaining_height - 2: COL_WIDTH - 2;
+	assign req_if.width = MEM_BUFFER_WIDTH > remaining_width - 2 ? remaining_width - 2: MEM_BUFFER_WIDTH;
+	assign req_if.height = COL_WIDTH > remaining_height ? remaining_height - 2: COL_WIDTH - 2;
 
 	//track address of current row start
 	logic [31:0] base_read_address;
@@ -121,12 +118,12 @@ module FPUController #(COL_WIDTH = 10, MEM_BUFFER_WIDTH = 512, M_STARTSIG_ADDRES
 		if(!rst_n) begin
 			shift_cols <= 0;
 			done <=0;
-			request_write <= 0;
-			request_read <= 0;
+			req_if.write <= 0;
+			req_if.read <= 0;
 			rd_buffer_sel <= 0;
 			wr_buffer_sel <= 0;
 			wr_en_wr_buffer <= 0;
-			read_address <= '0;
+			req_if.read_address <= '0;
 			address_mem <= '0;
 
 			conf.load_config_start <= 0;
@@ -147,12 +144,12 @@ module FPUController #(COL_WIDTH = 10, MEM_BUFFER_WIDTH = 512, M_STARTSIG_ADDRES
 		else begin
 			shift_cols <= 0;
 			done <=0;
-			request_write <= 0;
-			request_read <= 0;
+			req_if.write <= 0;
+			req_if.read <= 0;
 			rd_buffer_sel <= rd_buffer_sel;
 			wr_buffer_sel <= wr_buffer_sel;
 			wr_en_wr_buffer <= 0;
-			read_address <= read_address;
+			req_if.read_address <= req_if.read_address;
 			address_mem <= '0;
 		
 			conf.load_config_start <= 0;
@@ -179,8 +176,8 @@ module FPUController #(COL_WIDTH = 10, MEM_BUFFER_WIDTH = 512, M_STARTSIG_ADDRES
 				FILL_BUFF1: begin
 					set_remaining_height <= 1;
 					set_remaining_width <= 1;
-					request_read <= 1;
-					read_address <= conf.start_address;
+					req_if.read <= 1;
+					req_if.read_address <= conf.start_address;
 					base_read_address <= conf.start_address;
 					base_write_address <= conf.result_address;
 					update_write_address <= 1;
@@ -188,15 +185,15 @@ module FPUController #(COL_WIDTH = 10, MEM_BUFFER_WIDTH = 512, M_STARTSIG_ADDRES
 					wr_buffer_sel <= 0; 
 				end
 				ADDR_ALL: begin
-					read_address <= read_address + MEM_BUFFER_WIDTH;
+					req_if.read_address <= req_if.read_address + MEM_BUFFER_WIDTH;
 				end
 				ADDR_CHUNK: begin
 					base_read_address <= base_read_address + (total_width * (COL_WIDTH-2));
-					read_address <= read_address + (total_width * (COL_WIDTH-2));
+					req_if.read_address <= req_if.read_address + (total_width * (COL_WIDTH-2));
 				end
 
 				FILL_BUFF2:begin
-					request_read <= 1;	
+					req_if.read <= 1;	
 					read_rst <= 1;
 					write_rst <= 1;
 					rd_buffer_sel <= 0; //loads oposite so fills buffer 1
@@ -251,9 +248,9 @@ module FPUController #(COL_WIDTH = 10, MEM_BUFFER_WIDTH = 512, M_STARTSIG_ADDRES
 					read_inc <= 1;
 					write_inc <= 1;
 					wr_en_wr_buffer <= 1;
-					request_read <= 1;
-					request_write <= 1;
-					read_address <= (remaining_width -MEM_BUFFER_WIDTH) < MEM_BUFFER_WIDTH ? base_read_address : read_address + MEM_BUFFER_WIDTH;
+					req_if.read <= 1;
+					req_if.write <= 1;
+					req_if.read_address <= (remaining_width -MEM_BUFFER_WIDTH) < MEM_BUFFER_WIDTH ? base_read_address : req_if.read_address + MEM_BUFFER_WIDTH;
 					update_write_address <= 2;
 					width_dec <= 1;
 				end
@@ -264,7 +261,7 @@ module FPUController #(COL_WIDTH = 10, MEM_BUFFER_WIDTH = 512, M_STARTSIG_ADDRES
 					wr_en_wr_buffer <= 1;
 				end
 				UPDATE_READ: begin
-					read_address <= read_address + (total_width > MEM_BUFFER_WIDTH ? MEM_BUFFER_WIDTH : total_width * (COL_WIDTH - 2));
+					req_if.read_address <= req_if.read_address + (total_width > MEM_BUFFER_WIDTH ? MEM_BUFFER_WIDTH : total_width * (COL_WIDTH - 2));
 					rd_buffer_sel <= !rd_buffer_sel;
 					wr_buffer_sel <= !wr_buffer_sel;
 				end
@@ -276,8 +273,8 @@ module FPUController #(COL_WIDTH = 10, MEM_BUFFER_WIDTH = 512, M_STARTSIG_ADDRES
 					wr_en_wr_buffer <= 1;
 				end 
 				ROW_DONE_WAIT: begin
-					request_read <= 1;
-					request_write <= 1;
+					req_if.read <= 1;
+					req_if.write <= 1;
 				end
 				UPDATE_WRITE: begin
 					base_write_address <= base_write_address + ((conf.image_width * 3) + 4) * (COL_WIDTH-2);
@@ -291,7 +288,7 @@ module FPUController #(COL_WIDTH = 10, MEM_BUFFER_WIDTH = 512, M_STARTSIG_ADDRES
 					rd_buffer_sel <= !rd_buffer_sel;
 				end
 				FINAL_REQUEST: begin
-					request_write <= 1;
+					req_if.write <= 1;
 				end
 				WAIT_FINAL: begin end
 				DONE:	done <= 1;
@@ -321,13 +318,13 @@ module FPUController #(COL_WIDTH = 10, MEM_BUFFER_WIDTH = 512, M_STARTSIG_ADDRES
 		else if (width_dec) remaining_width -= MEM_BUFFER_WIDTH;
 	end
 	always_ff @(posedge clk, negedge rst_n)begin
-		if(!rst_n) write_address <= '0;
+		if(!rst_n) req_if.write_address <= '0;
 		else begin
 			case(update_write_address)
-				0: write_address <= write_address;
-				1: write_address <= conf.result_address;
-				2: write_address <= write_address + MEM_BUFFER_WIDTH;
-				3: write_address <= base_write_address;
+				0: req_if.write_address <= req_if.write_address;
+				1: req_if.write_address <= conf.result_address;
+				2: req_if.write_address <= req_if.write_address + MEM_BUFFER_WIDTH;
+				3: req_if.write_address <= base_write_address;
 			endcase
 		end
 	end
