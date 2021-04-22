@@ -1,5 +1,5 @@
 module ReadBank_tb();
-	parameter BANK_WIDTH = 8;
+	parameter BANK_WIDTH = 10;
 	parameter MEM_DEPTH = 512;
 
 	logic clk, wr, rst_n;

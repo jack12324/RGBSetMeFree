@@ -1,5 +1,5 @@
 module WriteBank_tb();
-	parameter BANK_WIDTH = 10;
+	parameter BANK_WIDTH = 8;
 	parameter MEM_DEPTH = 512;
 	logic clk, wr, rst_n;
 	logic [7:0] data_in [BANK_WIDTH-1: 0]; 

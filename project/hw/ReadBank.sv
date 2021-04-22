@@ -1,4 +1,4 @@
-module ReadBank #(BANK_WIDTH = 8, MEM_BUFFER_DEPTH_BYTES = 512)(wr, clk, rst_n, data_in, write_sel, address, data_out);
+module ReadBank #(BANK_WIDTH = 10, MEM_BUFFER_DEPTH_BYTES = 512)(wr, clk, rst_n, data_in, write_sel, address, data_out);
 	input clk, wr, rst_n;
 	input [63:0] data_in; 
 	input [$clog2(BANK_WIDTH)-1:0] write_sel;
@@ -33,7 +33,7 @@ module ReadBank #(BANK_WIDTH = 8, MEM_BUFFER_DEPTH_BYTES = 512)(wr, clk, rst_n, 
 		end	
 	end
 
-	always_ff @(posedge clk)begin
+	always_ff @(posedge clk, negedge rst_n)begin
 		if(!rst_n) byte_sel = '0;
 		else byte_sel <= address[2:0];
 	end

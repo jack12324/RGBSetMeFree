@@ -1,4 +1,4 @@
-module WriteBank #(BANK_WIDTH = 10, MEM_BUFFER_DEPTH_BYTES = 512)(wr, clk, rst_n, data_in, read_sel, address, data_out);
+module WriteBank #(BANK_WIDTH = 8, MEM_BUFFER_DEPTH_BYTES = 512)(wr, clk, rst_n, data_in, read_sel, address, data_out);
 	input clk, wr, rst_n;
 	input [7:0] data_in [BANK_WIDTH-1: 0]; 
 	input [$clog2(BANK_WIDTH)-1:0] read_sel;
@@ -18,7 +18,7 @@ module WriteBank #(BANK_WIDTH = 10, MEM_BUFFER_DEPTH_BYTES = 512)(wr, clk, rst_n
 
 	assign data_out = data_out_all[last_read_sel];
 
-	always_ff @(posedge clk)begin
+	always_ff @(posedge clk, negedge rst_n)begin
 		if(!rst_n) last_read_sel = '0;
 		else last_read_sel <= read_sel;
 	end
