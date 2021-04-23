@@ -9,5 +9,5 @@ interface FPUDRAM_if();
 	logic [511:0] read_data;	//data from DRAM controller, dram_ready signifies valid data
 	logic [7:0] request_size;	//number of cache lines for a request
 	
-	modport FPU (input dram_ready, request_done, read_data output request, rd_wr, fpu_ready, address, write_data, request_size);
+	modport FPU (input dram_ready, request_done, read_data, output request, rd_wr, fpu_ready, address, write_data, request_size);
 endinterface
