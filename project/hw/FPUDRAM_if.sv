@@ -4,7 +4,7 @@ interface FPUDRAM_if();
 	logic fpu_ready;		//for writes this signals that the data on the write data line is valid, must not be asserted if dram_ready is not asserted. for reads this signifies if the fpu is ready to recieve a cache line of data
 	logic dram_ready;		//for writes this signals that the fpu is ready to recieve data. for reads this signifies thaat the data on the read_data line is valid, must not be asserted if fpu_ready is not asserted. 
 	logic request_done;		//asserted when a request is done
-	logic [31:0] address;		//starting address for request
+	logic [31:0] address;		//starting address for request. The byte at this address should be at [511:504] on the data line
 	logic [511:0] write_data;	//data from FPU, dram_ready signifies valid data
 	logic [511:0] read_data;	//data from DRAM controller, dram_ready signifies valid data
 	logic [7:0] request_size;	//number of cache lines for a request

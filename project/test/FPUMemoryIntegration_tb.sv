@@ -10,6 +10,9 @@ module FPUMemoryIntegration_tb();
 	logic rst_n;
 
 	int errors;
+	int dram_request_num = 0;
+	int dram_request_count = 0;
+	int dram_base_write_address = 0;
 
 	//request buffer inputs
 	logic  wr_en_rd_buffer, wr_en_wr_buffer, rd_buffer_sel, wr_buffer_sel;
@@ -22,6 +25,9 @@ module FPUMemoryIntegration_tb();
 	//request buffer outputs
 	logic [7:0] read_col [COL_WIDTH-1:0];
 	logic [7:0] request_data_out;
+
+	logic [7:0] ref_mem[0: 2**16];
+	logic [7:0] out_mem[0: 2**16];
 
 	FPUCntrlReq_if req_if();
 	FPUDRAM_if dram_if();
@@ -45,7 +51,7 @@ module FPUMemoryIntegration_tb();
 		@(posedge clk);
 		rst_n = 1'b1;
 
-		fillMemory();
+		fillMemory('0, MEM_BUFFER_WIDTH, COL_WIDTH-2, '0);
 	
 		wr_buffer_sel = 1;
 		req_if.write = 1;
@@ -56,33 +62,53 @@ module FPUMemoryIntegration_tb();
 		
 		@(negedge req_if.making_request);
 		$display("done");
+		compare_memories();
+		$stop();
 		
 	end
 
+	task automatic compare_memories();
+		for(int i = 0; i < (2**16)-1; i++)begin
+			if(out_mem[i] !== ref_mem[i])begin
+				$display("location: %d expected: %d actual: %d", i, ref_mem[i], out_mem[i]);
+			end
+		end		
+	endtask
+
 	task dramRespond();
 		@(posedge clk)
+		dram_if.request_done = 0;
+		if(dram_if.request)begin
+			dram_request_num = dram_if.request_size;
+			dram_request_count = 0;
+			dram_base_write_address = dram_if.address;
+		end
 		dram_if.dram_ready = '1;
 		if(dram_if.fpu_ready)begin
+			for(int i = 0; i < 512; i+=8)begin
+				out_mem[dram_base_write_address + dram_request_count*(64)+i/8] = dram_if.write_data[511-i-:8]; 
+			end
 			dram_if.dram_ready = '0;
 			for(int i = 0; i < $urandom_range(0,10); i++) @(posedge clk);
 			dram_if.dram_ready = '1;
-			
+			dram_request_count++;
+			if(dram_request_count == dram_request_num)
+				dram_if.request_done = 1;
 		end
 	endtask
 
-	task fillMemory();
+	task fillMemory(bit buffer, int width, int height, int res_address);
 		//fill memory
 		wr_en_wr_buffer = 1;
-		wr_buffer_sel = 0;
-		for(int i = 0; i < MEM_BUFFER_WIDTH; i++) begin	
-			for(int j = 0; j < COL_WIDTH-2; j++) begin
+		wr_buffer_sel = buffer;
+		for(int i = 0; i < width; i++) begin	
+			for(int j = 0; j < height; j++) begin
 				write_col[j] = $random();		
-				//ref_mem[i][j] = write_col[j];
+				ref_mem[res_address + width*j + i] = write_col[j];
 			end	
 			write_col_address = i;	
 			@(posedge clk);
 		end
 		wr_en_wr_buffer = 0;
-
 	endtask
 endmodule
