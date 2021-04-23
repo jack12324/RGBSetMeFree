@@ -9,7 +9,7 @@ module FPURequestController#(BUFFER_DEPTH = 512, COL_WIDTH = 10)(clk, rst_n, req
 	FPUCntrlReq_if req_if;
 	FPUDRAM_if dram_if;
 
-	typedef enum {IDLE, SAVE_WRITE_ADDR, START_WRITE_REQUEST, FIRST_LOAD, LOAD_WRITE_DATA, LAST_SHIFT, WAIT_DRAM_READY_WRITE, SEND_WRITE_CL, WAIT_WRITE_DONE, UPDATE_WRITE_ADDRESS, CHECK_WRITE_REQ_DONE, DONE, SAVE_READ_ADDR, START_READ_REQUEST, WAIT_DRAM_READY, GET_CL, FIRST_SAVE, SAVE_DATA, SAVE_END, FPU_READY, WAIT_READ_DONE, WAIT_READ_DONE_LINE, UPDATE_READ_ADDRESS, XXX} state_e;
+	typedef enum {IDLE, SAVE_WRITE_ADDR, START_WRITE_REQUEST, FIRST_LOAD, LOAD_WRITE_DATA, LAST_SHIFT, WAIT_DRAM_READY_WRITE, SEND_WRITE_CL, WAIT_WRITE_DONE, UPDATE_WRITE_ADDRESS, CHECK_WRITE_REQ_DONE, DONE, SAVE_READ_ADDR, WRITE_TO_READ, START_READ_REQUEST, WAIT_DRAM_READY, GET_CL, FIRST_SAVE, SAVE_DATA, SAVE_END, FPU_READY, WAIT_READ_DONE, WAIT_READ_DONE_LINE, UPDATE_READ_ADDRESS, XXX} state_e;
 	state_e state, next;
 
 	//used to save the initial state
@@ -66,9 +66,12 @@ module FPURequestController#(BUFFER_DEPTH = 512, COL_WIDTH = 10)(clk, rst_n, req
 				else						next = FIRST_LOAD;
 		
 			WAIT_WRITE_DONE: if(dram_if.request_done) begin
-					if(rd_row == cap_height-1)		next = IDLE;
+					if(rd_row == cap_height-1 && cap_read)	next = WRITE_TO_READ;
+					else if(rd_row == cap_height-1)		next = IDLE;
 					else					next = UPDATE_WRITE_ADDRESS;
 				end else					next = WAIT_WRITE_DONE;			//@loopback
+			
+			WRITE_TO_READ:						next = START_READ_REQUEST;
 
 			UPDATE_WRITE_ADDRESS: 					next = START_WRITE_REQUEST;
 	
@@ -88,7 +91,7 @@ module FPURequestController#(BUFFER_DEPTH = 512, COL_WIDTH = 10)(clk, rst_n, req
 	
 			SAVE_END:						next = FPU_READY;
 
-			FPU_READY: if(sent_lines != request_size)		next = WAIT_DRAM_READY;
+			FPU_READY: if(sent_lines != 8)				next = WAIT_DRAM_READY;
 				else begin
 					if(wr_row == COL_WIDTH - 1)begin
 						if(dram_if.request_done)	next = IDLE;
@@ -193,6 +196,11 @@ module FPURequestController#(BUFFER_DEPTH = 512, COL_WIDTH = 10)(clk, rst_n, req
 				end
 				SAVE_READ_ADDR: begin
 					dram_if.address <= req_if.read_address;
+				end
+				WRITE_TO_READ:begin
+					rows_sent <= '0;
+					wr_row <= '1;
+					dram_if.address <= cap_rd_addr;
 				end
 				START_READ_REQUEST: begin
 					dram_if.rd_wr <= '0;

@@ -60,25 +60,25 @@ module FPUController_tb();
 		@(posedge clk);
 		rst_n = 1'b1;
 	
-		//test_from_file(225, 225);	
+		test_from_file(225, 225);	
 
 		//test fits completely in one buffer
-		test_with_image_size(160, 5);
+		//test_with_image_size(160, 5);
 
-		//tests thats height fits in one buffer but width is larger
-		test_with_image_size(169, 5);
-		test_with_image_size(210, 5);
-		test_with_image_size(200, 5);
-		test_with_image_size(400, 5);
+		////tests thats height fits in one buffer but width is larger
+		//test_with_image_size(169, 5);
+		//test_with_image_size(210, 5);
+		//test_with_image_size(200, 5);
+		//test_with_image_size(400, 5);
 
-		//tests that width fit in one buffer but height is larger
-		test_with_image_size(160, 9);
-		test_with_image_size(160, 200);
-		test_with_image_size(160, 20);
+		////tests that width fit in one buffer but height is larger
+		//test_with_image_size(160, 9);
+		//test_with_image_size(160, 200);
+		//test_with_image_size(160, 20);
 
-		//tests that fill both ways
-		test_with_image_size(300, 10);
-		test_with_image_size(1000, 600);
+		////tests that fill both ways
+		//test_with_image_size(300, 10);
+		//test_with_image_size(1000, 600);
 		
 		
 		$display("Errors: %d", errors);

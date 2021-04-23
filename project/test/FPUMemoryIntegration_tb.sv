@@ -57,20 +57,50 @@ module FPUMemoryIntegration_tb();
 		@(posedge clk);
 		rst_n = 1'b1;
 		@(posedge clk);
-		//write_test('0, MEM_BUFFER_WIDTH, COL_WIDTH-2, '0);
-		//write_test('1, MEM_BUFFER_WIDTH, COL_WIDTH-2, 5000);
-		//write_test('1, MEM_BUFFER_WIDTH, COL_WIDTH-2, '0);
-		//write_test('1, MEM_BUFFER_WIDTH, 3, '0);
-		//write_test('1, MEM_BUFFER_WIDTH, 1, '0);
-		//write_test('1, 64, COL_WIDTH-2, '0);
-		//write_test('1, 320, COL_WIDTH-2, 3000);
+		write_test('0, MEM_BUFFER_WIDTH, COL_WIDTH-2, '0);
+		write_test('1, MEM_BUFFER_WIDTH, COL_WIDTH-2, 5000);
+		write_test('1, MEM_BUFFER_WIDTH, COL_WIDTH-2, '0);
+		write_test('1, MEM_BUFFER_WIDTH, 3, '0);
+		write_test('1, MEM_BUFFER_WIDTH, 1, '0);
+		write_test('1, 64, COL_WIDTH-2, '0);
+		write_test('1, 320, COL_WIDTH-2, 3000);
 		
+	
+		read_test('0, 448, 50);
+		read_test('0, 64, 50);
 		read_test('0, 512, 50);
 		read_test('1, 664, 0);
+
+		write_read_test(1,1,512,8,512,0,0);
+		write_read_test(0,1,64,5,560,4,100);
 
 		$stop();
 		
 	end
+
+	task automatic write_read_test(bit write_buffer, bit read_buffer, int write_width, int write_height, int row_width, int start_address, int res_address);
+		fillMemory(write_buffer, write_width, write_height, res_address);
+		read_mem_init(start_address, row_width);
+	
+		wr_buffer_sel = ~write_buffer;
+		rd_buffer_sel = ~read_buffer;
+		req_if.write = 1;
+		req_if.read = 1;
+		req_if.width = write_width;
+		req_if.height = write_height;
+		req_if.input_row_width = row_width;
+		req_if.write_address = res_address;
+		req_if.read_address = start_address;
+		@(posedge clk);
+		req_if.write = 0;
+		req_if.read = 0;
+		
+		@(negedge req_if.making_request);
+		compare_memories();
+		emptyBuffer(read_buffer);
+		compare_read_mems(start_address, row_width);
+		@(posedge clk);
+	endtask
 
 	task automatic write_test(bit buffer, int width, int height, int res_address);
 		fillMemory(buffer, width, height, res_address);
@@ -107,7 +137,7 @@ module FPUMemoryIntegration_tb();
 		for(int i = 0; i < COL_WIDTH; i++)begin
 			for(int j = 0; j < MEM_BUFFER_WIDTH; j++)begin
 				if(buff_mem[i*MEM_BUFFER_WIDTH + j] !== input_mem[start_address+i*image_width+j])begin
-					$display("location: %d expected: %d actual: %d", i, input_mem[start_address+i*image_width+j], buff_mem[i*MEM_BUFFER_WIDTH + j]);
+					$display("read fail: location: %d expected: %d actual: %d", i*MEM_BUFFER_WIDTH + j, input_mem[start_address+i*image_width+j], buff_mem[i*MEM_BUFFER_WIDTH + j]);
 				end
 			end
 		end		
@@ -122,7 +152,7 @@ module FPUMemoryIntegration_tb();
 	task automatic compare_memories();
 		for(int i = 0; i < (2**16)-1; i++)begin
 			if(out_mem[i] !== ref_mem[i])begin
-				$display("location: %d expected: %d actual: %d", i, ref_mem[i], out_mem[i]);
+				$display("write fail: location: %d expected: %d actual: %d", i, ref_mem[i], out_mem[i]);
 			end
 		end		
 	endtask
@@ -160,7 +190,7 @@ module FPUMemoryIntegration_tb();
 				@(posedge clk)
 				dram_if.dram_ready = '0;
 				dram_request_count++;
-				if(dram_request_count == dram_request_num)begin
+				if(dram_request_count == 8)begin
 					for(int i = 0; i < $urandom_range(0,20); i++) @(posedge clk);
 					dram_if.request_done = 1;
 					@(posedge clk)
