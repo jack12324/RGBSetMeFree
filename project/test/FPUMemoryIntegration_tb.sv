@@ -28,7 +28,7 @@ module FPUMemoryIntegration_tb();
 	logic [7:0] request_data_out;
 
 	logic [7:0] input_mem[0:2**16];
-	logic [7:0] 
+	logic [7:0] buff_mem[0:2**16];
 
 	logic [7:0] ref_mem[0: 2**16];
 	logic [7:0] out_mem[0: 2**16];
@@ -65,7 +65,8 @@ module FPUMemoryIntegration_tb();
 		//write_test('1, 64, COL_WIDTH-2, '0);
 		//write_test('1, 320, COL_WIDTH-2, 3000);
 		
-		read_test('1, 512, 0);
+		read_test('0, 512, 50);
+		read_test('1, 664, 0);
 
 		$stop();
 		
@@ -97,8 +98,19 @@ module FPUMemoryIntegration_tb();
 		req_if.read = 0;
 		
 		@(negedge req_if.making_request);
-		//compare_memories();
+		emptyBuffer(buffer);
+		compare_read_mems(start_address, width);
 		@(posedge clk);
+	endtask
+
+	task automatic compare_read_mems(int start_address, int image_width);
+		for(int i = 0; i < COL_WIDTH; i++)begin
+			for(int j = 0; j < MEM_BUFFER_WIDTH; j++)begin
+				if(buff_mem[i*MEM_BUFFER_WIDTH + j] !== input_mem[start_address+i*image_width+j])begin
+					$display("location: %d expected: %d actual: %d", i, input_mem[start_address+i*image_width+j], buff_mem[i*MEM_BUFFER_WIDTH + j]);
+				end
+			end
+		end		
 	endtask
 	
 	task automatic read_mem_init(int start_address, width);
@@ -159,14 +171,17 @@ module FPUMemoryIntegration_tb();
 		end
 	endtask
 
-	task automatic emptyBuffer();
+	task automatic emptyBuffer(bit buffer);
 		//check memory
-		for(int i = 0; i < MEM_DEPTH; i++) begin	
-			address = i;	
-			wr = 0;
-			@(posedge clk);
-			for(int j = 0; j < BANK_WIDTH; j++) begin		
-				buf_mem[i][j] = data_out[j];
+		@(posedge clk);
+		rd_buffer_sel = buffer;
+		for(int i = 0; i < MEM_BUFFER_WIDTH; i++) begin	
+			read_col_address = i;	
+			wr_en_rd_buffer = 0;
+			@(posedge clk)
+			@(negedge clk)
+			for(int j = 0; j < COL_WIDTH; j++) begin		
+				buff_mem[j*MEM_BUFFER_WIDTH + i] = read_col[j];
 			end
 		end
 	endtask

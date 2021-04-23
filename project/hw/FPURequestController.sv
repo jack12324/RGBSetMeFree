@@ -1,7 +1,7 @@
 module FPURequestController#(BUFFER_DEPTH = 512, COL_WIDTH = 10)(clk, rst_n, req_if, dram_if, buffer_rd_address, buffer_read_data, buffer_wr_address, buffer_write_data, wr_en_rd_buffer);
 	localparam CL_WIDTH = 64; //bytes
 	input clk, rst_n;
-	input logic wr_en_rd_buffer;
+	output logic wr_en_rd_buffer;
 	input [7:0] buffer_read_data;
 	output logic [CL_WIDTH-1: 0] buffer_write_data;
 	output [$clog2(BUFFER_DEPTH) + $clog2(COL_WIDTH-2) - 1:0] buffer_rd_address;
@@ -233,8 +233,12 @@ module FPURequestController#(BUFFER_DEPTH = 512, COL_WIDTH = 10)(clk, rst_n, req
 				UPDATE_READ_ADDRESS: begin
 					dram_if.address <= dram_if.address + req_if.input_row_width;
 				end
-				WAIT_READ_DONE: begin end
-				WAIT_READ_DONE_LINE: begin end
+				WAIT_READ_DONE: begin 
+					dram_if.fpu_ready <= '1;
+				end
+				WAIT_READ_DONE_LINE: begin
+					dram_if.fpu_ready <= '1;
+				end
 			endcase
 		end
 	end
