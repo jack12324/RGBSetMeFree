@@ -12,7 +12,8 @@ module FPUMemoryIntegration_tb();
 	int errors;
 	int dram_request_num = 0;
 	int dram_request_count = 0;
-	int dram_base_write_address = 0;
+	int dram_base_address = 0;
+	int dram_rd_wr = 0;
 
 	//request buffer inputs
 	logic  wr_en_rd_buffer, wr_en_wr_buffer, rd_buffer_sel, wr_buffer_sel;
@@ -26,14 +27,18 @@ module FPUMemoryIntegration_tb();
 	logic [7:0] read_col [COL_WIDTH-1:0];
 	logic [7:0] request_data_out;
 
+	logic [7:0] input_mem[0:2**16];
+	logic [7:0] 
+
 	logic [7:0] ref_mem[0: 2**16];
 	logic [7:0] out_mem[0: 2**16];
+
 
 	FPUCntrlReq_if req_if();
 	FPUDRAM_if dram_if();
 
 	FPURequestBuffer #(.BUFFER_DEPTH(MEM_BUFFER_WIDTH), .COL_WIDTH(COL_WIDTH))buff(.*);
-	FPURequestController#(.BUFFER_DEPTH(MEM_BUFFER_WIDTH), .COL_WIDTH(COL_WIDTH)) cont(.clk(clk), .rst_n(rst_n), .req_if(req_if.REQUEST_CONTROLLER), .dram_if(dram_if.FPU), .buffer_rd_address(request_read_address), .buffer_read_data(request_data_out));
+	FPURequestController#(.BUFFER_DEPTH(MEM_BUFFER_WIDTH), .COL_WIDTH(COL_WIDTH)) cont(.clk(clk), .rst_n(rst_n), .req_if(req_if.REQUEST_CONTROLLER), .dram_if(dram_if.FPU), .buffer_rd_address(request_read_address), .buffer_read_data(request_data_out), .buffer_wr_address(request_write_address), .buffer_write_data(request_data_in), .wr_en_rd_buffer(wr_en_rd_buffer));
 
 	always dramRespond();
 	always #5 clk = ~clk; 
@@ -47,16 +52,20 @@ module FPUMemoryIntegration_tb();
 		req_if.height = '0;
 		req_if.read_address = '0;
 		req_if.write_address = '0;
+		req_if.input_row_width = '0;
 
 		@(posedge clk);
 		rst_n = 1'b1;
-		write_test('0, MEM_BUFFER_WIDTH, COL_WIDTH-2, '0);
-		write_test('1, MEM_BUFFER_WIDTH, COL_WIDTH-2, 5000);
-		write_test('1, MEM_BUFFER_WIDTH, COL_WIDTH-2, '0);
-		write_test('1, MEM_BUFFER_WIDTH, 3, '0);
-		write_test('1, MEM_BUFFER_WIDTH, 1, '0);
-		write_test('1, 64, COL_WIDTH-2, '0);
-		write_test('1, 320, COL_WIDTH-2, 3000);
+		@(posedge clk);
+		//write_test('0, MEM_BUFFER_WIDTH, COL_WIDTH-2, '0);
+		//write_test('1, MEM_BUFFER_WIDTH, COL_WIDTH-2, 5000);
+		//write_test('1, MEM_BUFFER_WIDTH, COL_WIDTH-2, '0);
+		//write_test('1, MEM_BUFFER_WIDTH, 3, '0);
+		//write_test('1, MEM_BUFFER_WIDTH, 1, '0);
+		//write_test('1, 64, COL_WIDTH-2, '0);
+		//write_test('1, 320, COL_WIDTH-2, 3000);
+		
+		read_test('1, 512, 0);
 
 		$stop();
 		
@@ -78,6 +87,26 @@ module FPUMemoryIntegration_tb();
 		@(posedge clk);
 	endtask
 
+	task automatic read_test(bit buffer, int width, int start_address);
+		read_mem_init(start_address, width);
+		rd_buffer_sel = !buffer;
+		req_if.read = 1;
+		req_if.input_row_width = width;
+		req_if.read_address = start_address;
+		@(posedge clk);
+		req_if.read = 0;
+		
+		@(negedge req_if.making_request);
+		//compare_memories();
+		@(posedge clk);
+	endtask
+	
+	task automatic read_mem_init(int start_address, width);
+		for(int i = 0; i < width * COL_WIDTH; i++)begin
+			input_mem[start_address +i] = $random();
+		end	
+	endtask
+
 	task automatic compare_memories();
 		for(int i = 0; i < (2**16)-1; i++)begin
 			if(out_mem[i] !== ref_mem[i])begin
@@ -92,19 +121,53 @@ module FPUMemoryIntegration_tb();
 		if(dram_if.request)begin
 			dram_request_num = dram_if.request_size;
 			dram_request_count = 0;
-			dram_base_write_address = dram_if.address;
+			dram_base_address = dram_if.address;
+			dram_rd_wr = dram_if.rd_wr;
 		end
 		dram_if.dram_ready = '1;
-		if(dram_if.fpu_ready)begin
-			for(int i = 0; i < 512; i+=8)begin
-				out_mem[dram_base_write_address + dram_request_count*(64)+i/8] = dram_if.write_data[511-i-:8]; 
+		if(dram_rd_wr)begin
+			if(dram_if.fpu_ready)begin
+				for(int i = 0; i < 512; i+=8)begin
+					out_mem[dram_base_address + dram_request_count*(64)+i/8] = dram_if.write_data[511-i-:8]; 
+				end
+				dram_if.dram_ready = '0;
+				for(int i = 0; i < $urandom_range(0,10); i++) @(posedge clk);
+				dram_if.dram_ready = '1;
+				dram_request_count++;
+				if(dram_request_count == dram_request_num)
+					dram_if.request_done = 1;
 			end
+		end else begin
 			dram_if.dram_ready = '0;
-			for(int i = 0; i < $urandom_range(0,10); i++) @(posedge clk);
-			dram_if.dram_ready = '1;
-			dram_request_count++;
-			if(dram_request_count == dram_request_num)
-				dram_if.request_done = 1;
+			if(dram_if.fpu_ready)begin
+				for(int i = 0; i < $urandom_range(0,10); i++) @(posedge clk);
+				for(int i = 0; i < 64; i++)begin
+					dram_if.read_data[511-i*8 -:8] = input_mem[dram_base_address + dram_request_count*64+i];
+				end
+				dram_if.dram_ready = '1;
+				@(posedge clk)
+				dram_if.dram_ready = '0;
+				dram_request_count++;
+				if(dram_request_count == dram_request_num)begin
+					for(int i = 0; i < $urandom_range(0,20); i++) @(posedge clk);
+					dram_if.request_done = 1;
+					@(posedge clk)
+					while(!dram_if.fpu_ready) @(posedge clk);
+					dram_if.request_done = 0;
+				end
+			end
+		end
+	endtask
+
+	task automatic emptyBuffer();
+		//check memory
+		for(int i = 0; i < MEM_DEPTH; i++) begin	
+			address = i;	
+			wr = 0;
+			@(posedge clk);
+			for(int j = 0; j < BANK_WIDTH; j++) begin		
+				buf_mem[i][j] = data_out[j];
+			end
 		end
 	endtask
 

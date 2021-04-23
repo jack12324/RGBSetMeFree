@@ -30,6 +30,7 @@ module FPUController #(COL_WIDTH = 10, MEM_BUFFER_WIDTH = 512, M_STARTSIG_ADDRES
 	assign total_width = (conf.image_width + 2)*3;
 	assign req_if.width = MEM_BUFFER_WIDTH > remaining_width - 2 ? remaining_width - 2: MEM_BUFFER_WIDTH;
 	assign req_if.height = COL_WIDTH > remaining_height ? remaining_height - 2: COL_WIDTH - 2;
+	assign req_if.input_row_width = total_width;
 
 	//track address of current row start
 	logic [31:0] base_read_address;
