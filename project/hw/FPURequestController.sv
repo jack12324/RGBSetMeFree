@@ -6,7 +6,7 @@ module FPURequestController#(BUFFER_DEPTH = 512, COL_WIDTH = 10)(clk, rst_n, req
 	FPUCntrlReq_if req_if;
 	FPUDRAM_if dram_if;
 
-	typedef enum {IDLE, START_WRITE_REQUEST, FIRST_LOAD, LOAD_WRITE_DATA, LAST_SHIFT, WAIT_DRAM_READY_WRITE, SEND_WRITE_CL, WAIT_WRITE_DONE, UPDATE_WRITE_ADDRESS, CHECK_WRITE_REQ_DONE, DONE, XXX} state_e;
+	typedef enum {IDLE, SAVE_WRITE_ADDR, START_WRITE_REQUEST, FIRST_LOAD, LOAD_WRITE_DATA, LAST_SHIFT, WAIT_DRAM_READY_WRITE, SEND_WRITE_CL, WAIT_WRITE_DONE, UPDATE_WRITE_ADDRESS, CHECK_WRITE_REQ_DONE, DONE, XXX} state_e;
 	state_e state, next;
 
 	//used to save the initial state
@@ -35,10 +35,12 @@ module FPURequestController#(BUFFER_DEPTH = 512, COL_WIDTH = 10)(clk, rst_n, req
 	always_comb begin
 		next = XXX;
 		case(state)
-			IDLE: if(req_if.write)					next = START_WRITE_REQUEST;
+			IDLE: if(req_if.write)					next = SAVE_WRITE_ADDR;
 				else if(req_if.read) 				next = XXX;
 				else						next = IDLE;				//@loopback
 
+			SAVE_WRITE_ADDR:					next = START_WRITE_REQUEST;
+	
 			START_WRITE_REQUEST:					next = FIRST_LOAD;
 
 			FIRST_LOAD: 						next = LOAD_WRITE_DATA;
@@ -95,10 +97,12 @@ module FPURequestController#(BUFFER_DEPTH = 512, COL_WIDTH = 10)(clk, rst_n, req
 			case(next)
 				IDLE: begin
 					capture <= '1;
-					dram_if.address <= req_if.write ? req_if_write_address : req_if.read_address;
 					req_if.making_request <= '0;
 					rows_sent <= '0;
 					rd_row <= '1;
+				end
+				SAVE_WRITE_ADDR: begin
+					dram_if.address <= req_if.write ? req_if.write_address : req_if.read_address;
 				end
 				START_WRITE_REQUEST: begin
 					dram_if.rd_wr <= '1;
@@ -129,6 +133,7 @@ module FPURequestController#(BUFFER_DEPTH = 512, COL_WIDTH = 10)(clk, rst_n, req
 					sent_lines <= sent_lines + 1;
 				end
 				WAIT_WRITE_DONE: begin
+					dram_if.write_data <= '0;
 				end
 				UPDATE_WRITE_ADDRESS: begin
 					dram_if.address <= dram_if.address + request_size * 64;

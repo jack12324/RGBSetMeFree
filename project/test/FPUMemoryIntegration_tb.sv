@@ -50,22 +50,33 @@ module FPUMemoryIntegration_tb();
 
 		@(posedge clk);
 		rst_n = 1'b1;
+		write_test('0, MEM_BUFFER_WIDTH, COL_WIDTH-2, '0);
+		write_test('1, MEM_BUFFER_WIDTH, COL_WIDTH-2, 5000);
+		write_test('1, MEM_BUFFER_WIDTH, COL_WIDTH-2, '0);
+		write_test('1, MEM_BUFFER_WIDTH, 3, '0);
+		write_test('1, MEM_BUFFER_WIDTH, 1, '0);
+		write_test('1, 64, COL_WIDTH-2, '0);
+		write_test('1, 320, COL_WIDTH-2, 3000);
 
-		fillMemory('0, MEM_BUFFER_WIDTH, COL_WIDTH-2, '0);
+		$stop();
+		
+	end
+
+	task automatic write_test(bit buffer, int width, int height, int res_address);
+		fillMemory(buffer, width, height, res_address);
 	
-		wr_buffer_sel = 1;
+		wr_buffer_sel = ~buffer;
 		req_if.write = 1;
-		req_if.width = 512;
-		req_if.height = 8;
+		req_if.width = width;
+		req_if.height = height;
+		req_if.write_address = res_address;
 		@(posedge clk);
 		req_if.write = 0;
 		
 		@(negedge req_if.making_request);
-		$display("done");
 		compare_memories();
-		$stop();
-		
-	end
+		@(posedge clk);
+	endtask
 
 	task automatic compare_memories();
 		for(int i = 0; i < (2**16)-1; i++)begin
