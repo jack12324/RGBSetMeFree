@@ -63,11 +63,11 @@ module afu
    logic [127:0] afu_id = `AFU_ACCEL_UUID;
 
    //note these connections are not correct, just connecting to something to test synthesis
-   logic clk, rst_n, mapped_data_valid;
+   logic mapped_data_valid;
    logic [31:0] mapped_data;
    FPUDRAM_if dram_if();
    logic [31:0] mapped_address;
    
-   FPU #(.COL_WIDTH(10), .MEM_BUFFER_WIDTH(512), .CL_WIDTH(64)) dut(.clk(clk), .rst_n(rst_n), .mapped_data_valid(mapped_data_valid), .mapped_data(mapped_data), .mapped_address(mapped_address), .dram_if(dram_if.FPU));
+   FPU #(.COL_WIDTH(10), .MEM_BUFFER_WIDTH(512), .CL_WIDTH(64)) dut(.clk(clk), .rst_n(!rst), .mapped_data_valid(mapped_data_valid), .mapped_data(mapped_data), .mapped_address(mapped_address), .dram_if(dram_if.FPU));
 
 endmodule
