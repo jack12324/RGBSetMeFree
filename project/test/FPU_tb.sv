@@ -5,7 +5,7 @@ module FPU_tb();
 	FPUDRAM_if dram_if();
 	logic [31:0] mapped_address;
 
-	FPU #(.COL_WIDTH(10), .MEM_BUFFER_WIDTH(512), .CL_WIDTH(64)) dut(.clk(clk), .mem_clk(clk), .rst_n(rst_n), .mapped_data_valid(mapped_data_valid), .mapped_data(mapped_data), .mapped_address(mapped_address), .dram_if(dram_if.FPU));
+	FPU #(.COL_WIDTH(10), .MEM_BUFFER_WIDTH(512), .CL_WIDTH(64)) dut(.clk(clk), .rst_n(rst_n), .mapped_data_valid(mapped_data_valid), .mapped_data(mapped_data), .mapped_address(mapped_address), .dram_if(dram_if.FPU));
 
 	int errors;
 	logic [31:0] start_address, result_address, start_sig;
@@ -16,11 +16,11 @@ module FPU_tb();
 	int dram_base_address = 0;
 	int dram_rd_wr = 0;
 
-	logic [7:0] input_memory [0:(2**16)-1];
-	logic [7:0] output_memory[0:(2**16)-1];
-	logic [7:0] ref_output_memory[0:(2**16)-1];
+	logic [7:0] input_memory [0:(2**23)-1];
+	logic [7:0] output_memory[0:(2**23)-1];
+	logic [7:0] ref_output_memory[0:(2**23)-1];
 		
-	always #5 clk = ~clk; 
+	always #1 clk = ~clk; 
 	initial forever get_mapped_mem();
 	initial forever dramRespond();
 
@@ -32,7 +32,10 @@ module FPU_tb();
 		@(posedge clk);
 		rst_n = 1'b1;
 
-		test_with_image_size(20, 10);
+		test_with_image_size(212, 33);
+		test_with_image_size(20, 33);
+
+		test_with_image_size(212, 600);
 		
 		
 		$display("Errors: %d", errors);
@@ -92,7 +95,7 @@ module FPU_tb();
 	endtask
 	
 	task automatic compare_memories();
-		for(int i = 0; i < (2**16)-1; i++)begin
+		for(int i = 0; i < (2**23)-1; i++)begin
 			if(output_memory[i] !== ref_output_memory[i])begin
 				$display("location: %d expected: %d actual: %d", i, ref_output_memory[i], output_memory[i]);
 			end

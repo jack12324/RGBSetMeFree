@@ -1,6 +1,7 @@
-module FPU#(COL_WIDTH = 10, MEM_BUFFER_WIDTH = 512, CL_WIDTH = 64)(clk, mem_clk, rst_n, mapped_data_valid, mapped_data, mapped_address, dram_if);
+module FPU#(COL_WIDTH = 10, MEM_BUFFER_WIDTH = 512, CL_WIDTH = 64)(clk, rst_n, mapped_data_valid, mapped_data, mapped_address, dram_if);
 	
-	input clk, mem_clk, rst_n, mapped_data_valid;
+	//using different clock speeds doesn't work in testbench
+	input clk, rst_n, mapped_data_valid;
 	input [31:0] mapped_data;
 	FPUDRAM_if dram_if;
 	output [31:0] mapped_address;
@@ -23,7 +24,7 @@ module FPU#(COL_WIDTH = 10, MEM_BUFFER_WIDTH = 512, CL_WIDTH = 64)(clk, mem_clk,
 	FPUCntrlReq_if req_if();
 
 
-	FPURequestController #(.BUFFER_DEPTH(MEM_BUFFER_WIDTH), .COL_WIDTH(COL_WIDTH), .CL_WIDTH(CL_WIDTH)) requestController(.clk(mem_clk),
+	FPURequestController #(.BUFFER_DEPTH(MEM_BUFFER_WIDTH), .COL_WIDTH(COL_WIDTH), .CL_WIDTH(CL_WIDTH)) requestController(.clk(clk),
 																.rst_n(rst_n),
 																.req_if(req_if.REQUEST_CONTROLLER),
 																.dram_if(dram_if),
@@ -50,7 +51,7 @@ module FPU#(COL_WIDTH = 10, MEM_BUFFER_WIDTH = 512, CL_WIDTH = 64)(clk, mem_clk,
 												.req_if(req_if.CONTROLLER)
 											);
 
- 	FPURequestBuffer#(.BUFFER_DEPTH(MEM_BUFFER_WIDTH), .COL_WIDTH(COL_WIDTH)) requestBuffer(.clk(mem_clk),
+ 	FPURequestBuffer#(.BUFFER_DEPTH(MEM_BUFFER_WIDTH), .COL_WIDTH(COL_WIDTH)) requestBuffer(.clk(clk),
 												.rst_n(rst_n),
 												.request_write_address(buffer_wr_address),
 												.request_read_address(buffer_rd_address),

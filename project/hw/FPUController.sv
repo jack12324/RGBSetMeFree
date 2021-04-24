@@ -271,8 +271,6 @@ module FPUController #(COL_WIDTH = 10, MEM_BUFFER_WIDTH = 512, M_STARTSIG_ADDRES
 				end
 				UPDATE_READ: begin
 					req_if.read_address <= req_if.read_address + (total_width > MEM_BUFFER_WIDTH ? MEM_BUFFER_WIDTH : total_width * (COL_WIDTH - 2));
-					rd_buffer_sel <= !rd_buffer_sel;
-					wr_buffer_sel <= !wr_buffer_sel;
 				end
 
 
@@ -292,6 +290,8 @@ module FPUController #(COL_WIDTH = 10, MEM_BUFFER_WIDTH = 512, M_STARTSIG_ADDRES
 					write_rst <= 1;
 					height_dec <= 1;
 					set_remaining_width <= 1;
+					rd_buffer_sel <= !rd_buffer_sel;
+					wr_buffer_sel <= !wr_buffer_sel;
 				end
 				PRE_FINAL: begin
 					rd_buffer_sel <= !rd_buffer_sel;
