@@ -16,9 +16,9 @@ module FPU_tb();
 	int dram_base_address = 0;
 	int dram_rd_wr = 0;
 
-	logic [7:0] input_memory [(2**16)-1:0];
-	logic [7:0] output_memory[(2**16)-1:0];
-	logic [7:0] ref_output_memory[(2**16)-1:0];
+	logic [7:0] input_memory [0:(2**16)-1];
+	logic [7:0] output_memory[0:(2**16)-1];
+	logic [7:0] ref_output_memory[0:(2**16)-1];
 		
 	always #5 clk = ~clk; 
 	initial forever get_mapped_mem();
@@ -32,7 +32,7 @@ module FPU_tb();
 		@(posedge clk);
 		rst_n = 1'b1;
 
-		test_with_image_size(212, 5);
+		test_with_image_size(20, 10);
 		
 		
 		$display("Errors: %d", errors);
@@ -85,8 +85,8 @@ module FPU_tb();
 	task automatic set_config_vars(int w, int h);
 		width = w;
 		height = h;
-		start_address = $urandom_range(0,65535);
-		result_address = $urandom_range(0,65535);
+		start_address = '0;//$urandom_range(0,65535);
+		result_address = '0;//$urandom_range(0,65535);
 		for(int i = 0; i < 9; i++)
 			filter_conf[i] = $urandom_range(0,2)-1;
 	endtask

@@ -62,8 +62,8 @@ module FPU#(COL_WIDTH = 10, MEM_BUFFER_WIDTH = 512, CL_WIDTH = 64)(clk, mem_clk,
 												.wr_buffer_sel(wr_buffer_sel),
 												.read_col(read_col),
 												.write_col(write_col),
-												.read_col_address(write_col_address),
-												.write_col_address(read_col_address)
+												.read_col_address(read_col_address),
+												.write_col_address(write_col_address)
 												);
 	FPUMAC #(.COL_WIDTH(COL_WIDTH)) mac(	.clk(clk),
 						.rst_n(rst_n),

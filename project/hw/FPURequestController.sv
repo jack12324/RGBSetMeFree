@@ -191,7 +191,7 @@ module FPURequestController#(BUFFER_DEPTH = 512, COL_WIDTH = 10, CL_WIDTH=64)(cl
 					dram_if.write_data <= '0;
 				end
 				UPDATE_WRITE_ADDRESS: begin
-					dram_if.address <= dram_if.address + request_size * 64;
+					dram_if.address <= dram_if.address + req_if.output_row_width;
 				end
 				SAVE_READ_ADDR: begin
 					dram_if.address <= req_if.read_address;
