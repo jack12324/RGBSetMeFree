@@ -62,60 +62,12 @@ module afu
    
    logic [127:0] afu_id = `AFU_ACCEL_UUID;
 
-   parameter COL_WIDTH = 10;
-   parameter MEM_BUFFER_WIDTH = 512;
-   
-   logic shift_cols; 
-   logic signed [7:0] filter [8:0];
-   logic [$clog2(MEM_BUFFER_WIDTH)-1:0] write_col_address;
-   logic [$clog2(MEM_BUFFER_WIDTH)-1:0] read_col_address;
-   
-   
-   logic [7:0] col_new [COL_WIDTH - 1:0];
-   logic [7:0] col0   [COL_WIDTH - 1:0];
-   logic [7:0] col1   [COL_WIDTH - 1:0];
-   logic [7:0] col2   [COL_WIDTH - 1:0];
-   logic [7:0] result_pixels [COL_WIDTH-3:0];
-   
    //note these connections are not correct, just connecting to something to test synthesis
-   FPUController #(.MEM_BUFFER_WIDTH(MEM_BUFFER_WIDTH), .COL_WIDTH(COL_WIDTH))controller(
-	.clk(clk),
-	.rst_n(!rst),
-	.mapped_data_valid(rx.c0.rspValid),
-	.shift_cols(shift_cols), 
-	.filter(filter), 
-	.done(tx.c0.valid), 
-	.request_read(tx.c1.data[0]), 
-	.read_address(tx.c1.data[63:32]), 
-	.request_write(tx.c1.data[1]), 
-	.write_address(tx.c1.data[95:64]), 
-	.write_col_address(write_col_address), 
-	.read_col_address(read_col_address), 
-	.rd_buffer_sel(tx.c1.data[2]), 
-	.wr_buffer_sel(tx.c1.data[3]), 
-	.wr_en_wr_buffer(tx.c1.data[4]), 
-	.address_mem(tx.c1.data[127:96]), 
-	.stall(1'b0), 
-	.data_mem(tx.c2.data[63:32]), 
-	.making_request(rx.c0.data[8]), 
-	.write_request_width(tx.c2.data[16:0]), 
-	.write_request_height(tx.c2.data[25:17]));
+   logic clk, rst_n, mapped_data_valid;
+   logic [31:0] mapped_data;
+   FPUDRAM_if dram_if();
+   logic [31:0] mapped_address;
+   
+   FPU #(.COL_WIDTH(10), .MEM_BUFFER_WIDTH(512), .CL_WIDTH(64)) dut(.clk(clk), .rst_n(rst_n), .mapped_data_valid(mapped_data_valid), .mapped_data(mapped_data), .mapped_address(mapped_address), .dram_if(dram_if.FPU));
 
-   FPUMAC #(.COL_WIDTH(COL_WIDTH)) mac(.clk(clk), .rst_n(!rst), .*);
-   FPUBuffers #(.COL_WIDTH(COL_WIDTH)) buff(.*, .rst_n(!rst));
-
-   ReadBank #(.BANK_WIDTH(COL_WIDTH), .MEM_BUFFER_DEPTH_BYTES(MEM_BUFFER_WIDTH))r1(.rst_n(!rst), .clk(clk));
-   ReadBank #(.BANK_WIDTH(COL_WIDTH), .MEM_BUFFER_DEPTH_BYTES(MEM_BUFFER_WIDTH))r2(.rst_n(!rst), .clk(clk));
-
-   WriteBank #(.BANK_WIDTH(COL_WIDTH), .MEM_BUFFER_DEPTH_BYTES(MEM_BUFFER_WIDTH))w1(.rst_n(!rst), .clk(clk));
-   WriteBank #(.BANK_WIDTH(COL_WIDTH), .MEM_BUFFER_DEPTH_BYTES(MEM_BUFFER_WIDTH))w2(.rst_n(!rst), .clk(clk));
-
-
-   genvar i;
-   //this is not correct, just trying to hook something up to test synthesis
-   generate
-	for(i = 0; i < COL_WIDTH; i++) begin
-		assign col_new[i] = rx.c0.data[7:0]; 
-	end
-   endgenerate
 endmodule

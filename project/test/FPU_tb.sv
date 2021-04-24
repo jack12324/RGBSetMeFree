@@ -16,9 +16,9 @@ module FPU_tb();
 	int dram_base_address = 0;
 	int dram_rd_wr = 0;
 
-	logic [7:0] input_memory [0:(2**23)-1];
-	logic [7:0] output_memory[0:(2**23)-1];
-	logic [7:0] ref_output_memory[0:(2**23)-1];
+	logic [7:0] input_memory [0:(2**25)-1];
+	logic [7:0] output_memory[0:(2**25)-1];
+	logic [7:0] ref_output_memory[0:(2**25)-1];
 		
 	always #1 clk = ~clk; 
 	initial forever get_mapped_mem();
@@ -88,14 +88,14 @@ module FPU_tb();
 	task automatic set_config_vars(int w, int h);
 		width = w;
 		height = h;
-		start_address = '0;//$urandom_range(0,65535);
-		result_address = '0;//$urandom_range(0,65535);
+		start_address = $urandom_range(0,6553);
+		;result_address = $urandom_range(0,6553);
 		for(int i = 0; i < 9; i++)
 			filter_conf[i] = $urandom_range(0,2)-1;
 	endtask
 	
 	task automatic compare_memories();
-		for(int i = 0; i < (2**23)-1; i++)begin
+		for(int i = 0; i < (2**25)-1; i++)begin
 			if(output_memory[i] !== ref_output_memory[i])begin
 				$display("location: %d expected: %d actual: %d", i, ref_output_memory[i], output_memory[i]);
 			end
