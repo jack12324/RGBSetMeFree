@@ -1,6 +1,6 @@
-module FPUController #(COL_WIDTH = 10, MEM_BUFFER_WIDTH = 512, M_STARTSIG_ADDRESS = 32'h1000_0120, M_FILTER_ADDRESS = 32'h1000_0040, M_DIMS_ADDRESS = 32'h1000_0000, M_START_ADDRESS = 32'h1000_0020, M_RESULT_ADDRESS = 32'h1000_0100)(clk, rst_n, mapped_data_valid, shift_cols, filter, done, write_col_address, read_col_address, rd_buffer_sel, wr_buffer_sel, wr_en_wr_buffer, address_mem, stall, data_mem, making_request, req_if);
+module FPUController #(COL_WIDTH = 10, MEM_BUFFER_WIDTH = 512, M_STARTSIG_ADDRESS = 32'h1000_0120)(clk, rst_n, mapped_data_valid, shift_cols, filter, done, write_col_address, read_col_address, rd_buffer_sel, wr_buffer_sel, wr_en_wr_buffer, address_mem, data_mem, req_if);
 
-	input clk, rst_n, stall, mapped_data_valid, making_request;
+	input clk, rst_n, mapped_data_valid;
 	input [31:0] data_mem;
 
 	output logic shift_cols, done, rd_buffer_sel, wr_buffer_sel, wr_en_wr_buffer;
@@ -53,7 +53,7 @@ module FPUController #(COL_WIDTH = 10, MEM_BUFFER_WIDTH = 512, M_STARTSIG_ADDRES
 			FILL_BUFF1: if(total_width > MEM_BUFFER_WIDTH)							next = ADDR_ALL;
 				else 									       		next = ADDR_CHUNK;
 
-			FILL_BUFF2:  if(!making_request)								next = NEW_ROW;
+			FILL_BUFF2:  if(!req_if.making_request)								next = NEW_ROW;
 				else											next = FILL_BUFF2;			//@loopback
 
 			ADDR_CHUNK: 											next = FILL_BUFF2;
@@ -66,12 +66,12 @@ module FPUController #(COL_WIDTH = 10, MEM_BUFFER_WIDTH = 512, M_STARTSIG_ADDRES
 			OPERATE: if(read_col_address >= remaining_width)						next = ROW_END;
 				else if(remaining_width != MEM_BUFFER_WIDTH-1 &&
 					 read_col_address == MEM_BUFFER_WIDTH-2 &&
-					 making_request)								next = PRE_PAUSE;
+					 req_if.making_request)								next = PRE_PAUSE;
 				else if(read_col_address == MEM_BUFFER_WIDTH-1)						next = CHUNK_END;
 				else											next = OPERATE;				//@loopback
 
 			PRE_PAUSE:											next = PAUSE_CHUNK;
-			PAUSE_CHUNK: if(!making_request)								next = PRE_CHUNK_END1;
+			PAUSE_CHUNK: if(!req_if.making_request)								next = PRE_CHUNK_END1;
 				else											next = PAUSE_CHUNK;			//@loopback
 
 			PRE_CHUNK_END1:											next = PRE_CHUNK_END2;
@@ -95,17 +95,17 @@ module FPUController #(COL_WIDTH = 10, MEM_BUFFER_WIDTH = 512, M_STARTSIG_ADDRES
 					else										next = PRE_FINAL;
 				end else										next = ROW_END;				//@loopback
 
-			ROW_DONE_WAIT: if(!making_request)								next = UPDATE_WRITE;
+			ROW_DONE_WAIT: if(!req_if.making_request)							next = UPDATE_WRITE;
 				else											next = ROW_DONE_WAIT;			//@loopback
 	
 			UPDATE_WRITE:											next = NEW_ROW;
 
 			PRE_FINAL:											next = FINAL_REQUEST;
 
-			FINAL_REQUEST:	if(!making_request)								next = WAIT_FINAL;
+			FINAL_REQUEST:	if(!req_if.making_request)							next = WAIT_FINAL;
 				else											next = FINAL_REQUEST;			//@loopback
 	
-			WAIT_FINAL: if(!making_request)									next = DONE;
+			WAIT_FINAL: if(!req_if.making_request)								next = DONE;
 				else											next = WAIT_FINAL;			//@loopback
 				
 			DONE:												next = IDLE;

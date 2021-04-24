@@ -1,5 +1,4 @@
-module FPURequestController#(BUFFER_DEPTH = 512, COL_WIDTH = 10)(clk, rst_n, req_if, dram_if, buffer_rd_address, buffer_read_data, buffer_wr_address, buffer_write_data, wr_en_rd_buffer);
-	localparam CL_WIDTH = 64; //bytes
+module FPURequestController#(BUFFER_DEPTH = 512, COL_WIDTH = 10, CL_WIDTH=64)(clk, rst_n, req_if, dram_if, buffer_rd_address, buffer_read_data, buffer_wr_address, buffer_write_data, wr_en_rd_buffer);
 	input clk, rst_n;
 	output logic wr_en_rd_buffer;
 	input [7:0] buffer_read_data;
