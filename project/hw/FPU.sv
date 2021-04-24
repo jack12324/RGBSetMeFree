@@ -20,13 +20,10 @@ module FPU#(COL_WIDTH = 10, MEM_BUFFER_WIDTH = 512, CL_WIDTH = 64)(clk, mem_clk,
 	logic [7:0] col1 [COL_WIDTH-1:0];
 	logic [7:0] col2 [COL_WIDTH-1:0];
 
-	FPUCntrlReq_if req_if;
-	FPUDRAM_if dram_if;
-
 	FPUCntrlReq_if req_if();
 
 
-	FPURequestController #(.BUFFER_DEPTH(MEM_BUFFER_WIDTH)(), .COL_WIDTH(COL_WIDTH), .CL_WIDTH(CL_WIDTH)) requestController(.clk(mem_clk),
+	FPURequestController #(.BUFFER_DEPTH(MEM_BUFFER_WIDTH), .COL_WIDTH(COL_WIDTH), .CL_WIDTH(CL_WIDTH)) requestController(.clk(mem_clk),
 																.rst_n(rst_n),
 																.req_if(req_if.REQUEST_CONTROLLER),
 																.dram_if(dram_if),
@@ -37,7 +34,7 @@ module FPU#(COL_WIDTH = 10, MEM_BUFFER_WIDTH = 512, CL_WIDTH = 64)(clk, mem_clk,
 																.wr_en_rd_buffer(wr_en_rd_buffer)
 																);
 
-	FPUController #(.BUFFER_DEPTH(MEM_BUFFER_WIDTH), .COL_WIDTH(COL_WIDTH)) controller(	.clk(clk),
+	FPUController #(.MEM_BUFFER_WIDTH(MEM_BUFFER_WIDTH), .COL_WIDTH(COL_WIDTH)) controller(	.clk(clk),
 												.rst_n(rst_n),
 												.mapped_data_valid(mapped_data_valid),
 												.shift_cols(shift_cols),
@@ -77,7 +74,7 @@ module FPU#(COL_WIDTH = 10, MEM_BUFFER_WIDTH = 512, CL_WIDTH = 64)(clk, mem_clk,
 						.result_pixels(write_col)
 						);
 
-	FPUBuffers #(.COL_WIDTH(COL_WDITH)) buffers (	.clk(clk),
+	FPUBuffers #(.COL_WIDTH(COL_WIDTH)) buffers (	.clk(clk),
 							.rst_n(rst_n),
 							.shift_cols(shift_cols),
 							.col_new(read_col),

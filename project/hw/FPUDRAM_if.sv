@@ -10,4 +10,5 @@ interface FPUDRAM_if();
 	logic [7:0] request_size;	//number of cache lines for a request
 	
 	modport FPU (input dram_ready, request_done, read_data, output request, rd_wr, fpu_ready, address, write_data, request_size);
+	modport DRAM (output dram_ready, request_done, read_data, input request, rd_wr, fpu_ready, address, write_data, request_size);
 endinterface
