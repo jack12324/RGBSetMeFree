@@ -35,39 +35,40 @@ ld $r5, $r1 ; r5 = 300
 ldi $r6, 1024 ; r6 = 300
 
 ; executed Branches and NOPs and RIN
-NOP
-RIN
-NOP
-NOP
-NOP
-NOP
+nop
+rin
+nop
+nop
+nop
+nop
 
 add $r7, $R0, $R0 ; r7 = 0
-BEQ $r8
-NOP ; skipped
+beq $r8
+nop ; skipped
 add $r7, $R0, $r3 ; r7 = 1
-BNE $r8
-NOP ; skipped
+bne $r8
+nop ; skipped
 sub $r7, $R0, $r3 ; r7 = -1
-BON $r8
-NOP ; skipped
+bon $r8
+nop ; skipped
 add $r7, $r3, $r3 ; r7 = 2
-BNN $r8
-NOP ; skipped
+bnn $r8
+nop ; skipped
 
 ; not executed Jumps
 sll $r9, $r8, $r3 ; r9 = 4<<1 = 8
 add $r9, $r8, $r9 ; r9 = 4 + 8 = 12
-BNN $r9 ; skip the following jumps cause infinite loop 
-JMP 268443648 ; hex 1000_2000, where our instruction mem starts
-JAL 268443648 ; same as JMP but saves address of the next instruction (JR) to LR
-JR $LR ; if jumps are not skipped, this would jump to itself for no reason :D
+bnn $r9 ; skip the following jumps cause infinite loop 
+jmp 268443648 ; hex 1000_2000, where our instruction mem starts
+jal 268443648 ; same as JMP but saves address of the next instruction (JR) to LR
+jr $LR ; if jumps are not skipped, this would jump to itself for no reason :D
 
 
-NOP
-NOP
-NOP
-NOP
-NOP
+nop
+nop
+nop
+nop
+nop
+
 
 ; end
