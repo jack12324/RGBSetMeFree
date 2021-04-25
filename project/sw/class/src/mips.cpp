@@ -292,9 +292,9 @@ namespace priscas
 			throw mt_bad_mnemonic();
 		}
 
-		// Check for insufficient arguments
-		if(args.size() >= 1)
+		if(args.size() > 1)
 		{
+			// Check for insufficient arguments	todo
 			if	(
 					(r_inst(current_op) && args.size() != 2 && current_op == priscas::JR) || // JR
 					(m_inst(current_op) && args.size() != 3) || // LDI or STI
@@ -312,7 +312,6 @@ namespace priscas
 						if((rs = priscas::friendly_to_numerical(args[1].c_str())) <= priscas::INVALID)
 						rs = priscas::get_reg_num(args[1].c_str());
 					}
-
 					else
 					{
 						if((rd = priscas::friendly_to_numerical(args[1].c_str())) <= priscas::INVALID)
@@ -358,6 +357,11 @@ namespace priscas
 			{
 				if(mem_inst(current_op))
 				{
+					//old
+					//ST reg, imm(reg)
+					//ours todo
+					//ST reg, reg
+					//STI reg, imm
 					bool left_parenth = false; bool right_parenth = false;
 					std::string wc = args[2];
 					std::string imm_s = std::string();
@@ -386,7 +390,6 @@ namespace priscas
 
 				else
 				{
-					// later, MUST check for branches
 					if((rs = priscas::friendly_to_numerical(args[2].c_str())) <= priscas::INVALID)
 					rs = priscas::get_reg_num(args[2].c_str());
 				}
@@ -404,12 +407,10 @@ namespace priscas
 				if((rt = priscas::friendly_to_numerical(args[3].c_str())) <= priscas::INVALID)
 					rt = priscas::get_reg_num(args[3].c_str());
 				
-			}
-						
+			}     //i_inst used to be
 			else if(m_inst(current_op))
 			{
-
-				if(jump_syms.has(args[3]))
+				if(jump_syms.has(args[3])) // remove todo (since we use reg and imm)
 				{
 					priscas::BW_32 addr = baseAddress.AsUInt32();
 					priscas::BW_32 label_PC = static_cast<uint32_t>(jump_syms.lookup_from_sym(std::string(args[3].c_str())));

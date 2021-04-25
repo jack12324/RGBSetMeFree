@@ -24,39 +24,50 @@ neg $r5, $r4 ; $r5 = -300
 sll $r2, $r9, $r9 ; $r2 = 1<<1 = 2
 slr $r3, $r2, $r9 ; $r3 = 2>>1 = 1
 sar $r4, $r1, $R0 ; $r4 = 300>>0 = 300
+sll $r8, $r2, $r9 ; r8 = 2<<1 = 4 for branching later
 
 ; Stores
-st $r1, $r1 ; this might be bad address, idk
-sti $r4, 1024 ; this might be bad address, idk
+st $r1, $r1 ; [300] = 300 this might be bad address, idk
+sti $r4, 1024 ; [1024] = 300 this might be bad address, idk
 
 ; Loads
-ld $r5, $r1 ; 300
-ldi $r6, 1024 ; 300
+ld $r5, $r1 ; r5 = 300
+ldi $r6, 1024 ; r6 = 300
 
-; Branches and
-;slt $s3, $s1, $s2 ; $s3 = 0
-;slti $s4, $s1, 0x100 ; $s4 = 1
-;sltiu $s5, $zero, -1 ; $s5 = 1 - Note in unsigned -1 is the largest integer
-;sltu $s6, $zero, $a0 ; $s6 = 1 - same as previous
+; executed Branches and NOPs and RIN
+NOP
+RIN
+NOP
+NOP
+NOP
+NOP
 
-;beq $v0, $v0, SKIP_1
-;ori $k0, $zero, -1 ; error condition
+add $r7, $R0, $R0 ; r7 = 0
+BEQ $r8
+NOP ; skipped
+add $r7, $R0, $r3 ; r7 = 1
+BNE $r8
+NOP ; skipped
+sub $r7, $R0, $r3 ; r7 = -1
+BON $r8
+NOP ; skipped
+add $r7, $r3, $r3 ; r7 = 2
+BNN $r8
+NOP ; skipped
 
-SKIP_1:
-;bne $s3, $s5, SKIP_2
-;ori $k0, $zero, -1
+; not executed Jumps
+sll $r9, $r8, $r3 ; r9 = 4<<1 = 8
+add $r9, $r8, $r9 ; r9 = 4 + 8 = 12
+BNN $r9 ; skip the following jumps cause infinite loop 
+JMP 268443648 ; hex 1000_2000, where our instruction mem starts
+JAL 268443648 ; same as JMP but saves address of the next instruction (JR) to LR
+JR $LR ; if jumps are not skipped, this would jump to itself for no reason :D
 
-TMP:
-;jr $ra
-;ori $k0, $zero, -1
 
-SKIP_2:
-;j SKIP_3
-;ori $k0, $zero, -1
+NOP
+NOP
+NOP
+NOP
+NOP
 
-SKIP_3:
-;jal TMP
-;sll $zero, $zero, 0 ; No-op
-;sll $zero, $zero, 0 ; No-op
-;sll $zero, $zero, 0 ; No-op
-;sll $zero, $zero, 0 ; No-op
+; end
