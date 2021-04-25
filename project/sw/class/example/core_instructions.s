@@ -9,8 +9,8 @@ addi $r1, $r1, 200 ; $r1 = 300
 addi $r9, $R0, 1 ; $r9 = 1
 add $r2, $R0, $r1 ; $r2 = 0 + $r1 (300)
 add $r2, $r1, $R0 ; $r2 = 300
-sub $r3, $r2, 50 ;
-subi $r3, 50, $r2 ;
+subi $r3, $r2, 50 ;
+sub $r3, $r2, $r2 ;
 
 ; Ors and Ands (Basic Logic)
 or $r1, $R0, $r1 ; $r1 = 300

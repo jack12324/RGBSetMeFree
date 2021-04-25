@@ -359,7 +359,7 @@ namespace priscas
 						
 			else if(m_inst(current_op))
 			{
-				imm = priscas::get_imm(imm_s.c_str());
+				imm = priscas::get_imm(args[2].c_str());
 			}
 			else if(j_inst(current_op)){}
 		}
