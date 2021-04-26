@@ -4,8 +4,9 @@ module FPU_tb();
 	logic [31:0] mapped_data;
 	FPUDRAM_if dram_if();
 	logic [31:0] mapped_address;
+	logic done;
 
-	FPU #(.COL_WIDTH(10), .MEM_BUFFER_WIDTH(512), .CL_WIDTH(64)) dut(.clk(clk), .rst_n(rst_n), .mapped_data_valid(mapped_data_valid), .mapped_data(mapped_data), .mapped_address(mapped_address), .dram_if(dram_if.FPU));
+	FPU #(.COL_WIDTH(10), .MEM_BUFFER_WIDTH(512), .CL_WIDTH(64)) dut(.clk(clk), .rst_n(rst_n), .done(done), .mapped_data_valid(mapped_data_valid), .mapped_data(mapped_data), .mapped_address(mapped_address), .dram_if(dram_if.FPU));
 
 	int errors;
 	logic [31:0] start_address, result_address, start_sig;

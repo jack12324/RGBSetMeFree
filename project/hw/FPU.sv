@@ -1,12 +1,13 @@
-module FPU#(COL_WIDTH = 10, MEM_BUFFER_WIDTH = 512, CL_WIDTH = 64)(clk, rst_n, mapped_data_valid, mapped_data, mapped_address, dram_if);
+module FPU#(COL_WIDTH = 10, MEM_BUFFER_WIDTH = 512, CL_WIDTH = 64)(clk, rst_n, done, mapped_data_valid, mapped_data, mapped_address, dram_if);
 	
 	//using different clock speeds doesn't work in testbench
 	input clk, rst_n, mapped_data_valid;
 	input [31:0] mapped_data;
 	FPUDRAM_if dram_if;
+	output done;
 	output [31:0] mapped_address;
 
-	logic shift_cols, done, rd_buffer_sel, wr_buffer_sel, wr_en_wr_buffer, wr_en_rd_buffer;
+	logic shift_cols, rd_buffer_sel, wr_buffer_sel, wr_en_wr_buffer, wr_en_rd_buffer;
 	logic signed [7:0] filter [8:0];
 	logic [7:0] buffer_read_data;
 	logic [CL_WIDTH-1: 0] buffer_write_data;
