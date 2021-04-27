@@ -142,7 +142,7 @@ namespace priscas
 			operation == SAR ? true :
 			operation == LD ? true :
 			operation == ST ? true :
-			operation == NOP ? true :
+			operation == nop ? true :
 			operation == BEQ ? true :
 			operation == BEQ ? true :
 			operation == BNE ? true :
@@ -278,7 +278,7 @@ namespace priscas
 		else if("ldi" ==  args[0]) { current_op = priscas::LDI; }
 		else if("st" == args[0]) { current_op = priscas::ST; }
 		else if("sti" == args[0]) { current_op = priscas::STI; }
-		else if("nop" == args[0]) { current_op = priscas::NOP; }
+		else if("nop" == args[0]) { current_op = priscas::nop; }
 		else if("beq" == args[0]) { current_op = priscas::BEQ; }
 		else if("bne" == args[0]) { current_op = priscas::BNE; }
 		else if("bon" == args[0]) { current_op = priscas::BON; }

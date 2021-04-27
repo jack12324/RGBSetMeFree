@@ -5,16 +5,16 @@ addi $r8, $R0, 20 ; branch value
 sub $r9, $r1, $r2 ; condition
 beq $r8
 addi $r3, $R0, 15 ; +0
-NOP ; +4
-NOP ; +8
-NOP ; +12
+nop ; +4
+nop ; +8
+nop ; +12
 ;.exit
-NOP ; +16
+nop ; +16
 
 ;SUCCESS:
-addi $k1, $R0, 15  ; +20
-NOP
-NOP
-NOP
-NOP
+addi $r4, $R0, 15  ; +20
+nop
+nop
+nop
+nop
 

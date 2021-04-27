@@ -1,17 +1,17 @@
-# ECE 552
-# based on Fall 2018 Midterm Problem 6
-# Credit: Professor Joshua San Miguel @ UW-Madison
+;# ECE 552
+;# based on Fall 2018 Midterm Problem 6
+;# Credit: Professor Joshua San Miguel @ UW-Madison
 
-# Setup
+;# Setup
 addi $r1, $R0, 1000
 addi $r2, $R0, 1
 addi $r3, $R0, 1002
 addi $r4, $R0, 1000
-NOP
-NOP
-NOP
+nop
+nop
+nop
 
-# Execution a.k.a. The Midterm
+;# Execution a.k.a. The Midterm
 ; I1:
 add $r1, $r1, $r2 ; -16
 addi $r8, $R0, -16 ; -12
@@ -22,10 +22,10 @@ ld $r1, $r4
 addi $r4, $r4, 4
 st $r1, $r4
 
-# No ops to get until sw inst
-# Reaches WB
-NOP
-NOP
-NOP
-NOP
+;# No ops to get until sw inst
+;# Reaches WB
+nop
+nop
+nop
+nop
 ;.exit
