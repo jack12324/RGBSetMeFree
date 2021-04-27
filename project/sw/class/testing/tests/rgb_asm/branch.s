@@ -1,8 +1,7 @@
-ldi $r9, SYM
-
-SYM:
-    addi $r1, $r1, 1
-    addi $r2, $r0, 1000
-    sub $r3, $r1, $r2
-    bne $r9
-.exit
+;SYM:
+addi $r1, $r1, 1 ; -20
+addi $r2, $R0, 1000 ; -16
+addi $r8, $R0, -20 ; -12
+sub $r9, $r1, $r2 ; -8
+bne $r8 ; to SYM -4
+;.exit
