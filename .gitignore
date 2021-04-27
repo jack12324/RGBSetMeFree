@@ -6,3 +6,10 @@ work/
 *.bak
 ECE552/
 *.swp
+*.swo
+*.swn
+*.swm
+synth
+*.jack
+*.mti
+*transcript

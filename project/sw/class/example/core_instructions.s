@@ -34,7 +34,7 @@ sti $r4, 1024 ; [1024] = 300 this might be bad address, idk
 ld $r5, $r1 ; r5 = 300
 ldi $r6, 1024 ; r6 = 300
 
-; executed Branches and NOPs and RIN
+; executed Branches and nops and RIN
 nop
 rin
 nop

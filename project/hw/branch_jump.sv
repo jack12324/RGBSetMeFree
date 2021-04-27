@@ -7,7 +7,8 @@ module Branch_Jump(clk, rst_n,
     input clk, rst_n;
     input branch, jump;
     input [1:0] FL;
-    input [31:0] pc, pc_4, pc_immi, reg_a, immi;
+    input [1:0] op_code;
+    input [31:0] pc_4, pc_immi, reg_a, immi;
 
     output [31:0] PC, LR_write_val;
     output LR_write;

@@ -27,7 +27,7 @@
  * and a jump list for functional routines
  *
  * Instruction Formats:
- * R - 5 opcode, 5 rd, 5 rs, 5 rt, 12 Imm. includes imm instructions, NEGate, mem instructions without imm, branch instructions, JR, and NOP and RIN
+ * R - 5 opcode, 5 rd, 5 rs, 5 rt, 12 Imm. includes imm instructions, NEGate, mem instructions without imm, branch instructions, JR, and nop and RIN
  * M - 5 opcode, 5 rd, 5 rs, 1 blank, 16  Imm. includes mem imm instructions
  * J - 5 opcode, 13 blank, 14 Imm. includes JMP and JAL but not JR
  *
@@ -110,8 +110,8 @@ namespace priscas
 		LDI = 12,
 		ST = 13,
 		STI = 14,
-		// NOP
-		NOP = 15,
+		// nop
+		nop = 15,
 		// Control
 		BEQ = 16,
 		BNE = 17,
