@@ -3,17 +3,16 @@ import shutil
 import numpy as np
 import cv2
 
-# file names for input, output image and input filter
 # these file will be loaded to/from shared host memory
-input_img_fpath = 'input.txt'
-img_size_fpath = 'size.txt'
-input_filter_fpath = 'filter.txt'
-output_img_fpath = 'output.txt'
+input_img_fpath = 'input.txt' # input image
+img_size_fpath = 'size.txt' # image size
+input_filter_fpath = 'filter.txt' # input filter
+output_img_fpath = 'output.txt' # output image
 
 input_filter = np.array([
-  [1, 1, 1],
-  [1, 1, 1],
-  [1, 1, 1],
+  [1, 2, 3],
+  [4, 5, 6],
+  [7, 8, 9],
 ])
 
 img = cv2.imread('test.jpeg')
@@ -31,7 +30,7 @@ with open(input_img_fpath, 'wb') as f:
 # save image size
 with open (img_size_fpath, 'wb') as f:
   # convert height, width to 2 bytes big endian each
-  data = height.to_bytes(2, 'big') + width.to_bytes(2, 'big')
+  data = height.to_bytes(2, 'little') + width.to_bytes(2, 'little')
   f.write(data)
 
 # save filter data as bytes
