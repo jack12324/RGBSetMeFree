@@ -61,7 +61,7 @@
 
 module proc (/*AUTOARG*/
    // Outputs
-   err, 
+   err,
    // Inputs
    clk, rst
    );
@@ -79,8 +79,8 @@ module proc (/*AUTOARG*/
 	assign err = fetchErr | decodeErr | executeErr |  memoryErr | wbErr;
    // As desribed in the homeworks, use the err signal to trap corner
    // cases that you think are illegal in your statemachines
-   
-   
+
+
    /* your code here -- should include instantiations of fetch, decode, execute, mem and wb modules */
 
 
@@ -97,14 +97,14 @@ module proc (/*AUTOARG*/
 	wire FeDone, FeStall;
 	wire MeDone, MeStall; //data memory access
 	wire globalPause = ~rst & ~( MeStall);
-	
+
 //IF/ID
 	wire [15:0] FeDe_outAddr;
 	regDFF FeDe_nextAddr(.regQ(FeDe_outAddr), .regD(FeDe_inAddr), .clk(clk), .rst(rst), .writeEn(globalPause));
-	wire [15:0] FeDe_outInstr; 
+	wire [15:0] FeDe_outInstr;
 	wire [15:0] IFInput;
 	regDFF FeDe_Instr(.regQ(FeDe_outInstr), .regD(IFInput), .clk(clk), .rst(1'b0), .writeEn(rst | globalPause));
-												
+
 
 	// for decode
 		// control
@@ -115,7 +115,7 @@ module proc (/*AUTOARG*/
 
 //ID/EX
 
-	
+
 	wire [15:0] DeEx_inNextInstrAddr;
 	wire [15:0] DeEx_outNextInstrAddr;
 	regDFF DeEx_nextInstrAddr(.regQ(DeEx_outNextInstrAddr), .regD(DeEx_inNextInstrAddr), .clk(clk), .rst(rst), .writeEn(globalPause));
@@ -142,7 +142,7 @@ module proc (/*AUTOARG*/
 	reg DeEx_inWriteEn;
 	wire DeEx_outWriteEn;
 	regDFF #(1) DeEx_WriteEn(.regQ(DeEx_outWriteEn), .regD(DeEx_inWriteEn), .clk(clk), .rst(rst), .writeEn(globalPause));
-	
+
 	// execute control
 	reg [1:0] DeEx_inALUSrc1;
 	wire [1:0] DeEx_outALUSrc1;
@@ -174,7 +174,7 @@ module proc (/*AUTOARG*/
 	reg [2:0] DeEx_inPCSrc2Code;
 	wire [2:0] DeEx_outPCSrc2Code;
 	regDFF #(3) DeEx_PCSrc2Code(.regQ(DeEx_outPCSrc2Code), .regD(DeEx_inPCSrc2Code), .clk(clk), .rst(rst), .writeEn(globalPause));
-	reg DeEx_inCmp; 
+	reg DeEx_inCmp;
 	wire DeEx_outCmp;
 	regDFF #(1) DeEx_Cmp(.regQ(DeEx_outCmp), .regD(DeEx_inCmp), .clk(clk), .rst(rst), .writeEn(globalPause));
 	reg [1:0] DeEx_inCmpRsltCode;
@@ -227,7 +227,58 @@ module proc (/*AUTOARG*/
 	//wire [15:0] exImm;
 		// outputs
 	//wire [15:0] nextAddr;
-	
+
+
+	logic DeEx_out_Branch;
+	logic DeEx_out_Jump;
+	logic [4:0] DeEx_out_ALU_op;
+	logic [1:0] DeEx_out_ALU_src;
+	logic [1:0] forward1_sel;
+	logic [1:0] forward2_sel;
+	logic DeEx_out_mem_wrt;
+	logic DeEx_out_reg_wrt_en;
+	logic DeEx_out_mem_en;
+	logic [1:0] DeEx_out_result_sel;
+	logic [31:0] DeEx_out_PC_next;
+	logic [31:0] DeEx_out_reg_1;
+	logic [31:0] DeEx_out_reg_2;
+	logic [31:0] DeEx_out_imm;
+	logic [1:0] DeEx_out_FL;
+	logic [31:0] DeEx_out_LR;
+	logic [31:0] reg_wrt_data;
+	logic [31:0] ExMe_out_alu_out;
+	logic [31:0] ExMe_in_alu_out;
+	logic [31:0] ExMe_in_PC_next;
+	logic [31:0] ExMe_in_LR_wrt_data;
+	logic [1:0] ExMe_in_FL_wrt_data;
+	execute i_execute (
+		.clk                (clk                ),
+		.rst                (rst                ),
+		.DeEx_out_Branch    (DeEx_out_Branch    ),
+		.DeEx_out_Jump      (DeEx_out_Jump      ),
+		.DeEx_out_ALU_op    (DeEx_out_ALU_op    ),
+		.DeEx_out_ALU_src   (DeEx_out_ALU_src   ),
+		.forward1_sel       (forward1_sel       ),
+		.forward2_sel       (forward2_sel       ),
+		.DeEx_out_mem_wrt   (DeEx_out_mem_wrt   ),
+		.DeEx_out_reg_wrt_en(DeEx_out_reg_wrt_en),
+		.DeEx_out_mem_en    (DeEx_out_mem_en    ),
+		.DeEx_out_result_sel(DeEx_out_result_sel),
+		.DeEx_out_PC_next   (DeEx_out_PC_next   ),
+		.DeEx_out_reg_1     (DeEx_out_reg_1     ),
+		.DeEx_out_reg_2     (DeEx_out_reg_2     ),
+		.DeEx_out_imm       (DeEx_out_imm       ),
+		.DeEx_out_FL        (DeEx_out_FL        ),
+		.DeEx_out_LR        (DeEx_out_LR        ),
+		.reg_wrt_data       (reg_wrt_data       ),
+		.ExMe_out_alu_out   (ExMe_out_alu_out   ),
+		.ExMe_in_alu_out    (ExMe_in_alu_out    ),
+		.ExMe_in_PC_next    (ExMe_in_PC_next    ),
+		.ExMe_in_LR_wrt_data(ExMe_in_LR_wrt_data),
+		.ExMe_in_FL_wrt_data(ExMe_in_FL_wrt_data)
+	);
+
+
 
 //Ex/Mem
 	wire ExMe_inPCSrc2;
@@ -276,7 +327,7 @@ module proc (/*AUTOARG*/
 	// for memory
 		// inputs
 	//wire [15:0] resultExMem;
-	//wire [15:0] reg2ExMem;	
+	//wire [15:0] reg2ExMem;
 		// outputs
 	//wire [15:0] resultMemWB;
 		// control
@@ -285,7 +336,7 @@ module proc (/*AUTOARG*/
         wire savedbranchflushout;
  	wire flush = ExMe_inPCSrc2 ? 1'b1 : (FeDone ? 1'b0 : savedbranchflushout);
 	regDFF #(1) fetchbranchsavedflush(.regQ(savedbranchflushout), .regD(flush & FeStall), .clk(clk), .rst(rst), .writeEn(1'b1));
-		
+
 
 
 
@@ -310,7 +361,7 @@ module proc (/*AUTOARG*/
 	wire MeWb_outHalt;
 	regDFF #(1) MeWb_Halt(.regQ(MeWb_outHalt), .regD(MeWb_inHalt), .clk(clk), .rst(rst), .writeEn(globalPause));
 
-	
+
 	// for wb
 		// inputs
 	//wire [15:0] readData;
@@ -321,25 +372,25 @@ module proc (/*AUTOARG*/
 	//reg DeEx_inMemToReg;
 
 	// instantiate submodules
-	fetch fetchStage(.nextAddr(PCinput), .nextInstrAddr(FeDe_inAddr), .instr(FeDe_inInstr), .err(fetchErr), 
+	fetch fetchStage(.nextAddr(PCinput), .nextInstrAddr(FeDe_inAddr), .instr(FeDe_inInstr), .err(fetchErr),
 .clk(clk), .rst(rst), .halt(delay), .Done(FeDone), .Stall(FeStall), .flush(ExMe_inPCSrc2), .savedflush(savedbranchflushout));
-	
-	decode decodeStage(.instr(IDOutput), .regWriteData(regWriteData), .writeRegAddrIn(MeWb_outWriteRegAddr), 
-.writeRegAddrOut(DeEx_inWriteRegAddr), .writeEn(MeWb_outWriteEn), .nextInstrIn(FeDe_outAddr), .nextInstrOut(DeEx_inNextInstrAddr), 
-.reg1Data(DeEx_inReg1), .reg2Data(DeEx_inReg2), .exImm(DeEx_inExImm), .dstReg(dstReg), .sizeslc(sizeslc), .extslc(extslc), .err(decodeErr), 
+
+	decode decodeStage(.instr(IDOutput), .regWriteData(regWriteData), .writeRegAddrIn(MeWb_outWriteRegAddr),
+.writeRegAddrOut(DeEx_inWriteRegAddr), .writeEn(MeWb_outWriteEn), .nextInstrIn(FeDe_outAddr), .nextInstrOut(DeEx_inNextInstrAddr),
+.reg1Data(DeEx_inReg1), .reg2Data(DeEx_inReg2), .exImm(DeEx_inExImm), .dstReg(dstReg), .sizeslc(sizeslc), .extslc(extslc), .err(decodeErr),
 .clk(clk), .rst(rst));
-	
-	execute executeStage(.err(executeErr), .clk(clk), .rst(rst), .nextInstrAddr(DeEx_outNextInstrAddr), 
-.reg1(ExInput1), .reg2In(ExInput2), 
-.exImm(DeEx_outExImm), .nextAddr(ExMe_inNextAddr), .result(ExMe_inResult), .reg2Out(ExMe_inReg2), .cmp(DeEx_outCmp), 
+
+	execute executeStage(.err(executeErr), .clk(clk), .rst(rst), .nextInstrAddr(DeEx_outNextInstrAddr),
+.reg1(ExInput1), .reg2In(ExInput2),
+.exImm(DeEx_outExImm), .nextAddr(ExMe_inNextAddr), .result(ExMe_inResult), .reg2Out(ExMe_inReg2), .cmp(DeEx_outCmp),
 .cmpRsltCode(DeEx_outCmpRsltCode), .PCsrc1(DeEx_outPCSrc1), .PCSrc2Code(DeEx_outPCSrc2Code), .PCSrc2(ExMe_inPCSrc2),
-.ALUsrc1(DeEx_outALUSrc1), .ALUsrc2(DeEx_outALUSrc2), 
-.ALUcntrl(DeEx_outALUCtrl), .memAddrSrc(DeEx_outMemAddrSrc), .ALUCin(DeEx_outALUCin), .invA(DeEx_outInvA), .invB(DeEx_outInvB), .sign(DeEx_outSign), 
+.ALUsrc1(DeEx_outALUSrc1), .ALUsrc2(DeEx_outALUSrc2),
+.ALUcntrl(DeEx_outALUCtrl), .memAddrSrc(DeEx_outMemAddrSrc), .ALUCin(DeEx_outALUCin), .invA(DeEx_outInvA), .invB(DeEx_outInvB), .sign(DeEx_outSign),
 .zero(ExMe_inZero), .ofl(ofl), .ALUOutput15(ALUOutput15));
-	
-	memory memoryStage(.err(memoryErr), .clk(clk), .rst(rst), .resultIn(ExMe_outResult), .resultOut(MeWb_inResult), .reg2(ExMe_outReg2), 
+
+	memory memoryStage(.err(memoryErr), .clk(clk), .rst(rst), .resultIn(ExMe_outResult), .resultOut(MeWb_inResult), .reg2(ExMe_outReg2),
 .readData(MeWb_inReadData), .memRead(ExMe_outMemRead), .memWrite(ExMe_outMemWrite), .createdump(ExMe_outCreateDump), .Done(MeDone), .Stall(MeStall));
-	
+
 	wb wbStage(.err(wbErr), .clk(clk), .rst(rst), .readData(MeWb_outReadData), .result(MeWb_outResult), .memToReg(MeWb_outMemToReg), .regWriteData(regWriteData));
 
 	// control logic:
@@ -362,9 +413,9 @@ module proc (/*AUTOARG*/
 	assign ExMe_inHalt = DeEx_outHalt;
 	assign MeWb_inHalt = ExMe_outHalt;
 	// Ex->Ex forwarding ? result at ExMem : [Mem->Ex forwarding ? result at MemWb (which is just wb's result) : regular decode registers]
-	assign ExInput1 = ((DeEx_outRs==ExMe_outWriteRegAddr) & ExMe_outWriteEn) ? 
+	assign ExInput1 = ((DeEx_outRs==ExMe_outWriteRegAddr) & ExMe_outWriteEn) ?
 			ExMe_outResult : (((DeEx_outRs==MeWb_outWriteRegAddr) & MeWb_outWriteEn) ? regWriteData : DeEx_outReg1);
-	assign ExInput2 = ((DeEx_outRt==ExMe_outWriteRegAddr) & ExMe_outWriteEn) ? 
+	assign ExInput2 = ((DeEx_outRt==ExMe_outWriteRegAddr) & ExMe_outWriteEn) ?
 			ExMe_outResult : (((DeEx_outRt==MeWb_outWriteRegAddr) & MeWb_outWriteEn) ? regWriteData : DeEx_outReg2);
 	// predicting/stalling
 	assign ExMe_inBranchOrJump = DeEx_outBranchOrJump;
@@ -379,11 +430,11 @@ module proc (/*AUTOARG*/
 
 	// flushing logic
 	// whenever ExMe_inPCSrc2 is high, we have to flush what is in Fetch and Decode
-	
+
 	always @(*) begin
 		// defaults for control is all off/0
 		// decode
-		dstReg = 2'd0;	
+		dstReg = 2'd0;
 		sizeslc = 2'd0;
 		extslc = 1'b0;
 		DeEx_inWriteEn = 1'b0;
@@ -480,7 +531,7 @@ module proc (/*AUTOARG*/
 				DeEx_inALUCtrl = 3'd4;
 				DeEx_inMemWrite = (ExMe_inPCSrc2 | DeEx_outHalt) ? 1'b0 : 1'b1;
 				end
-			`LD: begin	
+			`LD: begin
 				DeEx_inWriteEn = ExMe_inPCSrc2 ? 1'b0 : 1'b1;
 				dstReg = 2'd1;
 				extslc = 1'b1;
@@ -582,7 +633,7 @@ module proc (/*AUTOARG*/
 			end
 			`BEQZ: begin
 				sizeslc = 2'b1;
-				extslc = 1'b1; 
+				extslc = 1'b1;
 				//do logic for DeEx_inPCSrc2
 				DeEx_inPCSrc2Code = 3'd1;
 				//DeEx_inPCSrc2 = zero;
@@ -603,7 +654,7 @@ module proc (/*AUTOARG*/
 			`BLTZ: begin
 				sizeslc = 2'd1;
 				extslc = 1'b1;
-				//do DeEx_inPCSrc2				
+				//do DeEx_inPCSrc2
 				DeEx_inPCSrc2Code = 3'd3;
 				//DeEx_inPCSrc2 = ALUOutput15;
 				DeEx_inALUSrc2 = 2'd3;
@@ -612,8 +663,8 @@ module proc (/*AUTOARG*/
 			end
 			`BGEZ: begin
 				sizeslc = 2'd1;
-				extslc = 1'b1; 
-				//do DeEx_inPCSrc2				
+				extslc = 1'b1;
+				//do DeEx_inPCSrc2
 				DeEx_inPCSrc2Code = 3'd4;
 				//DeEx_inPCSrc2 = ~ALUOutput15;
 				DeEx_inALUSrc2 = 2'd3;
@@ -640,7 +691,7 @@ module proc (/*AUTOARG*/
 			`J: begin
 				sizeslc = 2'd2;
 				extslc = 1'b1;
-				//DeEx_inPCSrc2 = 1'b1;				
+				//DeEx_inPCSrc2 = 1'b1;
 				DeEx_inPCSrc2Code = 3'd5;
 				DeEx_inBranchOrJump = 1'b1;
 			end
@@ -649,7 +700,7 @@ module proc (/*AUTOARG*/
 				extslc = 1'b1;
 				DeEx_inPCSrc1 = 1'b1;
 				DeEx_inALUSrc2 = 2'd1;
-				DeEx_inALUCtrl = 3'd4;				
+				DeEx_inALUCtrl = 3'd4;
 				DeEx_inPCSrc2Code = 3'd5;
 				DeEx_inBranchOrJump = 1'b1;
 			end
@@ -658,7 +709,7 @@ module proc (/*AUTOARG*/
 				dstReg = 2'd3;
 				sizeslc = 2'd2;
 				extslc = 1'b1;
-				//DeEx_inPCSrc1 = 1'b1; old PCSrc1 version				
+				//DeEx_inPCSrc1 = 1'b1; old PCSrc1 version
 				DeEx_inPCSrc2Code = 3'd5;
 				//DeEx_inPCSrc2 = 1'b1;
 				DeEx_inMemAddrSrc = 1'b1;
@@ -669,7 +720,7 @@ module proc (/*AUTOARG*/
 				dstReg = 2'd3;
 				sizeslc = 2'd1;
 				extslc = 1'b1;
-				DeEx_inPCSrc1 = 1'b1;				
+				DeEx_inPCSrc1 = 1'b1;
 				DeEx_inPCSrc2Code = 3'd5;
 				DeEx_inALUSrc2 = 2'd1;
 				DeEx_inALUCtrl = 3'd4;
