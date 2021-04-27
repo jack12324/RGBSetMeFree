@@ -8,3 +8,4 @@ synth
 *.mti
 *.mpf
 *transcript
+.vscode
