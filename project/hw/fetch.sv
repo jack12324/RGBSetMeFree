@@ -10,13 +10,13 @@
 
 `define NOP 32'b01111xxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-module fetch (clk, rst_n, in_PC_next, stall, flush, INT, INT_INST, out_PC_next, instr, Done, ACK);
+module fetch (clk, rst_n, in_PC_next, stall, flush, INT, INT_INSTR, out_PC_next, instr, Done, ACK);
 	input clk, rst_n;
 	input [31:0] in_PC_next;
 	input stall, flush;
 	// for interrupts
 	input INT;
-	input [31:0] INT_INST;
+	input [31:0] INT_INSTR;
 
 	output [31:0] out_PC_next;
 	output [31:0] instr;

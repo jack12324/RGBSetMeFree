@@ -10,16 +10,16 @@
 `define SUB 	32'b00010xxxxxxxxxxxxxxxxxxxxxxxxxxx
 `define SUBI 	32'b00011xxxxxxxxxxxxxxxxxxxxxxxxxxx
 `define AND 	32'b00100xxxxxxxxxxxxxxxxxxxxxxxxxxx
-`define OR 	32'b00101xxxxxxxxxxxxxxxxxxxxxxxxxxx
+`define OR 		32'b00101xxxxxxxxxxxxxxxxxxxxxxxxxxx
 `define XOR 	32'b00110xxxxxxxxxxxxxxxxxxxxxxxxxxx
 `define NEG 	32'b00111xxxxxxxxxxxxxxxxxxxxxxxxxxx
 `define SLL 	32'b01000xxxxxxxxxxxxxxxxxxxxxxxxxxx
 `define SLR 	32'b01001xxxxxxxxxxxxxxxxxxxxxxxxxxx
 `define SAR 	32'b01010xxxxxxxxxxxxxxxxxxxxxxxxxxx
 // Mem stuff
-`define LD 	32'b01011xxxxxxxxxxxxxxxxxxxxxxxxxxx
+`define LD 		32'b01011xxxxxxxxxxxxxxxxxxxxxxxxxxx
 `define LDI 	32'b01100xxxxxxxxxxxxxxxxxxxxxxxxxxx
-`define ST 	32'b01101xxxxxxxxxxxxxxxxxxxxxxxxxxx
+`define ST 		32'b01101xxxxxxxxxxxxxxxxxxxxxxxxxxx
 `define STI 	32'b01110xxxxxxxxxxxxxxxxxxxxxxxxxxx
 // NOP
 `define NOP 	32'b01111xxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -28,8 +28,8 @@
 `define BNE 	32'b10001xxxxxxxxxxxxxxxxxxxxxxxxxxx
 `define BON 	32'b10010xxxxxxxxxxxxxxxxxxxxxxxxxxx
 `define BNN 	32'b10011xxxxxxxxxxxxxxxxxxxxxxxxxxx
-`define J 	32'b10100xxxxxxxxxxxxxxxxxxxxxxxxxxx
-`define JR 	32'b10101xxxxxxxxxxxxxxxxxxxxxxxxxxx
+`define J 		32'b10100xxxxxxxxxxxxxxxxxxxxxxxxxxx
+`define JR 		32'b10101xxxxxxxxxxxxxxxxxxxxxxxxxxx
 `define JAL 	32'b10110xxxxxxxxxxxxxxxxxxxxxxxxxxx
 // RIN, note the OP skips to last value, not the next value
 `define RIN 	32'b11111xxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -93,7 +93,7 @@ module decode (
 	// control for Writeback
 	output logic [1:0] result_sel;
 	output logic next_reg_wrt_en;
-	output logic next_reg_wrt_sel;
+	output logic [4:0] next_reg_wrt_sel;
 
 	// read/write registers
 	regFile_bypass registers(.clk(clk), .rst(rst_n), .read1Data(reg_1_data), .read2Data(reg_2_data), 
