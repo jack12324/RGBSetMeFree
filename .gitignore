@@ -9,3 +9,4 @@ synth
 *.mpf
 *transcript
 .vscode
+*.txt

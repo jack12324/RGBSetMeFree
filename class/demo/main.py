@@ -38,14 +38,15 @@ with open (img_size_fpath, 'wb') as f:
 with open(input_filter_fpath, 'wb') as f:
   f.write(input_filter.flatten().tobytes())
 
-# cload script to interact with fpga
+# interact with fpga
 # shutil.copy(input_img_fpath, output_img_fpath) # mock fpga interface
-os.system('../bin/cload_sim -i script.cload')
+os.system('../bin/cload_sim')
+print('finish')
 
 # read image data back from output file
 with open(output_img_fpath, 'rb') as f:
   # read back as unsigned byte array
-  output = np.frombuffer(f.read(), dtype='B')
+  output = np.frombuffer(f.read()[:height*width*3], dtype='B')
   print(output.shape)
   # reshape to original image shape
   output = np.reshape(output, shape)
