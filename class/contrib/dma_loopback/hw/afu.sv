@@ -68,7 +68,7 @@
 
 `include "cci_mpf_if.vh"
 
-module afu 
+module afu
   (
    input clk,
    input rst,
@@ -77,7 +77,7 @@ module afu
    );
 
    localparam int CL_ADDR_WIDTH = $size(t_ccip_clAddr);
-      
+
    // I want to just use dma.count_t, but apparently
    // either SV or Modelsim doesn't support that. Similarly, I can't
    // just do dma.SIZE_WIDTH without getting errors or warnings about
@@ -85,7 +85,7 @@ module afu
    // some tools. Declaring a function within the interface works just fine in
    // some tools, but in Quartus I get an error about too many ports in the
    // module instantiation.
-   typedef logic [CL_ADDR_WIDTH:0] count_t;   
+   typedef logic [CL_ADDR_WIDTH:0] count_t;
    count_t 	size;
    logic 	go;
    logic 	done;
@@ -103,13 +103,14 @@ module afu
        .ADDR_WIDTH(VIRTUAL_BYTE_ADDR_WIDTH),
        .SIZE_WIDTH(CL_ADDR_WIDTH+1)
        )
-     memory_map (.*);
+   memory_map (.*);
 
    wire local_dma_re, local_dma_we;
 
    wire [1:0] mem_op;
    wire [VIRTUAL_BYTE_ADDR_WIDTH-1:0] cpu_addr;
    logic [VIRTUAL_BYTE_ADDR_WIDTH-1:0] final_addr;
+   logic [VIRTUAL_BYTE_ADDR_WIDTH-1:0] wr_addr;
    wire tx_done;
    wire ready;
    wire rd_valid;
@@ -120,6 +121,7 @@ module afu
    wire [31:0] cpu_out; // Todo, parameterize
 
    cpu
+   mock
    (
        .clk(clk),
        .rst_n(~rst),
@@ -133,7 +135,7 @@ module afu
 
    // Memory Controller module
    mem_ctrl
-   (
+   memory(
        .clk(clk),
        .rst_n(~rst),
        .host_init(go),
@@ -160,7 +162,7 @@ module afu
    // Assign the starting addresses from the memory map.
    assign dma.rd_addr = final_addr;
    assign dma.wr_addr = final_addr;
-   
+
    // Use the size (# of cache lines) specified by software.
    assign dma.rd_size = size;
    assign dma.wr_size = size;
@@ -181,9 +183,6 @@ module afu
 
    // The AFU is done when the DMA is done writing size cache lines.
    assign done = dma.wr_done;
-            
+
 endmodule
-
-
-
 

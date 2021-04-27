@@ -292,164 +292,95 @@ namespace priscas
 			throw mt_bad_mnemonic();
 		}
 
-		// Check for insufficient arguments
-		if(args.size() >= 1)
+		if(args.size() > 1)
 		{
-			if	(
+			// Check for insufficient arguments	(not anymore)
+			/*if	(
 					(r_inst(current_op) && args.size() != 2 && current_op == priscas::JR) || // JR
 					(m_inst(current_op) && args.size() != 3) || // LDI or STI
 					(j_inst(current_op) && args.size() != 2) // JMP or JAL				
 				)
 			{
 				throw priscas::mt_asm_bad_arg_count();
-			}
+			}*/
 
 			// Now first argument parsing
 			if(r_inst(current_op))
 			{
-					if(current_op == priscas::JR)
+			        //ST, Branches, and JR start with Rs
+					if(current_op == priscas::ST || 
+					    current_op == priscas::BEQ || current_op == priscas::BNE || 
+					    current_op == priscas::BON || current_op == priscas::BNN || 
+					    current_op == priscas::JR)
 					{
 						if((rs = priscas::friendly_to_numerical(args[1].c_str())) <= priscas::INVALID)
-						rs = priscas::get_reg_num(args[1].c_str());
+						    rs = priscas::get_reg_num(args[1].c_str());
 					}
-
 					else
 					{
 						if((rd = priscas::friendly_to_numerical(args[1].c_str())) <= priscas::INVALID)
-						rd = priscas::get_reg_num(args[1].c_str());
+						    rd = priscas::get_reg_num(args[1].c_str());
 					}
 			}
-			else if(m_inst(current_op))
+			else if(m_inst(current_op)) // LDI and STI
 			{
-				// later, check for branches
-				if((rd = priscas::friendly_to_numerical(args[1].c_str())) <= priscas::INVALID)
-				rd = priscas::get_reg_num(args[1].c_str());
+			    if (current_op==priscas::LDI) { //LDI
+    				if((rd = priscas::friendly_to_numerical(args[1].c_str())) <= priscas::INVALID)
+        				rd = priscas::get_reg_num(args[1].c_str());
+			    }
+			    else { //STI
+			        if((rs = priscas::friendly_to_numerical(args[1].c_str())) <= priscas::INVALID)
+        				rs = priscas::get_reg_num(args[1].c_str());
+			    }
 			}
-			else if(j_inst(current_op))
+			else if(j_inst(current_op)) // JMP and JAL
 			{
-				if(jump_syms.has(args[1]))
-				{
-					priscas::BW_32 label_PC = static_cast<int32_t>(jump_syms.lookup_from_sym(std::string(args[1].c_str())));
-					imm = (label_PC.AsUInt32()); // used to have a >>2
-				}
-
-				else
-				{
-					imm = priscas::get_imm(args[1].c_str());
-				}
+			    imm = priscas::get_imm(args[1].c_str());
 			}
-	
 			else
 			{
 				priscas::mt_bad_mnemonic();
 			} 
 		}
-
 		// Second Argument Parsing
-		if(args.size() >= 2)
+		if(args.size() > 2)
 		{
 			if(r_inst(current_op))
 			{
-				if((rs = priscas::friendly_to_numerical(args[2].c_str())) <= priscas::INVALID)
-					rs = priscas::get_reg_num(args[2].c_str());
+			    if (current_op == priscas::ST) {
+			        if((rt = priscas::friendly_to_numerical(args[2].c_str())) <= priscas::INVALID)
+				    	rt = priscas::get_reg_num(args[2].c_str());
+			    }
+			    else {
+				    if((rs = priscas::friendly_to_numerical(args[2].c_str())) <= priscas::INVALID)
+				    	rs = priscas::get_reg_num(args[2].c_str());
+			    }
 			}
 						
 			else if(m_inst(current_op))
 			{
-				if(mem_inst(current_op))
-				{
-					bool left_parenth = false; bool right_parenth = false;
-					std::string wc = args[2];
-					std::string imm_s = std::string();
-					std::string reg = std::string();
-
-					for(size_t i = 0; i < wc.length(); i++)
-					{
-						if(wc[i] == '(') { left_parenth = true; continue; }
-						if(wc[i] == ')') { right_parenth = true; continue; }
-
-						if(left_parenth)
-						{
-							reg.push_back(wc[i]);
-						}
-						else
-						{
-							imm_s.push_back(wc[i]);
-						}
-					}
-
-					if(!right_parenth || !left_parenth) throw mt_unmatched_parenthesis();
-					if((rs = priscas::friendly_to_numerical(reg.c_str())) <= priscas::INVALID) rs = priscas::get_reg_num(reg.c_str()); // todo, this whole section, but this probably aint rs
-					imm = priscas::get_imm(imm_s.c_str());
-								
-				}
-
-				else
-				{
-					// later, MUST check for branches
-					if((rs = priscas::friendly_to_numerical(args[2].c_str())) <= priscas::INVALID)
-					rs = priscas::get_reg_num(args[2].c_str());
-				}
+				imm = priscas::get_imm(args[2].c_str());
 			}
-
 			else if(j_inst(current_op)){}
 		}
-
 		// Third Argument Parsing
-		if(args.size() >= 3)
+		if(args.size() > 3)
 		{
 			// Third Argument Parsing
 			if(r_inst(current_op))
 			{
-				if((rt = priscas::friendly_to_numerical(args[3].c_str())) <= priscas::INVALID)
-					rt = priscas::get_reg_num(args[3].c_str());
-				
+			    if (current_op == priscas::ADDI || current_op == priscas::SUBI) {
+			        imm = priscas::get_imm(args[3].c_str());
+			    }
+			    else {
+				    if((rt = priscas::friendly_to_numerical(args[3].c_str())) <= priscas::INVALID)
+				    	rt = priscas::get_reg_num(args[3].c_str());
+			    }
 			}
-						
-			else if(m_inst(current_op))
-			{
-
-				if(jump_syms.has(args[3]))
-				{
-					priscas::BW_32 addr = baseAddress.AsUInt32();
-					priscas::BW_32 label_PC = static_cast<uint32_t>(jump_syms.lookup_from_sym(std::string(args[3].c_str())));
-					imm = priscas::offset_to_address_br(addr, label_PC).AsUInt32();
-				}
-
-				else
-				{
-					imm = priscas::get_imm(args[3].c_str());
-				}
-			}
-
-			else if(j_inst(current_op)){}
-		}
-
-		// Fourth Argument Parsing
-		if(args.size() >= 4)
-		{
-			// Fourth Argument Parsing
-			if(r_inst(current_op))
-			{
-			    // todo, not sure this is right
-				if(jump_syms.has(args[3]))
-				{
-					priscas::BW_32 addr = baseAddress.AsUInt32();
-					priscas::BW_32 label_PC = static_cast<uint32_t>(jump_syms.lookup_from_sym(std::string(args[3].c_str())));
-					imm = priscas::offset_to_address_br(addr, label_PC).AsUInt32();
-				}
-				else
-				{
-					imm = priscas::get_imm(args[3].c_str());
-				}
-				
-			}
-						
 			else if(m_inst(current_op)){}
-
 			else if(j_inst(current_op)){}
 		}
-
+		
 		// Pass the values of rs, rt, rd to the processor's encoding function
 		BW_32 inst = generic_mips32_encode(rs, rt, rd, imm, current_op);
 

@@ -9,8 +9,8 @@ addi $r1, $r1, 200 ; $r1 = 300
 addi $r9, $R0, 1 ; $r9 = 1
 add $r2, $R0, $r1 ; $r2 = 0 + $r1 (300)
 add $r2, $r1, $R0 ; $r2 = 300
-sub $r3, $r2, 50 ;
-subi $r3, 50, $r2 ;
+subi $r3, $r2, 50 ;
+sub $r3, $r2, $r2 ;
 
 ; Ors and Ands (Basic Logic)
 or $r1, $R0, $r1 ; $r1 = 300
@@ -24,39 +24,51 @@ neg $r5, $r4 ; $r5 = -300
 sll $r2, $r9, $r9 ; $r2 = 1<<1 = 2
 slr $r3, $r2, $r9 ; $r3 = 2>>1 = 1
 sar $r4, $r1, $R0 ; $r4 = 300>>0 = 300
+sll $r8, $r2, $r9 ; r8 = 2<<1 = 4 for branching later
 
 ; Stores
-st $r1, $r1 ; this might be bad address, idk
-sti $r4, 1024 ; this might be bad address, idk
+st $r1, $r1 ; [300] = 300 this might be bad address, idk
+sti $r4, 1024 ; [1024] = 300 this might be bad address, idk
 
 ; Loads
-ld $r5, $r1 ; 300
-ldi $r6, 1024 ; 300
+ld $r5, $r1 ; r5 = 300
+ldi $r6, 1024 ; r6 = 300
 
-; Branches and
-;slt $s3, $s1, $s2 ; $s3 = 0
-;slti $s4, $s1, 0x100 ; $s4 = 1
-;sltiu $s5, $zero, -1 ; $s5 = 1 - Note in unsigned -1 is the largest integer
-;sltu $s6, $zero, $a0 ; $s6 = 1 - same as previous
+; executed Branches and NOPs and RIN
+nop
+rin
+nop
+nop
+nop
+nop
 
-;beq $v0, $v0, SKIP_1
-;ori $k0, $zero, -1 ; error condition
+add $r7, $R0, $R0 ; r7 = 0
+beq $r8
+nop ; skipped
+add $r7, $R0, $r3 ; r7 = 1
+bne $r8
+nop ; skipped
+sub $r7, $R0, $r3 ; r7 = -1
+bon $r8
+nop ; skipped
+add $r7, $r3, $r3 ; r7 = 2
+bnn $r8
+nop ; skipped
 
-SKIP_1:
-;bne $s3, $s5, SKIP_2
-;ori $k0, $zero, -1
+; not executed Jumps
+sll $r9, $r8, $r3 ; r9 = 4<<1 = 8
+add $r9, $r8, $r9 ; r9 = 4 + 8 = 12
+bnn $r9 ; skip the following jumps cause infinite loop 
+jmp 268443648 ; hex 1000_2000, where our instruction mem starts
+jal 268443648 ; same as JMP but saves address of the next instruction (JR) to LR
+jr $LR ; if jumps are not skipped, this would jump to itself for no reason :D
 
-TMP:
-;jr $ra
-;ori $k0, $zero, -1
 
-SKIP_2:
-;j SKIP_3
-;ori $k0, $zero, -1
+nop
+nop
+nop
+nop
+nop
 
-SKIP_3:
-;jal TMP
-;sll $zero, $zero, 0 ; No-op
-;sll $zero, $zero, 0 ; No-op
-;sll $zero, $zero, 0 ; No-op
-;sll $zero, $zero, 0 ; No-op
+
+; end

@@ -20,7 +20,7 @@ module cpu
 		WRITE = 1'b1
 	} cpu_state;
 
-	
+
 	cpu_state state;
 
 	logic [31:0] line_buffer [15:0];
@@ -31,9 +31,9 @@ module cpu
 		io_address = 'h0;
 		op = 2'b01;
 		common_data_bus_out = '0;
-		case(state) 
+		case(state)
 			READ: begin
-				
+
 			end
 			WRITE: begin
 				op = 'b11;
@@ -76,6 +76,7 @@ module cpu
 					fill_count <= fill_count + 1;
 
 					if(tx_done) begin
+						state <= READ;
 						wr_fill <= 1'b0;
 					end
 				end
@@ -85,4 +86,3 @@ module cpu
 	end
 
 endmodule
-
