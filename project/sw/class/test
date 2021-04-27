@@ -1,1 +1,0 @@
-g++ -g -I"include" -I"contrib/dma_loopback/sw"  -c src/mips.cpp
