@@ -1,7 +1,7 @@
 import os
 import shutil
 import numpy as np
-import cv2
+from PIL import Image
 
 # these file will be loaded to/from shared host memory
 input_img_fpath = 'input.txt' # input image
@@ -15,7 +15,8 @@ input_filter = np.array([
   [7, 8, 9],
 ])
 
-img = cv2.imread('test.jpeg')
+img = Image.open('test.jpeg')
+img = np.asarray(img)
 
 # add zero padding
 img = np.pad(img, ((1, 1), (1,1), (0, 0)))
@@ -49,5 +50,6 @@ with open(output_img_fpath, 'rb') as f:
   print(output.shape)
   # reshape to original image shape
   output = np.reshape(output, shape)
-  cv2.imshow('output', output)
-  cv2.waitKey()
+  im = Image.fromarray(output, "RGB")
+  im.save('test_out.jpeg')
+  im.show()
