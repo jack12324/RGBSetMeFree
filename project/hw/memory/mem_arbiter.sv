@@ -1,4 +1,4 @@
-//Mem Arbiter to be used by Data Mem and Inst Mem and FPU Buffer contention.
+//Mem Arbiter to be used by Data Mem, Inst Mem, FPU Buffer, MMIO contention.
 // Uses Round Robin Scheduling over multiple requests. 
 
 module mem_arbiter #(
@@ -24,7 +24,6 @@ module mem_arbiter #(
     output logic [511:0] common_data_bus_write_out_src2, 
     output logic tx_done_src2,
     output logic rd_valid_src2,
-    
     //Inputs from Src3
     input logic [1:0] op_src3,
     input logic [ADDR_WIDTH -1 : 0] raw_address_src3,
@@ -34,6 +33,16 @@ module mem_arbiter #(
     output logic [511:0] common_data_bus_write_out_src3, 
     output logic tx_done_src3,
     output logic rd_valid_src3,
+
+    //Inputs from Src3
+    input logic [1:0] op_src4,
+    input logic [ADDR_WIDTH -1 : 0] raw_address_src4,
+    input logic [ADDR_WIDTH -1 : 0] address_offset_src4,
+    input logic [511:0] common_data_bus_read_in_src4,
+    //Outputs to Src3
+    output logic [511:0] common_data_bus_write_out_src4, 
+    output logic tx_done_src4,
+    output logic rd_valid_src4,
 
     //Inputs: From mem_ctrl
     input logic [511:0] common_data_bus_write_out,    
@@ -48,7 +57,7 @@ module mem_arbiter #(
 
     //No Need to latch in SRCs because they will be kept high in the states they are created.
 
-    typedef enum {SRC1, SRC2, SRC3} state;
+    typedef enum  {SRC1, SRC2, SRC3, SRC4} state;
 
     state current, next;
     
@@ -99,7 +108,18 @@ module mem_arbiter #(
                 raw_address = raw_address_src3;
                 address_offset = address_offset_src3;
                 common_data_bus_read_in = common_data_bus_read_in_src3;
-                next = |op_src3 & ~(tx_done) ? SRC3 : SRC1;
+                next = |op_src3 & ~(tx_done) ? SRC3 : SRC4;
+            end
+            SRC4: begin
+                common_data_bus_write_out_src4 = common_data_bus_write_out;
+                tx_done_src4 = tx_done;
+                rd_valid_src4 = rd_valid;
+                //Outputs : To mem_ctrl
+                op = op_src4;
+                raw_address = raw_address_src4;
+                address_offset = address_offset_src4;
+                common_data_bus_read_in = common_data_bus_read_in_src4;
+                next = |op_src4 & ~(tx_done) ? SRC4 : SRC1;
             end
             default: begin
                 op = '0;
