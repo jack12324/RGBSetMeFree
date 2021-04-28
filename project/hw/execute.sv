@@ -27,9 +27,9 @@ module execute(
 
     output [31:0] ExMe_in_alu_out,
     output [31:0] ExMe_in_PC_next,
-    output [31:0] ExMe_in_LR_wrt_data,
     output [31:0] ExMe_in_reg_2,
-    output [1:0] ExMe_in_FL_wrt_data
+    output [31:0] ExMe_in_LR_wrt_data, 
+    output [1:0] ExMe_in_FL_wrt_data 
     );
 
     logic [31:0] alu_1, alu_2;
@@ -52,9 +52,6 @@ module execute(
         endcase // DeEx_out_ALU_op
     end
 
-    logic [31:0] LR_write_val;
-    logic LR_write;
-
     Branch_Jump i_Branch_Jump (
         .clk         (clk                 ),
         .rst_n       (rst_n               ),
@@ -66,8 +63,7 @@ module execute(
         .immi        (DeEx_out_imm        ),
         .reg_a       (alu_1               ),
         .PC          (newPC               ),
-        .LR_write_val(ExMe_in_LR_wrt_data ),     // doubts
-        .LR_write    (LR_write            ),
+        .LR_write_val(ExMe_in_LR_wrt_data ),
         .op_code     (DeEx_out_ALU_op[1:0])
     );
 
@@ -78,5 +74,8 @@ module execute(
         .Op  (aluOP           ),
         .Out (ExMe_in_alu_out )
     );
+    assign ExMe_in_FL_wrt_data[0] = !(|ExMe_in_alu_out);
+    assign ExMe_in_FL_wrt_data[1] = ExMe_in_alu_out[31];
+
 
 endmodule

@@ -1,4 +1,5 @@
 module MeWb(
+    input clk, rst_n,
     // inputs to the pipeline register
     // data signals  
     input logic [31:0] ExMe_out_alu_out,

@@ -2,7 +2,7 @@ module Branch_Jump(clk, rst_n,
                     branch, jump, op_code,
                     FL,
                     pc_4, pc_immi, reg_a, immi,
-                    PC, LR_write, LR_write_val);
+                    PC, LR_write_val);
 
     input clk, rst_n;
     input branch, jump;
@@ -11,7 +11,7 @@ module Branch_Jump(clk, rst_n,
     input [31:0] pc_4, pc_immi, reg_a, immi;
 
     output [31:0] PC, LR_write_val;
-    output LR_write;
+    logic LR_write;
 
     logic [31:0] newPC;
     logic N, Z;
@@ -27,7 +27,8 @@ module Branch_Jump(clk, rst_n,
                             : ((op_code == 2'd1) ? (reg_a << 2)
                                 : pc_4))  : pc_4);
 
-    assign LR_write = (jump && (op_code == 2'd0 || op_code == 2'd1 || op_code == 2'd2)) ? 1'b1 : 1'b0;
+    assign LR_write = jump && (op_code == 2'd2); // if JAL
+    assign LR_write_val = LR_write ? pc_4 : 32'hxxxx; // if JAL, LR = PC+4
 endmodule
 
 

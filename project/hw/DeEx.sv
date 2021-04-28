@@ -3,7 +3,6 @@ module DeEx(
     //////////////////////////// Inputs /////////////////////////////
     input clk,
     input rst_n,
-	input flush,
     
     input logic [31:0] DeEx_in_PC_next,
 	input logic [31:0] DeEx_in_reg_1_data,
@@ -40,7 +39,6 @@ module DeEx(
 	output logic [31:0] DeEx_out_reg_1_data,
 	output logic [31:0] DeEx_out_reg_2_data,
 	output logic [31:0] DeEx_out_imm,
-	output logic DeEx_flush,
 	// special register stuff
 	output logic [31:0] DeEx_out_LR,
 	output logic [1:0] DeEx_out_FL,
@@ -70,7 +68,7 @@ module DeEx(
     dff  #(.WIDTH(32)) out_PC_next_ff (.clk(clk), .rst_n(rst_n | flush), .d(DeEx_in_PC_next), .q(DeEx_out_PC_next));
     dff  #(.WIDTH(32)) reg_1_data_ff (.clk(clk), .rst_n(rst_n | flush), .d(DeEx_in_reg_1_data), .q(DeEx_out_reg_1_data));
     dff  #(.WIDTH(32)) reg_2_data_ff (.clk(clk), .rst_n(rst_n | flush), .d(DeEx_in_reg_2_data), .q(DeEx_out_reg_2_data));
-    dff  #(.WIDTH(32)) imm_ff (.clk(clk), .rst_n(rst_n), .d(DeEx_in_imm), .q(DeEx_out_imm));
+    dff  #(.WIDTH(32)) imm_ff (.clk(clk), .rst_n(rst_n | flush), .d(DeEx_in_imm), .q(DeEx_out_imm));
 
     dff  #(.WIDTH(32)) LR_ff (.clk(clk), .rst_n(rst_n | flush), .d(DeEx_in_LR), .q(DeEx_out_LR));
     dff  #(.WIDTH(2)) FL_ff (.clk(clk), .rst_n(rst_n | flush), .d(DeEx_in_FL), .q(DeEx_out_FL));
@@ -80,8 +78,8 @@ module DeEx(
     dff  #(.WIDTH(1)) FL_read_ff (.clk(clk), .rst_n(rst_n | flush), .d(DeEx_in_FL_read), .q(DeEx_out_FL_read));
     dff  #(.WIDTH(1)) FL_write_ff (.clk(clk), .rst_n(rst_n | flush), .d(DeEx_in_FL_write), .q(DeEx_out_FL_write));
 
-	dff  #(.WIDTH(32)) LR_ff (.clk(clk), .rst_n(rst_n | flush), .d(DeEx_in_reg_1_sel), .q(DeEx_out_reg_1_sel));
-    dff  #(.WIDTH(2)) FL_ff (.clk(clk), .rst_n(rst_n | flush), .d(DeEx_in_reg_2_sel), .q(DeEx_out_reg_2_sel));
+    dff  #(.WIDTH(32)) reg_1_sel (.clk(clk), .rst_n(rst_n | flush), .d(DeEx_in_reg_1_sel), .q(DeEx_out_reg_1_sel));
+    dff  #(.WIDTH(2)) reg_2_sel (.clk(clk), .rst_n(rst_n | flush), .d(DeEx_in_reg_2_sel), .q(DeEx_out_reg_2_sel));
 
     dff  #(.WIDTH(2)) ALU_src_ff (.clk(clk), .rst_n(rst_n | flush), .d(DeEx_in_ALU_src), .q(DeEx_out_ALU_src));
     dff  #(.WIDTH(5)) ALU_OP_ff (.clk(clk), .rst_n(rst_n | flush), .d(DeEx_in_ALU_OP), .q(DeEx_out_ALU_OP));

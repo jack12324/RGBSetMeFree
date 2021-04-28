@@ -1,34 +1,40 @@
-module cpu(clk, rst_n);
+module cpu(clk, rst_n, tx_done, rd_valid, op, data_in, data_out, INT, INT_INSTR, ACK);
 
     input clk;  // System clock 
     input rst_n; // Active low reset for the system
 
-    // Insterrupt Signals 
+    // HAL memory signals
+    input tx_done;
+    input rd_valid;
+    input [1:0] op;
+    input [31:0] data_in;
+    output [31:0] data_out;
+	
+    // Interrupt Signals 
     input INT;
     input [31:0] INT_INSTR;
     output ACK;
 
-    ///////////////////////////////////////////////////////////////////////////////////////////////////////
-    /////////////////////////////////////// SIGNALS TO THE SYSTEM /////////////////////////////////////////
-    logic flush; 
 
     /////////////////////////////////////////////////////////////////////////////
     ////////////////////////////////// Fetch Signals ////////////////////////////
     // inputs 
-	logic [31:0] in_PC_next;
+	logic [31:0] ExMe_out_PC_next;
 	logic stall, flush;
+	// also the Interrupt signals
     // outputs 
-	logic [31:0] out_PC_next;
-	logic [31:0] instr;
-	logic Done;
+	logic [31:0] FeDe_in_PC_next;
+	logic [31:0] FeDe_in_instr;
+	logic FeDone;
+	// also the Interrupt signals
     /////////////////////////////////////////////////////////////////////////////
 
 
     /////////////////////////////////////////////////////////////////////////////
     //////////////////// FeDe Pipeline Register Signals /////////////////////////
 
-    // Outputs to the next stage in the pipeline 5
-    logic [31:0] FeDe_out_PC_next;
+    // Outputs to the next stage in the pipeline
+    	logic [31:0] FeDe_out_PC_next;
 	logic [31:0] FeDe_out_instr;
 	
     /////////////////////////////////////////////////////////////////////////////
@@ -43,7 +49,7 @@ module cpu(clk, rst_n);
 
     /////////////////////////////////////////////////////////////////////////////
     //////////////////// DeEx Pipeline Register Signals /////////////////////////
-    logic [31:0] DeEx_in_PC_next;
+    	logic [31:0] DeEx_in_PC_next;
 	logic [31:0] DeEx_in_reg_1_data;
 	logic [31:0] DeEx_in_reg_2_data;
 	logic [31:0] DeEx_in_imm;
@@ -72,7 +78,7 @@ module cpu(clk, rst_n);
 	logic [4:0] DeEx_in_reg_wrt_sel;
 
     /////////// Output to the next stage in the CPU //////////////////
-    logic [31:0] DeEx_out_PC_next;
+    	logic [31:0] DeEx_out_PC_next;
 	logic [31:0] DeEx_out_reg_1_data;
 	logic [31:0] DeEx_out_reg_2_data;
 	logic [31:0] DeEx_out_imm;
@@ -105,32 +111,175 @@ module cpu(clk, rst_n);
 
     /////////////////////////////////////////////////////////////////////////////
     //////////////////////////// Execute Signals ////////////////////////////////
-    input [1:0] forward1_sel,
-    input [1:0] forward2_sel, // Both from the forwarding unit 
+        // control
+        //logic DeEx_out_Branch; // commented means already declared
+        //logic DeEx_out_Jump;
+        //logic [4:0] DeEx_out_ALU_OP;
+        logic [1:0] forward1_sel;
+        logic [1:0] forward2_sel;
+
+        // From ID/EX:
+        //logic DeEx_out_mem_wrt;
+        //logic DeEx_out_reg_wrt_en;
+        //logic DeEx_out_mem_en;
+        //logic [1:0] DeEx_out_result_sel;
+        //logic [31:0] DeEx_out_PC_next;
+        //logic [31:0] DeEx_out_reg_1;
+        //logic [31:0] DeEx_out_reg_2;
+        //logic [1:0] DeEx_out_ALU_src;
+        //logic [31:0] DeEx_out_imm;
+        //logic [1:0] DeEx_out_FL;
+        //logic [31:0] DeEx_out_LR; 
+        //logic [31:0] reg_wrt_data;
+        //logic [31:0] ExMe_out_alu_out;
+
+        //logic [31:0] ExMe_in_alu_out;
+        //logic [31:0] ExMe_in_PC_next;
+        //logic [31:0] ExMe_in_LR_wrt_data;
+        //logic [31:0] ExMe_in_reg_2;
+        //logic [1:0] ExMe_in_FL_wrt_data;
     /////////////////////////////////////////////////////////////////////////////
 
+    /////////////////////////////////////////////////////////////////////////////
+    //////////////////// ExMe Pipeline Register Signals /////////////////////////
+    // Inputs to the pipeline registers 
+    // Data signals 
+    	logic [31:0] ExMe_in_PC_next;
+    	logic [31:0] ExMe_in_alu_out;
+    	logic [31:0] DeEx_out_reg_2;
+    	logic [31:0] ExMe_in_LR; 
+    	logic [1:0] ExMe_in_FL; 
+    	logic [31:0] ExMe_in_LR_wrt_data;
+    	logic [1:0] ExMe_in_FL_wrt_data;
+    // Control Signals 
+    	//logic DeEx_out_mem_wrt;
+    	//logic DeEx_out_mem_en;
+    	//logic DeEx_out_reg_wrt_en;
+    	//logic [4:0] DeEx_out_reg_wrt_sel;
+    	//logic [1:0] DeEx_out_result_sel;
+    	//logic DeEx_out_LR_read;
+    	//logic DeEx_out_LR_write;
+    	//logic DeEx_out_FL_read;
+    	//logic DeEx_out_FL_write;
+    // Ouputs to the next pipeline stage 
+    // Data signals 
+    	//logic [31:0] ExMe_out_PC_next;
+    	logic [31:0] ExMe_out_alu_out;
+    	logic [31:0] ExMe_out_reg_2;
+    	logic [31:0] ExMe_out_LR;
+    	logic [1:0] ExMe_out_FL;
+    	logic [31:0] ExMe_out_LR_wrt_data;
+    	logic [1:0] ExMe_out_FL_wrt_data;
+    // Control Signals 
+    	logic ExMe_out_mem_wrt;
+    	logic ExMe_out_mem_en;
+    	logic ExMe_out_reg_wrt_en;
+    	logic [4:0] ExMe_out_reg_wrt_sel;
+    	logic [1:0] ExMe_out_result_sel;
+    	logic ExMe_out_LR_read;
+    	logic ExMe_out_LR_write;
+    	logic ExMe_out_FL_read;
+    	logic ExMe_out_FL_write;
+    /////////////////////////////////////////////////////////////////////////////
+
+    /////////////////////////////////////////////////////////////////////////////
+    //////////////////////////// Memory Signals ////////////////////////////////
+    // Data
+  	//logic [31:0] ExMe_out_alu_out;
+  	//logic [31:0] ExMe_out_reg_2;
+    // Control
+  	//logic ExMe_out_mem_wrt;
+  	//logic ExMe_out_mem_en;
+    // Output
+  	logic [31:0] mem_data;
+  	logic MeDone;
+
+    /////////////////////////////////////////////////////////////////////////////
+
+    /////////////////////////////////////////////////////////////////////////////
+    //////////////////// MeWb Pipeline Register Signals /////////////////////////
+    // inputs to the pipeline register
+    // data signals  
+    	//logic [31:0] ExMe_out_alu_out;
+    	//logic [31:0] mem_data; declared in Memory
+    	//logic [31:0] ExMe_out_PC_next;
+    	logic [31:0] MeWb_in_LR;
+    	logic [1:0] MeWb_in_FL;
+    	logic [31:0] MeWb_in_LR_wrt_data;
+    	logic [1:0] MeWb_in_FL_wrt_data;
+    // control signals 
+    	//logic [1:0] ExMe_out_result_sel;
+    	//logic ExMe_out_reg_write_en;
+    	//logic [4:0] ExMe_out_reg_write_sel;
+    	//logic ExMe_out_LR_read;
+    	//logic ExMe_out_LR_write;
+    	//logic ExMe_out_FL_read;
+    	//logic ExMe_out_FL_write;
+    
+    // outputs to the pipeline register 
+    	logic [31:0] MeWb_out_alu_out;
+    	logic [31:0] MeWb_out_mem_data;
+    	logic [31:0] MeWb_out_PC_next;
+    	logic [31:0] MeWb_out_LR;
+    	logic [1:0] MeWb_out_FL;
+    	logic [31:0] MeWb_out_LR_wrt_data;
+    	logic [1:0] MeWb_out_FL_wrt_data;
+    // control signals 
+    	logic [1:0] MeWb_out_result_sel;
+    	logic MeWb_out_reg_write_sel;
+    	logic [4:0] MeWb_out_reg_write_en;
+    	logic MeWb_out_LR_read;
+    	logic MeWb_out_LR_write;
+    	logic MeWb_out_FL_read;
+    	logic MeWb_out_FL_write;
+    /////////////////////////////////////////////////////////////////////////////
+
+    /////////////////////////////////////////////////////////////////////////////
+    //////////////////////////// Writeback Signals ////////////////////////////////
+    // Data
+  	//logic [31:0] MeWb_out_alu_out;
+  	//logic [31:0] MeWb_out_mem_data;
+  	//logic [31:0] MeWb_out_PC_next;
+    // Control
+  	//logic [1:0] MeWb_out_result_sel;
+    // Output
+  	//logic [31:0] reg_wrt_data;
+    /////////////////////////////////////////////////////////////////////////////
+
+
     ///////////////////////////////////////////////////////////////////////////////////////////////////////
     ///////////////////////////////////////////////////////////////////////////////////////////////////////
-
-
-
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////
     ///////////////////////////////////////////////////////////////////////////////////////////////////////
     //////////////////////////////////////// MODULE DECLARATIONS //////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////
 
     /////////////////////////////////////////////////////////////////////////////
     ////////////////////////////////// Fetch module /////////////////////////////
     fetch iFETCH (
         ////////// INPUTS ///////////
         .clk(clk), .rst_n(rst_n),
-        .in_PC_next(in_PC_next), //[31:0]
+        .in_PC_next(ExMe_out_PC_next), //[31:0]
         .stall(stall), .flush(flush),
         // for interrupts
         .INT(INT),
         .INT_INSTR(INT_INSTR), //[31:0]
         ////////// OUTPUTS //////////
-        .out_PC_next(out_PC_next), //[31:0]
-        .instr(instr), //[31:0]
-        .Done(Done),
+        .out_PC_next(FeDe_in_PC_next), //[31:0]
+        .instr(FeDe_in_instr), //[31:0]
+        .Done(FeDone),
         // for interrupts
         .ACK(ACK)
     );
@@ -143,13 +292,13 @@ module cpu(clk, rst_n);
         ////////// INPUTS ///////////
         .clk(clk),
         .rst_n(rst_n),
-        .out_PC_next(out_PC_next), //[31:0]
-        .instr(instr), //[31:0]
+        .FeDe_in_PC_next(FeDe_in_PC_next), //[31:0]
+        .FeDe_in_instr(FeDe_in_instr), //[31:0]
         .flush(flush),
 
         ////////// OUTPUTS //////////
         .FeDe_out_PC_next(FeDe_in_PC_next), //[31:0]
-        .FeDe_out_instr(FeDe_out_instr), //[31:0]
+        .FeDe_out_instr(FeDe_out_instr) //[31:0]
     );
     /////////////////////////////////////////////////////////////////////////////
 
@@ -188,7 +337,7 @@ module cpu(clk, rst_n);
         .FL_write(DeEx_in_FL_write),
         // control for Execute
         .ALU_src(DeEx_in_ALU_src), //[1:0]
-        .ALU_OP(DeEx_ALU), //[4:0]
+        .ALU_OP(DeEx_ALU_OP), //[4:0]
         .Branch(DeEx_in_Branch), 
         .Jump(DeEx_in_Jump),
         // control for Memory
@@ -208,7 +357,6 @@ module cpu(clk, rst_n);
         //////////////////////////// Inputs /////////////////////////////
         .clk(clk),
         .rst_n(rst_n),
-        .flush(flush),
         .DeEx_in_PC_next(DeEx_in_PC_next), // [31:0]
         .DeEx_in_reg_1_data(DeEx_in_reg_1_data), // [31:0]
         .DeEx_in_reg_2_data(DeEx_in_reg_1_data), // [31:0]
@@ -273,50 +421,168 @@ module cpu(clk, rst_n);
 
     /////////////////////////////////////////////////////////////////////////////
     /////////////////////////// Execute Module ////////////////////////////////// 
-    execute(
+    execute iEXECUTE(
         .clk(clk),
         .rst_n(rst_n),
-
-        // controls:
-        input DeEx_out_Branch,
-        input DeEx_out_Jump,
-        input [4:0] DeEx_out_ALU_op,
-        input [1:0] forward1_sel,
-        input [1:0] forward2_sel, // forwarding
+        // controls
+ 	.DeEx_out_Branch(),
+        .DeEx_out_Jump(),
+        .DeEx_out_ALU_op(DeEx_out_ALU_OP),//lowercase op in execute module
+        .forward1_sel(forward1_sel),
+        .forward2_sel(forward2_sel),
 
         // From ID/EX:
+        .DeEx_out_mem_wrt(DeEx_out_mem_wrt),
+        .DeEx_out_reg_wrt_en(DeEx_out_reg_wrt_en),
+        .DeEx_out_mem_en(DeEx_out_mem_en),
+        .DeEx_out_result_sel(DeEx_out_result_sel),
+        .DeEx_out_PC_next(DeEx_out_PC_next),    
+        .DeEx_out_reg_1(DeEx_out_reg_1),
+        .DeEx_out_reg_2(DeEx_out_reg_2),
+        .DeEx_out_ALU_src(DeEx_out_ALU_src),    
+        .DeEx_out_imm(DeEx_out_imm),
+        .DeEx_out_FL(DeEx_out_FL),
+        .DeEx_out_LR(DeEx_out_LR),
+        .reg_wrt_data(reg_wrt_data),
+        .ExMe_out_alu_out(ExMe_out_alu_out),
 
-        input DeEx_out_mem_wrt,
-        input DeEx_out_reg_wrt_en,
-        input DeEx_out_mem_en,
-        input [1:0] DeEx_out_result_sel,
-        input [31:0] DeEx_out_PC_next,     // just the current PC
-        input [31:0] DeEx_out_reg_1,
-        input [31:0] DeEx_out_reg_2,
-        input [1:0] DeEx_out_ALU_src,      // 0 => immi
-        input [31:0] DeEx_out_imm,
-        input [1:0] DeEx_out_FL,
-        input [31:0] DeEx_out_LR,
-        input [31:0] reg_wrt_data,         // from WB
-        input [31:0] ExMe_out_alu_out,
-
-        output [31:0] ExMe_in_alu_out,
-        output [31:0] ExMe_in_PC_next,
-        output [31:0] ExMe_in_LR_wrt_data,
-        output [31:0] ExMe_in_reg_2,
-        output [1:0] ExMe_in_FL_wrt_data
+        // Outputs
+	.ExMe_in_alu_out(ExMe_in_alu_out),
+        .ExMe_in_PC_next(ExMe_in_PC_next),
+        .ExMe_in_LR_wrt_data(ExMe_in_LR_wrt_data),
+        .ExMe_in_reg_2(ExMe_in_reg_2),
+        .ExMe_in_FL_wrt_data(ExMe_in_FL_wrt_data)
     );
     /////////////////////////////////////////////////////////////////////////////
 
 
     /////////////////////////////////////////////////////////////////////////////
     ///////////////////// Execute - Memory Pipeline Regs ////////////////////////
+    ExMe iEXME(
+        // Inputs to the pipeline registers 
+    	// Data signals 
+	.ExMe_in_PC_next(ExMe_in_PC_next),
+	.ExMe_in_alu_out(ExMe_in_alu_out),
+	.DeEx_out_reg_2(DeEx_out_reg_2),
+	.ExMe_in_LR(ExMe_in_LR),
+	.ExMe_in_FL(ExMe_in_FL),
+	.ExMe_in_LR_wrt_data(ExMe_in_LR_wrt_data),
+	.ExMe_in_FL_wrt_data(ExMe_in_FL_wrt_data),
+    	// Control Signals 
+	.DeEx_out_mem_wrt(DeEx_out_mem_wrt),
+	.DeEx_out_mem_en(DeEx_out_mem_en),
+	.DeEx_out_reg_wrt_en(DeEx_out_reg_wrt_en),
+	.DeEx_out_reg_wrt_sel(DeEx_out_reg_wrt_sel),
+	.DeEx_out_result_sel(DeEx_out_result_sel),
+	.DeEx_out_LR_read(DeEx_out_LR_read),
+	.DeEx_out_LR_write(DeEx_out_LR_write),
+	.DeEx_out_FL_read(DeEx_out_FL_read),
+	.DeEx_out_FL_write(DeEx_out_FL_write),
 
+    	// Ouputs to the next pipeline stage 
+    	// Data signals 
+	.ExMe_out_PC_next(ExMe_out_PC_next),
+	.ExMe_out_alu_out(ExMe_out_alu_out),
+	.ExMe_out_reg_2(ExMe_out_reg_2),
+	.ExMe_out_LR(ExMe_out_LR),
+	.ExMe_out_FL(ExMe_out_FL),
+	.ExMe_out_LR_wrt_data(ExMe_out_LR_wrt_data),
+	.ExMe_out_FL_wrt_data(ExMe_out_FL_wrt_data),
+    	// Control Signals 
+	.ExMe_out_mem_wrt(ExMe_out_mem_wrt),
+	.ExMe_out_mem_en(ExMe_out_mem_en),
+	.ExMe_out_reg_wrt_en(ExMe_out_reg_wrt_en),
+	.ExMe_out_reg_wrt_sel(ExMe_out_reg_wrt_sel),
+	.ExMe_out_result_sel(ExMe_out_result_sel),
+	.ExMe_out_LR_read(ExMe_out_LR_read),
+	.ExMe_out_LR_write(ExMe_out_LR_write),
+	.ExMe_out_FL_read(ExMe_out_FL_read),
+	.ExMe_out_FL_write(ExMe_out_FL_write)
+    );
     /////////////////////////////////////////////////////////////////////////////
 
-    ///////////////////////////////////////////////////////////////////////////////////////////////////////
-    ///////////////////////////////////////////////////////////////////////////////////////////////////////
+
+  /////////////////////////////////////////////////////////////////////////////
+    /////////////////////////// Memory Module ////////////////////////////////// 
+    memory iMEMORY(
+	.clk(clk),
+	.rst_n(rst_n),
+  // Data
+  	.ExMe_out_alu_out(ExMe_out_alu_out),
+  	.ExMe_out_reg_2(ExMe_out_reg_2),
+  // Control
+  	.ExMe_out_mem_wrt(ExMe_out_mem_wrt),
+  	.ExMe_out_mem_en(ExMe_out_mem_en),
+  	.mem_data(mem_data),
+  	.done(MeDone)
+    );
+    /////////////////////////////////////////////////////////////////////////////
 
 
+    /////////////////////////////////////////////////////////////////////////////
+    ///////////////////// Memory - Writeback Pipeline Regs ////////////////////////
+    MeWb iMEWB(
+	.clk(clk),
+	.rst_n(rst_n),
+    // inputs to the pipeline register
+    // data signals  
+	.ExMe_out_alu_out(ExMe_out_alu_out),
+	.mem_data(mem_data),
+	.ExMe_out_PC_next(ExMe_out_PC_next), 
+	.MeWb_in_LR(MeWb_in_LR),
+	.MeWb_in_FL(MeWb_in_FL),
+	.MeWb_in_LR_wrt_data(MeWb_in_LR_wrt_data),
+	.MeWb_in_FL_wrt_data(MeWb_in_FL_wrt_data),
+    // control signals 
+	.ExMe_out_result_sel(ExMe_out_result_sel),
+	.ExMe_out_reg_write_en(ExMe_out_reg_write_en),
+	.ExMe_out_reg_write_sel(ExMe_out_reg_write_sel), 
+	.ExMe_out_LR_read(ExMe_out_LR_read),
+	.ExMe_out_LR_write(ExMe_out_LR_write),
+	.ExMe_out_FL_read(ExMe_out_FL_read),
+	.ExMe_out_FL_write(ExMe_out_FL_write),    
+    // outputs to the pipeline register 
+	.MeWb_out_alu_out(MeWb_out_alu_out),
+	.MeWb_out_mem_data(MeWb_out_mem_data),
+	.MeWb_out_PC_next(MeWb_out_PC_next),
+	.MeWb_out_LR(MeWb_out_LR),
+	.MeWb_out_FL(MeWb_out_FL),
+	.MeWb_out_LR_wrt_data(MeWb_out_LR_wrt_data),
+	.MeWb_out_FL_wrt_data(MeWb_out_FL_wrt_data),
+    // control signals 
+	.MeWb_out_result_sel(MeWb_out_result_sel),
+	.MeWb_out_reg_write_sel(MeWb_out_reg_write_sel),
+	.MeWb_out_reg_write_en(MeWb_out_reg_write_en),
+	.MeWb_out_LR_read(MeWb_out_LR_read),
+	.MeWb_out_LR_write(MeWb_out_LR_write),
+	.MeWb_out_FL_read(MeWb_out_FL_read),
+	.MeWb_out_FL_write(MeWb_out_FL_write)
+    );
+    /////////////////////////////////////////////////////////////////////////////
+
+
+    /////////////////////////// Writeback Module ////////////////////////////////// 
+    writeback iWRITEBACK(
+        .clk(clk),
+	.rst_n(rst_n),
+   // Data
+	.MeWb_out_alu_out(MeWb_out_alu_out),
+	.MeWb_out_mem_data(MeWb_out_mem_data),
+	.MeWb_out_PC_next(MeWb_out_PC_next),
+  // Control
+	.MeWb_out_result_sel(MeWb_out_result_sel),
+  // Output
+	.reg_wrt_data(reg_wrt_data)
+    );
+    /////////////////////////////////////////////////////////////////////////////
+
+ 
+	// connect wires
+	assign ExMe_in_FL = DeEx_out_FL;
+	assign ExMe_in_LR = DeEx_out_LR;
+// todo forwarding (see 552)
+// todo stalling (insert NOPs, using Done signals and prediction and stuff, see 552)
+// todo flushing (flush up to execute, using Branching, see 552)
+// todo interrupts
 
 endmodule
