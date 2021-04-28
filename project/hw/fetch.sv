@@ -10,7 +10,7 @@
 
 `define NOP 32'b01111xxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-module fetch (clk, rst_n, in_PC_next, stall, flush, INT, INT_INSTR, out_PC_next, instr, Done, ACK);
+module fetch (clk, rst_n, in_PC_next, stall, flush, INT_INSTR, out_PC_next, instr, Done, restore, use_cpu_injection, use_INT_INSTR, cpu_injection, current_PC, PC_before_int);
 	input clk, rst_n;
 	input [31:0] in_PC_next;
 	input stall, flush;
@@ -19,8 +19,9 @@ module fetch (clk, rst_n, in_PC_next, stall, flush, INT, INT_INSTR, out_PC_next,
 	input [31:0] PC_before_int;
 	input [31:0] INT_INSTR;
 	input restore;
-	input use_cpu_injection, // signal to use the injected instructions from this FSM 
-    input [31:0] cpu_injection, // Injection from this state machine 
+	input use_cpu_injection; // signal to use the injected instructions from this FSM 
+    input [31:0] cpu_injection; // Injection from this state machine 
+	input use_INT_INSTR; // signal to use the injected instructions from the interrupt controller
 
 	output [31:0] out_PC_next;
 	output [31:0] instr;

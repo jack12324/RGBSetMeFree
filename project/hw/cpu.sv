@@ -337,6 +337,7 @@ module cpu(clk, rst_n, tx_done, rd_valid, op, data_in, data_out, INT, INT_INSTR,
         .restore(restore),
         .use_cpu_injection(use_cpu_injection), 
         .cpu_injection(cpu_injection), 
+        .use_INT_INSTR(use_INT_INSTR),
         ////////// OUTPUTS //////////
         .out_PC_next(FeDe_in_PC_next), //[31:0]
         .instr(FeDe_in_instr), //[31:0]

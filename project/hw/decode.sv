@@ -103,7 +103,7 @@ module decode (
 	output logic [4:0] next_reg_wrt_sel;
 
 
-	assign 
+	//assign 
 
 
 	// read/write registers
