@@ -164,7 +164,7 @@ module afu
    assign dma.wr_addr = final_addr;
 
    // Use the size (# of cache lines) specified by software.
-   assign dma.rd_size = size;
+   assign dma.rd_size = size; //Comes from memory_map.sv (Change it to FPU DRAM if size)
    assign dma.wr_size = size;
 
    // Start both the read and write channels when the MMIO go is received.
