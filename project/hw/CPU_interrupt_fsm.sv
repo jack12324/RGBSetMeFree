@@ -1,29 +1,28 @@
 module CPU_interrupt_fsm (
-
-    input clk;
-    input rst_n;
+    input clk,
+    input rst_n,
     
-    input INT;
-    input [31:0] INT_INTR;
-    input [31:0] cpu_instr;
+    input INT,
+    input [31:0] INT_INTR,
+    input [31:0] cpu_instr,
 
-    input logic [31:0] current_PC; // the PC that is currently stored in the Fetch stage 
-    input logic [31:0] curretn_LR; // Link regsiter currently in the Decode stage 
-    input logic [1:0] current_FL; // Flag register currently in the decode stage 
+    input logic [31:0] current_PC, // the PC that is currently stored in the Fetch stage 
+    input logic [31:0] curretn_LR, // Link regsiter currently in the Decode stage 
+    input logic [1:0] current_FL // Flag register currently in the decode stage 
 
-    //input [31:0] INT_INSTR;
-    output logic ACK;
+    //input [31:0] INT_INSTR,
+    output logic ACK,
 
     // This inputs are stored when servicing an interrupt 
-    output logic [31:0] PC_before_int;
-    output logic [31:0] LR_before_int;
-    output logic [1:0] FL_before_int;
+    output logic [31:0] PC_before_int,
+    output logic [31:0] LR_before_int,
+    output logic [1:0] FL_before_int,
 
-    output logic use_INT_INSTR; // signal to use the injected instructions from the interrupt controller 
-    output logic use_cpu_injection; // signal to use the injected instructions from this FSM 
-    output logic [31:0] cpu_injection; // Injection from this state machine 
+    output logic use_INT_INSTR, // signal to use the injected instructions from the interrupt controller 
+    output logic use_cpu_injection, // signal to use the injected instructions from this FSM 
+    output logic [31:0] cpu_injection, // Injection from this state machine 
 
-    output logic restore; // signal to restore the special regs
+    output logic restore // signal to restore the special regs
     );
 
     parameter INSTR_NOOP = 32'h78000000;
