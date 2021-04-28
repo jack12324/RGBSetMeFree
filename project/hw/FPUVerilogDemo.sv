@@ -1,10 +1,10 @@
 module FPUVerilogDemo();
-	logic clk, rst_n, mapped_data_valid;
+	logic clk, rst_n, mapped_data_valid, done;
 	logic [31:0] mapped_data;
 	FPUDRAM_if dram_if();
 	logic [31:0] mapped_address;
 
-	FPU #(.COL_WIDTH(10), .MEM_BUFFER_WIDTH(512), .CL_WIDTH(64)) dut(.clk(clk), .rst_n(rst_n), .mapped_data_valid(mapped_data_valid), .mapped_data(mapped_data), .mapped_address(mapped_address), .dram_if(dram_if.FPU));
+	FPU #(.COL_WIDTH(10), .MEM_BUFFER_WIDTH(512), .CL_WIDTH(64)) dut(.clk(clk), .rst_n(rst_n), .done(done), .mapped_data_valid(mapped_data_valid), .mapped_data(mapped_data), .mapped_address(mapped_address), .dram_if(dram_if.FPU));
 
 	logic [31:0] start_address, result_address, start_sig;
 	logic [15:0] width, height;
@@ -44,7 +44,7 @@ module FPUVerilogDemo();
 		@(posedge dut.controller.conf.load_config_done);	
 		start_sig = 1'b0;
 		
-		@(posedge dut.done);
+		@(posedge done);
 		@(posedge clk);
 		write_result(width, height);
 
