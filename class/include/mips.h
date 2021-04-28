@@ -27,12 +27,11 @@
  * and a jump list for functional routines
  *
  * Instruction Formats:
- * R - 6 opcode, 5 rs, 5 rt, 5 rd, 5 shamt, 6 funct
- * I - 6 opcode, 5 rs, 5 rt, 16 imm
- * J - 6 opcode, 26 addr
+ * R - 5 opcode, 5 rd, 5 rs, 5 rt, 12 Imm. includes imm instructions, NEGate, mem instructions without imm, branch instructions, JR, and nop and RIN
+ * M - 5 opcode, 5 rd, 5 rs, 1 blank, 16  Imm. includes mem imm instructions
+ * J - 5 opcode, 13 blank, 14 Imm. includes JMP and JAL but not JR
  *
- *
- * wchen329
+ * wchen329 and Christian Henke
  */
 #include <cstring>
 #include <cstddef>
@@ -50,96 +49,80 @@ namespace priscas
 	// Friendly Register Names -> Numerical Assignments
 	enum REGISTERS
 	{
-		$zero = 0,
-		$at = 1,
-		$v0 = 2,
-		$v1 = 3,
-		$a0 = 4,
-		$a1 = 5,
-		$a2 = 6,
-		$a3 = 7,
-		$t0 = 8,
-		$t1 = 9,
-		$t2 = 10,
-		$t3 = 11,
-		$t4 = 12,
-		$t5 = 13,
-		$t6 = 14,
-		$t7 = 15,
-		$s0 = 16,
-		$s1 = 17,
-		$s2 = 18,
-		$s3 = 19,
-		$s4 = 20,
-		$s5 = 21,
-		$s6 = 22,
-		$s7 = 23,
-		$t8 = 24,
-		$t9 = 25,
-		$k0 = 26,
-		$k1 = 27,
-		$gp = 28,
-		$sp = 29,
-		$fp = 30,
-		$ra = 31,
+		$R0 = 0,
+		$r1 = 1,
+		$r2 = 2,
+		$r3 = 3,
+		$r4 = 4,
+		$r5 = 5,
+		$r6 = 6,
+		$r7 = 7,
+		$r8 = 8,
+		$r9 = 9,
+		$r10 = 10,
+		$r11 = 11,
+		$r12 = 12,
+		$r13 = 13,
+		$r14 = 14,
+		$r15 = 15,
+		$r16 = 16,
+		$r17 = 17,
+		$r18 = 18,
+		$r19 = 19,
+		$r20 = 20,
+		$r21 = 21,
+		$r22 = 22,
+		$r23 = 23,
+		$r24 = 24,
+		$r25 = 25,
+		$r26 = 26,
+		$r27 = 27,
+		$r28 = 28,
+		$ESP = 29,
+		$LR = 30,
+		$FL = 31,
 		INVALID = -1
 	};
 
 	// instruction formats
 	enum format
 	{
-		R, I, J	
+		R, M, J	
 	};
 
 	// MIPS Processor Opcodes
 	enum opcode
 	{
-		R_FORMAT = 0,
-		DUMMY = 1,
-		JUMP = 2,
-		JAL = 3,
-		BEQ = 4,
-		BNE = 5,
-		BLEZ = 6,
-		BGTZ = 7,
-		ADDI =  8,
-		ADDIU = 9,
-		SLTI = 10,
-		SLTIU = 11,
-		ANDI = 12,
-		ORI = 13,
-		XORI = 14,
-		LUI = 15,
-		LB = 32,
-		LH = 33,
-		LWL = 34,
-		LW = 35,
-		LBU = 36,
-		LHU = 37,
-		LWR = 38,
-		SB = 40,
-		SH = 41,
-		SWL = 42,
-		SW = 43,
+	    // ALU
+		ADD = 0,
+		ADDI = 1,
+		SUB = 2,
+		SUBI = 3,
+		AND = 4,
+		OR = 5,
+		XOR = 6,
+		NEG = 7,
+		SLL =  8,
+		SLR = 9,
+		SAR = 10,
+		// Mem
+		LD = 11,
+		LDI = 12,
+		ST = 13,
+		STI = 14,
+		// nop
+		nop = 15,
+		// Control
+		BEQ = 16,
+		BNE = 17,
+		BON = 18,
+		BNN = 19,
+		JMP = 20,
+		JR = 21,
+		JAL = 22,
+		// RIN
+		RIN = 31,
 		SYS_RES = -1	// system reserved for shell interpreter
-	};
-
-	// Function codes for R-Format Instructions
-	enum funct
-	{
-		SLL = 0,
-		SRL = 2,
-		JR = 8,
-		ADD = 32,
-		ADDU = 33,
-		SUB = 34,
-		SUBU = 35,
-		AND = 36,
-		OR = 37,
-		NOR = 39,
-		SLT = 42,
-		SLTU = 43,
-		NONE = -1	// default, if not R format
 	};
 
 	int friendly_to_numerical(const char *);
@@ -150,24 +133,10 @@ namespace priscas
 	// From a immediate string, get an immediate value.
 	int get_imm(const char *);
 
-	namespace ALU
-	{
-		enum ALUOp
-		{
-					ADD = 0,
-					SUB = 1,
-					SLL = 2,
-					SRL = 3,
-					OR = 4,
-					AND = 5,
-					XOR = 6
-		};
-	}
-
 	// Format check functions
-	/* Checks if an instruction is I formatted.
+	/* Checks if an instruction is M formatted.
 	 */
-	bool i_inst(opcode operation);
+	bool m_inst(opcode operation);
 
 	/* Checks if an instruction is R formatted.
 	 */
@@ -195,22 +164,17 @@ namespace priscas
 	/* Checks if an instruction performs
 	 * a register write
 	 */
-	bool reg_write_inst(opcode operation, funct func);
-
-	/* Check if a special R-format
-	 * shift instruction
-	 */
-	bool shift_inst(funct f);
+	bool reg_write_inst(opcode operation);
 
 	/* Check if a Jump or
 	 * Branch Instruction
 	 */
-	bool jorb_inst(opcode operation, funct fcode);
+	bool jorb_inst(opcode operation);
 
 	/* "Generic" MIPS-32 architecture
 	 * encoding function asm -> binary
 	 */
-	BW_32 generic_mips32_encode(int rs, int rt, int rd, int funct, int imm_shamt_jaddr, opcode op);
+	BW_32 generic_mips32_encode(int rs, int rt, int rd, int imm_shamt_jaddr, opcode op);
 
 	/* For calculating a label offset in branches
 	 */
