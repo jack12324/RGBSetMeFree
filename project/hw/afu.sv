@@ -64,11 +64,12 @@ module afu
 
    //note these connections are not correct, just connecting to something to test synthesis
    logic mapped_data_valid;
+   logic mapped_data_request;
    logic [31:0] mapped_data;
    FPUDRAM_if dram_if();
    logic [31:0] mapped_address;
    logic done;
 
-   FPU #(.COL_WIDTH(10), .MEM_BUFFER_WIDTH(512), .CL_WIDTH(64)) dut(.clk(clk), .rst_n(!rst), .done(done), .mapped_data_valid(mapped_data_valid), .mapped_data(mapped_data), .mapped_address(mapped_address), .dram_if(dram_if.FPU));
+   FPU #(.COL_WIDTH(10), .MEM_BUFFER_WIDTH(512), .CL_WIDTH(64)) dut(.clk(clk), .rst_n(!rst), .done(done), .mapped_data_valid(mapped_data_valid), .mapped_data_request(mapped_data_request), .mapped_data(mapped_data), .mapped_address(mapped_address), .dram_if(dram_if.FPU));
 
 endmodule

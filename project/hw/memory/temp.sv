@@ -32,7 +32,7 @@ module cache_control(
     mem_data_in,
     DataOut
     );
-
+endmodule 
     
 module cache_controller(
 	// Input from system
@@ -53,4 +53,5 @@ module cache_controller(
 	wr_mem,rd_mem,
 	// Output to system
 	Done,CacheHit,Stall_sys, DataOut_ct, final_state
-);
+	);
+endmodule

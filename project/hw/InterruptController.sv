@@ -17,7 +17,7 @@ module InterruptController(clk, rst_n, IO, ACK, INT, INT_INSTR, IMR_in);
     parameter INSTR_IO_5 = 32'hA000000A; 
     parameter INSTR_IO_6 = 32'hA000000C; 
     parameter INSTR_IO_7 = 32'hA000000E; 
-    parameter INSTR_NOOP = 32'h00000000;
+    parameter INSTR_NOOP = 32'h78000000;
 
     input clk; // System clock 
     input rst_n; // Active low reset   

@@ -43,9 +43,9 @@ $(BIN_DIR)/class: $(LIB_DIR)/libmtcore.a $(SHELL_MAIN) $(INCLUDE)
 
 $(BIN_DIR)/x2b: $(LIB_DIR)/libmtcore.a $(X2B_MAIN) $(INCLUDE)
 	cd build; $(CC) $(X2B_MAIN) $(LIB) -o ../$@
-	
 
-$(BIN_DIR)/cload: $(LIB_DIR)/libmtcore.a $(CLOAD_MAIN) $(CLOAD_OBJS) $(INCLUDE) 
+
+$(BIN_DIR)/cload: $(LIB_DIR)/libmtcore.a $(CLOAD_MAIN) $(CLOAD_OBJS) $(INCLUDE)
 	cd build; $(CC) $(CLOAD_MAIN) $(CLOAD_OBJS) $(LIB) $(LIB_CLOAD) -o ../$@
 
 $(BIN_DIR)/cload_sim: $(LIB_DIR)/libmtcore.a $(CLOAD_MAIN) $(CLOAD_OBJS) $(INCLUDE)
@@ -53,7 +53,7 @@ $(BIN_DIR)/cload_sim: $(LIB_DIR)/libmtcore.a $(CLOAD_MAIN) $(CLOAD_OBJS) $(INCLU
 
 .cpp.o:
 	$(CC) $(CFLAGS) $(CLASS_SYSARG) -c $<
-	mv $*.o build 
+	mv $*.o build
 release:
 	$(MAKE) all CFLAGS="-O3 -I\"$(INCLUDE)\" -I"$(INCLUDE_CONTRIB)" -DP_RELEASE"
 clean:

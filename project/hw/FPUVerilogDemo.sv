@@ -1,10 +1,10 @@
 module FPUVerilogDemo();
-	logic clk, rst_n, mapped_data_valid, done;
+	logic clk, rst_n, mapped_data_valid, mapped_data_request, done;
 	logic [31:0] mapped_data;
 	FPUDRAM_if dram_if();
 	logic [31:0] mapped_address;
 
-	FPU #(.COL_WIDTH(10), .MEM_BUFFER_WIDTH(512), .CL_WIDTH(64)) dut(.clk(clk), .rst_n(rst_n), .done(done), .mapped_data_valid(mapped_data_valid), .mapped_data(mapped_data), .mapped_address(mapped_address), .dram_if(dram_if.FPU));
+	FPU #(.COL_WIDTH(10), .MEM_BUFFER_WIDTH(512), .CL_WIDTH(64)) dut(.clk(clk), .rst_n(rst_n), .done(done), .mapped_data_valid(mapped_data_valid), .mapped_data_request(mapped_data_request), .mapped_data(mapped_data), .mapped_address(mapped_address), .dram_if(dram_if.FPU));
 
 	logic [31:0] start_address, result_address, start_sig;
 	logic [15:0] width, height;
@@ -123,20 +123,25 @@ module FPUVerilogDemo();
 		int M_RESULT_ADDRESS = 32'h1000_0100;
 		int noise = $random();
 		mapped_data_valid = 0;
-		for(int i = 0; i < $urandom_range(2,10); i++)
+		@(posedge clk);
+			if(mapped_data_request)begin
+			for(int i = 0; i < $urandom_range(2,10); i++)
+				@(posedge clk);
+			case (mapped_address)
+				M_STARTSIG_ADDRESS: mapped_data = start_sig;
+				M_FILTER_ADDRESS: mapped_data = {filter_conf[0],filter_conf[1],filter_conf[2],filter_conf[3]};
+				M_FILTER_ADDRESS+4: mapped_data = {filter_conf[4],filter_conf[5],filter_conf[6],filter_conf[7]};
+				M_FILTER_ADDRESS+8: mapped_data = {filter_conf[8], noise[23:0]};
+				M_DIMS_ADDRESS: mapped_data = {width, height};
+				M_START_ADDRESS: mapped_data = start_address;
+				M_RESULT_ADDRESS: mapped_data = result_address;
+				default: mapped_data = 'x;
+			endcase
 			@(posedge clk);
-		case (mapped_address)
-			M_STARTSIG_ADDRESS: mapped_data = start_sig;
-			M_FILTER_ADDRESS: mapped_data = {filter_conf[0],filter_conf[1],filter_conf[2],filter_conf[3]};
-			M_FILTER_ADDRESS+4: mapped_data = {filter_conf[4],filter_conf[5],filter_conf[6],filter_conf[7]};
-			M_FILTER_ADDRESS+8: mapped_data = {filter_conf[8], noise[23:0]};
-			M_DIMS_ADDRESS: mapped_data = {width, height};
-			M_START_ADDRESS: mapped_data = start_address;
-			M_RESULT_ADDRESS: mapped_data = result_address;
-			default: mapped_data = 'x;
-		endcase
-		@(posedge clk);
-		mapped_data_valid = 1;
-		@(posedge clk);
+			mapped_data_valid = 1;
+			@(posedge clk);
+		end else begin
+			mapped_data = '0;
+		end
 	endtask
 endmodule

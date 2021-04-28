@@ -1,0 +1,55 @@
+#!/bin/bash
+# --noprofile --norc
+
+# CAE 'spoof' script for '/cae/apps/data/synopsys-2020/vcs/Q-2020.03-SP1/bin/vcs'
+
+# Step 1: Define a standard path 
+export PATH='/usr/local/bin:/usr/bin:/bin:/usr/bin/X11:/opt/bin:/cae/apps/data/synopsys-2020/vcs/Q-2020.03-SP1/bin:/cae/apps/bin'
+
+# Step 2: Create syslog on application launch
+arch=`uname`
+usr=`whoami`
+app=`basename $0`
+location=NULL
+# bash allows use of regex below
+if [[ $DISPLAY == ':0' ]]; then
+	# Launched via app menu in lightdm session
+	location=local-x
+elif [[ $DISPLAY == ':0.0' ]]; then
+	# Launched via terminal in lightdm session
+	location=local-term
+elif [[ $DISPLAY =~ ^localhost:[0-9]+.[0-9] ]]; then
+	location=ssh-x
+elif [[ $DISPLAY =~ ^.*:[0-9] ]]; then
+	location=vnc
+elif [[ $DISPLAY == '' ]]; then
+	if [[ $TERM == 'linux' ]]; then
+		location=console
+	else
+		location=ssh
+	fi
+fi
+
+logger -t "APPINFO" -p local0.info "$arch $usr $app current synopsys-2020 $location"
+
+# Step 3: Do app-specific customizations, if file exists
+if [ -f "/cae/apps/env/synopsys-vcs-vQ-2020.03-SP1" ]; then
+	. "/cae/apps/env/synopsys-vcs-vQ-2020.03-SP1"
+fi
+if [ -f "/cae/apps/data/synopsys-2020/vcs/CAE/CAE_shrc" ]; then
+	. "/cae/apps/data/synopsys-2020/vcs/CAE/CAE_shrc"
+fi
+if [ -f "/cae/apps/data/synopsys-2020/vcs/CAE/app-defaults" ]; then
+	run-parts --list "/cae/apps/data/synopsys-2020/vcs/CAE/app-defaults" | xargs -I{} xrdb --merge {}
+fi
+
+# Step 4: Do user-specific customizations, if file exists
+if [ -f $HOME/.CAE_shapps ]; then
+	source $HOME/.CAE_shapps
+fi
+if [ -f $HOME/.CAE_app-defaults ]; then
+	xrdb --merge $HOME/.CAE_app-defaults
+fi
+
+# Step 5: Finally. Exec the (real) binary the user intended in the first place
+exec "/usr/local/bin/uname26" "/cae/apps/data/synopsys-2020/vcs/Q-2020.03-SP1/bin/vlogan" -full64 "$@"
