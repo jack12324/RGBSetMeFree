@@ -8,7 +8,8 @@ module execute(
     input [4:0] DeEx_out_ALU_op,
     input [1:0] forward1_sel,
     input [1:0] forward2_sel, // forwarding
-    input forward_FL_sel, forward_LR_sel,
+    input forward_LR_sel,
+    input [1:0] forward_FL_sel,
 
     // From ID/EX:
 
