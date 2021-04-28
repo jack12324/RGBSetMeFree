@@ -264,7 +264,7 @@ module InterruptController(clk, rst_n, IO, ACK, INT, INT_INSTR, IMR_in);
     Used to count the cycles sending NoOps. 
     Counter won't go over 5 and it will only count when in the NOOP state.
     **/
-    always @(posedge clk, negedge rst_n) begin 
+    always_ff @(posedge clk, negedge rst_n) begin 
         if (~rst_n)
             counter <= 3'b001;
         else 

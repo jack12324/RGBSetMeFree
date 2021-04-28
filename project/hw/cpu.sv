@@ -513,11 +513,13 @@ module cpu(clk, rst_n, tx_done, rd_valid, op, data_in, data_out, INT, INT_INSTR,
         .clk(clk),
         .rst_n(rst_n),
         // controls
- 	.DeEx_out_Branch(),
+ 	    .DeEx_out_Branch(),
         .DeEx_out_Jump(),
         .DeEx_out_ALU_op(DeEx_out_ALU_OP),//lowercase op in execute module
         .forward1_sel(forward1_sel),
         .forward2_sel(forward2_sel),
+        .forward_FL_sel(forward_FL_sel), // new  
+        .forward_LR_sel(forward_LR_sel), // new
 
         // From ID/EX:
         .DeEx_out_mem_wrt(DeEx_out_mem_wrt),
@@ -533,6 +535,12 @@ module cpu(clk, rst_n, tx_done, rd_valid, op, data_in, data_out, INT, INT_INSTR,
         .DeEx_out_LR(DeEx_out_LR),
         .reg_wrt_data(reg_wrt_data),
         .ExMe_out_alu_out(ExMe_out_alu_out),
+
+        // new inputs for forwarding 
+        .ExMe_out_FL(ExMe_out_FL), // new
+        .MeWb_out_FL(MeWb_out_FL), // new
+        .ExMe_out_LR(ExMe_out_LR), // new
+        .MeWb_out_LR(MeWb_out_LR), // new 
 
         // Outputs
 	.ExMe_in_alu_out(ExMe_in_alu_out),
