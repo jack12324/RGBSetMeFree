@@ -1,9 +1,0 @@
-//
-// This file has been generated automatically by afu_platform_config.
-// Do not edit it by hand.
-//
-// Platform: intg_xeon
-// AFU top-level interface: ccip_std_afu
-//
-
--F /filespace/c/chenke/opae/share/opae/platform/platform_if/sim/platform_if_includes.txt

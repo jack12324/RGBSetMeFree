@@ -171,6 +171,26 @@ module cpu(clk, rst_n, tx_done, rd_valid, op, data_in, data_out, INT, INT_INSTR,
         //logic [1:0] ExMe_in_FL_wrt_data;
     /////////////////////////////////////////////////////////////////////////////
 
+
+    /////////////////////////////////////////////////////////////////////////////
+    ///////////////////////// Forwarding Signals ////////////////////////////////
+    // input clk, rst_n;
+    // input ExMe_out_reg_write_en;
+    // input [4:0] ExMe_out_reg_wrt_sel;
+    // input MeWb_out_reg_write_en;
+    // input [4:0] MeWb_out_reg_wrt_sel; --------> MeWb_out_reg_write_sel
+    // input [4:0] DeEx_out_reg_1_sel, DeEx_out_reg_2_sel;
+    // input DeEx_out_FL_write, ExMe_out_FL_write, MeWb_out_FL_write;
+    // input DeEx_out_LR_write, ExMe_out_LR_write, MeWb_out_LR_write;
+    // input [1:0] DeEx_FL, ExMe_FL, MeWb_FL; ---------> DeEx_out_FL, ExMe_out_FL, MeWb_out_FL
+    // input [31:0] DeEx_LR, ExMe_LR, MeWb_LR; --------> DeEx_out_LR, ExMe_out_LR, MeWb_out_LR
+
+    // output [1:0] forward1_sel, forward2_sel;
+    logic forward_LR_sel;
+    logic [1:0] forward_FL_sel;
+    /////////////////////////////////////////////////////////////////////////////
+
+
     /////////////////////////////////////////////////////////////////////////////
     //////////////////// ExMe Pipeline Register Signals /////////////////////////
     // Inputs to the pipeline registers 
@@ -525,6 +545,55 @@ module cpu(clk, rst_n, tx_done, rd_valid, op, data_in, data_out, INT, INT_INSTR,
 
 
     /////////////////////////////////////////////////////////////////////////////
+    /////////////////////////// Forwarding  Unit //////////////////////////////// 
+
+    forwarding iFORWARD(
+        // input
+        .clk(clk), 
+	.rst_n(rst_n),
+        .ExMe_out_reg_write_en(ExMe_out_reg_write_en), 
+	.ExMe_out_reg_wrt_sel(ExMe_out_reg_wrt_sel),
+        .MeWb_out_reg_write_en(MeWb_out_reg_write_en), 
+	.MeWb_out_reg_wrt_sel(MeWb_out_reg_wrt_sel),
+        .DeEx_out_reg_1_sel(DeEx_out_reg_1_sel), 
+	.DeEx_out_reg_2_sel(DeEx_out_reg_2_sel),
+        .ExMe_out_FL_write(ExMe_out_FL_write), 
+	.DeEx_out_FL_write(DeEx_out_FL_write), 
+	.MeWb_out_FL_write(MeWb_out_FL_write),
+        .ExMe_out_LR_write(ExMe_out_LR_write), 
+	.DeEx_out_LR_write(DeEx_out_LR_write), 
+	.MeWb_out_LR_write(MeWb_out_LR_write),
+        .DeEx_FL(DeEx_FL), 
+	.ExMe_FL(ExMe_FL), 
+	.MeWb_FL(MeWb_FL),
+        .DeEx_LR(DeEx_LR), 
+	.ExMe_LR(ExMe_LR), 
+	.MeWb_LR(MeWb_LR),
+        // output
+        .forward_LR_sel(forward_LR_sel),
+        .forward_FL_sel(forward_FL_sel),
+        .forward1_sel(forward1_sel), 
+	.forward2_sel(forward2_sel)
+    );
+
+    // input clk, rst_n;
+    // input ExMe_out_reg_write_en;
+    // input [4:0] ExMe_out_reg_wrt_sel;
+    // input MeWb_out_reg_write_en;
+    // input [4:0] MeWb_out_reg_wrt_sel; --------> MeWb_out_reg_write_sel
+    // input [4:0] DeEx_out_reg_1_sel, DeEx_out_reg_2_sel;
+    // input DeEx_out_FL_write, ExMe_out_FL_write, MeWb_out_FL_write;
+    // input DeEx_out_LR_write, ExMe_out_LR_write, MeWb_out_LR_write;
+    // input [1:0] DeEx_FL, ExMe_FL, MeWb_FL; ---------> DeEx_out_FL, ExMe_out_FL, MeWb_out_FL
+    // input [31:0] DeEx_LR, ExMe_LR, MeWb_LR; --------> DeEx_out_LR, ExMe_out_LR, MeWb_out_LR
+
+    // output [1:0] forward1_sel, forward2_sel;
+    // logic forward_LR_sel;
+    // logic [1:0] forward_FL_sel;
+
+    /////////////////////////////////////////////////////////////////////////////
+
+    /////////////////////////////////////////////////////////////////////////////
     ///////////////////// Execute - Memory Pipeline Regs ////////////////////////
     ExMe iEXME(
         // Inputs to the pipeline registers 
@@ -648,9 +717,7 @@ module cpu(clk, rst_n, tx_done, rd_valid, op, data_in, data_out, INT, INT_INSTR,
 	// connect wires
 	assign ExMe_in_FL = DeEx_out_FL;
 	assign ExMe_in_LR = DeEx_out_LR;
-// todo forwarding (see 552)
 // todo stalling (insert NOPs, using Done signals and prediction and stuff, see 552)
 // todo flushing (flush up to execute, using Branching, see 552)
-// todo interrupts
 
 endmodule
