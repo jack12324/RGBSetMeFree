@@ -17,7 +17,7 @@ module InterruptController_tb();
     parameter INSTR_IO_5 = 32'hA000000A; 
     parameter INSTR_IO_6 = 32'hA000000C; 
     parameter INSTR_IO_7 = 32'hA000000E; 
-    parameter INSTR_NOOP = 32'h00000000;
+    parameter INSTR_NOOP = 32'h78000000;
 
     // inputs to iDUT 
     reg clk; // System clock 

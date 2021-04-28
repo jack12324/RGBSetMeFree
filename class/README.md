@@ -15,7 +15,7 @@ To build each of these, make the following targets
 #### `bin/cload` - makes the loader (with physical FPGA connectivity, for use on DevCloud)
 #### `bin/cload_sim` - makes  the loader for simulation through Intel ASE
 
-#### 
+####
 Other useful targets:
 #### `all` - the default target, builds the `class` executable and `cload` executable with debugging symbols and no optimization (debug)
 #### `clean` - clean the solution, remove executables and objects
@@ -23,3 +23,4 @@ Other useful targets:
 
 ## Acknowledgments
 To implement Intel DevCloud capability, this project also makes use of code from University of Florida intel-training-modules (GPLv3 licensed, in the contrib folder).
+

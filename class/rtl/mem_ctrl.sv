@@ -16,7 +16,7 @@ module mem_ctrl
 	parameter WORD_SIZE = 32,
 	parameter CL_SIZE_WIDTH = 512,
 	parameter ADDR_BITCOUNT = 64
-	
+
 )
 (
 	input wire clk,
@@ -29,8 +29,8 @@ module mem_ctrl
 	input wire [ADDR_BITCOUNT-1:0] raw_address,
 	input wire [ADDR_BITCOUNT-1:0] address_offset,
 
-	input logic [WORD_SIZE-1:0] common_data_bus_read_in, 
-	output logic [WORD_SIZE-1:0] common_data_bus_write_out, 
+	input logic [WORD_SIZE-1:0] common_data_bus_read_in,
+	output logic [WORD_SIZE-1:0] common_data_bus_write_out,
 
 	input logic [CL_SIZE_WIDTH-1:0] host_data_bus_read_in,
 	output logic [CL_SIZE_WIDTH-1:0] host_data_bus_write_out,
@@ -47,13 +47,13 @@ module mem_ctrl
 );
 	localparam FILL_COUNT = CL_SIZE_WIDTH / WORD_SIZE;
 	localparam FILL_BITS = $clog2(FILL_COUNT);
-	
+
 	// Definitions
 	typedef enum logic [1:0]
 	{
 		IDLE = 2'b00,
 		READ = 2'b01,
-		WRITE = 2'b11 
+		WRITE = 2'b11
 	} opcode;
 
 	typedef enum reg[1:0]
@@ -118,7 +118,7 @@ module mem_ctrl
 						tx_done = 1'b1;
 						host_we = 1'b1;
 					end
-				end	
+				end
 				else if(op == READ) begin
 				// Read
 				/* Just fill the cache line buffer with a single read
@@ -126,7 +126,7 @@ module mem_ctrl
 					host_rgo = 1'b1;
 				end
 			end
-				
+
 			FILL: begin
 
 				if(op == READ) begin
@@ -145,7 +145,7 @@ module mem_ctrl
 		endcase
 
 	end
-	
+
 	always_ff@ (posedge clk, negedge rst_n) begin
 		if(!rst_n) begin
 			state <= STARTUP;
@@ -180,7 +180,7 @@ module mem_ctrl
 
 						if(op_in == WRITE) begin
 							state <= HOSTOP;
-							line_buffer <= {common_data_bus_read_in, line_buffer[CL_SIZE_WIDTH-1:WORD_SIZE]};					
+							line_buffer <= {common_data_bus_read_in, line_buffer[CL_SIZE_WIDTH-1:WORD_SIZE]};
 						end
 						else if(op_in == READ) begin
 							state <= READY;
@@ -190,7 +190,7 @@ module mem_ctrl
 						// If we are writing, fill the line buffer with
 						// data from common data bus read in
 						if(op_in == WRITE) begin
-							line_buffer <= {common_data_bus_read_in, line_buffer[CL_SIZE_WIDTH-1:WORD_SIZE]};					
+							line_buffer <= {common_data_bus_read_in, line_buffer[CL_SIZE_WIDTH-1:WORD_SIZE]};
 						end
 						fill_count <= fill_count + 1;
 					end
