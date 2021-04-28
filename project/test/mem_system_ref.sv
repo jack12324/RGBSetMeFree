@@ -4,11 +4,11 @@
     Author: Mayukh Misra
 */
 
-module mem_system_ref(
+module mem_system_ref (
     // Outputs
     DataOut, Done, Stall, CacheHit, 
     // Inputs
-    Addr, DataIn, Rd, Wr, clk, rst_n
+    Addr_in, DataIn, Rd, Wr, clk, rst_n
     );
     
     input [31:0] Addr_in;
@@ -29,12 +29,12 @@ module mem_system_ref(
     // End of automatics
  
     //Test on only 16 bits of addresses, because 32 bits is too large
-    reg [7:0]           mem[0:65535];
-    reg                 loaded;
+    logic [7:0]           mem[0:65535];
+    logic                 loaded;
     integer             i;
  
-    reg [31:0] Addr;    //Word aligned address
-    reg [31:0] DataOut;
+    logic [31:0] Addr;    //Word aligned address
+    logic [31:0] DataOut;
     
     assign Addr = {Addr_in[31:2], 2'b0};
     initial begin
@@ -44,7 +44,7 @@ module mem_system_ref(
        end
     end
  
-    always_comb begin
+    always @(*) begin
        if (~rst_n) begin
           if (!loaded) begin
              $readmemh("loadfile_all.img", mem);
@@ -57,6 +57,7 @@ module mem_system_ref(
           if (Rd) begin
              DataOut = {mem[Addr], mem[Addr+8'd1], mem[Addr + 8'd2], mem[Addr + 8'd3]};    //Little Endian or Big Endian would affect this. This is little endian
           end
+          loaded = 1;
        end
     end 
  

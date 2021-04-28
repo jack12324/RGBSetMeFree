@@ -33,7 +33,8 @@ output logic [ADDR_WIDTH-1:0] AddrOut_host;
 output logic [1:0] op_host;
 
 input logic [17:0] tag_in;
-input logic validIn_cache, hit_in, dirty_in, replaceLine;
+input logic validIn_cache, hit_in, dirty_in;
+output logic replaceLine;
 output logic [7:0] index;
 output logic [5:0] offset;
 output logic comp, wr_cache, stall, done, hit_out, cache_en;
@@ -103,11 +104,12 @@ always_comb begin
             AddrOut_host = FloppedAddressIn;  //CPU Virtual Address must be prefixed
             DataOut_host = cache_line_in;
             replaceLine = tx_done_host? 1'b1: 1'b0;
-            nextState = tx_done_host & rd_valid_host? CACHEWR : MEMRD;
+            nextState = tx_done_host? CACHEWR : MEMRD;
         end
         CACHEWR: begin  //Writes the new word in replaced cache line
             wr_cache = 1'b1;
             cache_en = 1'b1;
+            op_host = 2'b0; //Make sure no extra requests to mem_ctrl after tx_done
             
             tag_out = FloppedAddressIn[31:14];
             index = FloppedAddressIn[13:6];

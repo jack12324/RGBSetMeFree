@@ -5,7 +5,7 @@
 module ram_block #(parameter SIZE =  32) (
     input rst_n,
     input clk,
-    input logic [13:0] addr,
+    input logic [7:0] addr,
     input logic [SIZE-1:0] d,
     input logic WrEn,
     output logic [SIZE-1:0] q

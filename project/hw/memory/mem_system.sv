@@ -1,5 +1,4 @@
-/*  Mem_System v1.0 : Includes 4 Bank memory for word seperation
- *  Assumes Single Cycle Reads and Writes. May be used for testing.
+/*  Mem_System v2.0 : Uses Cache and Cache Controller. Need to verify functionality with DMA
  *
 */
 module mem_system
@@ -19,9 +18,9 @@ module mem_system
 
 	output logic [511:0] DataOut_host,
 	output logic [31:0] AddrOut_host,
-	output logic [1:0] op_host
+	output logic [1:0] op_host,
 	//Output for test
-	output logic CacheHit;
+	output logic CacheHit
 	);
 
 
@@ -82,12 +81,12 @@ module mem_system
 	.comp			(comp), 
 	.wr_cache		(wr_cache), 
 	.tag_out		(tag_in), 
-	.dataOut_cache	(data_in_cache), 
+	.DataOut_cache	(data_in_cache), 
 	.cache_line_out	(cacheLine_in), 
 	.replaceLine	(replaceLine)
 	);
 
-	cache c0(
+	cpu_cache c0(
 		//Input
 		.en			(cache_en),
 		.clk		(clk),

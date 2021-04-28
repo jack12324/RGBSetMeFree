@@ -2,38 +2,67 @@ module mem_system_tb ();
     // Clock
 	logic clk;
 	logic rst;
-    logic wr;
-	logic [31 : 0] addr;
-	logic [31 : 0] data_in;
+    logic Wr;
+    logic Rd;
+	logic [31 : 0] Addr;
+	logic [31 : 0] DataIn;
 
 	logic [31 : 0] data_out;
 	logic data_valid;
-    logic done;
+    logic Done;
     logic CacheHit;
 
-    logic [31 : 0] data_out_ref;
+    logic [31 : 0] Data_out_ref;
     logic data_valid_ref;
-    logic done_ref;
+    logic Done_ref;
     logic CacheHit_ref;
+    logic Stall;
 
     logic [511:0]   DataIn_host, DataOut_host;
     logic tx_done_host, rd_valid_host;
     logic [31:0]    AddrOut_host;
     logic [1:0]     op_host;
 
+    mem_system mem_dut(
+        .clk(clk),
+        .rst_n(rst_n),
+        .wr(Wr),
+        .addr(Addr),
+        .data_in(DataIn),
+        .data_out(data_out),
+        .data_valid(data_valid),
+        .done(Done),
+        .DataIn_host(DataIn_host),
+        .tx_done_host(tx_done_host),
+        .rd_valid_host(rd_valid_host),
+        .DataOut_host(DataOut_host),
+        .AddrOut_host(AddrOut_host),
+        .op_host(op_host),
+        .CacheHit(CacheHit)
+    );
+    
+    
+    mem_system_ref ref_dut(
+        .clk(clk),
+        .rst_n(rst_n),
+        .Wr(Wr),
+        .Rd(~Wr),
+        .Addr_in(Addr),
+        .DataIn(DataIn),
+        .DataOut(Data_out_ref),
+        .Done(Done_ref),
+        .Stall(),
+        .CacheHit(CacheHit_ref));
+
 	always #5 clk = ~clk; 
     
-    mem_system mem_dut(.wr(Wr), .rst_n(~rst).*);
-    mem_system_ref ref  (
-    // Outputs
-    .DataOut(data_out_ref), .Done(data_valid_ref), .Stall(~done_ref), .CacheHit(CacheHit_ref), 
-    // Inputs
-    .*);
+    assign Stall = ~Done;
 
     reg    reg_readorwrite;
     integer n_requests;
     integer n_replies;
     integer n_cache_hits;
+    integer n_cache_hits_total;
     reg     test_success;
     integer req_cycle;
 
@@ -68,9 +97,9 @@ module mem_system_tb ();
             $display("LOG: ReqNum %4d Rd Addr 0x%04x Value 0x%04x ValueRef 0x%04x Hit: %1d\n",
                     n_replies,
                     Addr,
-                    DataOut,
-                    DataOut_ref, CacheHit);
-            if (DataOut != DataOut_ref) begin
+                    data_out,
+                    Data_out_ref, CacheHit);
+            if (data_out != Data_out_ref) begin
                 $display("ERROR");
                 test_success = 1'b0;
             end
@@ -137,7 +166,7 @@ module mem_system_tb ();
         if (n_replies != n_requests) begin
            if (Rd) begin
               $display("LOG: ReqNum %4d Rd Addr 0x%04x RefValue 0x%04x\n",
-                       n_replies, Addr, DataOut_ref);
+                       n_replies, Addr, Data_out_ref);
            end
            if (Wr) begin
               $display("LOG: ReQNum %4d Wr Addr 0x%04x Value 0x%04x\n",
@@ -155,6 +184,7 @@ module mem_system_tb ();
         begin
             if (!rst && (!Stall)) begin
                check_dropped_request;
+               generate_dma;
                reg_readorwrite = $random % 2;
                if (reg_readorwrite) begin
                   Wr = $random % 2;
@@ -180,6 +210,7 @@ module mem_system_tb ();
         begin
         if (!rst && (!Stall)) begin
             check_dropped_request;
+            generate_dma;
             reg_readorwrite = $random % 2;
             if (reg_readorwrite) begin
                 Wr = $random % 2;
@@ -202,7 +233,8 @@ module mem_system_tb ();
         // should generate a lot of cache hits
         begin
         if (!rst && (!Stall)) begin
-            check_dropped_request;            
+            check_dropped_request;     
+            generate_dma;       
             reg_readorwrite = $random % 2;
             if (reg_readorwrite) begin
                 Wr = $random % 2;
@@ -232,4 +264,16 @@ module mem_system_tb ();
         $finish;
         end
     endtask // end_simulation
+
+    task generate_dma;
+        begin
+        DataIn_host = $urandom % 512'hFFFF_FFFF_FFFF_FFFF_FFFF_FFFF_FFFF_FFFF_FFFF_FFFF_FFFF_FFFF_FFFF_FFFF_FFFF_FFFF_FFFF_FFFF_FFFF_FFFF_FFFF_FFFF_FFFF_FFFF;
+        //DataOut_host;    //Don't Care
+        tx_done_host = $urandom % 2;
+        rd_valid_host = tx_done_host;
+        //AddrOut_host;
+        //assign op_host;
+
+        end
+    endtask
 endmodule
