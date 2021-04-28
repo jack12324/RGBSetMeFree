@@ -1,7 +1,7 @@
 //Mem Arbiter to be used by Data Mem and Inst Mem contention, and FPU and CPU contention.
 
 module mem_arbiter #(
-    parameter ADDR_WIDTH = 32;  
+    parameter ADDR_WIDTH = 32 
     )(
     input clk, 
     input rst_n,
@@ -31,7 +31,7 @@ module mem_arbiter #(
     output logic [1:0] op,
     output logic [ADDR_WIDTH -1 : 0] raw_address,
     output logic [ADDR_WIDTH -1 : 0] address_offset,
-    output logic [511:0] common_data_bus_read_in,   //Naming convention relative to mem_ctrl
+    output logic [511:0] common_data_bus_read_in   //Naming convention relative to mem_ctrl
 );
 
     typedef enum {READY, SRC1, SRC2} state;

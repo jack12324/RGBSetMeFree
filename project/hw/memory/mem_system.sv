@@ -19,9 +19,9 @@ module mem_system
 
 	output logic [511:0] DataOut_host,
 	output logic [31:0] AddrOut_host,
-	output logic [1:0] op_host
+	output logic [1:0] op_host,
 	//Output for test
-	output logic CacheHit;
+	output logic CacheHit
 	);
 
 
