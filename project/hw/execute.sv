@@ -52,7 +52,7 @@ module execute(
 
     //FL
     //0, 1, 2, 3
-    mux3_1 i_mux3_fl (.in_reg(DeEx_out_FL), .in_alu(ExMe_out_FL), .in_wb(MeWb_out_FL), .sel(forward_FL_sel), .out(forwarded_FL));
+    mux3_1_fl i_mux3_fl (.in_reg(DeEx_out_FL), .in_alu(ExMe_out_FL), .in_wb(MeWb_out_FL), .sel(forward_FL_sel), .out(forwarded_FL));
 
 
 
