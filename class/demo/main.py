@@ -38,7 +38,6 @@ def main(debug=False):
 	os.system('../bin/cload_sim')
 	print('***Exit FPGA***')
 
-	output_length = (((width + pad_width)*3)+4) * height
 	read_image(output_img_fpath, pad_width=pad_width, height=height, width=width)
 
 if __name__ == '__main__':
