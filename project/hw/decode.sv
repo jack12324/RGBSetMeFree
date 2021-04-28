@@ -294,7 +294,7 @@ module decode (
 			`J: begin
 				ALU_src = 2'd0;
 				Jump = 1;
-				imm = {16'h1000, instr[13:0], 2'b0}; // prefix where inst. mem. starts, postfix is byte addressable
+				imm = {16'h0600, instr[13:0], 2'b0}; // prefix where inst. mem. starts, postfix is byte addressable
 				result_sel = 2'b10;
 				FL_write = 0;
 			end
@@ -308,7 +308,7 @@ module decode (
 			`JAL: begin
 				ALU_src = 2'd0;
 				Jump = 1;
-				imm = {16'h1000, instr[13:0], 2'b0}; // prefix where inst. mem. starts, postfix is byte addressable
+				imm = {16'h0600, instr[13:0], 2'b0}; // prefix where inst. mem. starts, postfix is byte addressable
 				result_sel = 2'b10;
 				LR_write = 1; 
 				FL_write = 0;
