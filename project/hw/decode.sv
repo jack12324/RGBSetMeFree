@@ -52,7 +52,9 @@ module decode (
 		LR_read, LR_write, FL_read, FL_write,
 		ALU_src, ALU_OP, Branch, Jump,
 		mem_wrt, mem_en,
-		result_sel, next_reg_wrt_en, next_reg_wrt_sel
+		result_sel, next_reg_wrt_en, next_reg_wrt_sel,
+		// interrupts 
+		restore, LR_before_int, FL_before_int
 		);
 	input logic clk, rst_n;
 	input logic [31:0] instr;
@@ -68,6 +70,11 @@ module decode (
 	// control for special register stuff
 	input logic in_LR_write;
 	input logic in_FL_write;
+
+	// interrupt signals
+	input logic restore;
+	input logic [31:0] LR_before_int;
+	input logic [1:0] FL_before_int;
 
 	output logic [31:0] out_PC_next;
 	output logic [31:0] reg_1_data;
@@ -95,6 +102,10 @@ module decode (
 	output logic next_reg_wrt_en;
 	output logic [4:0] next_reg_wrt_sel;
 
+
+	assign 
+
+
 	// read/write registers
 	regFile_bypass registers(.clk(clk), .rst(rst_n), .read1Data(reg_1_data), .read2Data(reg_2_data), 
 				.read1RegSel(instr[21:17]), .read2RegSel(instr[16:12]), 
@@ -116,8 +127,8 @@ module decode (
 			FL <= FL_next;
 		end
 	end
-	assign LR_next = in_LR_write ? in_LR_wrt_data : LR;
-	assign FL_next = in_FL_write ? in_FL_wrt_data : FL;
+	assign LR_next = (restore == 1'b1) ? (LR_before_int) : ( in_LR_write ? in_LR_wrt_data : LR );
+	assign FL_next = (restore == 1'b1) ? (FL_before_int) : ( in_FL_write ? in_FL_wrt_data : FL );
 	
 
 	// set all other outputs

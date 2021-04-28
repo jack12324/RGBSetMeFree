@@ -15,16 +15,23 @@ module fetch (clk, rst_n, in_PC_next, stall, flush, INT, INT_INSTR, out_PC_next,
 	input [31:0] in_PC_next;
 	input stall, flush;
 	// for interrupts
-	input INT;
+	//input INT;
+	input [31:0] PC_before_int;
 	input [31:0] INT_INSTR;
+	input restore;
+	input use_cpu_injection, // signal to use the injected instructions from this FSM 
+    input [31:0] cpu_injection, // Injection from this state machine 
 
 	output [31:0] out_PC_next;
 	output [31:0] instr;
 	output Done;
 	// for interrupts
-	output ACK;
+	//output ACK;
+	output current_PC;
 
-	// todo: interrupts
+	logic [31:0] instr_mem; // instruction read from memory 
+							// usually used unless interrupt controller 
+							// or the cpu interrupt fsm are injecting instructions 
 
 	reg [31:0] PC;
 	wire [31:0] PC_next;
@@ -35,7 +42,7 @@ module fetch (clk, rst_n, in_PC_next, stall, flush, INT, INT_INSTR, out_PC_next,
 			PC <= PC_next;
 	end
 
-	assign PC_next = (stall && ~flush) ? PC : in_PC_next; 
+	assign PC_next = (restore == 1'b1) ? (PC_before_int) : ((stall && ~flush) ? PC : in_PC_next); 
 	// flush and stall updating PC register truth table 
 	// FLUSH	STALL 		UPDATE PC?
 	//   0		  0		    1
@@ -49,7 +56,14 @@ module fetch (clk, rst_n, in_PC_next, stall, flush, INT, INT_INSTR, out_PC_next,
 	assign out_PC_next = flush ? `NOP : PC;
 
 	// instruction memory access
-	mem_system instructionMem(.clk(clk), .rst_n(rst_n), .addr(PC), .data_in(), .wr(1'b0), .en(1'b1), .data_valid(Done), .data_out(instr));
+	mem_system instructionMem(.clk(clk), .rst_n(rst_n), .addr(PC), .data_in(), .wr(1'b0), .en(1'b1), .data_valid(Done), .data_out(instr_mem));
+
+	// Assign the instruction to be executed 
+	assign instr = (use_cpu_injection == 1'b1) ? (cpu_injection) : ( (use_INT_INSTR == 1'b1) ? (INT_INSTR) : (instr_mem) ); 
+
+	// Assign the signals used in the interrupt fsm 
+	assign current_PC = PC;
+
 
 	// 552 mem
 	//mem_system instructionMem(.DataOut(instr), .Done(Done), .Stall(Stall), .CacheHit(), .err(err), .Addr(addr), 

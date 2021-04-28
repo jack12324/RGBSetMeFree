@@ -7,10 +7,9 @@ module CPU_interrupt_fsm (
     input [31:0] cpu_instr,
 
     input logic [31:0] current_PC, // the PC that is currently stored in the Fetch stage 
-    input logic [31:0] curretn_LR, // Link regsiter currently in the Decode stage 
+    input logic [31:0] current_LR, // Link regsiter currently in the Decode stage 
     input logic [1:0] current_FL, // Flag register currently in the decode stage 
 
-    //input [31:0] INT_INSTR,
     output logic ACK,
 
     // This inputs are stored when servicing an interrupt 
@@ -146,7 +145,7 @@ module CPU_interrupt_fsm (
         end  
         else begin  
             PC_before_int <= current_PC; 
-            LR_before_int <= curretn_LR; 
+            LR_before_int <= current_LR; 
             FL_before_int <= current_FL;
         end
     end 

@@ -15,6 +15,37 @@ module cpu(clk, rst_n, tx_done, rd_valid, op, data_in, data_out, INT, INT_INSTR,
     input [31:0] INT_INSTR;
     output ACK;
 
+    /////////////////////////////////////////////////////////////////////////////
+    ///////////////////////// Interrupts FSM Signals ////////////////////////////
+
+    ///////////// Inputs /////////////
+    //input clk,
+    //input rst_n,
+    //input INT,
+    //input [31:0] INT_INSTR,
+    // logic [31:0] cpu_instr; --> FeDe_in_instr
+
+    logic [31:0] current_PC; // the PC that is currently 
+                                // stored in the Fetch stage 
+    // logic [31:0] current_LR; --> DeEx_in_LR
+    // logic [1:0] current_FL; --> DeEx_in_FL
+
+    ///////////// Outputs /////////////
+    //output logic ACK,
+    // This inputs are stored when servicing an interrupt 
+    logic [31:0] PC_before_int;
+    logic [31:0] LR_before_int;
+    logic [1:0] FL_before_int;
+
+    logic use_INT_INSTR; // signal to use the injected instructions
+                            // from the interrupt controller 
+    logic use_cpu_injection; // signal to use the injected 
+                                //instructions from this FSM 
+    logic [31:0] cpu_injection; // Injection from this state machine 
+
+    logic restore; // signal to restore the special regs
+    /////////////////////////////////////////////////////////////////////////////
+
 
     /////////////////////////////////////////////////////////////////////////////
     ////////////////////////////////// Fetch Signals ////////////////////////////
@@ -49,7 +80,7 @@ module cpu(clk, rst_n, tx_done, rd_valid, op, data_in, data_out, INT, INT_INSTR,
 
     /////////////////////////////////////////////////////////////////////////////
     //////////////////// DeEx Pipeline Register Signals /////////////////////////
-    	logic [31:0] DeEx_in_PC_next;
+    logic [31:0] DeEx_in_PC_next;
 	logic [31:0] DeEx_in_reg_1_data;
 	logic [31:0] DeEx_in_reg_2_data;
 	logic [31:0] DeEx_in_imm;
@@ -266,6 +297,32 @@ module cpu(clk, rst_n, tx_done, rd_valid, op, data_in, data_out, INT, INT_INSTR,
     ///////////////////////////////////////////////////////////////////////////////////////////////////////
     ///////////////////////////////////////////////////////////////////////////////////////////////////////
 
+
+    /////////////////////////////////////////////////////////////////////////////
+    ////////////////////////// Interrupt FSM module /////////////////////////////
+    CPU_interrupt_fsm iFSM(
+        ////////// INPUTS ///////////
+        .clk(clk),
+        .rst_n(rst_n),
+        .INT(INT),
+        .INT_INSTR(INT_INSTR),
+        .cpu_instr(FeDe_in_instr),
+        .current_PC(current_PC), 
+        .current_LR(DeEx_in_LR), 
+        .current_FL(DeEx_in_FL),
+        ////////// OUTPUTS //////////
+        .ACK(ACK),
+        .PC_before_int(PC_before_int),
+        .LR_before_int(LR_before_int),
+        .FL_before_int(FL_before_int),
+        .use_INT_INSTR(use_INT_INSTR), 
+        .use_cpu_injection(use_cpu_injection), 
+        .cpu_injection(cpu_injection), 
+        .restore(restore) 
+    );
+    /////////////////////////////////////////////////////////////////////////////
+
+
     /////////////////////////////////////////////////////////////////////////////
     ////////////////////////////////// Fetch module /////////////////////////////
     fetch iFETCH (
@@ -274,14 +331,19 @@ module cpu(clk, rst_n, tx_done, rd_valid, op, data_in, data_out, INT, INT_INSTR,
         .in_PC_next(ExMe_out_PC_next), //[31:0]
         .stall(stall), .flush(flush),
         // for interrupts
-        .INT(INT),
+        //.INT(INT),
         .INT_INSTR(INT_INSTR), //[31:0]
+        .PC_before_int(PC_before_int),
+        .restore(restore),
+        .use_cpu_injection(use_cpu_injection), 
+        .cpu_injection(cpu_injection), 
         ////////// OUTPUTS //////////
         .out_PC_next(FeDe_in_PC_next), //[31:0]
         .instr(FeDe_in_instr), //[31:0]
         .Done(FeDone),
         // for interrupts
-        .ACK(ACK)
+        //.ACK(ACK)
+        .current_PC(current_PC)
     );
     /////////////////////////////////////////////////////////////////////////////
 
@@ -346,7 +408,12 @@ module cpu(clk, rst_n, tx_done, rd_valid, op, data_in, data_out, INT, INT_INSTR,
         // control for Writeback
         .result_sel(DeEx_in_result_sel), //[1:0]
         .next_reg_wrt_en(DeEx_in_reg_wrt_en), 
-        .next_reg_wrt_sel(DeEx_in_reg_wrt_sel)
+        .next_reg_wrt_sel(DeEx_in_reg_wrt_sel),
+
+        //////////// INTERRUPT SIGNALS /////////////
+        .restore(restore), 
+        .LR_before_int(LR_before_int), 
+        .FL_before_int(FL_before_int)
 	);
     /////////////////////////////////////////////////////////////////////////////
 
