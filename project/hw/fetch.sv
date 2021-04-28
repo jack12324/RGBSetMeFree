@@ -28,7 +28,7 @@ module fetch (clk, rst_n, in_PC_next, stall, flush, INT_INSTR, out_PC_next, inst
 	output Done;
 	// for interrupts
 	//output ACK;
-	output current_PC;
+	output [31:0] current_PC;
 
 	logic [31:0] instr_mem; // instruction read from memory 
 							// usually used unless interrupt controller 
@@ -57,7 +57,8 @@ module fetch (clk, rst_n, in_PC_next, stall, flush, INT_INSTR, out_PC_next, inst
 	assign out_PC_next = flush ? `NOP : PC;
 
 	// instruction memory access
-	mem_system instructionMem(.clk(clk), .rst_n(rst_n), .addr(PC), .data_in(), .wr(1'b0), .en(1'b1), .data_valid(Done), .data_out(instr_mem));
+	mem_system instructionMem(.clk(clk), .rst_n(rst_n), .addr(PC), .data_in(), .wr(1'b0), .en(1'b1), .done(Done), .data_out(instr_mem));
+
 
 	// Assign the instruction to be executed 
 	assign instr = (use_cpu_injection == 1'b1) ? (cpu_injection) : ( (use_INT_INSTR == 1'b1) ? (INT_INSTR) : (instr_mem) ); 

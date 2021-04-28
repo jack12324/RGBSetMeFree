@@ -30,8 +30,10 @@ module memory(
     .data_in(ExMe_out_reg_2),
     .wr(ExMe_out_mem_wrt),
     .en(ExMe_out_mem_en),
-    .data_valid(done),
+    .done(done),
     .data_out(mem_data)
   );
+   // output logic done, different from data_valid?
+
 
 endmodule
