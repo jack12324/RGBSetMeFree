@@ -3,7 +3,7 @@ module CPU_interrupt_fsm (
     input rst_n,
     
     input INT,
-    input [31:0] INT_INTR,
+    input [31:0] INT_INSTR,
     input [31:0] cpu_instr,
 
     input logic [31:0] current_PC, // the PC that is currently stored in the Fetch stage 
@@ -26,6 +26,8 @@ module CPU_interrupt_fsm (
     );
 
     parameter INSTR_NOOP = 32'h78000000;
+
+    wire RIN;
 
     logic save; // signal to save the current special regs
     
@@ -54,7 +56,7 @@ module CPU_interrupt_fsm (
                 if (INT) 
                     next_state = CLEAR_PIPELINE_INT;
                 else if (RIN)
-                    next_state = 
+                    next_state = CLEAR_PIPELINE_RIN;
             end 
 
             // This state machine injects 6 NoOps into the 
@@ -137,14 +139,16 @@ module CPU_interrupt_fsm (
     ------
     **/
     always_ff @(posedge clk, negedge rst_n) begin 
-        if (~rst_n)
+        if (~rst_n) begin
             PC_before_int <= 32'h06002000; // this is where our instruction memory starts
             LR_before_int <= 32'h06002000; // this is where our instruction memory starts
-            FL_before_int <= 2'b00; // no flags asserted 
-        else
+            FL_before_int <= 2'b00; // no flags asserted
+        end  
+        else begin  
             PC_before_int <= current_PC; 
             LR_before_int <= curretn_LR; 
             FL_before_int <= current_FL;
+        end
     end 
 
 
