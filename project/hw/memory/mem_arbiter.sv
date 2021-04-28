@@ -2,7 +2,7 @@
 // Uses Round Robin Scheduling over multiple requests. 
 
 module mem_arbiter #(
-    parameter ADDR_WIDTH = 32;      //Address needs to be 64 bits for Mem_ctrl.sv
+    parameter ADDR_WIDTH = 32      //Address needs to be 64 bits for Mem_ctrl.sv
     )(
     input clk, 
     input rst_n,
@@ -43,7 +43,7 @@ module mem_arbiter #(
     output logic [1:0] op,
     output logic [ADDR_WIDTH -1 : 0] raw_address,
     output logic [ADDR_WIDTH -1 : 0] address_offset,
-    output logic [511:0] common_data_bus_read_in,   //Naming convention relative to mem_ctrl
+    output logic [511:0] common_data_bus_read_in   //Naming convention relative to mem_ctrl
 );
 
     //No Need to latch in SRCs because they will be kept high in the states they are created.
