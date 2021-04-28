@@ -68,19 +68,40 @@ module afu
    logic [31:0] mapped_data;
    FPUDRAM_if dram_if();
    logic [31:0] mapped_address;
-   logic done;
+   logic done_fpu;
 
-   FPU #(.COL_WIDTH(10), .MEM_BUFFER_WIDTH(512), .CL_WIDTH(64)) iFPU(.clk(clk), .rst_n(!rst), .done(done), .mapped_data_valid(mapped_data_valid), .mapped_data_request(mapped_data_request), .mapped_data(mapped_data), .mapped_address(mapped_address), .dram_if(dram_if.FPU));
-   CPU iCPU(.clk(clk), .rst_n(rst_n), 
-	// HAL memory signals
-	.tx_done(),
-	.rd_valid(),
-	.op(),
-	.data_in(),
-	.data_out(),
-    	// Interrupt Signals 
-    	.INT(),
-	.INT_INSTR(),
-	.ACK()
+   // Interrupt signals
+   logic INT; 
+   logic [31:0] INT_INSTR;
+   logic ACK;
+
+   
+    // HAL memory signals
+    logic tx_done;
+    logic rd_valid;
+    logic [1:0] op;
+    logic [31:0] data_in;
+    logic [31:0] data_out;
+
+
+   FPU #(.COL_WIDTH(10), .MEM_BUFFER_WIDTH(512), .CL_WIDTH(64)) iFPU(.clk(clk), .rst_n(!rst), .done(done_fpu), .mapped_data_valid(mapped_data_valid), .mapped_data_request(mapped_data_request), .mapped_data(mapped_data), .mapped_address(mapped_address), .dram_if(dram_if.FPU));
+   
+   CPU iCPU(.clk(clk), .rst_n(~rst), 
+    // HAL memory signals
+    .tx_done(tx_done),
+    .rd_valid(rd_valid),
+    .op(op),
+    .data_in(data_in),
+    .data_out(data_out),
+    // Interrupt Signals 
+    .INT(INT),
+    .INT_INSTR(INT_INSTR),
+    .ACK(ACK)
 	);
+
+                                                        // Highest Priority                                                      // no masking used
+  InterruptController iINT(.clk(clk), .rst_n(~rst), .IO({7'b0000000, done_fpu}), .ACK(ACK), .INT(INT), .INT_INSTR(INT_INSTR), .IMR_in({8{1'b1}}));
+
+
+
 endmodule
