@@ -54,7 +54,7 @@ module mem_arbiter #(
     
     //State transition block
     always_ff @( posedge clk, negedge rst_n ) begin 
-        if(~rst_n) current <= READY;    //Default state
+        if(~rst_n) current <= SRC1;    //Default state
         else current <= next;
     end
     //Transition states checking 
@@ -74,10 +74,10 @@ module mem_arbiter #(
                 rd_valid_src1 = rd_valid;
                 //Outputs : To mem_ctrl
                 op = op_src1;
-                raw_address = raw_address_src1
+                raw_address = raw_address_src1;
                 address_offset = address_offset_src1;
                 common_data_bus_read_in = common_data_bus_read_in_src1;
-                next = |op_src1 & ~(tx_done_host) ? SRC1 : SRC2;
+                next = |op_src1 & ~(tx_done) ? SRC1 : SRC2;
             end
             SRC2: begin
                 common_data_bus_write_out_src2 = common_data_bus_write_out;
@@ -88,7 +88,7 @@ module mem_arbiter #(
                 raw_address = raw_address_src2;
                 address_offset = address_offset_src2;
                 common_data_bus_read_in = common_data_bus_read_in_src2;
-                next = |op_src2 & ~(tx_done_host) ? SRC2 : SRC3;
+                next = |op_src2 & ~(tx_done) ? SRC2 : SRC3;
             end
             SRC3: begin
                 common_data_bus_write_out_src3 = common_data_bus_write_out;
@@ -99,15 +99,15 @@ module mem_arbiter #(
                 raw_address = raw_address_src3;
                 address_offset = address_offset_src3;
                 common_data_bus_read_in = common_data_bus_read_in_src3;
-                next = |op_src2 & ~(tx_done_host) ? SRC3 : SRC1;
-                next = |op_src3 & ~(tx_done_host) ? SRC3 : SRC1;
+                next = |op_src3 & ~(tx_done) ? SRC3 : SRC1;
             end
-            default: 
+            default: begin
                 op = '0;
                 raw_address = '0;
                 address_offset = '0;
                 common_data_bus_read_in = '0;
-                next = SRC1;
+                next = SRC1; 
+            end
         endcase
     end
 endmodule
