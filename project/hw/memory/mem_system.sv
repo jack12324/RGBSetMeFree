@@ -20,6 +20,8 @@ module mem_system
 	output logic [511:0] DataOut_host,
 	output logic [31:0] AddrOut_host,
 	output logic [1:0] op_host
+	//Output for test
+	output logic CacheHit;
 	);
 
 
@@ -40,7 +42,7 @@ module mem_system
 	logic [31:0] data_out_cache;
 	logic valid;
 
-	logic hit_ctrl;	//Hit coming out of cache_ctrl
+	logic hit_ctrl, stallMem, done_ctrl;	//Hit coming out of cache_ctrl
 
 	cpu_cache_ctrl cache_ctrl(
     //Inputs
@@ -66,8 +68,8 @@ module mem_system
     //Outputs
         //Mem_system
     .DataOut_mem	(data_out), 
-	.stall			(stall), 
-	.done			(done), 
+	.stall			(stallMem), 
+	.done			(done_ctrl), 
 	.hit_out		(hit_ctrl),
         //DMA
     .AddrOut_host	(AddrOut_host), 
@@ -109,6 +111,8 @@ module mem_system
 		.cl_out		(cacheLine_out)
 	);
 
-    assign data_valid = done;	
+    assign data_valid = done_ctrl;	
+	assign done = ~stallMem;
+	assign CacheHit = hit_ctrl;
 
 endmodule 
