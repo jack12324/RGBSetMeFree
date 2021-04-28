@@ -1,55 +1,48 @@
 import os
+import sys
 import shutil
 import numpy as np
 from PIL import Image
 
-# these file will be loaded to/from shared host memory
-input_img_fpath = 'input.txt' # input image
-img_size_fpath = 'size.txt' # image size
-input_filter_fpath = 'filter.txt' # input filter
-output_img_fpath = 'output.txt' # output image
+from buildRGB import write_image, write_filter, write_img_size, recover_filter, recover_img_size
+from buildImage import read_image 
 
-input_filter = np.array([
-  [1, 2, 3],
-  [4, 5, 6],
-  [7, 8, 9],
-])
+def main(debug=False):
+	# these file will be loaded to/from shared host memory
+	input_img_fpath = 'input_bytes.txt' # input image
+	img_size_fpath = 'size.txt' # image size
+	input_filter_fpath = 'filter.txt' # input filter
+	output_img_fpath = 'output_bytes.txt' # output image
 
-img = Image.open('test.jpeg')
-img = np.asarray(img)
+	input_filter = np.array([
+	  [-1,-1,-1],
+	  [-1,8,-1],
+	  [-1,-1,-1],
+	], np.int8)
 
-# add zero padding
-img = np.pad(img, ((1, 1), (1,1), (0, 0)))
-shape = img.shape
-height, width, _ = shape
-print(height, width)
+	pad_width, height, width = write_image('test.jpeg', input_img_fpath)
+	write_filter(input_filter, input_filter_fpath)
+	write_img_size(img_size_fpath, height, width)
 
-# save image data as bytes
-with open(input_img_fpath, 'wb') as f:
-  f.write(img.flatten().tobytes())
+	if debug:
+		actual_filter = recover_filter(input_filter_fpath)
+		assert np.array_equal(input_filter, actual_filter)
+		actual_size = recover_img_size(img_size_fpath)
+		assert (height + 2, width + 2) == actual_size
+		print('Test passed!')
+		
+	# interact with fpga
+	# shutil.copy(input_img_fpath, output_img_fpath) # mock fpga interface
+	os.system('../bin/cload_sim')
 
-# save image size
-with open (img_size_fpath, 'wb') as f:
-  # convert height, width to 2 bytes big endian each
-  data = height.to_bytes(2, 'little') + width.to_bytes(2, 'little')
-  f.write(data)
+	output_length = (((width + pad_width)*3)+4) * height
+	read_image('test_out.jpeg', pad_width=pad_width, height=height, width=width)
 
-# save filter data as bytes
-with open(input_filter_fpath, 'wb') as f:
-  f.write(input_filter.flatten().tobytes())
-
-# interact with fpga
-# shutil.copy(input_img_fpath, output_img_fpath) # mock fpga interface
-os.system('../bin/cload_sim')
-print('finish')
-
-# read image data back from output file
-with open(output_img_fpath, 'rb') as f:
-  # read back as unsigned byte array
-  output = np.frombuffer(f.read()[:height*width*3], dtype='B')
-  print(output.shape)
-  # reshape to original image shape
-  output = np.reshape(output, shape)
-  im = Image.fromarray(output, "RGB")
-  im.save('test_out.jpeg')
-  im.show()
+if __name__ == '__main__':
+	if len(sys.argv) > 1 and sys.argv[1] == 'debug':
+		debug = True
+		print('***Debug mode***')
+	else:
+		debug = False
+		print('***Normal mode***')
+	main(debug)

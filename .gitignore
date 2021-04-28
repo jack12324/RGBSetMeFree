@@ -10,3 +10,4 @@ synth
 *transcript
 .vscode
 *.txt
+*.pyc

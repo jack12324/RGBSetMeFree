@@ -128,14 +128,14 @@ namespace priscas
 		const uint64_t OUT_ADDR_ADDR	= UINT64_C(0x6000100);
 
 		WriteToOutput("Debug");
-		sr({"", "-r", "input.txt", genericHexBuilder<uint64_t, 64>(IN_IMG_ADDR)}, *this);
+		sr({"", "-r", "input_bytes.txt", genericHexBuilder<uint64_t, 64>(IN_IMG_ADDR)}, *this);
 		sr({"", "-r", "size.txt", genericHexBuilder<uint64_t, 64>(IMG_SIZE_ADDR)}, *this);
 		sr({"", "-r", "filter.txt", genericHexBuilder<uint64_t, 64>(FILTER_ADDR)}, *this);
 		go({}, *this);
 		Mem().write(IN_ADDR_ADDR, IN_IMG_ADDR);
 		Mem().write(OUT_ADDR_ADDR, OUT_IMG_ADDR);
 		// // TODO: add wait for FPU to finish executing
-		sr({"", "-s", "output.txt", genericHexBuilder<uint64_t, 64>(OUT_IMG_ADDR), "3000000"}, *this);
+		sr({"", "-s", "output_bytes.txt", genericHexBuilder<uint64_t, 64>(OUT_IMG_ADDR), "3000000"}, *this);
 		exit({}, *this);
 		// after this won't be executed
 
