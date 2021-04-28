@@ -8,7 +8,7 @@ module CPU_interrupt_fsm (
 
     input logic [31:0] current_PC, // the PC that is currently stored in the Fetch stage 
     input logic [31:0] curretn_LR, // Link regsiter currently in the Decode stage 
-    input logic [1:0] current_FL // Flag register currently in the decode stage 
+    input logic [1:0] current_FL, // Flag register currently in the decode stage 
 
     //input [31:0] INT_INSTR,
     output logic ACK,
