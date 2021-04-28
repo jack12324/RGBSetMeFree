@@ -126,11 +126,14 @@ namespace priscas
 		const uint64_t IN_ADDR_ADDR		= UINT64_C(0x6000020);
 		const uint64_t FILTER_ADDR 		= UINT64_C(0x6000040);
 		const uint64_t OUT_ADDR_ADDR	= UINT64_C(0x6000100);
+		// Instruction Memory
+		const uint64_t INST_ADDR 			= UINT16_C(0x6002000);
 
 		WriteToOutput("Debug");
 		sr({"", "-r", "input_bytes.txt", genericHexBuilder<uint64_t, 64>(IN_IMG_ADDR)}, *this);
 		sr({"", "-r", "size.txt", genericHexBuilder<uint64_t, 64>(IMG_SIZE_ADDR)}, *this);
 		sr({"", "-r", "filter.txt", genericHexBuilder<uint64_t, 64>(FILTER_ADDR)}, *this);
+		// sr({"", "-r", "file"}, genericHexBuilder<uint64_t, 64>(INST_ADDR)}, *this);
 		go({}, *this);
 		Mem().write(IN_ADDR_ADDR, IN_IMG_ADDR);
 		Mem().write(OUT_ADDR_ADDR, OUT_IMG_ADDR);
