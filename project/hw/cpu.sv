@@ -277,8 +277,8 @@ module cpu(clk, rst_n, tx_done, rd_valid, op, data_in, data_out, INT, INT_INSTR,
     	logic [1:0] MeWb_out_FL_wrt_data;
     // control signals 
     	logic [1:0] MeWb_out_result_sel;
-    	logic MeWb_out_reg_wrt_sel;
-    	logic [4:0] MeWb_out_reg_wrt_en;
+    	logic [4:0] MeWb_out_reg_wrt_sel;
+    	logic MeWb_out_reg_wrt_en;
     	logic MeWb_out_LR_read;
     	logic MeWb_out_LR_write;
     	logic MeWb_out_FL_read;
@@ -562,12 +562,12 @@ module cpu(clk, rst_n, tx_done, rd_valid, op, data_in, data_out, INT, INT_INSTR,
         .ExMe_out_LR_write(ExMe_out_LR_write), 
 	.DeEx_out_LR_write(DeEx_out_LR_write), 
 	.MeWb_out_LR_write(MeWb_out_LR_write),
-        .DeEx_FL(DeEx_FL), 
-	.ExMe_FL(ExMe_FL), 
-	.MeWb_FL(MeWb_FL),
-        .DeEx_LR(DeEx_LR), 
-	.ExMe_LR(ExMe_LR), 
-	.MeWb_LR(MeWb_LR),
+        .DeEx_FL(DeEx_out_FL), 
+	.ExMe_FL(ExMe_out_FL), 
+	.MeWb_FL(MeWb_out_FL), 
+        .DeEx_LR(DeEx_out_LR), 
+	.ExMe_LR(ExMe_out_LR), 
+	.MeWb_LR(MeWb_out_LR),
         // output
         .forward_LR_sel(forward_LR_sel),
         .forward_FL_sel(forward_FL_sel),
