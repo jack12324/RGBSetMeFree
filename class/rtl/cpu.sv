@@ -45,7 +45,6 @@ module cpu
 
 	always_ff @(posedge clk, negedge rst_n) begin
 		if(!rst_n) begin
-
 			for(integer i = 0; i < 16; ++i)
 				line_buffer[i] <= '0;
 			state <= READ;

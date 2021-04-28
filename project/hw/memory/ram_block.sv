@@ -2,20 +2,24 @@
  *  Instantiates 256 line Register array of size defined by parameter 
  *
 */
-module ram_block (
-    parameter  size = 32,
+module ram_block #(parameter SIZE =  32) (
     input rst_n,
     input clk,
     input logic [13:0] addr,
-    input logic [size-1:0] d,
+    input logic [SIZE-1:0] d,
     input logic WrEn,
-    output logic [size-1:0] q
+    output logic [SIZE-1:0] q
 );
 
-    reg [size-1:0] mem [255:0];
-
+    reg [SIZE-1:0] mem [255:0];
+    integer i;
+    
     always_ff @( posedge clk ) begin : RAM
-        if(~rst_n) mem[i] = '0;
+        if(~rst_n) begin
+            for (i=0; i<256; i=i+1) begin
+                mem[i] = 0;
+             end
+        end 
         if(rst_n && WrEn) mem[addr] = d;
         else q = (WrEn | ~rst_n) ? 0 : mem[addr];
     end
