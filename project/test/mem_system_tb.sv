@@ -25,7 +25,7 @@ module mem_system_tb ();
 
     mem_system mem_dut(
         .clk(clk),
-        .rst_n(rst_n),
+        .rst_n(~rst),
         .wr(Wr),
         .addr(Addr),
         .data_in(DataIn),
