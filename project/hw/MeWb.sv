@@ -11,8 +11,8 @@ module MeWb(
     input logic [1:0] MeWb_in_FL_wrt_data,
     // control signals 
     input logic [1:0] ExMe_out_result_sel,
-    input logic ExMe_out_reg_write_en,
-    input logic [4:0] ExMe_out_reg_write_sel, 
+    input logic ExMe_out_reg_wrt_en,
+    input logic [4:0] ExMe_out_reg_wrt_sel, 
     input logic ExMe_out_LR_read,
     input logic ExMe_out_LR_write,
     input logic ExMe_out_FL_read,
@@ -28,8 +28,8 @@ module MeWb(
     output logic [1:0] MeWb_out_FL_wrt_data,
     // control signals 
     output logic [1:0] MeWb_out_result_sel,
-    output logic MeWb_out_reg_write_sel,
-    output logic [4:0] MeWb_out_reg_write_en,
+    output logic MeWb_out_reg_wrt_sel,
+    output logic [4:0] MeWb_out_reg_wrt_en,
     output logic MeWb_out_LR_read,
     output logic MeWb_out_LR_write,
     output logic MeWb_out_FL_read,
@@ -45,8 +45,8 @@ module MeWb(
     dff  #(.WIDTH(2)) FL_wrt_data_ff (.clk(clk), .rst_n(rst_n), .d(MeWb_in_FL_wrt_data), .q(MeWb_out_FL_wrt_data));
 
     dff  #(.WIDTH(2)) result_sel_ff (.clk(clk), .rst_n(rst_n), .d(ExMe_out_result_sel), .q(MeWb_out_result_sel));
-    dff  #(.WIDTH(1)) reg_write_en_ff (.clk(clk), .rst_n(rst_n), .d(ExMe_out_reg_write_en), .q(MeWb_out_reg_write_sel));
-    dff  #(.WIDTH(5)) reg_write_sel_ff (.clk(clk), .rst_n(rst_n), .d(ExMe_out_reg_write_sel), .q(MeWb_out_reg_write_en));
+    dff  #(.WIDTH(1)) reg_wrt_en_ff (.clk(clk), .rst_n(rst_n), .d(ExMe_out_reg_wrt_en), .q(MeWb_out_reg_wrt_sel));
+    dff  #(.WIDTH(5)) reg_wrt_sel_ff (.clk(clk), .rst_n(rst_n), .d(ExMe_out_reg_wrt_sel), .q(MeWb_out_reg_wrt_en));
     dff  #(.WIDTH(1)) LR_read_ff (.clk(clk), .rst_n(rst_n), .d(ExMe_out_LR_read), .q(MeWb_out_LR_read));
     dff  #(.WIDTH(1)) LR_write_ff (.clk(clk), .rst_n(rst_n), .d(ExMe_out_LR_write), .q(MeWb_out_LR_write));
     dff  #(.WIDTH(1)) FL_read_ff (.clk(clk), .rst_n(rst_n), .d(ExMe_out_FL_read), .q(MeWb_out_FL_read));

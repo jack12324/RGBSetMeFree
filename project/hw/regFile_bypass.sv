@@ -19,7 +19,7 @@ module regFile_bypass (
    	output logic [31:0] read2Data;
 
 	wire [31:0] noBypassRead1, noBypassRead2;
-	regFile registersNoBypass(.read1Data(noBypassRead1), .read2Data(noBypassRead2), .err(err), 
+	regFile registersNoBypass(.read1Data(noBypassRead1), .read2Data(noBypassRead2),  
 					.clk(clk), .rst(rst), .read1RegSel(read1RegSel), .read2RegSel(read2RegSel), 
 					.writeRegSel(writeRegSel), .writeData(writeData), .writeEn(writeEn));
 

@@ -48,7 +48,7 @@ module ExMe(
     dff  #(.WIDTH(32)) LR_ff (.clk(clk), .rst_n(rst_n), .d(ExMe_in_LR), .q(ExMe_out_LR));
     dff  #(.WIDTH(2)) FL_ff (.clk(clk), .rst_n(rst_n), .d(ExMe_in_FL), .q(ExMe_out_FL));
     dff  #(.WIDTH(32)) LR_wrt_data_ff (.clk(clk), .rst_n(rst_n), .d(ExMe_in_LR_wrt_data), .q(ExMe_out_LR_wrt_data));
-    dff  #(.WIDTH(2)) FL_wrt_data_ff (.clk(clk), .rst_n(rst_n), .d(ExMe_in_FL_wrt_data), .q(DeEx_out_FL_write));
+    dff  #(.WIDTH(2)) FL_wrt_data_ff (.clk(clk), .rst_n(rst_n), .d(ExMe_in_FL_wrt_data), .q(ExMe_out_FL_wrt_data));
 
     dff  #(.WIDTH(1)) mem_wrt_ff (.clk(clk), .rst_n(rst_n), .d(DeEx_out_mem_wrt), .q(ExMe_out_mem_wrt));
     dff  #(.WIDTH(1)) mem_en_ff (.clk(clk), .rst_n(rst_n), .d(DeEx_out_mem_en), .q(ExMe_out_mem_en));

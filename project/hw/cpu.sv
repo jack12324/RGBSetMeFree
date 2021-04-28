@@ -175,10 +175,10 @@ module cpu(clk, rst_n, tx_done, rd_valid, op, data_in, data_out, INT, INT_INSTR,
     /////////////////////////////////////////////////////////////////////////////
     ///////////////////////// Forwarding Signals ////////////////////////////////
     // input clk, rst_n;
-    // input ExMe_out_reg_write_en;
+    // input ExMe_out_reg_wrt_en;
     // input [4:0] ExMe_out_reg_wrt_sel;
-    // input MeWb_out_reg_write_en;
-    // input [4:0] MeWb_out_reg_wrt_sel; --------> MeWb_out_reg_write_sel
+    // input MeWb_out_reg_wrt_en;
+    // input [4:0] MeWb_out_reg_wrt_sel; 
     // input [4:0] DeEx_out_reg_1_sel, DeEx_out_reg_2_sel;
     // input DeEx_out_FL_write, ExMe_out_FL_write, MeWb_out_FL_write;
     // input DeEx_out_LR_write, ExMe_out_LR_write, MeWb_out_LR_write;
@@ -260,8 +260,8 @@ module cpu(clk, rst_n, tx_done, rd_valid, op, data_in, data_out, INT, INT_INSTR,
     	logic [1:0] MeWb_in_FL_wrt_data;
     // control signals 
     	//logic [1:0] ExMe_out_result_sel;
-    	//logic ExMe_out_reg_write_en;
-    	//logic [4:0] ExMe_out_reg_write_sel;
+    	//logic ExMe_out_reg_wrt_en;
+    	//logic [4:0] ExMe_out_reg_wrt_sel;
     	//logic ExMe_out_LR_read;
     	//logic ExMe_out_LR_write;
     	//logic ExMe_out_FL_read;
@@ -277,8 +277,8 @@ module cpu(clk, rst_n, tx_done, rd_valid, op, data_in, data_out, INT, INT_INSTR,
     	logic [1:0] MeWb_out_FL_wrt_data;
     // control signals 
     	logic [1:0] MeWb_out_result_sel;
-    	logic MeWb_out_reg_write_sel;
-    	logic [4:0] MeWb_out_reg_write_en;
+    	logic [4:0] MeWb_out_reg_wrt_sel;
+    	logic MeWb_out_reg_wrt_en;
     	logic MeWb_out_LR_read;
     	logic MeWb_out_LR_write;
     	logic MeWb_out_FL_read;
@@ -380,7 +380,7 @@ module cpu(clk, rst_n, tx_done, rd_valid, op, data_in, data_out, INT, INT_INSTR,
         .flush(flush),
 
         ////////// OUTPUTS //////////
-        .FeDe_out_PC_next(FeDe_in_PC_next), //[31:0]
+        .FeDe_out_PC_next(FeDe_out_PC_next), //[31:0]
         .FeDe_out_instr(FeDe_out_instr) //[31:0]
     );
     /////////////////////////////////////////////////////////////////////////////
@@ -393,8 +393,8 @@ module cpu(clk, rst_n, tx_done, rd_valid, op, data_in, data_out, INT, INT_INSTR,
         .clk(clk), .rst_n(rst_n),
         .instr(FeDe_out_instr), //[31:0]
         .in_PC_next(FeDe_out_PC_next), //[31:0]
-        .reg_wrt_en(MeWb_out_reg_write_en),
-        .reg_wrt_sel(MeWb_out_reg_write_sel), //[4:0]
+        .reg_wrt_en(MeWb_out_reg_wrt_en),
+        .reg_wrt_sel(MeWb_out_reg_wrt_sel), //[4:0]
         .reg_wrt_data(reg_wrt_data), //[31:0]
         // special register stuff
         .in_LR_wrt_data(MeWb_out_LR_wrt_data), //[31:0]
@@ -479,7 +479,6 @@ module cpu(clk, rst_n, tx_done, rd_valid, op, data_in, data_out, INT, INT_INSTR,
         .DeEx_out_reg_1_data(DeEx_out_reg_1_data), // [31:0]
         .DeEx_out_reg_2_data(DeEx_out_reg_2_data), // [31:0]
         .DeEx_out_imm(DeEx_out_imm), // [31:0]
-        .DeEx_flush(DeEx_flush),
         // special register stuff
         .DeEx_out_LR(DeEx_out_LR), // [31:0]
         .DeEx_out_FL(DeEx_out_FL), // [1:0]
@@ -559,9 +558,9 @@ module cpu(clk, rst_n, tx_done, rd_valid, op, data_in, data_out, INT, INT_INSTR,
         // input
         .clk(clk), 
 	.rst_n(rst_n),
-        .ExMe_out_reg_write_en(ExMe_out_reg_write_en), 
+        .ExMe_out_reg_wrt_en(ExMe_out_reg_wrt_en), 
 	.ExMe_out_reg_wrt_sel(ExMe_out_reg_wrt_sel),
-        .MeWb_out_reg_write_en(MeWb_out_reg_write_en), 
+        .MeWb_out_reg_wrt_en(MeWb_out_reg_wrt_en), 
 	.MeWb_out_reg_wrt_sel(MeWb_out_reg_wrt_sel),
         .DeEx_out_reg_1_sel(DeEx_out_reg_1_sel), 
 	.DeEx_out_reg_2_sel(DeEx_out_reg_2_sel),
@@ -571,12 +570,12 @@ module cpu(clk, rst_n, tx_done, rd_valid, op, data_in, data_out, INT, INT_INSTR,
         .ExMe_out_LR_write(ExMe_out_LR_write), 
 	.DeEx_out_LR_write(DeEx_out_LR_write), 
 	.MeWb_out_LR_write(MeWb_out_LR_write),
-        .DeEx_FL(DeEx_FL), 
-	.ExMe_FL(ExMe_FL), 
-	.MeWb_FL(MeWb_FL),
-        .DeEx_LR(DeEx_LR), 
-	.ExMe_LR(ExMe_LR), 
-	.MeWb_LR(MeWb_LR),
+        .DeEx_FL(DeEx_out_FL), 
+	.ExMe_FL(ExMe_out_FL), 
+	.MeWb_FL(MeWb_out_FL), 
+        .DeEx_LR(DeEx_out_LR), 
+	.ExMe_LR(ExMe_out_LR), 
+	.MeWb_LR(MeWb_out_LR),
         // output
         .forward_LR_sel(forward_LR_sel),
         .forward_FL_sel(forward_FL_sel),
@@ -585,10 +584,10 @@ module cpu(clk, rst_n, tx_done, rd_valid, op, data_in, data_out, INT, INT_INSTR,
     );
 
     // input clk, rst_n;
-    // input ExMe_out_reg_write_en;
+    // input ExMe_out_reg_wrt_en;
     // input [4:0] ExMe_out_reg_wrt_sel;
-    // input MeWb_out_reg_write_en;
-    // input [4:0] MeWb_out_reg_wrt_sel; --------> MeWb_out_reg_write_sel
+    // input MeWb_out_reg_wrt_en;
+    // input [4:0] MeWb_out_reg_wrt_sel; --------> MeWb_out_reg_wrt_sel
     // input [4:0] DeEx_out_reg_1_sel, DeEx_out_reg_2_sel;
     // input DeEx_out_FL_write, ExMe_out_FL_write, MeWb_out_FL_write;
     // input DeEx_out_LR_write, ExMe_out_LR_write, MeWb_out_LR_write;
@@ -680,8 +679,8 @@ module cpu(clk, rst_n, tx_done, rd_valid, op, data_in, data_out, INT, INT_INSTR,
 	.MeWb_in_FL_wrt_data(MeWb_in_FL_wrt_data),
     // control signals 
 	.ExMe_out_result_sel(ExMe_out_result_sel),
-	.ExMe_out_reg_write_en(ExMe_out_reg_write_en),
-	.ExMe_out_reg_write_sel(ExMe_out_reg_write_sel), 
+	.ExMe_out_reg_wrt_en(ExMe_out_reg_wrt_en),
+	.ExMe_out_reg_wrt_sel(ExMe_out_reg_wrt_sel), 
 	.ExMe_out_LR_read(ExMe_out_LR_read),
 	.ExMe_out_LR_write(ExMe_out_LR_write),
 	.ExMe_out_FL_read(ExMe_out_FL_read),
@@ -696,8 +695,8 @@ module cpu(clk, rst_n, tx_done, rd_valid, op, data_in, data_out, INT, INT_INSTR,
 	.MeWb_out_FL_wrt_data(MeWb_out_FL_wrt_data),
     // control signals 
 	.MeWb_out_result_sel(MeWb_out_result_sel),
-	.MeWb_out_reg_write_sel(MeWb_out_reg_write_sel),
-	.MeWb_out_reg_write_en(MeWb_out_reg_write_en),
+	.MeWb_out_reg_wrt_sel(MeWb_out_reg_wrt_sel),
+	.MeWb_out_reg_wrt_en(MeWb_out_reg_wrt_en),
 	.MeWb_out_LR_read(MeWb_out_LR_read),
 	.MeWb_out_LR_write(MeWb_out_LR_write),
 	.MeWb_out_FL_read(MeWb_out_FL_read),
