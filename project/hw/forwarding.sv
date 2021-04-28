@@ -1,8 +1,8 @@
 module forwarding (
     // input
     clk, rst_n,
-    ExMe_out_reg_write_en, ExMe_out_reg_wrt_sel,
-    MeWb_out_reg_write_en, MeWb_out_reg_wrt_sel,
+    ExMe_out_reg_wrt_en, ExMe_out_reg_wrt_sel,
+    MeWb_out_reg_wrt_en, MeWb_out_reg_wrt_sel,
     DeEx_out_reg_1_sel, DeEx_out_reg_2_sel,
     ExMe_out_FL_write, DeEx_out_FL_write, MeWb_out_FL_write,
     ExMe_out_LR_write, DeEx_out_LR_write, MeWb_out_LR_write,
@@ -15,9 +15,9 @@ module forwarding (
 );
 
     input clk, rst_n;
-    input ExMe_out_reg_write_en;
+    input ExMe_out_reg_wrt_en;
     input [4:0] ExMe_out_reg_wrt_sel;
-    input MeWb_out_reg_write_en;
+    input MeWb_out_reg_wrt_en;
     input [4:0] MeWb_out_reg_wrt_sel;
     input [4:0] DeEx_out_reg_1_sel, DeEx_out_reg_2_sel;
     input DeEx_out_FL_write, ExMe_out_FL_write, MeWb_out_FL_write;
@@ -37,16 +37,16 @@ module forwarding (
 
         if((ExMe_out_LR_write | MeWb_out_LR_write) & ((DeEx_LR != ExMe_LR) || (DeEx_LR != MeWb_LR)))
             forward1 = 2'd3;
-        if (ExMe_out_reg_write_en & (|ExMe_out_reg_wrt_sel) & (ExMe_out_reg_wrt_sel == DeEx_out_reg_1_sel))
+        if (ExMe_out_reg_wrt_en & (|ExMe_out_reg_wrt_sel) & (ExMe_out_reg_wrt_sel == DeEx_out_reg_1_sel))
             forward1 = 2'd2;
-        else if (MeWb_out_reg_write_en & (!MeWb_out_reg_wrt_sel) & (MeWb_out_reg_wrt_sel == DeEx_out_reg_1_sel))
+        else if (MeWb_out_reg_wrt_en & (!MeWb_out_reg_wrt_sel) & (MeWb_out_reg_wrt_sel == DeEx_out_reg_1_sel))
             forward1 = 2'd1;
         else
             forward1 = 2'd0;
 
-        if (ExMe_out_reg_write_en & (|ExMe_out_reg_wrt_sel) & (ExMe_out_reg_wrt_sel == DeEx_out_reg_2_sel))
+        if (ExMe_out_reg_wrt_en & (|ExMe_out_reg_wrt_sel) & (ExMe_out_reg_wrt_sel == DeEx_out_reg_2_sel))
             forward2 = 2'd2;
-        else if (MeWb_out_reg_write_en & (|MeWb_out_reg_wrt_sel) & (MeWb_out_reg_wrt_sel == DeEx_out_reg_2_sel))
+        else if (MeWb_out_reg_wrt_en & (|MeWb_out_reg_wrt_sel) & (MeWb_out_reg_wrt_sel == DeEx_out_reg_2_sel))
             forward2 = 2'd1;
         else
             forward2 = 2'd0;
