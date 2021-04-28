@@ -51,16 +51,16 @@ def rebuild_image(image_name):
     im.save(image_name)
     im.show()
 
-def read_image(image_name, pad_width, height, width):
+def read_image(output_img_fpath, pad_width, height, width):
     # read image data back from output file
-    with open(image_name, 'rb') as f:
+    with open(output_img_fpath, 'rb') as f:
         # number of bytes in memory
-        output_length = (((width + padding_width)*3)+4) * height
-        output = np.frombuffer(f.read()[:ouput_length], dtype=np.uint8)
+        output_length = (((width + pad_width)*3)+4) * height
+        output = np.frombuffer(f.read()[:output_length], dtype=np.uint8)
         red, green, blue = deassemble(lines=output, width=width, actual_width=width+pad_width, height=height)
         pixels = combine_rgb_arrays(red, green, blue, width=width, height=height)
         im = Image.fromarray(pixels, "RGB")
-        im.save(image_name)
+        im.save('output.jpeg')
         im.show()
 
 

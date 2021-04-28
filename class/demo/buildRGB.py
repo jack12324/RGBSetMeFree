@@ -102,6 +102,21 @@ def write_image(image_name, input_img_fpath):
         f.write(assembled_pixels.flatten().tobytes())
     return pad_width, height, width
 
+def recover_input_image(input_img_fpath, pad_width, height, width):
+	actual_width = (width + pad_width + 2)
+	actual_height = height + 2
+	with open(input_img_fpath, 'rb') as f:
+		data = np.frombuffer(f.read(), dtype=np.uint8)
+		print('actual length:', len(data))
+		expected_length = actual_width*actual_height*3
+		print('expected length:', expected_length, actual_height, actual_width)
+		assert len(data) == expected_length 		
+		data = np.reshape(data, (actual_height, actual_width, 3))
+		# im = Image.fromarray(data, "RGB")
+		# im.save('test-input.jpeg')
+		# im.show()
+			
+
 def write_filter(input_filter, input_filter_fpath):
     # save filter data as bytes
     with open(input_filter_fpath, 'wb') as f:
