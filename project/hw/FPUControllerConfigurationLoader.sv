@@ -47,6 +47,7 @@ module FPUControllerConfigurationLoader #(M_STARTSIG_ADDRESS = 32'h1000_0120, M_
 
 			config_if.address_mem <= '0;
 			config_if.load_config_done <= 0;
+			config_if.mapped_data_request <= '0;
 		end
 		else begin
 			wr_filter1 <= '0;
@@ -58,32 +59,39 @@ module FPUControllerConfigurationLoader #(M_STARTSIG_ADDRESS = 32'h1000_0120, M_
 
 			config_if.address_mem <= '0;
 			config_if.load_config_done <= 0;
+			config_if.mapped_data_request <= '0;
 
 			case(next)
 				IDLE: config_if.address_mem <= M_FILTER_ADDRESS;
 				LOAD_FILTER1: begin
 					config_if.address_mem <= M_FILTER_ADDRESS;
 					wr_filter1 <= 1;
+					config_if.mapped_data_request <= '1;
 					end
 				LOAD_FILTER2: begin
 					config_if.address_mem <= M_FILTER_ADDRESS + 4;
 					wr_filter2 <= 1;
+					config_if.mapped_data_request <= '1;
 					end
 				LOAD_FILTER3: begin
 					config_if.address_mem <= M_FILTER_ADDRESS + 8;
 					wr_filter3 <= 1;
+					config_if.mapped_data_request <= '1;
 					end
 				LOAD_DIMS: begin
 					config_if.address_mem <= M_DIMS_ADDRESS;
 					wr_dims <= 1;
+					config_if.mapped_data_request <= '1;
 					end
 				LOAD_START_ADDR: begin
 					config_if.address_mem <= M_START_ADDRESS;
 					wr_start_addr <= 1;
+					config_if.mapped_data_request <= '1;
 					end
 				LOAD_RESULT_ADDR: begin
 					config_if.address_mem <= M_RESULT_ADDRESS;
 					wr_res_addr <= 1;
+					config_if.mapped_data_request <= '1;
 					end
 				DONE:	config_if.load_config_done <= 1;
 				default: begin end

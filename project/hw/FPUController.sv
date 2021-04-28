@@ -1,9 +1,9 @@
-module FPUController #(COL_WIDTH = 10, MEM_BUFFER_WIDTH = 512, M_STARTSIG_ADDRESS = 32'h1000_0120)(clk, rst_n, mapped_data_valid, shift_cols, filter, done, write_col_address, read_col_address, rd_buffer_sel, wr_buffer_sel, wr_en_wr_buffer, address_mem, data_mem, req_if);
+module FPUController #(COL_WIDTH = 10, MEM_BUFFER_WIDTH = 512, M_STARTSIG_ADDRESS = 32'h1000_0120)(clk, rst_n, mapped_data_valid, mapped_data_request, shift_cols, filter, done, write_col_address, read_col_address, rd_buffer_sel, wr_buffer_sel, wr_en_wr_buffer, address_mem, data_mem, req_if);
 
 	input clk, rst_n, mapped_data_valid;
 	input [31:0] data_mem;
 
-	output logic shift_cols, done, rd_buffer_sel, wr_buffer_sel, wr_en_wr_buffer;
+	output logic shift_cols, done, rd_buffer_sel, wr_buffer_sel, wr_en_wr_buffer, mapped_data_request;
 	output signed [7:0] filter [8:0];
 	output logic [$clog2(MEM_BUFFER_WIDTH)-1:0] write_col_address;
 	output logic [$clog2(MEM_BUFFER_WIDTH)-1:0] read_col_address;
@@ -21,7 +21,7 @@ module FPUController #(COL_WIDTH = 10, MEM_BUFFER_WIDTH = 512, M_STARTSIG_ADDRES
 	logic [1:0] update_write_address;
 
 	//read and write increment enables, resets
-	logic write_inc, read_inc, write_rst, read_rst, height_dec, set_remaining_height, width_dec, set_remaining_width, read_dec, write_dec;
+	logic write_inc, read_inc, write_rst, read_rst, height_dec, set_remaining_height, width_dec, set_remaining_width, read_dec, write_dec, mapped_req;
 	
 	assign conf.mapped_data_valid = mapped_data_valid;
 	assign conf.data_mem = data_mem;
@@ -33,6 +33,7 @@ module FPUController #(COL_WIDTH = 10, MEM_BUFFER_WIDTH = 512, M_STARTSIG_ADDRES
 	assign req_if.height = COL_WIDTH > remaining_height ? remaining_height - 2: COL_WIDTH - 2;
 	assign req_if.input_row_width = total_width;
 	assign req_if.output_row_width = result_width;
+	assign mapped_data_request = conf.mapped_data_request | mapped_req;
 
 	//track address of current row start
 	logic [31:0] base_read_address;
@@ -147,6 +148,7 @@ module FPUController #(COL_WIDTH = 10, MEM_BUFFER_WIDTH = 512, M_STARTSIG_ADDRES
 			base_write_address <= '0;
 			read_dec <= 0;
 			write_dec <= 0;
+			mapped_req <= '0;
 		end
 		else begin
 			shift_cols <= 0;
@@ -173,9 +175,13 @@ module FPUController #(COL_WIDTH = 10, MEM_BUFFER_WIDTH = 512, M_STARTSIG_ADDRES
 			base_write_address <= base_write_address;
 			write_dec <= 0;
 			read_dec <= 0;
+			mapped_req <= '0;
 
 			case(next)
-				IDLE: address_mem <= M_STARTSIG_ADDRESS;
+				IDLE: begin
+					address_mem <= M_STARTSIG_ADDRESS;
+					mapped_req <= '1;
+				end
 				LOAD_CONFIG: begin
 					address_mem <= conf.address_mem;
 					conf.load_config_start <= 1;
