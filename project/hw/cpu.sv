@@ -13,7 +13,8 @@ module cpu(
 	Merd_valid_host,
 	MeDataOut_host,
 	MeAddrOut_host,
-	Meop_host
+	Meop_host,
+	startFPU
 	);
 
     input clk;  // System clock 
@@ -40,6 +41,8 @@ module cpu(
 	output logic [31:0] MeAddrOut_host;
 	output logic [1:0] Meop_host;
 	
+	//start FPU
+	input logic startFPU;
 
     /////////////////////////////////////////////////////////////////////////////
     ///////////////////////// Interrupts FSM Signals ////////////////////////////
