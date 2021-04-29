@@ -13,7 +13,6 @@ synth
 *.jack
 *.mti
 *transcript
-<<<<<<< HEAD
 .vscode
 *.txt
 *.pyc
