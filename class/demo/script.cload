@@ -1,0 +1,3 @@
+.sr -r input.txt 0x0
+.sr -s output.txt 0x0 599184
+.exit

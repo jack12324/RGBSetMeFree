@@ -388,6 +388,16 @@ namespace priscas
 		}
 	}
 
+	// void mockOutputAddr(Shell_Cload& inst) {
+	// 	uint64_t data = 0x123456;
+	// 	inst.Mem().write(OUT_IMG_ADDR, data);
+	// }
+
+	// // Read 64 bits number from 
+	// uint64_t getOutputAddr(Shell_Cload& inst) {
+	// 	return inst.Mem().read(OUT_IMG_ADDR);
+	// }
+
 	void wait(const Arg_Vec& args, Shell_Cload& inst)
 	{
 		// This sleeps until a timeout or a condition in shared memory
