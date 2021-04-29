@@ -86,7 +86,7 @@ module afu
 
    FPU #(.COL_WIDTH(10), .MEM_BUFFER_WIDTH(512), .CL_WIDTH(64)) iFPU(.clk(clk), .rst_n(!rst), .done(done_fpu), .mapped_data_valid(mapped_data_valid), .mapped_data_request(mapped_data_request), .mapped_data(mapped_data), .mapped_address(mapped_address), .dram_if(dram_if.FPU));
    
-   CPU iCPU(
+   cpu iCPU(
 	.clk(clk), .rst_n(rst_n),
 	.INT(INT), .INT_INSTR(INT_INSTR), .ACK(ACK), // todo where from?
 	// inst memory
