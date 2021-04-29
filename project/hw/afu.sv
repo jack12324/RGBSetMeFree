@@ -43,6 +43,9 @@
 `include "platform_if.vh"
 `include "cci_mpf_if.vh"
 `include "afu_json_info.vh"
+`include "mmio_if.vh"
+`include "dma_if.vh"
+
 
 module afu
   (

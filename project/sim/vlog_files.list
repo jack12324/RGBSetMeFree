@@ -46,3 +46,8 @@
 /filespace/c/chenke/RGBSetMeFree/project/hw/memory/mem_ctrl.sv
 /filespace/c/chenke/RGBSetMeFree/project/hw/memory/mem_system.sv
 /filespace/c/chenke/RGBSetMeFree/project/hw/memory/ram_block.sv
+/filespace/c/chenke/RGBSetMeFree/project/hw/cci_dma.sv
+/filespace/c/chenke/RGBSetMeFree/project/hw/csr_mgr.sv
+/filespace/c/chenke/RGBSetMeFree/project/hw/fifo.sv
+/filespace/c/chenke/RGBSetMeFree/project/hw/hal.sv
+/filespace/c/chenke/RGBSetMeFree/project/hw/memory_map.sv
