@@ -26,8 +26,8 @@ module ExMe(
     // Ouputs to the next pipeline stage 
     // Data signals 
     output logic [31:0] ExMe_out_PC_next,
-    input logic ExMe_out_Branch,
-	input logic ExMe_out_Jump,
+    output logic ExMe_out_Branch,
+	output logic ExMe_out_Jump,
 
     output logic [31:0] ExMe_out_alu_out,
     output logic [31:0] ExMe_out_reg_2,

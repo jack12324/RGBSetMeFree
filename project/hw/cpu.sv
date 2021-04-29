@@ -242,6 +242,8 @@ module cpu(
     // Data signals 
     	//logic [31:0] ExMe_out_PC_next;
     	logic [31:0] ExMe_out_alu_out;
+        logic ExMe_out_Branch;
+	    logic ExMe_out_Jump;
     	logic [31:0] ExMe_out_reg_2;
     	logic [31:0] ExMe_out_LR;
     	logic [1:0] ExMe_out_FL;
@@ -659,6 +661,8 @@ module cpu(
     	// Ouputs to the next pipeline stage 
     	// Data signals 
 	.ExMe_out_PC_next(ExMe_out_PC_next),
+    .ExMe_out_Branch(ExMe_out_Branch),
+    .ExMe_out_Jump(ExMe_out_Jump),
 	.ExMe_out_alu_out(ExMe_out_alu_out),
 	.ExMe_out_reg_2(ExMe_out_reg_2),
 	.ExMe_out_LR(ExMe_out_LR),
