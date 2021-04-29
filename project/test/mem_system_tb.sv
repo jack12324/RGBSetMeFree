@@ -81,6 +81,7 @@ module mem_system_tb ();
         req_cycle = 0;
         #10;
         rst = 1'b0;
+        tx_done_host = 1'b0;
         
     end
 
@@ -101,6 +102,7 @@ module mem_system_tb ();
                     Data_out_ref, CacheHit);
             if (data_out != Data_out_ref) begin
                 $display("ERROR");
+                $stop();
                 test_success = 1'b0;
             end
         end
@@ -265,7 +267,7 @@ module mem_system_tb ();
         end else begin
             $display("Test status: SUCCESS");
         end
-        $finish;
+        $stop();
         end
     endtask // end_simulation
 
