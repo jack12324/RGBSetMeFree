@@ -114,7 +114,7 @@ module fetch (clk, rst_n,
     	.data_in(),
     	.wr(1'b0),
     	.en(1'b1),
-	.stall(stall),
+	.stall(),
     	.done(Done),
     	.data_out(instr_mem)
     	);

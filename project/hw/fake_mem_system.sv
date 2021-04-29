@@ -25,11 +25,13 @@ module fake_mem_system
 	always_ff @(posedge clk) begin
 		if(wr) begin
 			test_memory[ram_addr] <= data_in;
+			done = 1'b1;
 			stall = 1'b0;
 		end
 		else begin
 			data_out <= test_memory[ram_addr];
 			stall = 1'b1;
+			done = 1'b0;
 		end
 	end
 
@@ -37,14 +39,14 @@ module fake_mem_system
 // which says to do this:
 	
 	initial begin 
-	        $display("Loading rom."); 
+	        $display("Loading FILENAME:%s", FILENAME);
 	        //$readmemh("project/test_images/rom_image.mem", test_memory); 
 	        $readmemh(FILENAME, test_memory); 
 		// relative file path form same place where work folder is
 
-	        $display("Contents of Memory: "); // display
-   	    	for (int i=0; i<10; i++) begin
-        	    $display("%x :: %x", test_memory[i], (i+32'h2000));
+	        $display("addr :: data "); // display   	    	
+		for (int i=0; i<10; i++) begin
+        	    $display("%x :: %x", (i+32'h0600), test_memory[i]);//2000 is wrong meanwhile, and 0600 only for fetch inst mem
         	end
     	end
 endmodule : fake_mem_system

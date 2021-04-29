@@ -39,7 +39,7 @@ module cpu_tb();
 	cpu DUT(.*);
 
 	initial begin
-		integer errors;
+		errors = 0;
 		clk = 0;
 		rst_n = 0; // rst is ON
 		INT = 0;
@@ -53,14 +53,14 @@ module cpu_tb();
 		Metx_done_host = 0;
 		Merd_valid_host = 0;
 
-		repeat (2) @(posedge clk);
+		repeat (10) @(posedge clk);
 		rst_n = 1; // rst is OFF, begin
 		
 		// test cpu 
 		// do something
 		// check outputs
 		// check interrupt output
-		repeat (40) @(posedge clk);
+		repeat (4000) @(posedge clk);
 
 		if(errors == 0)
 			$display("YAHOO! All tests passed!");

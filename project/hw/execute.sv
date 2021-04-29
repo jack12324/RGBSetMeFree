@@ -58,7 +58,8 @@ module execute(
 
 
     logic [3:0] aluOP;
-    logic [31:0] newPC, pc_immi, pc_4;
+    logic [31:0] pc_immi, pc_4;
+
 
     assign pc_immi = DeEx_out_imm + DeEx_out_PC_next + 4;
     assign pc_4 = DeEx_out_PC_next + 4;
@@ -81,7 +82,7 @@ module execute(
         .pc_immi     (pc_immi             ),
         .immi        (DeEx_out_imm        ),
         .reg_a       (alu_1               ),
-        .PC          (newPC               ),
+        .PC          (ExMe_in_PC_next     ),//used to be newPC
         .LR_write_val(ExMe_in_LR_wrt_data ),
         .op_code     (DeEx_out_ALU_op[1:0])
     );
