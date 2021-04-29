@@ -1,0 +1,898 @@
+
+Warning-[LINX_KRNL] Unsupported Linux kernel
+  Linux kernel '2.6.69-15-amd64' is not supported.
+  Supported versions are 2.4* or 2.6*.
+
+Command: vlogan -full64 -nc -V -full64 +v2k -sverilog +define+VCS +incdir+ +librescan \
+-work work -override_timescale=1ps/1ps +define+FPGA_PLATFORM_INTG_XEON +lint=all,noVCDE,noNS,NCEID,CAWM,TFIPC,IPDP,PCWM \
+/cae/apps/data/quartus-current/quartus/../ip/altera/sopc_builder_ip/verification/lib/verbosity_pkg.sv \
+/cae/apps/data/quartus-current/quartus/../ip/altera/sopc_builder_ip/verification/lib/avalon_mm_pkg.sv \
+/cae/apps/data/quartus-current/quartus/../ip/altera/sopc_builder_ip/verification/lib/avalon_utilities_pkg.sv \
+/cae/apps/data/quartus-current/quartus/../ip/altera/sopc_builder_ip/verification/altera_avalon_mm_slave_bfm/altera_avalon_mm_slave_bfm.sv \
+-F /filespace/c/chenke/RGBSetMeFree/project/sim/rtl/includes.txt -F /filespace/c/chenke/RGBSetMeFree/project/sim/vlog_files.list \
+-l vlogan-afu.log
+/cae/apps/data/synopsys-2020/vcs/Q-2020.03-SP1/linux64/bin/vcs1 -Mcc=gcc -Mcplusplus=g++ \
+-Masflags= -Mcfl= -pipe -O -I/cae/apps/data/synopsys-2020/vcs/Q-2020.03-SP1/include \
+-Mldflags= -Wl,-E,-rpath /cae/apps/data/synopsys-2020/vcs/Q-2020.03-SP1/linux64/lib \
+-Mout=simv -Mamsrun="" -Mvcsaceobjs="" -Mobjects=" " -Msaverestoreobj= -Mcrt0= -Mcrtn="" \
+-Mcsrc="" -Msyslibs=-L/usr/X11R6/lib64 -lX11 -ldl -ldl  -l vlogan-afu.log -Xvlogan=0x1 \
+-full64 -nc -V -full64 +v2k -sverilog +define+VCS +incdir+ +librescan -work=work \
+-override_timescale=1ps/1ps +define+FPGA_PLATFORM_INTG_XEON +lint=all,noVCDE,noNS,NCEID,CAWM,TFIPC,IPDP,PCWM \
+/cae/apps/data/quartus-current/quartus/../ip/altera/sopc_builder_ip/verification/lib/verbosity_pkg.sv \
+/cae/apps/data/quartus-current/quartus/../ip/altera/sopc_builder_ip/verification/lib/avalon_mm_pkg.sv \
+/cae/apps/data/quartus-current/quartus/../ip/altera/sopc_builder_ip/verification/lib/avalon_utilities_pkg.sv \
+/cae/apps/data/quartus-current/quartus/../ip/altera/sopc_builder_ip/verification/altera_avalon_mm_slave_bfm/altera_avalon_mm_slave_bfm.sv \
+-F /filespace/c/chenke/RGBSetMeFree/project/sim/rtl/includes.txt -F /filespace/c/chenke/RGBSetMeFree/project/sim/vlog_files.list \
++mixedhdl2  
+
+Warning-[BMII] Bad message id
+  Message id 'CAWM' specified after '+lint' is not a lint message ID, ignored.
+
+
+################# <-file/-f contents> ########################
+-F /filespace/c/chenke/RGBSetMeFree/project/sim/rtl/includes.txt
+        +incdir+.
+        -F platform_if_includes.txt // No such file or directory
+-F /filespace/c/chenke/RGBSetMeFree/project/sim/vlog_files.list
+        +incdir+/filespace/c/chenke/RGBSetMeFree/project/hw
+        -F /filespace/c/chenke/intel-fpga-bbb/BBB_cci_mpf/hw/sim/cci_mpf_sim_addenda.txt
+                +define+CCI_SIMULATION
+                +incdir+../rtl
+                +incdir+../rtl/cci-if
+                +incdir+../rtl/cci-mpf-if
+                +incdir+../rtl/cci-mpf-prims
+                +incdir+../rtl/cci-mpf-shims
+                +incdir+../rtl/cci-mpf-shims/cci_mpf_shim_edge
+                +incdir+../rtl/cci-mpf-shims/cci_mpf_shim_pwrite
+                +incdir+../rtl/cci-mpf-shims/cci_mpf_shim_vtp
+                +incdir+../rtl/cci-mpf-shims/cci_mpf_shim_wro
+                +incdir+../../sw/include/opae/mpf
+                ../rtl/cci-if/ccis_if_pkg.sv
+                ../rtl/cci-if/ccis_if_funcs_pkg.sv
+                ../rtl/cci-if/ccip_if_funcs_pkg.sv
+                ../rtl/cci-mpf-if/cci_mpf_if_pkg.sv
+                ../rtl/cci-if/cci_csr_if_pkg.sv
+                ../rtl/cci-if/ccip_feature_list_pkg.sv
+                ../rtl/cci_mpf_csrs_pkg.sv
+                ../rtl/cci-mpf-shims/cci_mpf_shim_pkg.sv
+                ../rtl/cci_mpf.sv
+                ../rtl/cci_mpf_null.sv
+                ../rtl/cci_mpf_pipe_std.sv
+                ../rtl/cci-mpf-if/ccip_wires_to_mpf.sv
+                ../rtl/cci-mpf-if/ccis_wires_to_mpf.sv
+                ../rtl/cci-mpf-prims/cci_mpf_prim_arb_rr.sv
+                ../rtl/cci-mpf-prims/cci_mpf_prim_fifo1.sv
+                ../rtl/cci-mpf-prims/cci_mpf_prim_fifo2.sv
+                ../rtl/cci-mpf-prims/cci_mpf_prim_fifo_bram.sv
+                ../rtl/cci-mpf-prims/cci_mpf_prim_fifo_lutram.sv
+                ../rtl/cci-mpf-prims/cci_mpf_prim_filter_cam.sv
+                ../rtl/cci-mpf-prims/cci_mpf_prim_filter_counting.sv
+                ../rtl/cci-mpf-prims/cci_mpf_prim_filter_decode.sv
+                ../rtl/cci-mpf-prims/cci_mpf_prim_heap.sv
+                ../rtl/cci-mpf-prims/cci_mpf_prim_lfsr.sv
+                ../rtl/cci-mpf-prims/cci_mpf_prim_lutram.sv
+                ../rtl/cci-mpf-prims/cci_mpf_prim_onehot_to_bin.sv
+                ../rtl/cci-mpf-prims/cci_mpf_prim_ram_dualport.sv
+                ../rtl/cci-mpf-prims/cci_mpf_prim_ram_dualport_byteena.sv
+                ../rtl/cci-mpf-prims/cci_mpf_prim_ram_simple.sv
+                ../rtl/cci-mpf-prims/cci_mpf_prim_repl_lru_pseudo.sv
+                ../rtl/cci-mpf-prims/cci_mpf_prim_repl_random.sv
+                ../rtl/cci-mpf-prims/cci_mpf_prim_rob.sv
+                ../rtl/cci-mpf-prims/cci_mpf_prim_semaphore_cam.sv
+                ../rtl/cci-mpf-prims/cci_mpf_prim_track_active_reqs.sv
+                ../rtl/cci-mpf-prims/cci_mpf_prim_track_multi_write.sv
+                ../rtl/cci-mpf-shims/cci_mpf_shim_buffer_afu.sv
+                ../rtl/cci-mpf-shims/cci_mpf_shim_buffer_afu_epoch.sv
+                ../rtl/cci-mpf-shims/cci_mpf_shim_buffer_afu_lockstep.sv
+                ../rtl/cci-mpf-shims/cci_mpf_shim_buffer_fiu.sv
+                ../rtl/cci-mpf-shims/cci_mpf_shim_csr.sv
+                ../rtl/cci-mpf-shims/cci_mpf_shim_dbg_history.sv
+                ../rtl/cci-mpf-shims/cci_mpf_shim_dedup_reads.sv
+                ../rtl/cci-mpf-shims/cci_mpf_shim_detect_eop.sv
+                ../rtl/cci-mpf-shims/cci_mpf_shim_edge/cci_mpf_shim_edge_afu.sv
+                ../rtl/cci-mpf-shims/cci_mpf_shim_edge/cci_mpf_shim_edge_fiu.sv
+                ../rtl/cci-mpf-shims/cci_mpf_shim_latency_qos.sv
+                ../rtl/cci-mpf-shims/cci_mpf_shim_mux.sv
+                ../rtl/cci-mpf-shims/cci_mpf_shim_null.sv
+                ../rtl/cci-mpf-shims/cci_mpf_shim_pwrite/cci_mpf_shim_pwrite.sv
+                ../rtl/cci-mpf-shims/cci_mpf_shim_rsp_order.sv
+                ../rtl/cci-mpf-shims/cci_mpf_shim_vc_map.sv
+                ../rtl/cci-mpf-shims/cci_mpf_shim_vtp/cci_mpf_shim_vtp.sv
+                ../rtl/cci-mpf-shims/cci_mpf_shim_vtp/cci_mpf_svc_vtp.sv
+                ../rtl/cci-mpf-shims/cci_mpf_shim_vtp/cci_mpf_svc_vtp_pipe.sv
+                ../rtl/cci-mpf-shims/cci_mpf_shim_vtp/cci_mpf_svc_vtp_pt_walk.sv
+                ../rtl/cci-mpf-shims/cci_mpf_shim_vtp/cci_mpf_svc_vtp_tlb.sv
+                ../rtl/cci-mpf-shims/cci_mpf_shim_wro/cci_mpf_shim_wro.sv
+                ../rtl/cci-mpf-shims/cci_mpf_shim_wro/cci_mpf_shim_wro_filter_group.sv
+                ../rtl/cci-mpf-shims/cci_mpf_shim_wro/cci_mpf_shim_wro_epoch_order.sv
+        /filespace/c/chenke/RGBSetMeFree/project/hw/CPU_interrupt_fsm.sv
+        /filespace/c/chenke/RGBSetMeFree/project/hw/DeEx.sv
+        /filespace/c/chenke/RGBSetMeFree/project/hw/ExMe.sv
+        /filespace/c/chenke/RGBSetMeFree/project/hw/FPU.sv
+        /filespace/c/chenke/RGBSetMeFree/project/hw/FPUBuffers.sv
+        /filespace/c/chenke/RGBSetMeFree/project/hw/FPUCntrlReq_if.sv
+        /filespace/c/chenke/RGBSetMeFree/project/hw/FPUConfig_if.sv
+        /filespace/c/chenke/RGBSetMeFree/project/hw/FPUController.sv
+        /filespace/c/chenke/RGBSetMeFree/project/hw/FPUControllerConfigurationLoader.sv
+        /filespace/c/chenke/RGBSetMeFree/project/hw/FPUDRAM_if.sv
+        /filespace/c/chenke/RGBSetMeFree/project/hw/FPUMAC.sv
+        /filespace/c/chenke/RGBSetMeFree/project/hw/FPURequestBuffer.sv
+        /filespace/c/chenke/RGBSetMeFree/project/hw/FPURequestController.sv
+        /filespace/c/chenke/RGBSetMeFree/project/hw/FeDe.sv
+        /filespace/c/chenke/RGBSetMeFree/project/hw/FilterMAC.sv
+        /filespace/c/chenke/RGBSetMeFree/project/hw/InterruptController.sv
+        /filespace/c/chenke/RGBSetMeFree/project/hw/MeWb.sv
+        /filespace/c/chenke/RGBSetMeFree/project/hw/ReadBank.sv
+        /filespace/c/chenke/RGBSetMeFree/project/hw/Single_RAM.sv
+        /filespace/c/chenke/RGBSetMeFree/project/hw/WriteBank.sv
+        /filespace/c/chenke/RGBSetMeFree/project/hw/afu.sv
+        /filespace/c/chenke/RGBSetMeFree/project/hw/alu.sv
+        /filespace/c/chenke/RGBSetMeFree/project/hw/branch_jump.sv
+        /filespace/c/chenke/RGBSetMeFree/project/hw/ccip_interface_reg.sv
+        /filespace/c/chenke/RGBSetMeFree/project/hw/ccip_std_afu.sv
+        /filespace/c/chenke/RGBSetMeFree/project/hw/cpu.sv
+        /filespace/c/chenke/RGBSetMeFree/project/hw/decode.sv
+        /filespace/c/chenke/RGBSetMeFree/project/hw/dff.sv
+        /filespace/c/chenke/RGBSetMeFree/project/hw/execute.sv
+        /filespace/c/chenke/RGBSetMeFree/project/hw/fetch.sv
+        /filespace/c/chenke/RGBSetMeFree/project/hw/forwarding.sv
+        /filespace/c/chenke/RGBSetMeFree/project/hw/memory.sv
+        /filespace/c/chenke/RGBSetMeFree/project/hw/mux3_1.sv
+        /filespace/c/chenke/RGBSetMeFree/project/hw/regFile.sv
+        /filespace/c/chenke/RGBSetMeFree/project/hw/regFile_bypass.sv
+        /filespace/c/chenke/RGBSetMeFree/project/hw/writeback.sv
+        /filespace/c/chenke/RGBSetMeFree/project/hw/memory/cache_if.sv
+        /filespace/c/chenke/RGBSetMeFree/project/hw/memory/cpu_cache_ctrl.sv
+        /filespace/c/chenke/RGBSetMeFree/project/hw/memory/cpu_cache.sv
+        /filespace/c/chenke/RGBSetMeFree/project/hw/memory/fpu_cache.sv
+        /filespace/c/chenke/RGBSetMeFree/project/hw/memory/fpu_dma_ctrl.sv
+        /filespace/c/chenke/RGBSetMeFree/project/hw/memory/fpu_mmio_ctrl.sv
+        /filespace/c/chenke/RGBSetMeFree/project/hw/memory/mem_arbiter.sv
+        /filespace/c/chenke/RGBSetMeFree/project/hw/memory/mem_ctrl.sv
+        /filespace/c/chenke/RGBSetMeFree/project/hw/memory/mem_system.sv
+        /filespace/c/chenke/RGBSetMeFree/project/hw/memory/ram_block.sv
+
+################# <-file/-f ends> ########################
+
+Parsing design file '/cae/apps/data/quartus-current/quartus/../ip/altera/sopc_builder_ip/verification/lib/verbosity_pkg.sv'
+Parsing design file '/cae/apps/data/quartus-current/quartus/../ip/altera/sopc_builder_ip/verification/lib/avalon_mm_pkg.sv'
+Parsing design file '/cae/apps/data/quartus-current/quartus/../ip/altera/sopc_builder_ip/verification/lib/avalon_utilities_pkg.sv'
+Parsing design file '/cae/apps/data/quartus-current/quartus/../ip/altera/sopc_builder_ip/verification/altera_avalon_mm_slave_bfm/altera_avalon_mm_slave_bfm.sv'
+Parsing design file '/filespace/c/chenke/intel-fpga-bbb/BBB_cci_mpf/hw/sim/../rtl/cci-if/ccis_if_pkg.sv'
+Parsing design file '/filespace/c/chenke/intel-fpga-bbb/BBB_cci_mpf/hw/sim/../rtl/cci-if/ccis_if_funcs_pkg.sv'
+Parsing design file '/filespace/c/chenke/intel-fpga-bbb/BBB_cci_mpf/hw/sim/../rtl/cci-if/ccip_if_funcs_pkg.sv'
+Parsing design file '/filespace/c/chenke/intel-fpga-bbb/BBB_cci_mpf/hw/sim/../rtl/cci-mpf-if/cci_mpf_if_pkg.sv'
+Parsing included file '/filespace/c/chenke/intel-fpga-bbb/BBB_cci_mpf/hw/sim/../rtl/cci-mpf-if/cci_mpf_platform.vh'.
+Parsing included file '/filespace/c/chenke/opae/share/opae/platform/platform_if/sim/../rtl/platform_if.vh'.
+Parsing included file '/filespace/c/chenke/RGBSetMeFree/project/sim/rtl/./platform_afu_top_config.vh'.
+Back to file '/filespace/c/chenke/opae/share/opae/platform/platform_if/sim/../rtl/platform_if.vh'.
+Parsing included file '/filespace/c/chenke/opae/share/opae/platform/platform_if/sim/../rtl/platform_if_macros.vh'.
+Back to file '/filespace/c/chenke/opae/share/opae/platform/platform_if/sim/../rtl/platform_if.vh'.
+Parsing included file '/filespace/c/chenke/opae/share/opae/platform/platform_if/sim/../rtl/device_if/device_if.vh'.
+
+Lint-[SV-PIU] Package import statement in $unit scope.
+/filespace/c/chenke/opae/share/opae/platform/platform_if/sim/../rtl/device_if/device_if.vh, 38
+$unit
+  There is an import statement in $unit scope.
+  Although this is legal as per the SystemVerilog LRM, it means that package 
+  content will be shared without explicit import of the package.
+  Package: ccip_if_pkg::*
+
+Parsing included file '/filespace/c/chenke/opae/share/opae/platform/platform_if/sim/../rtl/device_if/avalon_mem_if.vh'.
+Back to file '/filespace/c/chenke/opae/share/opae/platform/platform_if/sim/../rtl/device_if/device_if.vh'.
+Back to file '/filespace/c/chenke/opae/share/opae/platform/platform_if/sim/../rtl/platform_if.vh'.
+Back to file '/filespace/c/chenke/intel-fpga-bbb/BBB_cci_mpf/hw/sim/../rtl/cci-mpf-if/cci_mpf_platform.vh'.
+Back to file '/filespace/c/chenke/intel-fpga-bbb/BBB_cci_mpf/hw/sim/../rtl/cci-mpf-if/cci_mpf_if_pkg.sv'.
+Parsing design file '/filespace/c/chenke/intel-fpga-bbb/BBB_cci_mpf/hw/sim/../rtl/cci-if/cci_csr_if_pkg.sv'
+Parsing design file '/filespace/c/chenke/intel-fpga-bbb/BBB_cci_mpf/hw/sim/../rtl/cci-if/ccip_feature_list_pkg.sv'
+Parsing design file '/filespace/c/chenke/intel-fpga-bbb/BBB_cci_mpf/hw/sim/../rtl/cci_mpf_csrs_pkg.sv'
+Parsing included file '/filespace/c/chenke/intel-fpga-bbb/BBB_cci_mpf/hw/sim/../../sw/include/opae/mpf/cci_mpf_csrs.h'.
+Back to file '/filespace/c/chenke/intel-fpga-bbb/BBB_cci_mpf/hw/sim/../rtl/cci_mpf_csrs_pkg.sv'.
+Parsing design file '/filespace/c/chenke/intel-fpga-bbb/BBB_cci_mpf/hw/sim/../rtl/cci-mpf-shims/cci_mpf_shim_pkg.sv'
+Parsing design file '/filespace/c/chenke/intel-fpga-bbb/BBB_cci_mpf/hw/sim/../rtl/cci_mpf.sv'
+Parsing included file '/filespace/c/chenke/intel-fpga-bbb/BBB_cci_mpf/hw/sim/../rtl/cci-mpf-if/cci_mpf_if.vh'.
+Parsing included file '/filespace/c/chenke/intel-fpga-bbb/BBB_cci_mpf/hw/sim/../rtl/cci-mpf-if/cci_mpf_platform.vh'.
+Back to file '/filespace/c/chenke/intel-fpga-bbb/BBB_cci_mpf/hw/sim/../rtl/cci-mpf-if/cci_mpf_if.vh'.
+
+Lint-[SV-PIU] Package import statement in $unit scope.
+/filespace/c/chenke/intel-fpga-bbb/BBB_cci_mpf/hw/sim/../rtl/cci-mpf-if/cci_mpf_if.vh, 10
+$unit
+  There is an import statement in $unit scope.
+  Although this is legal as per the SystemVerilog LRM, it means that package 
+  content will be shared without explicit import of the package.
+  Package: cci_mpf_if_pkg::*
+
+
+Lint-[SV-PIU] Package import statement in $unit scope.
+/filespace/c/chenke/intel-fpga-bbb/BBB_cci_mpf/hw/sim/../rtl/cci-mpf-if/cci_mpf_if.vh, 11
+$unit
+  There is an import statement in $unit scope.
+  Although this is legal as per the SystemVerilog LRM, it means that package 
+  content will be shared without explicit import of the package.
+  Package: ccip_if_funcs_pkg::*
+
+Parsing included file '/filespace/c/chenke/intel-fpga-bbb/BBB_cci_mpf/hw/sim/../rtl/cci-mpf-if/cci_mpf_if_dbg.vh'.
+Back to file '/filespace/c/chenke/intel-fpga-bbb/BBB_cci_mpf/hw/sim/../rtl/cci-mpf-if/cci_mpf_if.vh'.
+Back to file '/filespace/c/chenke/intel-fpga-bbb/BBB_cci_mpf/hw/sim/../rtl/cci_mpf.sv'.
+Parsing included file '/filespace/c/chenke/intel-fpga-bbb/BBB_cci_mpf/hw/sim/../rtl/cci_mpf_csrs.vh'.
+Parsing included file '/filespace/c/chenke/intel-fpga-bbb/BBB_cci_mpf/hw/sim/../rtl/cci-if/cci_csr_if.vh'.
+
+Lint-[SV-PIU] Package import statement in $unit scope.
+/filespace/c/chenke/intel-fpga-bbb/BBB_cci_mpf/hw/sim/../rtl/cci-if/cci_csr_if.vh, 8
+$unit
+  There is an import statement in $unit scope.
+  Although this is legal as per the SystemVerilog LRM, it means that package 
+  content will be shared without explicit import of the package.
+  Package: cci_csr_if_pkg::*
+
+
+Lint-[SV-PIU] Package import statement in $unit scope.
+/filespace/c/chenke/intel-fpga-bbb/BBB_cci_mpf/hw/sim/../rtl/cci-if/cci_csr_if.vh, 9
+$unit
+  There is an import statement in $unit scope.
+  Although this is legal as per the SystemVerilog LRM, it means that package 
+  content will be shared without explicit import of the package.
+  Package: ccip_feature_list_pkg::*
+
+Back to file '/filespace/c/chenke/intel-fpga-bbb/BBB_cci_mpf/hw/sim/../rtl/cci_mpf_csrs.vh'.
+
+Lint-[SV-PIU] Package import statement in $unit scope.
+/filespace/c/chenke/intel-fpga-bbb/BBB_cci_mpf/hw/sim/../rtl/cci_mpf_csrs.vh, 35
+$unit
+  There is an import statement in $unit scope.
+  Although this is legal as per the SystemVerilog LRM, it means that package 
+  content will be shared without explicit import of the package.
+  Package: cci_mpf_csrs_pkg::*
+
+Back to file '/filespace/c/chenke/intel-fpga-bbb/BBB_cci_mpf/hw/sim/../rtl/cci_mpf.sv'.
+Parsing included file '/filespace/c/chenke/intel-fpga-bbb/BBB_cci_mpf/hw/sim/../rtl/cci-mpf-shims/cci_mpf_shim_edge/cci_mpf_shim_edge.vh'.
+Back to file '/filespace/c/chenke/intel-fpga-bbb/BBB_cci_mpf/hw/sim/../rtl/cci_mpf.sv'.
+Parsing included file '/filespace/c/chenke/intel-fpga-bbb/BBB_cci_mpf/hw/sim/../rtl/cci-mpf-shims/cci_mpf_shim_pwrite/cci_mpf_shim_pwrite.vh'.
+Parsing included file '/filespace/c/chenke/intel-fpga-bbb/BBB_cci_mpf/hw/sim/../rtl/cci-mpf-if/cci_mpf_if.vh'.
+Back to file '/filespace/c/chenke/intel-fpga-bbb/BBB_cci_mpf/hw/sim/../rtl/cci-mpf-shims/cci_mpf_shim_pwrite/cci_mpf_shim_pwrite.vh'.
+Back to file '/filespace/c/chenke/intel-fpga-bbb/BBB_cci_mpf/hw/sim/../rtl/cci_mpf.sv'.
+Parsing design file '/filespace/c/chenke/intel-fpga-bbb/BBB_cci_mpf/hw/sim/../rtl/cci_mpf_null.sv'
+Parsing included file '/filespace/c/chenke/intel-fpga-bbb/BBB_cci_mpf/hw/sim/../rtl/cci-mpf-if/cci_mpf_if.vh'.
+Back to file '/filespace/c/chenke/intel-fpga-bbb/BBB_cci_mpf/hw/sim/../rtl/cci_mpf_null.sv'.
+Parsing included file '/filespace/c/chenke/intel-fpga-bbb/BBB_cci_mpf/hw/sim/../rtl/cci_mpf_csrs.vh'.
+Back to file '/filespace/c/chenke/intel-fpga-bbb/BBB_cci_mpf/hw/sim/../rtl/cci_mpf_null.sv'.
+Parsing included file '/filespace/c/chenke/intel-fpga-bbb/BBB_cci_mpf/hw/sim/../rtl/cci-mpf-shims/cci_mpf_shim_edge/cci_mpf_shim_edge.vh'.
+Back to file '/filespace/c/chenke/intel-fpga-bbb/BBB_cci_mpf/hw/sim/../rtl/cci_mpf_null.sv'.
+Parsing included file '/filespace/c/chenke/intel-fpga-bbb/BBB_cci_mpf/hw/sim/../rtl/cci-mpf-shims/cci_mpf_shim_pwrite/cci_mpf_shim_pwrite.vh'.
+Back to file '/filespace/c/chenke/intel-fpga-bbb/BBB_cci_mpf/hw/sim/../rtl/cci_mpf_null.sv'.
+Parsing design file '/filespace/c/chenke/intel-fpga-bbb/BBB_cci_mpf/hw/sim/../rtl/cci_mpf_pipe_std.sv'
+Parsing included file '/filespace/c/chenke/intel-fpga-bbb/BBB_cci_mpf/hw/sim/../rtl/cci-mpf-if/cci_mpf_if.vh'.
+Back to file '/filespace/c/chenke/intel-fpga-bbb/BBB_cci_mpf/hw/sim/../rtl/cci_mpf_pipe_std.sv'.
+Parsing included file '/filespace/c/chenke/intel-fpga-bbb/BBB_cci_mpf/hw/sim/../rtl/cci_mpf_csrs.vh'.
+Back to file '/filespace/c/chenke/intel-fpga-bbb/BBB_cci_mpf/hw/sim/../rtl/cci_mpf_pipe_std.sv'.
+Parsing included file '/filespace/c/chenke/intel-fpga-bbb/BBB_cci_mpf/hw/sim/../rtl/cci-mpf-shims/cci_mpf_shim_edge/cci_mpf_shim_edge.vh'.
+Back to file '/filespace/c/chenke/intel-fpga-bbb/BBB_cci_mpf/hw/sim/../rtl/cci_mpf_pipe_std.sv'.
+Parsing included file '/filespace/c/chenke/intel-fpga-bbb/BBB_cci_mpf/hw/sim/../rtl/cci-mpf-shims/cci_mpf_shim_pwrite/cci_mpf_shim_pwrite.vh'.
+Back to file '/filespace/c/chenke/intel-fpga-bbb/BBB_cci_mpf/hw/sim/../rtl/cci_mpf_pipe_std.sv'.
+Parsing included file '/filespace/c/chenke/intel-fpga-bbb/BBB_cci_mpf/hw/sim/../rtl/cci-mpf-shims/cci_mpf_shim_vtp/cci_mpf_shim_vtp.vh'.
+Parsing included file '/filespace/c/chenke/intel-fpga-bbb/BBB_cci_mpf/hw/sim/../rtl/cci-mpf-if/cci_mpf_platform.vh'.
+Back to file '/filespace/c/chenke/intel-fpga-bbb/BBB_cci_mpf/hw/sim/../rtl/cci-mpf-shims/cci_mpf_shim_vtp/cci_mpf_shim_vtp.vh'.
+Back to file '/filespace/c/chenke/intel-fpga-bbb/BBB_cci_mpf/hw/sim/../rtl/cci_mpf_pipe_std.sv'.
+Parsing design file '/filespace/c/chenke/intel-fpga-bbb/BBB_cci_mpf/hw/sim/../rtl/cci-mpf-if/ccip_wires_to_mpf.sv'
+Parsing included file '/filespace/c/chenke/intel-fpga-bbb/BBB_cci_mpf/hw/sim/../rtl/cci-mpf-if/cci_mpf_if.vh'.
+Back to file '/filespace/c/chenke/intel-fpga-bbb/BBB_cci_mpf/hw/sim/../rtl/cci-mpf-if/ccip_wires_to_mpf.sv'.
+Parsing design file '/filespace/c/chenke/intel-fpga-bbb/BBB_cci_mpf/hw/sim/../rtl/cci-mpf-if/ccis_wires_to_mpf.sv'
+Parsing included file '/filespace/c/chenke/intel-fpga-bbb/BBB_cci_mpf/hw/sim/../rtl/cci-mpf-if/cci_mpf_if.vh'.
+Back to file '/filespace/c/chenke/intel-fpga-bbb/BBB_cci_mpf/hw/sim/../rtl/cci-mpf-if/ccis_wires_to_mpf.sv'.
+Parsing design file '/filespace/c/chenke/intel-fpga-bbb/BBB_cci_mpf/hw/sim/../rtl/cci-mpf-prims/cci_mpf_prim_arb_rr.sv'
+Parsing design file '/filespace/c/chenke/intel-fpga-bbb/BBB_cci_mpf/hw/sim/../rtl/cci-mpf-prims/cci_mpf_prim_fifo1.sv'
+Parsing design file '/filespace/c/chenke/intel-fpga-bbb/BBB_cci_mpf/hw/sim/../rtl/cci-mpf-prims/cci_mpf_prim_fifo2.sv'
+Parsing design file '/filespace/c/chenke/intel-fpga-bbb/BBB_cci_mpf/hw/sim/../rtl/cci-mpf-prims/cci_mpf_prim_fifo_bram.sv'
+Parsing included file '/filespace/c/chenke/intel-fpga-bbb/BBB_cci_mpf/hw/sim/../rtl/cci-mpf-if/cci_mpf_platform.vh'.
+Back to file '/filespace/c/chenke/intel-fpga-bbb/BBB_cci_mpf/hw/sim/../rtl/cci-mpf-prims/cci_mpf_prim_fifo_bram.sv'.
+Parsing design file '/filespace/c/chenke/intel-fpga-bbb/BBB_cci_mpf/hw/sim/../rtl/cci-mpf-prims/cci_mpf_prim_fifo_lutram.sv'
+Parsing design file '/filespace/c/chenke/intel-fpga-bbb/BBB_cci_mpf/hw/sim/../rtl/cci-mpf-prims/cci_mpf_prim_filter_cam.sv'
+Parsing design file '/filespace/c/chenke/intel-fpga-bbb/BBB_cci_mpf/hw/sim/../rtl/cci-mpf-prims/cci_mpf_prim_filter_counting.sv'
+Parsing design file '/filespace/c/chenke/intel-fpga-bbb/BBB_cci_mpf/hw/sim/../rtl/cci-mpf-prims/cci_mpf_prim_filter_decode.sv'
+Parsing design file '/filespace/c/chenke/intel-fpga-bbb/BBB_cci_mpf/hw/sim/../rtl/cci-mpf-prims/cci_mpf_prim_heap.sv'
+Parsing design file '/filespace/c/chenke/intel-fpga-bbb/BBB_cci_mpf/hw/sim/../rtl/cci-mpf-prims/cci_mpf_prim_lfsr.sv'
+Parsing design file '/filespace/c/chenke/intel-fpga-bbb/BBB_cci_mpf/hw/sim/../rtl/cci-mpf-prims/cci_mpf_prim_lutram.sv'
+Parsing design file '/filespace/c/chenke/intel-fpga-bbb/BBB_cci_mpf/hw/sim/../rtl/cci-mpf-prims/cci_mpf_prim_onehot_to_bin.sv'
+Parsing design file '/filespace/c/chenke/intel-fpga-bbb/BBB_cci_mpf/hw/sim/../rtl/cci-mpf-prims/cci_mpf_prim_ram_dualport.sv'
+Parsing included file '/filespace/c/chenke/intel-fpga-bbb/BBB_cci_mpf/hw/sim/../rtl/cci-mpf-if/cci_mpf_platform.vh'.
+Back to file '/filespace/c/chenke/intel-fpga-bbb/BBB_cci_mpf/hw/sim/../rtl/cci-mpf-prims/cci_mpf_prim_ram_dualport.sv'.
+Parsing design file '/filespace/c/chenke/intel-fpga-bbb/BBB_cci_mpf/hw/sim/../rtl/cci-mpf-prims/cci_mpf_prim_ram_dualport_byteena.sv'
+Parsing included file '/filespace/c/chenke/intel-fpga-bbb/BBB_cci_mpf/hw/sim/../rtl/cci-mpf-if/cci_mpf_platform.vh'.
+Back to file '/filespace/c/chenke/intel-fpga-bbb/BBB_cci_mpf/hw/sim/../rtl/cci-mpf-prims/cci_mpf_prim_ram_dualport_byteena.sv'.
+Parsing design file '/filespace/c/chenke/intel-fpga-bbb/BBB_cci_mpf/hw/sim/../rtl/cci-mpf-prims/cci_mpf_prim_ram_simple.sv'
+Parsing included file '/filespace/c/chenke/intel-fpga-bbb/BBB_cci_mpf/hw/sim/../rtl/cci-mpf-if/cci_mpf_platform.vh'.
+Back to file '/filespace/c/chenke/intel-fpga-bbb/BBB_cci_mpf/hw/sim/../rtl/cci-mpf-prims/cci_mpf_prim_ram_simple.sv'.
+Parsing design file '/filespace/c/chenke/intel-fpga-bbb/BBB_cci_mpf/hw/sim/../rtl/cci-mpf-prims/cci_mpf_prim_repl_lru_pseudo.sv'
+Parsing design file '/filespace/c/chenke/intel-fpga-bbb/BBB_cci_mpf/hw/sim/../rtl/cci-mpf-prims/cci_mpf_prim_repl_random.sv'
+Parsing design file '/filespace/c/chenke/intel-fpga-bbb/BBB_cci_mpf/hw/sim/../rtl/cci-mpf-prims/cci_mpf_prim_rob.sv'
+Parsing design file '/filespace/c/chenke/intel-fpga-bbb/BBB_cci_mpf/hw/sim/../rtl/cci-mpf-prims/cci_mpf_prim_semaphore_cam.sv'
+Parsing design file '/filespace/c/chenke/intel-fpga-bbb/BBB_cci_mpf/hw/sim/../rtl/cci-mpf-prims/cci_mpf_prim_track_active_reqs.sv'
+Parsing included file '/filespace/c/chenke/intel-fpga-bbb/BBB_cci_mpf/hw/sim/../rtl/cci-mpf-if/cci_mpf_if.vh'.
+Back to file '/filespace/c/chenke/intel-fpga-bbb/BBB_cci_mpf/hw/sim/../rtl/cci-mpf-prims/cci_mpf_prim_track_active_reqs.sv'.
+Parsing design file '/filespace/c/chenke/intel-fpga-bbb/BBB_cci_mpf/hw/sim/../rtl/cci-mpf-prims/cci_mpf_prim_track_multi_write.sv'
+Parsing included file '/filespace/c/chenke/intel-fpga-bbb/BBB_cci_mpf/hw/sim/../rtl/cci-mpf-if/cci_mpf_if.vh'.
+Back to file '/filespace/c/chenke/intel-fpga-bbb/BBB_cci_mpf/hw/sim/../rtl/cci-mpf-prims/cci_mpf_prim_track_multi_write.sv'.
+Parsing design file '/filespace/c/chenke/intel-fpga-bbb/BBB_cci_mpf/hw/sim/../rtl/cci-mpf-shims/cci_mpf_shim_buffer_afu.sv'
+Parsing included file '/filespace/c/chenke/intel-fpga-bbb/BBB_cci_mpf/hw/sim/../rtl/cci-mpf-if/cci_mpf_if.vh'.
+Back to file '/filespace/c/chenke/intel-fpga-bbb/BBB_cci_mpf/hw/sim/../rtl/cci-mpf-shims/cci_mpf_shim_buffer_afu.sv'.
+Parsing design file '/filespace/c/chenke/intel-fpga-bbb/BBB_cci_mpf/hw/sim/../rtl/cci-mpf-shims/cci_mpf_shim_buffer_afu_epoch.sv'
+Parsing included file '/filespace/c/chenke/intel-fpga-bbb/BBB_cci_mpf/hw/sim/../rtl/cci-mpf-if/cci_mpf_if.vh'.
+Back to file '/filespace/c/chenke/intel-fpga-bbb/BBB_cci_mpf/hw/sim/../rtl/cci-mpf-shims/cci_mpf_shim_buffer_afu_epoch.sv'.
+Parsing included file '/filespace/c/chenke/intel-fpga-bbb/BBB_cci_mpf/hw/sim/../rtl/cci-mpf-prims/cci_mpf_prim_hash.vh'.
+Back to file '/filespace/c/chenke/intel-fpga-bbb/BBB_cci_mpf/hw/sim/../rtl/cci-mpf-shims/cci_mpf_shim_buffer_afu_epoch.sv'.
+Parsing design file '/filespace/c/chenke/intel-fpga-bbb/BBB_cci_mpf/hw/sim/../rtl/cci-mpf-shims/cci_mpf_shim_buffer_afu_lockstep.sv'
+Parsing included file '/filespace/c/chenke/intel-fpga-bbb/BBB_cci_mpf/hw/sim/../rtl/cci-mpf-if/cci_mpf_if.vh'.
+Back to file '/filespace/c/chenke/intel-fpga-bbb/BBB_cci_mpf/hw/sim/../rtl/cci-mpf-shims/cci_mpf_shim_buffer_afu_lockstep.sv'.
+Parsing design file '/filespace/c/chenke/intel-fpga-bbb/BBB_cci_mpf/hw/sim/../rtl/cci-mpf-shims/cci_mpf_shim_buffer_fiu.sv'
+Parsing included file '/filespace/c/chenke/intel-fpga-bbb/BBB_cci_mpf/hw/sim/../rtl/cci-mpf-if/cci_mpf_if.vh'.
+Back to file '/filespace/c/chenke/intel-fpga-bbb/BBB_cci_mpf/hw/sim/../rtl/cci-mpf-shims/cci_mpf_shim_buffer_fiu.sv'.
+Parsing design file '/filespace/c/chenke/intel-fpga-bbb/BBB_cci_mpf/hw/sim/../rtl/cci-mpf-shims/cci_mpf_shim_csr.sv'
+Parsing included file '/filespace/c/chenke/intel-fpga-bbb/BBB_cci_mpf/hw/sim/../rtl/cci-mpf-if/cci_mpf_if.vh'.
+Back to file '/filespace/c/chenke/intel-fpga-bbb/BBB_cci_mpf/hw/sim/../rtl/cci-mpf-shims/cci_mpf_shim_csr.sv'.
+Parsing included file '/filespace/c/chenke/intel-fpga-bbb/BBB_cci_mpf/hw/sim/../rtl/cci_mpf_csrs.vh'.
+Back to file '/filespace/c/chenke/intel-fpga-bbb/BBB_cci_mpf/hw/sim/../rtl/cci-mpf-shims/cci_mpf_shim_csr.sv'.
+Parsing design file '/filespace/c/chenke/intel-fpga-bbb/BBB_cci_mpf/hw/sim/../rtl/cci-mpf-shims/cci_mpf_shim_dbg_history.sv'
+Parsing included file '/filespace/c/chenke/intel-fpga-bbb/BBB_cci_mpf/hw/sim/../rtl/cci-mpf-if/cci_mpf_if.vh'.
+Back to file '/filespace/c/chenke/intel-fpga-bbb/BBB_cci_mpf/hw/sim/../rtl/cci-mpf-shims/cci_mpf_shim_dbg_history.sv'.
+Parsing included file '/filespace/c/chenke/intel-fpga-bbb/BBB_cci_mpf/hw/sim/../rtl/cci_mpf_csrs.vh'.
+Back to file '/filespace/c/chenke/intel-fpga-bbb/BBB_cci_mpf/hw/sim/../rtl/cci-mpf-shims/cci_mpf_shim_dbg_history.sv'.
+Parsing design file '/filespace/c/chenke/intel-fpga-bbb/BBB_cci_mpf/hw/sim/../rtl/cci-mpf-shims/cci_mpf_shim_dedup_reads.sv'
+Parsing included file '/filespace/c/chenke/intel-fpga-bbb/BBB_cci_mpf/hw/sim/../rtl/cci-mpf-if/cci_mpf_if.vh'.
+Back to file '/filespace/c/chenke/intel-fpga-bbb/BBB_cci_mpf/hw/sim/../rtl/cci-mpf-shims/cci_mpf_shim_dedup_reads.sv'.
+Parsing design file '/filespace/c/chenke/intel-fpga-bbb/BBB_cci_mpf/hw/sim/../rtl/cci-mpf-shims/cci_mpf_shim_detect_eop.sv'
+Parsing included file '/filespace/c/chenke/intel-fpga-bbb/BBB_cci_mpf/hw/sim/../rtl/cci-mpf-if/cci_mpf_if.vh'.
+Back to file '/filespace/c/chenke/intel-fpga-bbb/BBB_cci_mpf/hw/sim/../rtl/cci-mpf-shims/cci_mpf_shim_detect_eop.sv'.
+Parsing design file '/filespace/c/chenke/intel-fpga-bbb/BBB_cci_mpf/hw/sim/../rtl/cci-mpf-shims/cci_mpf_shim_edge/cci_mpf_shim_edge_afu.sv'
+Parsing included file '/filespace/c/chenke/intel-fpga-bbb/BBB_cci_mpf/hw/sim/../rtl/cci-mpf-if/cci_mpf_if.vh'.
+Back to file '/filespace/c/chenke/intel-fpga-bbb/BBB_cci_mpf/hw/sim/../rtl/cci-mpf-shims/cci_mpf_shim_edge/cci_mpf_shim_edge_afu.sv'.
+Parsing included file '/filespace/c/chenke/intel-fpga-bbb/BBB_cci_mpf/hw/sim/../rtl/cci-mpf-shims/cci_mpf_shim_edge/cci_mpf_shim_edge.vh'.
+Back to file '/filespace/c/chenke/intel-fpga-bbb/BBB_cci_mpf/hw/sim/../rtl/cci-mpf-shims/cci_mpf_shim_edge/cci_mpf_shim_edge_afu.sv'.
+Parsing included file '/filespace/c/chenke/intel-fpga-bbb/BBB_cci_mpf/hw/sim/../rtl/cci-mpf-shims/cci_mpf_shim_pwrite/cci_mpf_shim_pwrite.vh'.
+Back to file '/filespace/c/chenke/intel-fpga-bbb/BBB_cci_mpf/hw/sim/../rtl/cci-mpf-shims/cci_mpf_shim_edge/cci_mpf_shim_edge_afu.sv'.
+Parsing design file '/filespace/c/chenke/intel-fpga-bbb/BBB_cci_mpf/hw/sim/../rtl/cci-mpf-shims/cci_mpf_shim_edge/cci_mpf_shim_edge_fiu.sv'
+Parsing included file '/filespace/c/chenke/intel-fpga-bbb/BBB_cci_mpf/hw/sim/../rtl/cci-mpf-if/cci_mpf_if.vh'.
+Back to file '/filespace/c/chenke/intel-fpga-bbb/BBB_cci_mpf/hw/sim/../rtl/cci-mpf-shims/cci_mpf_shim_edge/cci_mpf_shim_edge_fiu.sv'.
+Parsing included file '/filespace/c/chenke/intel-fpga-bbb/BBB_cci_mpf/hw/sim/../rtl/cci-mpf-shims/cci_mpf_shim.vh'.
+
+Lint-[SV-PIU] Package import statement in $unit scope.
+/filespace/c/chenke/intel-fpga-bbb/BBB_cci_mpf/hw/sim/../rtl/cci-mpf-shims/cci_mpf_shim.vh, 8
+$unit
+  There is an import statement in $unit scope.
+  Although this is legal as per the SystemVerilog LRM, it means that package 
+  content will be shared without explicit import of the package.
+  Package: cci_mpf_shim_pkg::*
+
+Back to file '/filespace/c/chenke/intel-fpga-bbb/BBB_cci_mpf/hw/sim/../rtl/cci-mpf-shims/cci_mpf_shim_edge/cci_mpf_shim_edge_fiu.sv'.
+Parsing included file '/filespace/c/chenke/intel-fpga-bbb/BBB_cci_mpf/hw/sim/../rtl/cci-mpf-shims/cci_mpf_shim_edge/cci_mpf_shim_edge.vh'.
+Back to file '/filespace/c/chenke/intel-fpga-bbb/BBB_cci_mpf/hw/sim/../rtl/cci-mpf-shims/cci_mpf_shim_edge/cci_mpf_shim_edge_fiu.sv'.
+Parsing included file '/filespace/c/chenke/intel-fpga-bbb/BBB_cci_mpf/hw/sim/../rtl/cci-mpf-shims/cci_mpf_shim_pwrite/cci_mpf_shim_pwrite.vh'.
+Back to file '/filespace/c/chenke/intel-fpga-bbb/BBB_cci_mpf/hw/sim/../rtl/cci-mpf-shims/cci_mpf_shim_edge/cci_mpf_shim_edge_fiu.sv'.
+Parsing design file '/filespace/c/chenke/intel-fpga-bbb/BBB_cci_mpf/hw/sim/../rtl/cci-mpf-shims/cci_mpf_shim_latency_qos.sv'
+Parsing included file '/filespace/c/chenke/intel-fpga-bbb/BBB_cci_mpf/hw/sim/../rtl/cci-mpf-if/cci_mpf_if.vh'.
+Back to file '/filespace/c/chenke/intel-fpga-bbb/BBB_cci_mpf/hw/sim/../rtl/cci-mpf-shims/cci_mpf_shim_latency_qos.sv'.
+Parsing included file '/filespace/c/chenke/intel-fpga-bbb/BBB_cci_mpf/hw/sim/../rtl/cci-if/cci_csr_if.vh'.
+Back to file '/filespace/c/chenke/intel-fpga-bbb/BBB_cci_mpf/hw/sim/../rtl/cci-mpf-shims/cci_mpf_shim_latency_qos.sv'.
+Parsing design file '/filespace/c/chenke/intel-fpga-bbb/BBB_cci_mpf/hw/sim/../rtl/cci-mpf-shims/cci_mpf_shim_mux.sv'
+Parsing included file '/filespace/c/chenke/intel-fpga-bbb/BBB_cci_mpf/hw/sim/../rtl/cci-mpf-if/cci_mpf_if.vh'.
+Back to file '/filespace/c/chenke/intel-fpga-bbb/BBB_cci_mpf/hw/sim/../rtl/cci-mpf-shims/cci_mpf_shim_mux.sv'.
+Parsing design file '/filespace/c/chenke/intel-fpga-bbb/BBB_cci_mpf/hw/sim/../rtl/cci-mpf-shims/cci_mpf_shim_null.sv'
+Parsing included file '/filespace/c/chenke/intel-fpga-bbb/BBB_cci_mpf/hw/sim/../rtl/cci-mpf-if/cci_mpf_if.vh'.
+Back to file '/filespace/c/chenke/intel-fpga-bbb/BBB_cci_mpf/hw/sim/../rtl/cci-mpf-shims/cci_mpf_shim_null.sv'.
+Parsing design file '/filespace/c/chenke/intel-fpga-bbb/BBB_cci_mpf/hw/sim/../rtl/cci-mpf-shims/cci_mpf_shim_pwrite/cci_mpf_shim_pwrite.sv'
+Parsing included file '/filespace/c/chenke/intel-fpga-bbb/BBB_cci_mpf/hw/sim/../rtl/cci-mpf-if/cci_mpf_if.vh'.
+Back to file '/filespace/c/chenke/intel-fpga-bbb/BBB_cci_mpf/hw/sim/../rtl/cci-mpf-shims/cci_mpf_shim_pwrite/cci_mpf_shim_pwrite.sv'.
+Parsing included file '/filespace/c/chenke/intel-fpga-bbb/BBB_cci_mpf/hw/sim/../rtl/cci-mpf-shims/cci_mpf_shim.vh'.
+Back to file '/filespace/c/chenke/intel-fpga-bbb/BBB_cci_mpf/hw/sim/../rtl/cci-mpf-shims/cci_mpf_shim_pwrite/cci_mpf_shim_pwrite.sv'.
+Parsing included file '/filespace/c/chenke/intel-fpga-bbb/BBB_cci_mpf/hw/sim/../rtl/cci-mpf-shims/cci_mpf_shim_pwrite/cci_mpf_shim_pwrite.vh'.
+Back to file '/filespace/c/chenke/intel-fpga-bbb/BBB_cci_mpf/hw/sim/../rtl/cci-mpf-shims/cci_mpf_shim_pwrite/cci_mpf_shim_pwrite.sv'.
+Parsing design file '/filespace/c/chenke/intel-fpga-bbb/BBB_cci_mpf/hw/sim/../rtl/cci-mpf-shims/cci_mpf_shim_rsp_order.sv'
+Parsing included file '/filespace/c/chenke/intel-fpga-bbb/BBB_cci_mpf/hw/sim/../rtl/cci-mpf-if/cci_mpf_if.vh'.
+Back to file '/filespace/c/chenke/intel-fpga-bbb/BBB_cci_mpf/hw/sim/../rtl/cci-mpf-shims/cci_mpf_shim_rsp_order.sv'.
+Parsing included file '/filespace/c/chenke/intel-fpga-bbb/BBB_cci_mpf/hw/sim/../rtl/cci_mpf_csrs.vh'.
+Back to file '/filespace/c/chenke/intel-fpga-bbb/BBB_cci_mpf/hw/sim/../rtl/cci-mpf-shims/cci_mpf_shim_rsp_order.sv'.
+Parsing design file '/filespace/c/chenke/intel-fpga-bbb/BBB_cci_mpf/hw/sim/../rtl/cci-mpf-shims/cci_mpf_shim_vc_map.sv'
+Parsing included file '/filespace/c/chenke/intel-fpga-bbb/BBB_cci_mpf/hw/sim/../rtl/cci-mpf-if/cci_mpf_if.vh'.
+Back to file '/filespace/c/chenke/intel-fpga-bbb/BBB_cci_mpf/hw/sim/../rtl/cci-mpf-shims/cci_mpf_shim_vc_map.sv'.
+Parsing included file '/filespace/c/chenke/intel-fpga-bbb/BBB_cci_mpf/hw/sim/../rtl/cci_mpf_csrs.vh'.
+Back to file '/filespace/c/chenke/intel-fpga-bbb/BBB_cci_mpf/hw/sim/../rtl/cci-mpf-shims/cci_mpf_shim_vc_map.sv'.
+Parsing included file '/filespace/c/chenke/intel-fpga-bbb/BBB_cci_mpf/hw/sim/../rtl/cci-mpf-prims/cci_mpf_prim_hash.vh'.
+Back to file '/filespace/c/chenke/intel-fpga-bbb/BBB_cci_mpf/hw/sim/../rtl/cci-mpf-shims/cci_mpf_shim_vc_map.sv'.
+Parsing design file '/filespace/c/chenke/intel-fpga-bbb/BBB_cci_mpf/hw/sim/../rtl/cci-mpf-shims/cci_mpf_shim_vtp/cci_mpf_shim_vtp.sv'
+Parsing included file '/filespace/c/chenke/intel-fpga-bbb/BBB_cci_mpf/hw/sim/../rtl/cci-mpf-if/cci_mpf_if.vh'.
+Back to file '/filespace/c/chenke/intel-fpga-bbb/BBB_cci_mpf/hw/sim/../rtl/cci-mpf-shims/cci_mpf_shim_vtp/cci_mpf_shim_vtp.sv'.
+Parsing included file '/filespace/c/chenke/intel-fpga-bbb/BBB_cci_mpf/hw/sim/../rtl/cci-mpf-shims/cci_mpf_shim_vtp/cci_mpf_shim_vtp.vh'.
+Back to file '/filespace/c/chenke/intel-fpga-bbb/BBB_cci_mpf/hw/sim/../rtl/cci-mpf-shims/cci_mpf_shim_vtp/cci_mpf_shim_vtp.sv'.
+Parsing included file '/filespace/c/chenke/intel-fpga-bbb/BBB_cci_mpf/hw/sim/../rtl/cci_mpf_config.vh'.
+Back to file '/filespace/c/chenke/intel-fpga-bbb/BBB_cci_mpf/hw/sim/../rtl/cci-mpf-shims/cci_mpf_shim_vtp/cci_mpf_shim_vtp.sv'.
+
+Lint-[IWU] Implicit wire is used
+/filespace/c/chenke/intel-fpga-bbb/BBB_cci_mpf/hw/sim/../rtl/cci-mpf-shims/cci_mpf_shim_vtp/cci_mpf_shim_vtp.sv, 837
+  No type is specified for wire 'tlb_lookup_rsp_rdy'. Default wire type is 
+  being applied according to the IEEE spec.
+  See the Verilog LRM(1364-2005), section 4.5.
+
+Parsing design file '/filespace/c/chenke/intel-fpga-bbb/BBB_cci_mpf/hw/sim/../rtl/cci-mpf-shims/cci_mpf_shim_vtp/cci_mpf_svc_vtp.sv'
+Parsing included file '/filespace/c/chenke/intel-fpga-bbb/BBB_cci_mpf/hw/sim/../rtl/cci-mpf-if/cci_mpf_if.vh'.
+Back to file '/filespace/c/chenke/intel-fpga-bbb/BBB_cci_mpf/hw/sim/../rtl/cci-mpf-shims/cci_mpf_shim_vtp/cci_mpf_svc_vtp.sv'.
+Parsing included file '/filespace/c/chenke/intel-fpga-bbb/BBB_cci_mpf/hw/sim/../rtl/cci_mpf_csrs.vh'.
+Back to file '/filespace/c/chenke/intel-fpga-bbb/BBB_cci_mpf/hw/sim/../rtl/cci-mpf-shims/cci_mpf_shim_vtp/cci_mpf_svc_vtp.sv'.
+Parsing included file '/filespace/c/chenke/intel-fpga-bbb/BBB_cci_mpf/hw/sim/../rtl/cci-mpf-shims/cci_mpf_shim_vtp/cci_mpf_shim_vtp.vh'.
+Back to file '/filespace/c/chenke/intel-fpga-bbb/BBB_cci_mpf/hw/sim/../rtl/cci-mpf-shims/cci_mpf_shim_vtp/cci_mpf_svc_vtp.sv'.
+Parsing included file '/filespace/c/chenke/intel-fpga-bbb/BBB_cci_mpf/hw/sim/../rtl/cci_mpf_config.vh'.
+Back to file '/filespace/c/chenke/intel-fpga-bbb/BBB_cci_mpf/hw/sim/../rtl/cci-mpf-shims/cci_mpf_shim_vtp/cci_mpf_svc_vtp.sv'.
+Parsing design file '/filespace/c/chenke/intel-fpga-bbb/BBB_cci_mpf/hw/sim/../rtl/cci-mpf-shims/cci_mpf_shim_vtp/cci_mpf_svc_vtp_pipe.sv'
+Parsing included file '/filespace/c/chenke/intel-fpga-bbb/BBB_cci_mpf/hw/sim/../rtl/cci-mpf-if/cci_mpf_if.vh'.
+Back to file '/filespace/c/chenke/intel-fpga-bbb/BBB_cci_mpf/hw/sim/../rtl/cci-mpf-shims/cci_mpf_shim_vtp/cci_mpf_svc_vtp_pipe.sv'.
+Parsing included file '/filespace/c/chenke/intel-fpga-bbb/BBB_cci_mpf/hw/sim/../rtl/cci_mpf_csrs.vh'.
+Back to file '/filespace/c/chenke/intel-fpga-bbb/BBB_cci_mpf/hw/sim/../rtl/cci-mpf-shims/cci_mpf_shim_vtp/cci_mpf_svc_vtp_pipe.sv'.
+Parsing included file '/filespace/c/chenke/intel-fpga-bbb/BBB_cci_mpf/hw/sim/../rtl/cci-mpf-shims/cci_mpf_shim_vtp/cci_mpf_shim_vtp.vh'.
+Back to file '/filespace/c/chenke/intel-fpga-bbb/BBB_cci_mpf/hw/sim/../rtl/cci-mpf-shims/cci_mpf_shim_vtp/cci_mpf_svc_vtp_pipe.sv'.
+Parsing design file '/filespace/c/chenke/intel-fpga-bbb/BBB_cci_mpf/hw/sim/../rtl/cci-mpf-shims/cci_mpf_shim_vtp/cci_mpf_svc_vtp_pt_walk.sv'
+Parsing included file '/filespace/c/chenke/intel-fpga-bbb/BBB_cci_mpf/hw/sim/../rtl/cci-mpf-if/cci_mpf_if.vh'.
+Back to file '/filespace/c/chenke/intel-fpga-bbb/BBB_cci_mpf/hw/sim/../rtl/cci-mpf-shims/cci_mpf_shim_vtp/cci_mpf_svc_vtp_pt_walk.sv'.
+Parsing included file '/filespace/c/chenke/intel-fpga-bbb/BBB_cci_mpf/hw/sim/../rtl/cci_mpf_csrs.vh'.
+Back to file '/filespace/c/chenke/intel-fpga-bbb/BBB_cci_mpf/hw/sim/../rtl/cci-mpf-shims/cci_mpf_shim_vtp/cci_mpf_svc_vtp_pt_walk.sv'.
+Parsing included file '/filespace/c/chenke/intel-fpga-bbb/BBB_cci_mpf/hw/sim/../rtl/cci-mpf-shims/cci_mpf_shim_vtp/cci_mpf_shim_vtp.vh'.
+Back to file '/filespace/c/chenke/intel-fpga-bbb/BBB_cci_mpf/hw/sim/../rtl/cci-mpf-shims/cci_mpf_shim_vtp/cci_mpf_svc_vtp_pt_walk.sv'.
+Parsing included file '/filespace/c/chenke/intel-fpga-bbb/BBB_cci_mpf/hw/sim/../rtl/cci-mpf-prims/cci_mpf_prim_hash.vh'.
+Back to file '/filespace/c/chenke/intel-fpga-bbb/BBB_cci_mpf/hw/sim/../rtl/cci-mpf-shims/cci_mpf_shim_vtp/cci_mpf_svc_vtp_pt_walk.sv'.
+Parsing design file '/filespace/c/chenke/intel-fpga-bbb/BBB_cci_mpf/hw/sim/../rtl/cci-mpf-shims/cci_mpf_shim_vtp/cci_mpf_svc_vtp_tlb.sv'
+Parsing included file '/filespace/c/chenke/intel-fpga-bbb/BBB_cci_mpf/hw/sim/../rtl/cci-mpf-if/cci_mpf_if.vh'.
+Back to file '/filespace/c/chenke/intel-fpga-bbb/BBB_cci_mpf/hw/sim/../rtl/cci-mpf-shims/cci_mpf_shim_vtp/cci_mpf_svc_vtp_tlb.sv'.
+Parsing included file '/filespace/c/chenke/intel-fpga-bbb/BBB_cci_mpf/hw/sim/../rtl/cci_mpf_csrs.vh'.
+Back to file '/filespace/c/chenke/intel-fpga-bbb/BBB_cci_mpf/hw/sim/../rtl/cci-mpf-shims/cci_mpf_shim_vtp/cci_mpf_svc_vtp_tlb.sv'.
+Parsing included file '/filespace/c/chenke/intel-fpga-bbb/BBB_cci_mpf/hw/sim/../rtl/cci-mpf-shims/cci_mpf_shim_vtp/cci_mpf_shim_vtp.vh'.
+Back to file '/filespace/c/chenke/intel-fpga-bbb/BBB_cci_mpf/hw/sim/../rtl/cci-mpf-shims/cci_mpf_shim_vtp/cci_mpf_svc_vtp_tlb.sv'.
+Parsing design file '/filespace/c/chenke/intel-fpga-bbb/BBB_cci_mpf/hw/sim/../rtl/cci-mpf-shims/cci_mpf_shim_wro/cci_mpf_shim_wro.sv'
+Parsing included file '/filespace/c/chenke/intel-fpga-bbb/BBB_cci_mpf/hw/sim/../rtl/cci-mpf-if/cci_mpf_if.vh'.
+Back to file '/filespace/c/chenke/intel-fpga-bbb/BBB_cci_mpf/hw/sim/../rtl/cci-mpf-shims/cci_mpf_shim_wro/cci_mpf_shim_wro.sv'.
+Parsing included file '/filespace/c/chenke/intel-fpga-bbb/BBB_cci_mpf/hw/sim/../rtl/cci_mpf_config.vh'.
+Back to file '/filespace/c/chenke/intel-fpga-bbb/BBB_cci_mpf/hw/sim/../rtl/cci-mpf-shims/cci_mpf_shim_wro/cci_mpf_shim_wro.sv'.
+Parsing design file '/filespace/c/chenke/intel-fpga-bbb/BBB_cci_mpf/hw/sim/../rtl/cci-mpf-shims/cci_mpf_shim_wro/cci_mpf_shim_wro_filter_group.sv'
+Parsing included file '/filespace/c/chenke/intel-fpga-bbb/BBB_cci_mpf/hw/sim/../rtl/cci-mpf-if/cci_mpf_if.vh'.
+Back to file '/filespace/c/chenke/intel-fpga-bbb/BBB_cci_mpf/hw/sim/../rtl/cci-mpf-shims/cci_mpf_shim_wro/cci_mpf_shim_wro_filter_group.sv'.
+Parsing included file '/filespace/c/chenke/intel-fpga-bbb/BBB_cci_mpf/hw/sim/../rtl/cci-mpf-shims/cci_mpf_shim_wro/cci_mpf_shim_wro.vh'.
+Back to file '/filespace/c/chenke/intel-fpga-bbb/BBB_cci_mpf/hw/sim/../rtl/cci-mpf-shims/cci_mpf_shim_wro/cci_mpf_shim_wro_filter_group.sv'.
+Parsing included file '/filespace/c/chenke/intel-fpga-bbb/BBB_cci_mpf/hw/sim/../rtl/cci-mpf-prims/cci_mpf_prim_hash.vh'.
+Back to file '/filespace/c/chenke/intel-fpga-bbb/BBB_cci_mpf/hw/sim/../rtl/cci-mpf-shims/cci_mpf_shim_wro/cci_mpf_shim_wro_filter_group.sv'.
+Parsing design file '/filespace/c/chenke/intel-fpga-bbb/BBB_cci_mpf/hw/sim/../rtl/cci-mpf-shims/cci_mpf_shim_wro/cci_mpf_shim_wro_epoch_order.sv'
+Parsing included file '/filespace/c/chenke/intel-fpga-bbb/BBB_cci_mpf/hw/sim/../rtl/cci-mpf-if/cci_mpf_if.vh'.
+Back to file '/filespace/c/chenke/intel-fpga-bbb/BBB_cci_mpf/hw/sim/../rtl/cci-mpf-shims/cci_mpf_shim_wro/cci_mpf_shim_wro_epoch_order.sv'.
+Parsing included file '/filespace/c/chenke/intel-fpga-bbb/BBB_cci_mpf/hw/sim/../rtl/cci-mpf-shims/cci_mpf_shim_wro/cci_mpf_shim_wro.vh'.
+Back to file '/filespace/c/chenke/intel-fpga-bbb/BBB_cci_mpf/hw/sim/../rtl/cci-mpf-shims/cci_mpf_shim_wro/cci_mpf_shim_wro_epoch_order.sv'.
+Parsing included file '/filespace/c/chenke/intel-fpga-bbb/BBB_cci_mpf/hw/sim/../rtl/cci-mpf-prims/cci_mpf_prim_hash.vh'.
+Back to file '/filespace/c/chenke/intel-fpga-bbb/BBB_cci_mpf/hw/sim/../rtl/cci-mpf-shims/cci_mpf_shim_wro/cci_mpf_shim_wro_epoch_order.sv'.
+Parsing design file '/filespace/c/chenke/RGBSetMeFree/project/hw/CPU_interrupt_fsm.sv'
+Parsing design file '/filespace/c/chenke/RGBSetMeFree/project/hw/DeEx.sv'
+Parsing design file '/filespace/c/chenke/RGBSetMeFree/project/hw/ExMe.sv'
+Parsing design file '/filespace/c/chenke/RGBSetMeFree/project/hw/FPU.sv'
+Parsing design file '/filespace/c/chenke/RGBSetMeFree/project/hw/FPUBuffers.sv'
+Parsing design file '/filespace/c/chenke/RGBSetMeFree/project/hw/FPUCntrlReq_if.sv'
+Parsing design file '/filespace/c/chenke/RGBSetMeFree/project/hw/FPUConfig_if.sv'
+Parsing design file '/filespace/c/chenke/RGBSetMeFree/project/hw/FPUController.sv'
+Parsing design file '/filespace/c/chenke/RGBSetMeFree/project/hw/FPUControllerConfigurationLoader.sv'
+Parsing design file '/filespace/c/chenke/RGBSetMeFree/project/hw/FPUDRAM_if.sv'
+Parsing design file '/filespace/c/chenke/RGBSetMeFree/project/hw/FPUMAC.sv'
+Parsing design file '/filespace/c/chenke/RGBSetMeFree/project/hw/FPURequestBuffer.sv'
+Parsing design file '/filespace/c/chenke/RGBSetMeFree/project/hw/FPURequestController.sv'
+Parsing design file '/filespace/c/chenke/RGBSetMeFree/project/hw/FeDe.sv'
+Parsing design file '/filespace/c/chenke/RGBSetMeFree/project/hw/FilterMAC.sv'
+Parsing design file '/filespace/c/chenke/RGBSetMeFree/project/hw/InterruptController.sv'
+Parsing design file '/filespace/c/chenke/RGBSetMeFree/project/hw/MeWb.sv'
+Parsing design file '/filespace/c/chenke/RGBSetMeFree/project/hw/ReadBank.sv'
+Parsing design file '/filespace/c/chenke/RGBSetMeFree/project/hw/Single_RAM.sv'
+Parsing design file '/filespace/c/chenke/RGBSetMeFree/project/hw/WriteBank.sv'
+Parsing design file '/filespace/c/chenke/RGBSetMeFree/project/hw/afu.sv'
+Parsing included file '/filespace/c/chenke/opae/share/opae/platform/platform_if/sim/../rtl/platform_if.vh'.
+Back to file '/filespace/c/chenke/RGBSetMeFree/project/hw/afu.sv'.
+Parsing included file '/filespace/c/chenke/RGBSetMeFree/project/sim/rtl/./afu_json_info.vh'.
+Back to file '/filespace/c/chenke/RGBSetMeFree/project/hw/afu.sv'.
+
+Lint-[IWU] Implicit wire is used
+/filespace/c/chenke/RGBSetMeFree/project/hw/afu.sv, 89
+  No type is specified for wire 'startFPU'. Default wire type is being applied
+  according to the IEEE spec.
+  See the Verilog LRM(1364-2005), section 4.5.
+
+
+Lint-[IWU] Implicit wire is used
+/filespace/c/chenke/RGBSetMeFree/project/hw/afu.sv, 97
+  No type is specified for wire 'rst_n'. Default wire type is being applied 
+  according to the IEEE spec.
+  See the Verilog LRM(1364-2005), section 4.5.
+
+
+Lint-[IWU] Implicit wire is used
+/filespace/c/chenke/RGBSetMeFree/project/hw/afu.sv, 100
+  No type is specified for wire 'FeDataIn_host'. Default wire type is being 
+  applied according to the IEEE spec.
+  See the Verilog LRM(1364-2005), section 4.5.
+
+
+Lint-[IWU] Implicit wire is used
+/filespace/c/chenke/RGBSetMeFree/project/hw/afu.sv, 101
+  No type is specified for wire 'Fetx_done_host'. Default wire type is being 
+  applied according to the IEEE spec.
+  See the Verilog LRM(1364-2005), section 4.5.
+
+
+Lint-[IWU] Implicit wire is used
+/filespace/c/chenke/RGBSetMeFree/project/hw/afu.sv, 102
+  No type is specified for wire 'Ferd_valid_host'. Default wire type is being 
+  applied according to the IEEE spec.
+  See the Verilog LRM(1364-2005), section 4.5.
+
+
+Lint-[IWU] Implicit wire is used
+/filespace/c/chenke/RGBSetMeFree/project/hw/afu.sv, 103
+  No type is specified for wire 'FeDataOut_host'. Default wire type is being 
+  applied according to the IEEE spec.
+  See the Verilog LRM(1364-2005), section 4.5.
+
+
+Lint-[IWU] Implicit wire is used
+/filespace/c/chenke/RGBSetMeFree/project/hw/afu.sv, 104
+  No type is specified for wire 'FeAddrOut_host'. Default wire type is being 
+  applied according to the IEEE spec.
+  See the Verilog LRM(1364-2005), section 4.5.
+
+
+Lint-[IWU] Implicit wire is used
+/filespace/c/chenke/RGBSetMeFree/project/hw/afu.sv, 105
+  No type is specified for wire 'Feop_host'. Default wire type is being 
+  applied according to the IEEE spec.
+  See the Verilog LRM(1364-2005), section 4.5.
+
+
+Lint-[IWU] Implicit wire is used
+/filespace/c/chenke/RGBSetMeFree/project/hw/afu.sv, 107
+  No type is specified for wire 'MeDataIn_host'. Default wire type is being 
+  applied according to the IEEE spec.
+  See the Verilog LRM(1364-2005), section 4.5.
+
+
+Lint-[IWU] Implicit wire is used
+/filespace/c/chenke/RGBSetMeFree/project/hw/afu.sv, 108
+  No type is specified for wire 'Metx_done_host'. Default wire type is being 
+  applied according to the IEEE spec.
+  See the Verilog LRM(1364-2005), section 4.5.
+
+
+Lint-[IWU] Implicit wire is used
+/filespace/c/chenke/RGBSetMeFree/project/hw/afu.sv, 109
+  No type is specified for wire 'Merd_valid_host'. Default wire type is being 
+  applied according to the IEEE spec.
+  See the Verilog LRM(1364-2005), section 4.5.
+
+
+Lint-[IWU] Implicit wire is used
+/filespace/c/chenke/RGBSetMeFree/project/hw/afu.sv, 110
+  No type is specified for wire 'MeDataOut_host'. Default wire type is being 
+  applied according to the IEEE spec.
+  See the Verilog LRM(1364-2005), section 4.5.
+
+
+Lint-[IWU] Implicit wire is used
+/filespace/c/chenke/RGBSetMeFree/project/hw/afu.sv, 111
+  No type is specified for wire 'MeAddrOut_host'. Default wire type is being 
+  applied according to the IEEE spec.
+  See the Verilog LRM(1364-2005), section 4.5.
+
+
+Lint-[IWU] Implicit wire is used
+/filespace/c/chenke/RGBSetMeFree/project/hw/afu.sv, 112
+  No type is specified for wire 'Meop_host'. Default wire type is being 
+  applied according to the IEEE spec.
+  See the Verilog LRM(1364-2005), section 4.5.
+
+Parsing design file '/filespace/c/chenke/RGBSetMeFree/project/hw/alu.sv'
+Parsing design file '/filespace/c/chenke/RGBSetMeFree/project/hw/branch_jump.sv'
+Parsing design file '/filespace/c/chenke/RGBSetMeFree/project/hw/ccip_interface_reg.sv'
+
+Lint-[SV-PIU] Package import statement in $unit scope.
+/filespace/c/chenke/RGBSetMeFree/project/hw/ccip_interface_reg.sv, 37
+$unit
+  There is an import statement in $unit scope.
+  Although this is legal as per the SystemVerilog LRM, it means that package 
+  content will be shared without explicit import of the package.
+  Package: ccip_if_pkg::*
+
+
+Note-[SV-LCM-PPWI] Package previously wildcard imported
+/filespace/c/chenke/RGBSetMeFree/project/hw/ccip_interface_reg.sv, 37
+$unit
+  Package 'ccip_if_pkg' already wildcard imported. 
+  Ignoring ccip_if_pkg::*
+  See the SystemVerilog LRM(1800-2005), section 19.2.1.
+
+Parsing design file '/filespace/c/chenke/RGBSetMeFree/project/hw/ccip_std_afu.sv'
+Parsing included file '/filespace/c/chenke/opae/share/opae/platform/platform_if/sim/../rtl/platform_if.vh'.
+Back to file '/filespace/c/chenke/RGBSetMeFree/project/hw/ccip_std_afu.sv'.
+Parsing design file '/filespace/c/chenke/RGBSetMeFree/project/hw/cpu.sv'
+Parsing design file '/filespace/c/chenke/RGBSetMeFree/project/hw/decode.sv'
+
+Lint-[IWU] Implicit wire is used
+/filespace/c/chenke/RGBSetMeFree/project/hw/decode.sv, 112
+  No type is specified for wire 'legal_en'. Default wire type is being applied
+  according to the IEEE spec.
+  See the Verilog LRM(1364-2005), section 4.5.
+
+Parsing design file '/filespace/c/chenke/RGBSetMeFree/project/hw/dff.sv'
+Parsing design file '/filespace/c/chenke/RGBSetMeFree/project/hw/execute.sv'
+Parsing design file '/filespace/c/chenke/RGBSetMeFree/project/hw/fetch.sv'
+Parsing design file '/filespace/c/chenke/RGBSetMeFree/project/hw/forwarding.sv'
+Parsing design file '/filespace/c/chenke/RGBSetMeFree/project/hw/memory.sv'
+Parsing design file '/filespace/c/chenke/RGBSetMeFree/project/hw/mux3_1.sv'
+Parsing design file '/filespace/c/chenke/RGBSetMeFree/project/hw/regFile.sv'
+Parsing design file '/filespace/c/chenke/RGBSetMeFree/project/hw/regFile_bypass.sv'
+Parsing design file '/filespace/c/chenke/RGBSetMeFree/project/hw/writeback.sv'
+Parsing design file '/filespace/c/chenke/RGBSetMeFree/project/hw/memory/cache_if.sv'
+Parsing design file '/filespace/c/chenke/RGBSetMeFree/project/hw/memory/cpu_cache_ctrl.sv'
+Parsing design file '/filespace/c/chenke/RGBSetMeFree/project/hw/memory/cpu_cache.sv'
+
+Lint-[IWU] Implicit wire is used
+/filespace/c/chenke/RGBSetMeFree/project/hw/memory/cpu_cache.sv, 44
+  No type is specified for wire 'go'. Default wire type is being applied 
+  according to the IEEE spec.
+  See the Verilog LRM(1364-2005), section 4.5.
+
+
+Lint-[IWU] Implicit wire is used
+/filespace/c/chenke/RGBSetMeFree/project/hw/memory/cpu_cache.sv, 45
+  No type is specified for wire 'match'. Default wire type is being applied 
+  according to the IEEE spec.
+  See the Verilog LRM(1364-2005), section 4.5.
+
+
+Lint-[IWU] Implicit wire is used
+/filespace/c/chenke/RGBSetMeFree/project/hw/memory/cpu_cache.sv, 48
+  No type is specified for wire 'wr_word0'. Default wire type is being applied
+  according to the IEEE spec.
+  See the Verilog LRM(1364-2005), section 4.5.
+
+
+Lint-[IWU] Implicit wire is used
+/filespace/c/chenke/RGBSetMeFree/project/hw/memory/cpu_cache.sv, 49
+  No type is specified for wire 'wr_word1'. Default wire type is being applied
+  according to the IEEE spec.
+  See the Verilog LRM(1364-2005), section 4.5.
+
+
+Lint-[IWU] Implicit wire is used
+/filespace/c/chenke/RGBSetMeFree/project/hw/memory/cpu_cache.sv, 50
+  No type is specified for wire 'wr_word2'. Default wire type is being applied
+  according to the IEEE spec.
+  See the Verilog LRM(1364-2005), section 4.5.
+
+
+Lint-[IWU] Implicit wire is used
+/filespace/c/chenke/RGBSetMeFree/project/hw/memory/cpu_cache.sv, 51
+  No type is specified for wire 'wr_word3'. Default wire type is being applied
+  according to the IEEE spec.
+  See the Verilog LRM(1364-2005), section 4.5.
+
+
+Lint-[IWU] Implicit wire is used
+/filespace/c/chenke/RGBSetMeFree/project/hw/memory/cpu_cache.sv, 53
+  No type is specified for wire 'wr_word4'. Default wire type is being applied
+  according to the IEEE spec.
+  See the Verilog LRM(1364-2005), section 4.5.
+
+
+Lint-[IWU] Implicit wire is used
+/filespace/c/chenke/RGBSetMeFree/project/hw/memory/cpu_cache.sv, 54
+  No type is specified for wire 'wr_word5'. Default wire type is being applied
+  according to the IEEE spec.
+  See the Verilog LRM(1364-2005), section 4.5.
+
+
+Lint-[IWU] Implicit wire is used
+/filespace/c/chenke/RGBSetMeFree/project/hw/memory/cpu_cache.sv, 55
+  No type is specified for wire 'wr_word6'. Default wire type is being applied
+  according to the IEEE spec.
+  See the Verilog LRM(1364-2005), section 4.5.
+
+
+Lint-[IWU] Implicit wire is used
+/filespace/c/chenke/RGBSetMeFree/project/hw/memory/cpu_cache.sv, 56
+  No type is specified for wire 'wr_word7'. Default wire type is being applied
+  according to the IEEE spec.
+  See the Verilog LRM(1364-2005), section 4.5.
+
+
+Lint-[IWU] Implicit wire is used
+/filespace/c/chenke/RGBSetMeFree/project/hw/memory/cpu_cache.sv, 58
+  No type is specified for wire 'wr_word8'. Default wire type is being applied
+  according to the IEEE spec.
+  See the Verilog LRM(1364-2005), section 4.5.
+
+
+Lint-[IWU] Implicit wire is used
+/filespace/c/chenke/RGBSetMeFree/project/hw/memory/cpu_cache.sv, 59
+  No type is specified for wire 'wr_word9'. Default wire type is being applied
+  according to the IEEE spec.
+  See the Verilog LRM(1364-2005), section 4.5.
+
+
+Lint-[IWU] Implicit wire is used
+/filespace/c/chenke/RGBSetMeFree/project/hw/memory/cpu_cache.sv, 60
+  No type is specified for wire 'wr_word10'. Default wire type is being 
+  applied according to the IEEE spec.
+  See the Verilog LRM(1364-2005), section 4.5.
+
+
+Lint-[IWU] Implicit wire is used
+/filespace/c/chenke/RGBSetMeFree/project/hw/memory/cpu_cache.sv, 61
+  No type is specified for wire 'wr_word11'. Default wire type is being 
+  applied according to the IEEE spec.
+  See the Verilog LRM(1364-2005), section 4.5.
+
+
+Lint-[IWU] Implicit wire is used
+/filespace/c/chenke/RGBSetMeFree/project/hw/memory/cpu_cache.sv, 63
+  No type is specified for wire 'wr_word12'. Default wire type is being 
+  applied according to the IEEE spec.
+  See the Verilog LRM(1364-2005), section 4.5.
+
+
+Lint-[IWU] Implicit wire is used
+/filespace/c/chenke/RGBSetMeFree/project/hw/memory/cpu_cache.sv, 64
+  No type is specified for wire 'wr_word13'. Default wire type is being 
+  applied according to the IEEE spec.
+  See the Verilog LRM(1364-2005), section 4.5.
+
+
+Lint-[IWU] Implicit wire is used
+/filespace/c/chenke/RGBSetMeFree/project/hw/memory/cpu_cache.sv, 65
+  No type is specified for wire 'wr_word14'. Default wire type is being 
+  applied according to the IEEE spec.
+  See the Verilog LRM(1364-2005), section 4.5.
+
+
+Lint-[IWU] Implicit wire is used
+/filespace/c/chenke/RGBSetMeFree/project/hw/memory/cpu_cache.sv, 66
+  No type is specified for wire 'wr_word15'. Default wire type is being 
+  applied according to the IEEE spec.
+  See the Verilog LRM(1364-2005), section 4.5.
+
+
+Lint-[IWU] Implicit wire is used
+/filespace/c/chenke/RGBSetMeFree/project/hw/memory/cpu_cache.sv, 69
+  No type is specified for wire 'wr_dirty'. Default wire type is being applied
+  according to the IEEE spec.
+  See the Verilog LRM(1364-2005), section 4.5.
+
+
+Lint-[IWU] Implicit wire is used
+/filespace/c/chenke/RGBSetMeFree/project/hw/memory/cpu_cache.sv, 70
+  No type is specified for wire 'wr_tag'. Default wire type is being applied 
+  according to the IEEE spec.
+  See the Verilog LRM(1364-2005), section 4.5.
+
+
+Lint-[IWU] Implicit wire is used
+/filespace/c/chenke/RGBSetMeFree/project/hw/memory/cpu_cache.sv, 71
+  No type is specified for wire 'wr_valid'. Default wire type is being applied
+  according to the IEEE spec.
+  See the Verilog LRM(1364-2005), section 4.5.
+
+
+Lint-[IWU] Implicit wire is used
+/filespace/c/chenke/RGBSetMeFree/project/hw/memory/cpu_cache.sv, 72
+  No type is specified for wire 'dirty_in'. Default wire type is being applied
+  according to the IEEE spec.
+  See the Verilog LRM(1364-2005), section 4.5.
+
+
+Lint-[IWU] Implicit wire is used
+/filespace/c/chenke/RGBSetMeFree/project/hw/memory/cpu_cache.sv, 96
+  No type is specified for wire 'dirtybit'. Default wire type is being applied
+  according to the IEEE spec.
+  See the Verilog LRM(1364-2005), section 4.5.
+
+
+Lint-[IWU] Implicit wire is used
+/filespace/c/chenke/RGBSetMeFree/project/hw/memory/cpu_cache.sv, 97
+  No type is specified for wire 'validbit'. Default wire type is being applied
+  according to the IEEE spec.
+  See the Verilog LRM(1364-2005), section 4.5.
+
+Parsing design file '/filespace/c/chenke/RGBSetMeFree/project/hw/memory/fpu_cache.sv'
+
+Lint-[IWU] Implicit wire is used
+/filespace/c/chenke/RGBSetMeFree/project/hw/memory/fpu_cache.sv, 25
+  No type is specified for wire 'go'. Default wire type is being applied 
+  according to the IEEE spec.
+  See the Verilog LRM(1364-2005), section 4.5.
+
+
+Lint-[IWU] Implicit wire is used
+/filespace/c/chenke/RGBSetMeFree/project/hw/memory/fpu_cache.sv, 26
+  No type is specified for wire 'match'. Default wire type is being applied 
+  according to the IEEE spec.
+  See the Verilog LRM(1364-2005), section 4.5.
+
+
+Lint-[IWU] Implicit wire is used
+/filespace/c/chenke/RGBSetMeFree/project/hw/memory/fpu_cache.sv, 28
+  No type is specified for wire 'wr_word0'. Default wire type is being applied
+  according to the IEEE spec.
+  See the Verilog LRM(1364-2005), section 4.5.
+
+
+Lint-[IWU] Implicit wire is used
+/filespace/c/chenke/RGBSetMeFree/project/hw/memory/fpu_cache.sv, 29
+  No type is specified for wire 'wr_word1'. Default wire type is being applied
+  according to the IEEE spec.
+  See the Verilog LRM(1364-2005), section 4.5.
+
+
+Lint-[IWU] Implicit wire is used
+/filespace/c/chenke/RGBSetMeFree/project/hw/memory/fpu_cache.sv, 30
+  No type is specified for wire 'wr_word2'. Default wire type is being applied
+  according to the IEEE spec.
+  See the Verilog LRM(1364-2005), section 4.5.
+
+
+Lint-[IWU] Implicit wire is used
+/filespace/c/chenke/RGBSetMeFree/project/hw/memory/fpu_cache.sv, 31
+  No type is specified for wire 'wr_word3'. Default wire type is being applied
+  according to the IEEE spec.
+  See the Verilog LRM(1364-2005), section 4.5.
+
+
+Lint-[IWU] Implicit wire is used
+/filespace/c/chenke/RGBSetMeFree/project/hw/memory/fpu_cache.sv, 33
+  No type is specified for wire 'wr_dirty'. Default wire type is being applied
+  according to the IEEE spec.
+  See the Verilog LRM(1364-2005), section 4.5.
+
+
+Lint-[IWU] Implicit wire is used
+/filespace/c/chenke/RGBSetMeFree/project/hw/memory/fpu_cache.sv, 34
+  No type is specified for wire 'wr_tag'. Default wire type is being applied 
+  according to the IEEE spec.
+  See the Verilog LRM(1364-2005), section 4.5.
+
+
+Lint-[IWU] Implicit wire is used
+/filespace/c/chenke/RGBSetMeFree/project/hw/memory/fpu_cache.sv, 35
+  No type is specified for wire 'wr_valid'. Default wire type is being applied
+  according to the IEEE spec.
+  See the Verilog LRM(1364-2005), section 4.5.
+
+
+Lint-[IWU] Implicit wire is used
+/filespace/c/chenke/RGBSetMeFree/project/hw/memory/fpu_cache.sv, 36
+  No type is specified for wire 'dirty_in'. Default wire type is being applied
+  according to the IEEE spec.
+  See the Verilog LRM(1364-2005), section 4.5.
+
+
+Lint-[IWU] Implicit wire is used
+/filespace/c/chenke/RGBSetMeFree/project/hw/memory/fpu_cache.sv, 45
+  No type is specified for wire 'dirtybit'. Default wire type is being applied
+  according to the IEEE spec.
+  See the Verilog LRM(1364-2005), section 4.5.
+
+
+Lint-[IWU] Implicit wire is used
+/filespace/c/chenke/RGBSetMeFree/project/hw/memory/fpu_cache.sv, 46
+  No type is specified for wire 'validbit'. Default wire type is being applied
+  according to the IEEE spec.
+  See the Verilog LRM(1364-2005), section 4.5.
+
+Parsing design file '/filespace/c/chenke/RGBSetMeFree/project/hw/memory/fpu_dma_ctrl.sv'
+Parsing design file '/filespace/c/chenke/RGBSetMeFree/project/hw/memory/fpu_mmio_ctrl.sv'
+Parsing design file '/filespace/c/chenke/RGBSetMeFree/project/hw/memory/mem_arbiter.sv'
+Parsing design file '/filespace/c/chenke/RGBSetMeFree/project/hw/memory/mem_ctrl.sv'
+Parsing design file '/filespace/c/chenke/RGBSetMeFree/project/hw/memory/mem_system.sv'
+
+Lint-[IWU] Implicit wire is used
+/filespace/c/chenke/RGBSetMeFree/project/hw/memory/mem_system.sv, 80
+  No type is specified for wire 'cache_en'. Default wire type is being applied
+  according to the IEEE spec.
+  See the Verilog LRM(1364-2005), section 4.5.
+
+Parsing design file '/filespace/c/chenke/RGBSetMeFree/project/hw/memory/ram_block.sv'
+CPU time: .640 seconds to compile
