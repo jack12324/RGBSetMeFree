@@ -12,7 +12,8 @@ module fake_mem_system
 	input [31 : 0] addr, 
 	input [31 : 0] data_in, 
 	output logic [31:0] data_out,
-	output logic data_valid
+	output logic stall,
+	output logic done //unused
 	);
 
 	reg [31:0] test_memory [0:4095]; 
@@ -24,11 +25,11 @@ module fake_mem_system
 	always_ff @(posedge clk) begin
 		if(wr) begin
 			test_memory[ram_addr] <= data_in;
-			data_valid = 1'b0;
+			stall = 1'b0;
 		end
 		else begin
 			data_out <= test_memory[ram_addr];
-			data_valid = 1'b1;
+			stall = 1'b1;
 		end
 	end
 

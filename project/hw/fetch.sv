@@ -108,24 +108,15 @@ module fetch (clk, rst_n,
 		.CacheHit()
 	);
 	*/
-  	fake_mem_system #(.FILENAME("project/test_images/memory.h")) dataMem(
+  	fake_mem_system #(.FILENAME("project/test_images/fetch.h")) dataMem(
     	.clk(clk), .rst_n(rst_n), 
-    	.addr(ExMe_out_alu_out),
-    	.data_in(ExMe_out_reg_2),
-    	.wr(ExMe_out_mem_wrt),
-    	.en(ExMe_out_mem_en),
-    	.done(done),
-    	.data_out(mem_data),
-	// Wires to mem_ctrl
-	.DataIn_host(DataIn_host),
-	.tx_done_host(tx_done_host),
-	.rd_valid_host(rd_valid_host),
-	.DataOut_host(DataOut_host),
-	.AddrOut_host(AddrOut_host),
-	.op_host(op_host),
-	// extras unused
-	.data_valid(),
-	.CacheHit()
+    	.addr(PC),
+    	.data_in(),
+    	.wr(1'b0),
+    	.en(1'b1),
+	.stall(stall),
+    	.done(Done),
+    	.data_out(instr_mem)
     	);
 
 	// Assign the instruction to be executed 

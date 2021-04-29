@@ -73,17 +73,8 @@ module memory(
     .wr(ExMe_out_mem_wrt),
     .en(ExMe_out_mem_en),
     .done(done),
-    .data_out(mem_data),
-	// Wires to mem_ctrl
-	.DataIn_host(DataIn_host),
-	.tx_done_host(tx_done_host),
-	.rd_valid_host(rd_valid_host),
-	.DataOut_host(DataOut_host),
-	.AddrOut_host(AddrOut_host),
-	.op_host(op_host),
-	// extras unused
-	.data_valid(),
-	.CacheHit()
+    .stall(),//none ig
+    .data_out(mem_data)
     );
 	
    // output logic done, different from data_valid?

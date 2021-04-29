@@ -13,7 +13,9 @@ module cpu(
 	Merd_valid_host,
 	MeDataOut_host,
 	MeAddrOut_host,
-	Meop_host
+	Meop_host,
+	//jumpstart
+	startFPU
 	);
 
     input clk;  // System clock 
@@ -40,6 +42,8 @@ module cpu(
 	output logic [31:0] MeAddrOut_host;
 	output logic [1:0] Meop_host;
 	
+	//jumpstartFPU
+	output logic startFPU;
 
     /////////////////////////////////////////////////////////////////////////////
     ///////////////////////// Interrupts FSM Signals ////////////////////////////
@@ -49,7 +53,7 @@ module cpu(
     //input rst_n,
     //input INT,
     //input [31:0] INT_INSTR,
-    // logic [31:0] cpu_instr; --> FeDe_in_instr
+    // logic [31:0] cpu_intr; --> FeDe_in_instr
 
     logic [31:0] current_PC; // the PC that is currently 
                                 // stored in the Fetch stage 
@@ -714,7 +718,8 @@ module cpu(
 	.rd_valid_host(Merd_valid_host),
 	.DataOut_host(MeDataOut_host),
 	.AddrOut_host(MeAddrOut_host),
-	.op_host(Meop_host)
+	.op_host(Meop_host),
+	.startFPU(startFPU)
     );
     /////////////////////////////////////////////////////////////////////////////
 
