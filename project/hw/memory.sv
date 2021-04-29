@@ -26,7 +26,7 @@ module memory(
 
   // Control
   input ExMe_out_mem_wrt;
-  input ExMe_out_mem_en;
+  input ExMe_out_mem_en; // unused LOL
 
   output [31:0] mem_data;
   output done;
@@ -47,7 +47,6 @@ module memory(
     .addr(ExMe_out_alu_out),
     .data_in(ExMe_out_reg_2),
     .wr(ExMe_out_mem_wrt),
-    .en(ExMe_out_mem_en),
     .done(done),
     .data_out(mem_data),
 	// Wires to mem_ctrl
@@ -56,7 +55,10 @@ module memory(
 	.rd_valid_host(rd_valid_host),
 	.DataOut_host(DataOut_host),
 	.AddrOut_host(AddrOut_host),
-	.op_host(op_host)
+	.op_host(op_host),
+	// extras unused
+	.data_valid(),
+	.CacheHit()
     );
    // output logic done, different from data_valid?
 

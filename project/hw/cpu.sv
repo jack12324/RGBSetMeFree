@@ -1,6 +1,5 @@
 module cpu(
 	clk, rst_n, 
-	tx_done, rd_valid, op, data_in, data_out, // todo need?
 	INT, INT_INSTR, ACK,
 	// Wires to mem_ctrl
 	FeDataIn_host,
@@ -19,13 +18,6 @@ module cpu(
 
     input clk;  // System clock 
     input rst_n; // Active low reset for the system
-
-    // HAL memory signals, todo need?
-    input tx_done;
-    input rd_valid;
-    input [1:0] op;
-    input [31:0] data_in;
-    output [31:0] data_out;
 	
     // Interrupt Signals 
     input INT;
@@ -189,8 +181,8 @@ module cpu(
         //logic DeEx_out_mem_en;
         //logic [1:0] DeEx_out_result_sel;
         //logic [31:0] DeEx_out_PC_next;
-        //logic [31:0] DeEx_out_reg_1;
-        //logic [31:0] DeEx_out_reg_2;
+        //logic [31:0] DeEx_out_reg_1_data; // note _data
+        //logic [31:0] DeEx_out_reg_2_data; // note _data
         //logic [1:0] DeEx_out_ALU_src;
         //logic [31:0] DeEx_out_imm;
         //logic [1:0] DeEx_out_FL;
@@ -250,6 +242,9 @@ module cpu(
     // Data signals 
     	//logic [31:0] ExMe_out_PC_next;
     	logic [31:0] ExMe_out_alu_out;
+        logic ExMe_out_Branch;
+	    logic ExMe_out_Jump;
+        logic [4:0] ExMe_out_ALU_OP;
     	logic [31:0] ExMe_out_reg_2;
     	logic [31:0] ExMe_out_LR;
     	logic [1:0] ExMe_out_FL;
@@ -461,7 +456,7 @@ module cpu(
         .FL_write(DeEx_in_FL_write),
         // control for Execute
         .ALU_src(DeEx_in_ALU_src), //[1:0]
-        .ALU_OP(DeEx_ALU_OP), //[4:0]
+        .ALU_OP(DeEx_in_ALU_OP), //[4:0]
         .Branch(DeEx_in_Branch), 
         .Jump(DeEx_in_Jump),
         // control for Memory
@@ -567,8 +562,8 @@ module cpu(
         .DeEx_out_mem_en(DeEx_out_mem_en),
         .DeEx_out_result_sel(DeEx_out_result_sel),
         .DeEx_out_PC_next(DeEx_out_PC_next),    
-        .DeEx_out_reg_1(DeEx_out_reg_1),
-        .DeEx_out_reg_2(DeEx_out_reg_2),
+        .DeEx_out_reg_1(DeEx_out_reg_1_data),
+        .DeEx_out_reg_2(DeEx_out_reg_2_data),
         .DeEx_out_ALU_src(DeEx_out_ALU_src),    
         .DeEx_out_imm(DeEx_out_imm),
         .DeEx_out_FL(DeEx_out_FL),
@@ -647,6 +642,10 @@ module cpu(
         // Inputs to the pipeline registers 
     	// Data signals 
 	.ExMe_in_PC_next(ExMe_in_PC_next),
+    .DeEx_out_Branch(DeEx_out_Branch), 
+	.DeEx_out_Jump(DeEx_out_Jump), 
+    .DeEx_out_ALU_OP(DeEx_out_ALU_OP), 
+
 	.ExMe_in_alu_out(ExMe_in_alu_out),
 	.DeEx_out_reg_2(DeEx_out_reg_2),
 	.ExMe_in_LR(ExMe_in_LR),
@@ -667,6 +666,10 @@ module cpu(
     	// Ouputs to the next pipeline stage 
     	// Data signals 
 	.ExMe_out_PC_next(ExMe_out_PC_next),
+    .ExMe_out_Branch(ExMe_out_Branch),
+    .ExMe_out_Jump(ExMe_out_Jump),
+    .ExMe_out_ALU_OP(ExMe_out_ALU_OP),
+
 	.ExMe_out_alu_out(ExMe_out_alu_out),
 	.ExMe_out_reg_2(ExMe_out_reg_2),
 	.ExMe_out_LR(ExMe_out_LR),

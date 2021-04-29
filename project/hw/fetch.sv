@@ -92,7 +92,6 @@ module fetch (clk, rst_n,
 		.addr(PC), 
 		.data_in(), 
 		.wr(1'b0), 
-		.en(1'b1), 
 		.done(Done), 
 		.data_out(instr_mem),
 		//Wires to mem_ctrl
@@ -101,7 +100,10 @@ module fetch (clk, rst_n,
 		.rd_valid_host(rd_valid_host),
 		.DataOut_host(DataOut_host),
 		.AddrOut_host(AddrOut_host),
-		.op_host(op_host)
+		.op_host(op_host),
+		// extras unused
+		.data_valid(),
+		.CacheHit()
 	);
 
 

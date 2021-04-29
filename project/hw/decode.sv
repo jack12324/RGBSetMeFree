@@ -107,7 +107,7 @@ module decode (
 
 
 	// read/write registers
-	regFile_bypass registers(.clk(clk), .rst(rst_n), .read1Data(reg_1_data), .read2Data(reg_2_data), 
+	regFile_bypass registers(.clk(clk), .rst_n(rst_n), .read1Data(reg_1_data), .read2Data(reg_2_data), 
 				.read1RegSel(instr[21:17]), .read2RegSel(instr[16:12]), 
 				.reg_wrt_sel(reg_wrt_sel), .reg_wrt_data(reg_wrt_data), .reg_wrt_en(legal_en));
 	// R0, LR, and FL (register 0, 30, 31) cannot be written to (NOP trying to)

@@ -3,6 +3,10 @@ module ExMe(
     // Inputs to the pipeline registers 
     // Data signals 
     input logic [31:0] ExMe_in_PC_next,
+    input logic DeEx_out_Branch, // for flush
+	input logic DeEx_out_Jump, // for flush
+    input logic [4:0] DeEx_out_ALU_OP, // for flush
+
     input logic [31:0] ExMe_in_alu_out,
     input logic [31:0] DeEx_out_reg_2,
     input logic [31:0] ExMe_in_LR,
@@ -23,6 +27,11 @@ module ExMe(
     // Ouputs to the next pipeline stage 
     // Data signals 
     output logic [31:0] ExMe_out_PC_next,
+    output logic ExMe_out_Branch, // for flush
+	output logic ExMe_out_Jump, // for flush
+    output logic [4:0] ExMe_out_ALU_OP, // for flush
+    
+
     output logic [31:0] ExMe_out_alu_out,
     output logic [31:0] ExMe_out_reg_2,
     output logic [31:0] ExMe_out_LR,
@@ -43,6 +52,10 @@ module ExMe(
 );
 
     dff  #(.WIDTH(32)) PC_next_ff (.clk(clk), .rst_n(rst_n), .d(ExMe_in_PC_next), .q(ExMe_out_PC_next));
+    dff  #(.WIDTH(1)) Branch_ff (.clk(clk), .rst_n(rst_n), .d(DeEx_out_Branch), .q(ExMe_out_Branch));
+    dff  #(.WIDTH(1)) Jump_ff (.clk(clk), .rst_n(rst_n), .d(DeEx_out_Jump), .q(ExMe_out_Jump));
+    dff  #(.WIDTH(1)) ALU_OP_ff (.clk(clk), .rst_n(rst_n), .d(DeEx_out_ALU_OP), .q(ExMe_out_ALU_OP));
+
     dff  #(.WIDTH(32)) alu_out_ff (.clk(clk), .rst_n(rst_n), .d(ExMe_in_alu_out), .q(ExMe_out_alu_out));
     dff  #(.WIDTH(32)) reg_2_ff (.clk(clk), .rst_n(rst_n), .d(DeEx_out_reg_2), .q(ExMe_out_reg_2));
     dff  #(.WIDTH(32)) LR_ff (.clk(clk), .rst_n(rst_n), .d(ExMe_in_LR), .q(ExMe_out_LR));
