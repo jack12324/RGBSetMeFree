@@ -86,17 +86,23 @@ module afu
 
    FPU #(.COL_WIDTH(10), .MEM_BUFFER_WIDTH(512), .CL_WIDTH(64)) iFPU(.clk(clk), .rst_n(!rst), .done(done_fpu), .mapped_data_valid(mapped_data_valid), .mapped_data_request(mapped_data_request), .mapped_data(mapped_data), .mapped_address(mapped_address), .dram_if(dram_if.FPU));
    
-   CPU iCPU(.clk(clk), .rst_n(~rst), 
-    // HAL memory signals
-    .tx_done(tx_done),
-    .rd_valid(rd_valid),
-    .op(op),
-    .data_in(data_in),
-    .data_out(data_out),
-    // Interrupt Signals 
-    .INT(INT),
-    .INT_INSTR(INT_INSTR),
-    .ACK(ACK)
+   CPU iCPU(
+	.clk(clk), .rst_n(rst_n),
+	.INT(INT), .INT_INSTR(INT_INSTR), .ACK(ACK), // todo where from?
+	// inst memory
+	.FeDataIn_host(FeDataIn_host),
+	.Fetx_done_host(Fetx_done_host),
+	.Ferd_valid_host(Ferd_valid_host),
+	.FeDataOut_host(FeDataOut_host),
+	.FeAddrOut_host(FeAddrOut_host),
+	.Feop_host(Feop_host),
+	// data memory
+	.MeDataIn_host(MeDataIn_host),
+	.Metx_done_host(Metx_done_host),
+	.Merd_valid_host(Merd_valid_host),
+	.MeDataOut_host(MeDataOut_host),
+	.MeAddrOut_host(MeAddrOut_host),
+	.Meop_host(Meop_host)
 	);
 
                                                         // Highest Priority                                                      // no masking used

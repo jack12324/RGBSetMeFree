@@ -1,6 +1,5 @@
 module cpu(
 	clk, rst_n, 
-	tx_done, rd_valid, op, data_in, data_out, // todo need?
 	INT, INT_INSTR, ACK,
 	// Wires to mem_ctrl
 	FeDataIn_host,
@@ -19,13 +18,6 @@ module cpu(
 
     input clk;  // System clock 
     input rst_n; // Active low reset for the system
-
-    // HAL memory signals, todo need?
-    input tx_done;
-    input rd_valid;
-    input [1:0] op;
-    input [31:0] data_in;
-    output [31:0] data_out;
 	
     // Interrupt Signals 
     input INT;
