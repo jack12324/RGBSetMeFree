@@ -26,7 +26,7 @@ module memory(
 
   // Control
   input ExMe_out_mem_wrt;
-  input ExMe_out_mem_en; // unused LOL
+  input ExMe_out_mem_en; 
 
   output [31:0] mem_data;
   output done;
@@ -47,6 +47,7 @@ module memory(
     .addr(ExMe_out_alu_out),
     .data_in(ExMe_out_reg_2),
     .wr(ExMe_out_mem_wrt),
+    .en(ExMe_out_mem_en),
     .done(done),
     .data_out(mem_data),
 	// Wires to mem_ctrl
