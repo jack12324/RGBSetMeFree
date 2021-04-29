@@ -173,8 +173,9 @@ module mem_system_tb ();
                        n_replies, Addr, DataIn);
            end
            $display("ERROR! Request dropped");
-           test_success = 1'b0;               
-           n_replies = n_requests;	       
+        //    $stop();
+        //    test_success = 1'b0;               
+        //    n_replies = n_requests;	       
         end            
      end
     endtask
@@ -185,7 +186,8 @@ module mem_system_tb ();
             if (!rst && (!Stall)) begin
                check_dropped_request;
                generate_dma;
-               reg_readorwrite = $random % 2;
+               // reg_readorwrite = $random % 2;
+               reg_readorwrite = 1;
                if (reg_readorwrite) begin
                   Wr = $random % 2;
                   index = (index < 8)?(index + 1):0;
@@ -211,7 +213,8 @@ module mem_system_tb ();
         if (!rst && (!Stall)) begin
             check_dropped_request;
             generate_dma;
-            reg_readorwrite = $random % 2;
+            // reg_readorwrite = $random % 2;
+            reg_readorwrite = 1;
             if (reg_readorwrite) begin
                 Wr = $random % 2;
                 Addr = ($random % 32'hffff) & 16'hFFFC;
@@ -235,7 +238,8 @@ module mem_system_tb ();
         if (!rst && (!Stall)) begin
             check_dropped_request;     
             generate_dma;       
-            reg_readorwrite = $random % 2;
+            // reg_readorwrite = $random % 2;
+            reg_readorwrite = 1;
             if (reg_readorwrite) begin
                 Wr = $random % 2;
                 Addr = (($random % 32'hffff) & 16'h07FC) | 16'h6000;
