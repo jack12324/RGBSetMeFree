@@ -49,7 +49,7 @@ always_comb begin
             dram_if.read_data = '0;
             next = dram_if.request ? ACTIVE : START;    //Start sending requests to arbiter when FPU demands
         end 
-        ACTIVE  : begin //TODO update address with Req Counter
+        ACTIVE  : begin 
             //FPU Buffer
             //Don't start writing till FPU ready on write
             op = (dram_if.rd_wr) ? ((dram_if.fpu_ready) ? 2'b11 : 2'b00): (dram_if.fpu_ready) ? 2'b01 : 2'b00;
