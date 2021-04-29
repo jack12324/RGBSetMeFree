@@ -49,16 +49,16 @@ always_comb begin
             dram_if.read_data = '0;
             next = dram_if.request ? ACTIVE : START;    //Start sending requests to arbiter when FPU demands
         end 
-        ACTIVE  : begin
+        ACTIVE  : begin //TODO update address with Req Counter
             //FPU Buffer
             //Don't start writing till FPU ready on write
-            op = (dram_if.rd_wr) ? ((dram_if.fpu_ready) ? 2'b11 : 2'b00): 2'b01 ;
-            raw_address = dram_if.address;
+            op = (dram_if.rd_wr) ? ((dram_if.fpu_ready) ? 2'b11 : 2'b00): (dram_if.fpu_ready) ? 2'b01 : 2'b00;
+            raw_address = dram_if.address + (req_counter<<6);
             address_offset = '0;    //Not relevant, set by top level AFU
             //Mem_ctrl
             common_data_bus_read_in = dram_if.write_data;
             dram_if.read_data = common_data_bus_write_out;
-            dram_if.dram_ready = '1;    //Signals data is ready to be read
+            dram_if.dram_ready = dram_if.rd_wr ? 1'b1: tx_done;    //Signals data is ready to be read
             dram_if.request_done = '0;
             next = (req_counter == dram_if.request_size)? DONE : ACTIVE;
         end
@@ -69,10 +69,10 @@ always_comb begin
             address_offset = '0;
             //Mem_ctrl
             common_data_bus_read_in = '0;
-            dram_if.dram_ready = '1;
+            dram_if.dram_ready = '0;
             dram_if.request_done = '1;
             dram_if.read_data = '0;
-            next = ACTIVE;
+            next = dram_if.fpu_ready ? ACTIVE : DONE;
         end
 
         default: begin
