@@ -82,6 +82,16 @@ namespace priscas
 		}
 	}
 
+	void mmem::write(uint64_t addr, uint64_t val) {
+		memcpy((byte_8b*)&data[addr], (byte_8b*)&val, sizeof(uint64_t));
+	}
+
+	uint64_t mmem::read(uint64_t addr) {
+		uint64_t ret;
+		memcpy((byte_8b*)&ret, (byte_8b*)&data[addr], sizeof(uint64_t));
+		return ret;
+	}
+
 	void mmem::restore(ptrdiff_t begin, FILE* f)
 	{
 		// Load the rest of the memory array

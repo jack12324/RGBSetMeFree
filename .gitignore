@@ -13,5 +13,9 @@ synth
 *.jack
 *.mti
 *transcript
+<<<<<<< HEAD
+.vscode
+*.txt
+*.pyc
 loadfile_all.img
 .vscode/

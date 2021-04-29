@@ -39,6 +39,8 @@ namespace priscas
 			volatile byte_8b& operator[](ptrdiff_t ind);
 			const volatile byte_8b& operator[](ptrdiff_t ind) const;
 			void save(ptrdiff_t begin, ptrdiff_t end, FILE*);
+			void write(uint64_t addr, uint64_t val);
+			uint64_t read(uint64_t addr);
 			void restore(ptrdiff_t begin, FILE*);
 			void resize(size_t size);
 			void reset();
