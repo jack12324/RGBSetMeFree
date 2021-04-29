@@ -6,7 +6,7 @@ module cpu_cache_ctrl #(
     (
     //Inputs
         // Mem_system
-    clk, rst_n, AddrIn_mem, DataIn_mem, Rd_in, Wr_in, //New data to write
+    clk, rst_n, en, AddrIn_mem, DataIn_mem, Rd_in, Wr_in, //New data to write
         // DMA
     DataIn_host, tx_done_host, rd_valid_host,
         // From Cache 
@@ -21,7 +21,7 @@ module cpu_cache_ctrl #(
     cache_en, index, offset, comp, wr_cache, tag_out, DataOut_cache, cache_line_out, replaceLine
 );
     
-input logic clk, rst_n, Wr_in, Rd_in, tx_done_host, rd_valid_host;
+input logic clk, rst_n, en, Wr_in, Rd_in, tx_done_host, rd_valid_host;
 input logic [CL_SIZE_WIDTH-1:0] DataIn_host, cache_line_in;
 output logic [CL_SIZE_WIDTH-1:0] DataOut_host, cache_line_out;
 
@@ -60,7 +60,7 @@ always_ff @( posedge clk, negedge rst_n ) begin
 
     if(~rst_n)
         currentState <= IDLE;
-    else
+    else if (en)
         currentState <= nextState;
 end
 

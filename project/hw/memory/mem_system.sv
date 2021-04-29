@@ -5,6 +5,7 @@ module mem_system
 	(
 	input clk,
 	input rst_n,
+	input en,
 	input wr, 
 	input [31 : 0] addr, 
 	input [31 : 0] data_in, 
@@ -48,6 +49,7 @@ module mem_system
     // Mem_system
     .clk		(clk), 
 	.rst_n		(rst_n), 
+	.en 			(en),
 	.AddrIn_mem	(addr), 
 	.DataIn_mem	(data_in), 
 	.Rd_in		(~wr), 
