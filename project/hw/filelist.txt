@@ -32,6 +32,7 @@ ccip_std_afu.sv
 cpu.sv
 decode.sv
 dff.sv
+dff_nop.sv
 execute.sv
 fetch.sv
 forwarding.sv
