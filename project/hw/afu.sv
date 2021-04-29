@@ -50,7 +50,7 @@ module afu
    input  rst, 
 
    mmio_if.user mmio,
-   dma_if.peripheral dma,
+   dma_if.peripheral dma
    );
 
    
