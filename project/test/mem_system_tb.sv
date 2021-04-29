@@ -92,7 +92,7 @@ module mem_system_tb ();
         #2;
         // simulation delay
         
-        if (Done) begin
+        if (data_valid) begin
         n_replies = n_replies + 1;
         if (CacheHit) begin
             n_cache_hits = n_cache_hits + 1;
@@ -181,7 +181,7 @@ module mem_system_tb ();
               $display("LOG: ReQNum %4d Wr Addr 0x%04x Value 0x%04x\n",
                        n_replies, Addr, DataIn);
            end
-           $display("ERROR! Request dropped");
+        // $display("ERROR! Request dropped");
         //    $stop();
         //    test_success = 1'b0;               
         //    n_replies = n_requests;	       
