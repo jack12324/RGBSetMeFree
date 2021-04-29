@@ -4,14 +4,14 @@
       "power": 0,
       "afu-top-interface":
          {
-            "class": "ccip_std_afu"
+            "name": "ccip_std_afu"
          },
       "accelerator-clusters":
          [
             {
                "name": "afu",
                "total-contexts": 1,
-               "accelerator-type-uuid": "c7ce8ca4-3648-48a6-89a2-59622d313f5c"
+               "accelerator-type-uuid": "9f0c38be-cb5b-45c8-b3d3-b9a3aaef0cb6"
             }
          ]
    }

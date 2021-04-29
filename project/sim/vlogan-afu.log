@@ -500,147 +500,147 @@ Parsing included file '/filespace/c/chenke/RGBSetMeFree/project/hw/dma_if.vh'.
 Back to file '/filespace/c/chenke/RGBSetMeFree/project/hw/afu.sv'.
 
 Lint-[IWU] Implicit wire is used
-/filespace/c/chenke/RGBSetMeFree/project/hw/afu.sv, 133
+/filespace/c/chenke/RGBSetMeFree/project/hw/afu.sv, 134
   No type is specified for wire 'startFPU'. Default wire type is being applied
   according to the IEEE spec.
   See the Verilog LRM(1364-2005), section 4.5.
 
 
 Lint-[IWU] Implicit wire is used
-/filespace/c/chenke/RGBSetMeFree/project/hw/afu.sv, 141
+/filespace/c/chenke/RGBSetMeFree/project/hw/afu.sv, 142
   No type is specified for wire 'rst_n'. Default wire type is being applied 
   according to the IEEE spec.
   See the Verilog LRM(1364-2005), section 4.5.
 
 
 Lint-[IWU] Implicit wire is used
-/filespace/c/chenke/RGBSetMeFree/project/hw/afu.sv, 144
+/filespace/c/chenke/RGBSetMeFree/project/hw/afu.sv, 145
   No type is specified for wire 'FeDataIn_host'. Default wire type is being 
   applied according to the IEEE spec.
   See the Verilog LRM(1364-2005), section 4.5.
 
 
 Lint-[IWU] Implicit wire is used
-/filespace/c/chenke/RGBSetMeFree/project/hw/afu.sv, 145
+/filespace/c/chenke/RGBSetMeFree/project/hw/afu.sv, 146
   No type is specified for wire 'Fetx_done_host'. Default wire type is being 
   applied according to the IEEE spec.
   See the Verilog LRM(1364-2005), section 4.5.
 
 
 Lint-[IWU] Implicit wire is used
-/filespace/c/chenke/RGBSetMeFree/project/hw/afu.sv, 146
+/filespace/c/chenke/RGBSetMeFree/project/hw/afu.sv, 147
   No type is specified for wire 'Ferd_valid_host'. Default wire type is being 
   applied according to the IEEE spec.
   See the Verilog LRM(1364-2005), section 4.5.
 
 
 Lint-[IWU] Implicit wire is used
-/filespace/c/chenke/RGBSetMeFree/project/hw/afu.sv, 147
+/filespace/c/chenke/RGBSetMeFree/project/hw/afu.sv, 148
   No type is specified for wire 'FeDataOut_host'. Default wire type is being 
   applied according to the IEEE spec.
   See the Verilog LRM(1364-2005), section 4.5.
 
 
 Lint-[IWU] Implicit wire is used
-/filespace/c/chenke/RGBSetMeFree/project/hw/afu.sv, 148
+/filespace/c/chenke/RGBSetMeFree/project/hw/afu.sv, 149
   No type is specified for wire 'FeAddrOut_host'. Default wire type is being 
   applied according to the IEEE spec.
   See the Verilog LRM(1364-2005), section 4.5.
 
 
 Lint-[IWU] Implicit wire is used
-/filespace/c/chenke/RGBSetMeFree/project/hw/afu.sv, 149
+/filespace/c/chenke/RGBSetMeFree/project/hw/afu.sv, 150
   No type is specified for wire 'Feop_host'. Default wire type is being 
   applied according to the IEEE spec.
   See the Verilog LRM(1364-2005), section 4.5.
 
 
 Lint-[IWU] Implicit wire is used
-/filespace/c/chenke/RGBSetMeFree/project/hw/afu.sv, 151
+/filespace/c/chenke/RGBSetMeFree/project/hw/afu.sv, 152
   No type is specified for wire 'MeDataIn_host'. Default wire type is being 
   applied according to the IEEE spec.
   See the Verilog LRM(1364-2005), section 4.5.
 
 
 Lint-[IWU] Implicit wire is used
-/filespace/c/chenke/RGBSetMeFree/project/hw/afu.sv, 152
+/filespace/c/chenke/RGBSetMeFree/project/hw/afu.sv, 153
   No type is specified for wire 'Metx_done_host'. Default wire type is being 
   applied according to the IEEE spec.
   See the Verilog LRM(1364-2005), section 4.5.
 
 
 Lint-[IWU] Implicit wire is used
-/filespace/c/chenke/RGBSetMeFree/project/hw/afu.sv, 153
+/filespace/c/chenke/RGBSetMeFree/project/hw/afu.sv, 154
   No type is specified for wire 'Merd_valid_host'. Default wire type is being 
   applied according to the IEEE spec.
   See the Verilog LRM(1364-2005), section 4.5.
 
 
 Lint-[IWU] Implicit wire is used
-/filespace/c/chenke/RGBSetMeFree/project/hw/afu.sv, 154
+/filespace/c/chenke/RGBSetMeFree/project/hw/afu.sv, 155
   No type is specified for wire 'MeDataOut_host'. Default wire type is being 
   applied according to the IEEE spec.
   See the Verilog LRM(1364-2005), section 4.5.
 
 
 Lint-[IWU] Implicit wire is used
-/filespace/c/chenke/RGBSetMeFree/project/hw/afu.sv, 155
+/filespace/c/chenke/RGBSetMeFree/project/hw/afu.sv, 156
   No type is specified for wire 'MeAddrOut_host'. Default wire type is being 
   applied according to the IEEE spec.
   See the Verilog LRM(1364-2005), section 4.5.
 
 
 Lint-[IWU] Implicit wire is used
-/filespace/c/chenke/RGBSetMeFree/project/hw/afu.sv, 156
+/filespace/c/chenke/RGBSetMeFree/project/hw/afu.sv, 157
   No type is specified for wire 'Meop_host'. Default wire type is being 
   applied according to the IEEE spec.
   See the Verilog LRM(1364-2005), section 4.5.
 
 
 Lint-[IWU] Implicit wire is used
-/filespace/c/chenke/RGBSetMeFree/project/hw/afu.sv, 175
+/filespace/c/chenke/RGBSetMeFree/project/hw/afu.sv, 176
   No type is specified for wire 'common_data_bus_write_out'. Default wire type
   is being applied according to the IEEE spec.
   See the Verilog LRM(1364-2005), section 4.5.
 
 
 Lint-[IWU] Implicit wire is used
-/filespace/c/chenke/RGBSetMeFree/project/hw/afu.sv, 179
+/filespace/c/chenke/RGBSetMeFree/project/hw/afu.sv, 180
   No type is specified for wire 'op'. Default wire type is being applied 
   according to the IEEE spec.
   See the Verilog LRM(1364-2005), section 4.5.
 
 
 Lint-[IWU] Implicit wire is used
-/filespace/c/chenke/RGBSetMeFree/project/hw/afu.sv, 180
+/filespace/c/chenke/RGBSetMeFree/project/hw/afu.sv, 181
   No type is specified for wire 'raw_address'. Default wire type is being 
   applied according to the IEEE spec.
   See the Verilog LRM(1364-2005), section 4.5.
 
 
 Lint-[IWU] Implicit wire is used
-/filespace/c/chenke/RGBSetMeFree/project/hw/afu.sv, 181
+/filespace/c/chenke/RGBSetMeFree/project/hw/afu.sv, 182
   No type is specified for wire 'address_offset'. Default wire type is being 
   applied according to the IEEE spec.
   See the Verilog LRM(1364-2005), section 4.5.
 
 
 Lint-[IWU] Implicit wire is used
-/filespace/c/chenke/RGBSetMeFree/project/hw/afu.sv, 182
+/filespace/c/chenke/RGBSetMeFree/project/hw/afu.sv, 183
   No type is specified for wire 'common_data_bus_read_in'. Default wire type 
   is being applied according to the IEEE spec.
   See the Verilog LRM(1364-2005), section 4.5.
 
 
 Lint-[IWU] Implicit wire is used
-/filespace/c/chenke/RGBSetMeFree/project/hw/afu.sv, 245
+/filespace/c/chenke/RGBSetMeFree/project/hw/afu.sv, 246
   No type is specified for wire 'cpu_addr'. Default wire type is being applied
   according to the IEEE spec.
   See the Verilog LRM(1364-2005), section 4.5.
 
 
 Lint-[IWU] Implicit wire is used
-/filespace/c/chenke/RGBSetMeFree/project/hw/afu.sv, 248
+/filespace/c/chenke/RGBSetMeFree/project/hw/afu.sv, 249
   No type is specified for wire 'cpu_in'. Default wire type is being applied 
   according to the IEEE spec.
   See the Verilog LRM(1364-2005), section 4.5.
@@ -666,7 +666,23 @@ $unit
   See the SystemVerilog LRM(1800-2005), section 19.2.1.
 
 Parsing design file '/filespace/c/chenke/RGBSetMeFree/project/hw/ccip_std_afu.sv'
-Parsing included file '/filespace/c/chenke/opae/share/opae/platform/platform_if/sim/../rtl/platform_if.vh'.
+Parsing included file '/filespace/c/chenke/intel-fpga-bbb/BBB_cci_mpf/hw/sim/../rtl/cci-mpf-if/cci_mpf_if.vh'.
+Back to file '/filespace/c/chenke/RGBSetMeFree/project/hw/ccip_std_afu.sv'.
+Parsing included file '/filespace/c/chenke/intel-fpga-bbb/BBB_cci_mpf/hw/sim/../rtl/cci-mpf-if/cci_mpf_platform.vh'.
+Back to file '/filespace/c/chenke/RGBSetMeFree/project/hw/ccip_std_afu.sv'.
+Parsing included file '/filespace/c/chenke/RGBSetMeFree/project/hw/cci_mpf_app_conf_default.vh'.
+Parsing included file '/filespace/c/chenke/RGBSetMeFree/project/hw/cci_mpf_app_conf.vh'.
+Back to file '/filespace/c/chenke/RGBSetMeFree/project/hw/cci_mpf_app_conf_default.vh'.
+Back to file '/filespace/c/chenke/RGBSetMeFree/project/hw/ccip_std_afu.sv'.
+Parsing included file '/filespace/c/chenke/RGBSetMeFree/project/hw/csr_mgr.vh'.
+Parsing included file '/filespace/c/chenke/intel-fpga-bbb/BBB_cci_mpf/hw/sim/../rtl/cci-if/cci_csr_if.vh'.
+Back to file '/filespace/c/chenke/RGBSetMeFree/project/hw/csr_mgr.vh'.
+Back to file '/filespace/c/chenke/RGBSetMeFree/project/hw/ccip_std_afu.sv'.
+Parsing included file '/filespace/c/chenke/RGBSetMeFree/project/hw/dma_if.vh'.
+Back to file '/filespace/c/chenke/RGBSetMeFree/project/hw/ccip_std_afu.sv'.
+Parsing included file '/filespace/c/chenke/RGBSetMeFree/project/hw/mmio_if.vh'.
+Back to file '/filespace/c/chenke/RGBSetMeFree/project/hw/ccip_std_afu.sv'.
+Parsing included file '/filespace/c/chenke/RGBSetMeFree/project/sim/rtl/./afu_json_info.vh'.
 Back to file '/filespace/c/chenke/RGBSetMeFree/project/hw/ccip_std_afu.sv'.
 Parsing design file '/filespace/c/chenke/RGBSetMeFree/project/hw/cpu.sv'
 Parsing design file '/filespace/c/chenke/RGBSetMeFree/project/hw/decode.sv'
@@ -966,8 +982,6 @@ Parsing included file '/filespace/c/chenke/RGBSetMeFree/project/hw/cci_mpf_app_c
 Back to file '/filespace/c/chenke/RGBSetMeFree/project/hw/cci_mpf_app_conf_default.vh'.
 Back to file '/filespace/c/chenke/RGBSetMeFree/project/hw/csr_mgr.sv'.
 Parsing included file '/filespace/c/chenke/RGBSetMeFree/project/hw/csr_mgr.vh'.
-Parsing included file '/filespace/c/chenke/intel-fpga-bbb/BBB_cci_mpf/hw/sim/../rtl/cci-if/cci_csr_if.vh'.
-Back to file '/filespace/c/chenke/RGBSetMeFree/project/hw/csr_mgr.vh'.
 Back to file '/filespace/c/chenke/RGBSetMeFree/project/hw/csr_mgr.sv'.
 Parsing design file '/filespace/c/chenke/RGBSetMeFree/project/hw/fifo.sv'
 Parsing design file '/filespace/c/chenke/RGBSetMeFree/project/hw/hal.sv'
@@ -976,4 +990,4 @@ Back to file '/filespace/c/chenke/RGBSetMeFree/project/hw/hal.sv'.
 Parsing included file '/filespace/c/chenke/RGBSetMeFree/project/hw/csr_mgr.vh'.
 Back to file '/filespace/c/chenke/RGBSetMeFree/project/hw/hal.sv'.
 Parsing design file '/filespace/c/chenke/RGBSetMeFree/project/hw/memory_map.sv'
-CPU time: .636 seconds to compile
+CPU time: .684 seconds to compile
