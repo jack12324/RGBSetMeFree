@@ -40,7 +40,6 @@ always_comb begin
             //FPU Buffer
             op = '0;
             raw_address = '0;
-            address_offset = '0;
             //Mem_ctrl
             common_data_bus_read_in = '0;
             dram_if.dram_ready = '1;
@@ -53,7 +52,6 @@ always_comb begin
             //Don't start writing till FPU ready on write
             op = (dram_if.rd_wr) ? ((dram_if.fpu_ready) ? 2'b11 : 2'b00): (dram_if.fpu_ready) ? 2'b01 : 2'b00;
             raw_address = dram_if.address + (req_counter<<6);
-            address_offset = '0;    //Not relevant, set by top level AFU
             //Mem_ctrl
             common_data_bus_read_in = dram_if.write_data;
             dram_if.read_data = common_data_bus_write_out;
@@ -65,7 +63,6 @@ always_comb begin
             //FPU Buffer
             op = '0;
             raw_address = '0;
-            address_offset = '0;
             //Mem_ctrl
             common_data_bus_read_in = '0;
             dram_if.dram_ready = '0;
@@ -78,7 +75,6 @@ always_comb begin
             //FPU Buffer
             op = '0;
             raw_address = '0;
-            address_offset = '0;
             //Mem_ctrl
             common_data_bus_read_in = '0;
             dram_if.dram_ready = '1;

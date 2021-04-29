@@ -36,7 +36,6 @@ always_comb begin
             //FPU MMIO
             op = '0;
             raw_address = '0;
-            address_offset = '0;
             //Mem_ctrl
             common_data_bus_read_in = '0;
             next = mapped_data_request ? BUSY : READY;    //Start sending requests to arbiter when FPU demands
@@ -46,7 +45,6 @@ always_comb begin
             //Don't start writing till FPU ready on write
             op = 2'b01;  //Always Read from Host
             raw_address = mapped_address;
-            address_offset = '0;    //Not relevant, set by top level AFU
             //Mem_ctrl
             common_data_bus_read_in = '0;   //Don't care, never write data
             mapped_data = common_data_bus_write_out;
@@ -58,7 +56,6 @@ always_comb begin
             //Mem_ctrl
             op = '0;
             raw_address = '0;
-            address_offset = '0;
             common_data_bus_read_in = '0;
             //FPU mmio
             mapped_data_valid = '0;
