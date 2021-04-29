@@ -46,11 +46,13 @@ State currentState, nextState;
 
 logic [WORD_SIZE -1: 0] FloppedDataIn;
 logic [ADDR_WIDTH-1: 0] FloppedAddressIn;
+logic Rd;
 
 always_ff @( posedge clk ) begin 
     if(currentState == IDLE) begin
         FloppedDataIn <= DataIn_mem;
         FloppedAddressIn <= AddrIn_mem;
+        Rd <= Rd_in;
     end
     
 end
@@ -95,6 +97,7 @@ always_comb begin
         end
         MEMRD: begin
             //Set cache addr bits 
+            comp = '0;  //Access Read
             tag_out = FloppedAddressIn[31:14];
             index = FloppedAddressIn[13:6];
             offset = FloppedAddressIn[5:0];
@@ -104,7 +107,8 @@ always_comb begin
             AddrOut_host = FloppedAddressIn;  //CPU Virtual Address must be prefixed
             DataOut_host = cache_line_in;
             replaceLine = tx_done_host? 1'b1: 1'b0;
-            nextState = tx_done_host? CACHEWR : MEMRD;
+            DataOut_mem = tx_done_host & Rd? DataIn_cache : '0;
+            nextState = tx_done_host ? (Rd ? IDLE : CACHEWR) : MEMRD;
         end
         CACHEWR: begin  //Writes the new word in replaced cache line
             wr_cache = 1'b1;
@@ -114,8 +118,9 @@ always_comb begin
             tag_out = FloppedAddressIn[31:14];
             index = FloppedAddressIn[13:6];
             offset = FloppedAddressIn[5:0];
-
             DataOut_cache = FloppedDataIn;
+            
+            done = 1'b1;
             nextState = IDLE;   //At this point Rd and Wr operations are done and no more stalls
         end
         CMPWR: begin
