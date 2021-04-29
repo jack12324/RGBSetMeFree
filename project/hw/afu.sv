@@ -162,7 +162,19 @@ module afu
   InterruptController iINT(.clk(clk), .rst_n(~rst), .IO({7'b0000000, done_fpu}), .ACK(ACK), .INT(INT), .INT_INSTR(INT_INSTR), .IMR_in({8{1'b1}}));
 
   //Memory Layout//
-  fpu_dma_ctrl iFPUDMA(.clk(clk), .rst_n(~rst), .dram_if(dram_if.DRAM));
+  fpu_dma_ctrl iFPUDMA(.clk(clk), .rst_n(~rst), 
+	.dram_if(dram_if.DRAM),
+	//TODO??? might be wrong
+    //Inputs: From mem_ctrl
+    	.common_data_bus_write_out(common_data_bus_write_out),    
+   	.tx_done(tx_done),
+	.rd_valid(rd_valid),
+    //Outputs : To mem_ctrl
+	.op(op),
+	.raw_address(raw_address),
+	.address_offset(address_offset),
+	.common_data_bus_read_in(common_data_bus_read_in)
+	);
 
   fpu_mmio_ctrl iFPUMMIO( 
 	.clk(clk),
