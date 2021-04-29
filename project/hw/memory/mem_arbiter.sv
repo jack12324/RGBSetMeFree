@@ -9,7 +9,6 @@ module mem_arbiter #(
     //Inputs from Src1
     input logic [1:0] op_src1,
     input logic [ADDR_WIDTH -1 : 0] raw_address_src1,
-    input logic [ADDR_WIDTH -1 : 0] address_offset_src1,
     input logic [511:0] common_data_bus_read_in_src1,
     //Outputs to Src1
     output logic [511:0] common_data_bus_write_out_src1, 
@@ -18,7 +17,6 @@ module mem_arbiter #(
     //Inputs from Src2
     input logic [1:0] op_src2,
     input logic [ADDR_WIDTH -1 : 0] raw_address_src2,
-    input logic [ADDR_WIDTH -1 : 0] address_offset_src2,
     input logic [511:0] common_data_bus_read_in_src2,
     //Outputs to Src2
     output logic [511:0] common_data_bus_write_out_src2, 
@@ -27,7 +25,6 @@ module mem_arbiter #(
     //Inputs from Src3
     input logic [1:0] op_src3,
     input logic [ADDR_WIDTH -1 : 0] raw_address_src3,
-    input logic [ADDR_WIDTH -1 : 0] address_offset_src3,
     input logic [511:0] common_data_bus_read_in_src3,
     //Outputs to Src3
     output logic [511:0] common_data_bus_write_out_src3, 
@@ -37,7 +34,6 @@ module mem_arbiter #(
     //Inputs from Src3
     input logic [1:0] op_src4,
     input logic [ADDR_WIDTH -1 : 0] raw_address_src4,
-    input logic [ADDR_WIDTH -1 : 0] address_offset_src4,
     input logic [511:0] common_data_bus_read_in_src4,
     //Outputs to Src3
     output logic [511:0] common_data_bus_write_out_src4, 
@@ -50,8 +46,7 @@ module mem_arbiter #(
     input logic rd_valid,
     //Outputs : To mem_ctrl
     output logic [1:0] op,
-    output logic [ADDR_WIDTH -1 : 0] raw_address,
-    output logic [ADDR_WIDTH -1 : 0] address_offset,
+    output logic [63 : 0] raw_address,
     output logic [511:0] common_data_bus_read_in   //Naming convention relative to mem_ctrl
 );
 
@@ -83,8 +78,7 @@ module mem_arbiter #(
                 rd_valid_src1 = rd_valid;
                 //Outputs : To mem_ctrl
                 op = op_src1;
-                raw_address = raw_address_src1;
-                address_offset = address_offset_src1;
+                raw_address = {32'h0, raw_address_src1};
                 common_data_bus_read_in = common_data_bus_read_in_src1;
                 next = |op_src1 & ~(tx_done) ? SRC1 : SRC2;
             end
@@ -94,8 +88,7 @@ module mem_arbiter #(
                 rd_valid_src2 = rd_valid;
                 //Outputs : To mem_ctrl
                 op = op_src2;
-                raw_address = raw_address_src2;
-                address_offset = address_offset_src2;
+                raw_address = {32'h0, raw_address_src2};
                 common_data_bus_read_in = common_data_bus_read_in_src2;
                 next = |op_src2 & ~(tx_done) ? SRC2 : SRC3;
             end
@@ -105,8 +98,7 @@ module mem_arbiter #(
                 rd_valid_src3 = rd_valid;
                 //Outputs : To mem_ctrl
                 op = op_src3;
-                raw_address = raw_address_src3;
-                address_offset = address_offset_src3;
+                raw_address = {32'h0, raw_address_src3};
                 common_data_bus_read_in = common_data_bus_read_in_src3;
                 next = |op_src3 & ~(tx_done) ? SRC3 : SRC4;
             end
@@ -116,15 +108,13 @@ module mem_arbiter #(
                 rd_valid_src4 = rd_valid;
                 //Outputs : To mem_ctrl
                 op = op_src4;
-                raw_address = raw_address_src4;
-                address_offset = address_offset_src4;
+                raw_address = {32'h0, raw_address_src4};
                 common_data_bus_read_in = common_data_bus_read_in_src4;
                 next = |op_src4 & ~(tx_done) ? SRC4 : SRC1;
             end
             default: begin
                 op = '0;
                 raw_address = '0;
-                address_offset = '0;
                 common_data_bus_read_in = '0;
                 next = SRC1; 
             end

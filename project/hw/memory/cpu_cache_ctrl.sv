@@ -68,35 +68,45 @@ always_comb begin
     case(currentState)
         IDLE: begin
             stall = 1'b0;
-            nextState = Rd_in? CMPRD: Wr_in ? CMPWR: IDLE;
+            done = 1'b1;
+            wr_cache = '0;
+            replaceLine = '0;
+            nextState = Rd_in&en? CMPRD: Wr_in&en ? CMPWR: IDLE;
         end
         CMPRD: begin
             cache_en = 1'b1;
             comp = 1'b1;
+            done = 1'b0;
             DataOut_cache = FloppedDataIn; //Data going out to cache is in mem
             //Set cache addr bits
             tag_out = FloppedAddressIn[31:14];
             index = FloppedAddressIn[13:6];
             offset = FloppedAddressIn[5:0];
-
+            stall = 1'b1;
+            replaceLine = '0;
             hit_out = hit_in&validIn_cache;
             done = hit_in&validIn_cache;
             DataOut_mem = hit_in&validIn_cache? DataIn_cache : 32'h0;
             nextState = hit_in&validIn_cache? IDLE: dirty_in? MEMWB : MEMRD ;
         end
         MEMWB: begin
+            stall = 1'b1;
+            done = 1'b0;
             //Set cache addr bits 
             tag_out = FloppedAddressIn[31:14];
             index = FloppedAddressIn[13:6];
             offset = FloppedAddressIn[5:0];
+            replaceLine = '0;
             //Now the entire cache line is available on cache_line_in
             op_host = 2'b11;            //Signal write to the mem_ctrl;
-            AddrOut_host = FloppedAddressIn;  //CPU Virtual Address must be prefixed
+            AddrOut_host = {FloppedAddressIn[31:6], 6'b0};  //CPU Virtual Address must be prefixed
             DataOut_host = cache_line_in;
             nextState = tx_done_host? MEMRD : MEMWB;
         end
         MEMRD: begin
             //Set cache addr bits 
+            stall = 1'b1;
+            done = 1'b0;
             comp = '0;  //Access Read
             tag_out = FloppedAddressIn[31:14];
             index = FloppedAddressIn[13:6];
@@ -104,13 +114,17 @@ always_comb begin
             //Now the entire cache line from host is available on dataIn_host
             op_host = 2'b01;            //Signal Read to the mem_ctrl;
             cache_line_out = DataIn_host;
-            AddrOut_host = FloppedAddressIn;  //CPU Virtual Address must be prefixed
+            AddrOut_host = {FloppedAddressIn[31:6], 6'b0};  //CPU Virtual Address must be prefixed
             DataOut_host = cache_line_in;
-            replaceLine = tx_done_host? 1'b1: 1'b0;
-            DataOut_mem = tx_done_host & Rd? DataIn_cache : '0;
-            nextState = tx_done_host ? (Rd ? IDLE : CACHEWR) : MEMRD;
+            replaceLine = tx_done_host? 1'b1 : 1'b0;
+            // DataOut_mem = tx_done_host & Rd? DataIn_cache : '0;
+            done = '0;  //Go to Comp Read again to force a hit on the line and give cache a cycle to get correct output
+            nextState = tx_done_host ? (Rd ? CMPRD : CACHEWR) : MEMRD;
         end
         CACHEWR: begin  //Writes the new word in replaced cache line
+            replaceLine = '0;
+            stall = 1'b1;
+            done = 1'b0;
             wr_cache = 1'b1;
             cache_en = 1'b1;
             op_host = 2'b0; //Make sure no extra requests to mem_ctrl after tx_done
@@ -127,6 +141,7 @@ always_comb begin
             cache_en = 1'b1;
             wr_cache = 1'b1;
             comp = 1'b1;
+            stall = 1'b1;
             //Set cache addr bits
             tag_out = FloppedAddressIn[31:14];
             index = FloppedAddressIn[13:6];
@@ -139,6 +154,8 @@ always_comb begin
         end
         ACCRD: begin
             cache_en = 1'b1;
+            stall = 1'b1;
+            done = 1'b0;
             //Set cache addr bits
             tag_out = FloppedAddressIn[31:14];
             index = FloppedAddressIn[13:6];

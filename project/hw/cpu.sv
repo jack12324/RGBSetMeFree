@@ -13,9 +13,7 @@ module cpu(
 	Merd_valid_host,
 	MeDataOut_host,
 	MeAddrOut_host,
-	Meop_host,
-	// jump start FPU
-	startFPU
+	Meop_host
 	);
 
     input clk;  // System clock 
@@ -42,8 +40,6 @@ module cpu(
 	output logic [31:0] MeAddrOut_host;
 	output logic [1:0] Meop_host;
 	
-// jump start FPU
-	output logic startFPU;
 
     /////////////////////////////////////////////////////////////////////////////
     ///////////////////////// Interrupts FSM Signals ////////////////////////////
@@ -718,8 +714,7 @@ module cpu(
 	.rd_valid_host(Merd_valid_host),
 	.DataOut_host(MeDataOut_host),
 	.AddrOut_host(MeAddrOut_host),
-	.op_host(Meop_host),
-	.startFPU(startFPU)
+	.op_host(Meop_host)
     );
     /////////////////////////////////////////////////////////////////////////////
 

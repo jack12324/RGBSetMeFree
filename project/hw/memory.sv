@@ -45,7 +45,7 @@ module memory(
 // jump start FPU
 	output logic startFPU;
   // TODO: add test bench
-/*
+	/*
   mem_system dataMem(
     .clk(clk), .rst_n(rst_n), 
     .addr(ExMe_out_alu_out),
@@ -62,7 +62,7 @@ module memory(
 	.AddrOut_host(AddrOut_host),
 	.op_host(op_host),
 	// extras unused
-	.data_valid(),
+	.stall(memStall),
 	.CacheHit()
     );
  */
@@ -89,12 +89,15 @@ module memory(
    // output logic done, different from data_valid?
 
 	// jumpstart FPU
-	always_ff @(posedge clk, negedge rst_n) begin
-		if (!rst_n) 
-			startFPU <= 0;
-		else 
-			// if writing to start address, and the instruction is a store
-			startFPU <= (ExMe_out_alu_out == 32'h1000_0000 && ExMe_out_mem_wrt && ExMe_out_mem_en); // TODO check address, can I do combinational here?
-	end
+	// always_ff @(posedge clk, negedge rst_n) begin
+	// 	if (!rst_n) 
+	// 		startFPU <= 0;
+	// 	else 
+	// 		// if writing to start address, and the instruction is a store
+	// 		startFPU <= (ExMe_out_alu_out == 32'h1000_0000 && ExMe_out_mem_wrt && ExMe_out_mem_en); // TODO check address, can I do combinational here?
+	// end
+
+	// Mayukh: This assign statement should be sufficient
+	assign startFPU = (ExMe_out_alu_out == 32'h1000_0000 && ExMe_out_mem_wrt && ExMe_out_mem_en);
 
 endmodule

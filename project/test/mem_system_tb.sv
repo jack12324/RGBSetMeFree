@@ -9,7 +9,6 @@ module mem_system_tb ();
 	logic [31 : 0] DataIn;
 
 	logic [31 : 0] data_out;
-	logic data_valid;
     logic Done;
     logic CacheHit;
 
@@ -24,6 +23,22 @@ module mem_system_tb ();
     logic [31:0]    AddrOut_host;
     logic [1:0]     op_host;
 
+    genvar j;
+    logic [7:0]           mem[0:65535];
+
+    generate for (j = 0; j < 7'h40; j++) begin
+        // i*8 +: 8 is basically (i+1)*8-1:i*8]         
+            assign  DataIn_host[j*8 +: 8] = mem[{Addr[31:6], j[5:0]}];
+        end
+    endgenerate
+
+    initial begin
+        for (integer i = 0; i < 65536; i=i+1) begin
+           mem[i] = 0;
+        end
+        $readmemh("loadfile_all2.img", mem);    //Copy of loadfile_all.img
+     end
+
     mem_system mem_dut(
         .clk(clk),
         .rst_n(~rst),
@@ -32,7 +47,7 @@ module mem_system_tb ();
         .addr(Addr),
         .data_in(DataIn),
         .data_out(data_out),
-        .data_valid(data_valid),
+        .stall(Stall),
         .done(Done),
         .DataIn_host(DataIn_host),
         .tx_done_host(tx_done_host),
@@ -57,8 +72,6 @@ module mem_system_tb ();
 
 	always #5 clk = ~clk; 
     
-    assign Stall = ~Done;
-
     reg    reg_readorwrite;
     integer n_requests;
     integer n_replies;
@@ -80,6 +93,7 @@ module mem_system_tb ();
         n_requests = 0;
         n_replies = 0;
         n_cache_hits = 0;
+        n_cache_hits_total = 0;
         test_success = 1'b1;
         req_cycle = 0;
         #10;
@@ -91,8 +105,8 @@ module mem_system_tb ();
     always @ (posedge clk) begin
         #2;
         // simulation delay
-        
-        if (data_valid) begin
+        generate_dma;
+        if (~rst && ~Stall) begin
         n_replies = n_replies + 1;
         if (CacheHit) begin
             n_cache_hits = n_cache_hits + 1;
@@ -105,7 +119,7 @@ module mem_system_tb ();
                     Data_out_ref, CacheHit);
             if (data_out != Data_out_ref) begin
                 $display("ERROR");
-                $stop();
+                // $stop();
                 test_success = 1'b0;
             end
         end
@@ -122,9 +136,9 @@ module mem_system_tb ();
         
         #85;
         if (!rst && (!Stall)) begin      
-        if (n_requests < 1000) begin
+        if (n_requests < 10) begin
             full_random_addr;
-        end else if (n_requests == 1000) begin
+        end else if (n_requests == 10) begin
             Addr = 32'd0; 
             Rd = 1'd0;
             Wr = 1'd0;
@@ -136,7 +150,7 @@ module mem_system_tb ();
                     n_cache_hits );
             n_cache_hits_total = n_cache_hits_total + n_cache_hits;
             n_cache_hits = 0;
-        end else if (n_requests == 100) begin
+        end else if (n_requests == 0) begin //Changed from 100 to 0 temporarily
             Addr = 32'd0;
             Rd = 1'd0;
             Wr = 1'd0;
@@ -148,7 +162,7 @@ module mem_system_tb ();
                     n_cache_hits );
             n_cache_hits_total = n_cache_hits_total + n_cache_hits;            
             n_cache_hits = 0;
-        end else if (n_requests == 200) begin
+        end else if (n_requests == 0) begin    //Changed from 200 to 0 temporarily
             Addr = 32'd0;
             Rd = 1'd0;
             Wr = 1'd0;
@@ -160,9 +174,9 @@ module mem_system_tb ();
                     n_cache_hits );
             n_cache_hits_total = n_cache_hits_total + n_cache_hits;
             n_cache_hits = 0;
-        end else if (n_requests < 100) begin
+        end else if (n_requests < 0) begin
             small_random_addr;
-        end else if (n_requests < 200) begin
+        end else if (n_requests < 0) begin
             seq_addr;
         end else begin
             end_simulation;
@@ -287,10 +301,7 @@ module mem_system_tb ();
     task generate_dma;
         begin
         // DataIn_host = $urandom % 512'hFFFF_FFFF_FFFF_FFFF_FFFF_FFFF_FFFF_FFFF_FFFF_FFFF_FFFF_FFFF_FFFF_FFFF_FFFF_FFFF_FFFF_FFFF_FFFF_FFFF_FFFF_FFFF_FFFF_FFFF;
-        for (i=0; i < 7'h40; i++) begin
-            // i*8 +: 8 is basically (i+1)*8-1:i*8]         
-            DataIn_host[i*8 +: 8] = ref_dut.mem[{Addr[32:6], i[5:0]}];
-		end
+        
         //DataOut_host;    //Don't Care
         tx_done_host = $urandom % 2;
         rd_valid_host = tx_done_host;
@@ -299,4 +310,5 @@ module mem_system_tb ();
 
         end
     endtask
+
 endmodule

@@ -161,38 +161,42 @@ module afu
                                                         // Highest Priority                                                      // no masking used
   InterruptController iINT(.clk(clk), .rst_n(~rst), .IO({7'b0000000, done_fpu}), .ACK(ACK), .INT(INT), .INT_INSTR(INT_INSTR), .IMR_in({8{1'b1}}));
 
+  logic [511:0] common_data_bus_write_out_mmio, common_data_bus_write_out_fpu;
+  logic tx_done_mmio, tx_done_fpu;
+  logic rd_valid_mmio, rd_valid_fpu;
+  logic [1:0] op_mmio, op_fpu;
+  logic [31:0] raw_address_mmio, raw_address_fpu;
+  logic [511:0] common_data_bus_read_in_mmio, common_data_bus_read_in_fpu;
+  
   //Memory Layout//
   fpu_dma_ctrl iFPUDMA(.clk(clk), .rst_n(~rst), 
 	.dram_if(dram_if.DRAM),
-	//TODO??? might be wrong
     //Inputs: From mem_ctrl
     	.common_data_bus_write_out(common_data_bus_write_out),    
-   	.tx_done(tx_done),
-	.rd_valid(rd_valid),
+   	  .tx_done(tx_done),
+	    .rd_valid(rd_valid),
     //Outputs : To mem_ctrl
-	.op(op),
-	.raw_address(raw_address),
-	.address_offset(address_offset),
-	.common_data_bus_read_in(common_data_bus_read_in)
+	  .op(op),
+	  .raw_address(raw_address),
+	  .common_data_bus_read_in(common_data_bus_read_in)
 	);
 
   fpu_mmio_ctrl iFPUMMIO( 
-	.clk(clk),
-	.rst_n(rst_n),
-    //FPU I/O
-	.mapped_data_request(mapped_data_request),
-	.mapped_address(mapped_address),
-	.mapped_data(mapped_data),
-	.mapped_data_valid(mapped_data_valid),
-    //Inputs: From mem_ctrl
-	.common_data_bus_write_out(common_data_bus_write_out),    
-	.tx_done(tx_done),
-	.rd_valid(rd_valid),
-    //Outputs : To mem_ctrl
-	.op(op),
-	.raw_address(raw_address),
-	.address_offset(address_offset),
-	.common_data_bus_read_in(common_data_bus_read_in)  
+      .clk(clk),
+      .rst_n(rst_n),
+        //FPU I/O
+      .mapped_data_request(mapped_data_request),
+      .mapped_address(mapped_address),
+      .mapped_data(mapped_data),
+      .mapped_data_valid(mapped_data_valid),
+        //Inputs: From mem_ctrl
+      .common_data_bus_write_out(common_data_bus_write_out),    
+      .tx_done(tx_done),
+      .rd_valid(rd_valid),
+        //Outputs : To mem_ctrl
+      .op(op),
+      .raw_address(raw_address),
+      .common_data_bus_read_in(common_data_bus_read_in)  
       );
 
   mem_arbiter   iARBITER(
@@ -201,7 +205,6 @@ module afu
         //Inputs from Src1
       .op_src1                              (Feop_host),
       .raw_address_src1                     (FeAddrOut_host),
-      .address_offset_src1                  (),
       .common_data_bus_read_in_src1         (FeDataOut_host),
       //Outputs to Src1
       .common_data_bus_write_out_src1       (FeDataIn_host), 
@@ -210,31 +213,28 @@ module afu
       //Inputs from Src2
       .op_src2                              (Meop_host),
       .raw_address_src2                     (MeAddrOut_host),
-      .address_offset_src2                  (),
       .common_data_bus_read_in_src2         (MeDataOut_host),
       //Outputs to Src2
       .common_data_bus_write_out_src2       (MeDataIn_host), 
       .tx_done_src2                         (Metx_done_host),
       .rd_valid_src2                        (Merd_valid_host),
       //Inputs from Src3
-      .op_src3                              (),
-      .raw_address_src3                     (),
-      .address_offset_src3                  (),
-      .common_data_bus_read_in_src3         (),
+      .op_src3                              (op_mmio),
+      .raw_address_src3                     (raw_address_mmio),
+      .common_data_bus_read_in_src3         (common_data_bus_read_in_mmio),
       //Outputs to Src3
-      .common_data_bus_write_out_src3       (), 
-      .tx_done_src3                         (),
-      .rd_valid_src3                        (),
+      .common_data_bus_write_out_src3       (common_data_bus_write_out_mmio), 
+      .tx_done_src3                         (tx_done_mmio),
+      .rd_valid_src3                        (rd_valid_mmio),
 
       //Inputs from Src3
-      .op_src4                              (),
-      .raw_address_src4                     (),
-      .address_offset_src4                  (),
-      .common_data_bus_read_in_src4         (),
+      .op_src4                              (op_fpu),
+      .raw_address_src4                     (raw_address_fpu),
+      .common_data_bus_read_in_src4         (common_data_bus_read_in_fpu),
       //Outputs to Src3
-      .common_data_bus_write_out_src4       (), 
-      .tx_done_src4                         (),
-      .rd_valid_src4                        (),
+      .common_data_bus_write_out_src4       (common_data_bus_write_out_fpu), 
+      .tx_done_src4                         (tx_done_fpu),
+      .rd_valid_src4                        (rd_valid_fpu),
 
       //Inputs: From mem_ctrl
       .common_data_bus_write_out            (dma.wr_data),    
@@ -243,7 +243,6 @@ module afu
       //Outputs : To mem_ctrl
       .op                                   (mem_op),
       .raw_address                          (DMA_Addr),
-      .address_offset                       (),
       .common_data_bus_read_in              (DMA_Data_in)
       );
 
@@ -253,7 +252,7 @@ module afu
       .rst_n(~rst),
       .host_init(go),
       .host_rd_ready(~dma.empty),
-      .host_wr_ready(~dma.full),
+      .host_wr_ready(~dma.full & ~dma.host_wr_completed),
       .op(mem_op), // CPU Defined
       .raw_address(cpu_addr), // Address in the CPU space
       .address_offset(wr_addr),
