@@ -117,9 +117,9 @@ module afu
     logic [VIRTUAL_BYTE_ADDR_WIDTH-1:0] final_addr;
     logic [VIRTUAL_BYTE_ADDR_WIDTH-1:0] wr_addr;
     logic [511:0] DMA_Data_in;
-    wire tx_done;
+    //wire tx_done;
     wire ready;
-    wire rd_valid;
+    //wire rd_valid;
     wire rd_go;
     wire wr_go;
  
@@ -160,9 +160,23 @@ module afu
   //Memory Layout//
   fpu_dma_ctrl iFPUDMA(.clk(clk), .rst_n(~rst), .dram_if(dram_if.DRAM));
 
-  fpu_mmio_ctrl iFPUMMIO(
-      .clk(clk), 
-      .rst_n(~rst), 
+  fpu_mmio_ctrl iFPUMMIO( 
+	.clk(clk),
+	.rst_n(rst_n),
+    //FPU I/O
+	.mapped_data_request(mapped_data_request),
+	.mapped_address(mapped_address),
+	.mapped_data(mapped_data),
+	.mapped_data_valid(mapped_data_valid),
+    //Inputs: From mem_ctrl
+	.common_data_bus_write_out(common_data_bus_write_out),    
+	.tx_done(tx_done),
+	.rd_valid(rd_valid),
+    //Outputs : To mem_ctrl
+	.op(op),
+	.raw_address(raw_address),
+	.address_offset(address_offset),
+	.common_data_bus_read_in(common_data_bus_read_in)  
       );
 
   mem_arbiter   iARBITER(
