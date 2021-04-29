@@ -1,9 +1,26 @@
-module cpu(clk, rst_n, tx_done, rd_valid, op, data_in, data_out, INT, INT_INSTR, ACK);
+module cpu(
+	clk, rst_n, 
+	tx_done, rd_valid, op, data_in, data_out, // todo need?
+	INT, INT_INSTR, ACK,
+	// Wires to mem_ctrl
+	FeDataIn_host,
+	Fetx_done_host,
+	Ferd_valid_host,
+	FeDataOut_host,
+	FeAddrOut_host,
+	Feop_host,
+	MeDataIn_host,
+	Metx_done_host,
+	Merd_valid_host,
+	MeDataOut_host,
+	MeAddrOut_host,
+	Meop_host
+	);
 
     input clk;  // System clock 
     input rst_n; // Active low reset for the system
 
-    // HAL memory signals
+    // HAL memory signals, todo need?
     input tx_done;
     input rd_valid;
     input [1:0] op;
@@ -14,6 +31,23 @@ module cpu(clk, rst_n, tx_done, rd_valid, op, data_in, data_out, INT, INT_INSTR,
     input INT;
     input [31:0] INT_INSTR;
     output ACK;
+
+	//Wires to Mem_ctrl from Fetch and Memory (inst and data memory)
+	//Fetch
+	input logic [511:0] FeDataIn_host;
+	input logic Fetx_done_host;
+	input logic Ferd_valid_host;
+	output logic [511:0] FeDataOut_host;
+	output logic [31:0] FeAddrOut_host;
+	output logic [1:0] Feop_host;
+	//Memory
+	input logic [511:0] MeDataIn_host;
+	input logic Metx_done_host;
+	input logic Merd_valid_host;
+	output logic [511:0] MeDataOut_host;
+	output logic [31:0] MeAddrOut_host;
+	output logic [1:0] Meop_host;
+	
 
     /////////////////////////////////////////////////////////////////////////////
     ///////////////////////// Interrupts FSM Signals ////////////////////////////
@@ -364,7 +398,14 @@ module cpu(clk, rst_n, tx_done, rd_valid, op, data_in, data_out, INT, INT_INSTR,
         .Done(FeDone),
         // for interrupts
         //.ACK(ACK)
-        .current_PC(current_PC)
+        .current_PC(current_PC),
+	//////////WIRES TO MEM_CTRL///////////
+	.DataIn_host(FeDataIn_host),
+	.tx_done_host(Fetx_done_host),
+	.rd_valid_host(Ferd_valid_host),
+	.DataOut_host(FeDataOut_host),
+	.AddrOut_host(FeAddrOut_host),
+	.op_host(Feop_host)
     );
     /////////////////////////////////////////////////////////////////////////////
 
@@ -658,7 +699,14 @@ module cpu(clk, rst_n, tx_done, rd_valid, op, data_in, data_out, INT, INT_INSTR,
   	.ExMe_out_mem_wrt(ExMe_out_mem_wrt),
   	.ExMe_out_mem_en(ExMe_out_mem_en),
   	.mem_data(mem_data),
-  	.done(MeDone)
+  	.done(MeDone),
+   //////////WIRES TO MEM_CTRL///////////
+	.DataIn_host(MeDataIn_host),
+	.tx_done_host(Metx_done_host),
+	.rd_valid_host(Merd_valid_host),
+	.DataOut_host(MeDataOut_host),
+	.AddrOut_host(MeAddrOut_host),
+	.op_host(Meop_host)
     );
     /////////////////////////////////////////////////////////////////////////////
 

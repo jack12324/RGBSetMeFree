@@ -10,7 +10,26 @@
 
 `define NOP 32'b01111xxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-module fetch (clk, rst_n, in_PC_next, stall, flush, INT_INSTR, out_PC_next, instr, Done, restore, use_cpu_injection, use_INT_INSTR, cpu_injection, current_PC, PC_before_int);
+module fetch (clk, rst_n, 
+	in_PC_next, stall, flush, 
+	INT_INSTR, 
+	out_PC_next, 
+	instr, 
+	Done, 
+	restore, 
+	use_cpu_injection, 
+	use_INT_INSTR, 
+	cpu_injection, 
+	current_PC, 
+	PC_before_int, 
+	// Wires to mem_ctrl
+	DataIn_host,
+	tx_done_host,
+	rd_valid_host,
+	DataOut_host,
+	AddrOut_host,
+	op_host
+);
 	input clk, rst_n;
 	input [31:0] in_PC_next;
 	input stall, flush;
@@ -29,6 +48,16 @@ module fetch (clk, rst_n, in_PC_next, stall, flush, INT_INSTR, out_PC_next, inst
 	// for interrupts
 	//output ACK;
 	output [31:0] current_PC;
+
+
+	//Wires to Mem_ctrl
+	input logic [511:0] DataIn_host;
+	input logic tx_done_host;
+	input logic rd_valid_host;
+
+	output logic [511:0] DataOut_host;
+	output logic [31:0] AddrOut_host;
+	output logic [1:0] op_host;
 
 	logic [31:0] instr_mem; // instruction read from memory 
 							// usually used unless interrupt controller 
@@ -57,7 +86,23 @@ module fetch (clk, rst_n, in_PC_next, stall, flush, INT_INSTR, out_PC_next, inst
 	assign out_PC_next = flush ? `NOP : PC;
 
 	// instruction memory access
-	mem_system instructionMem(.clk(clk), .rst_n(rst_n), .addr(PC), .data_in(), .wr(1'b0), .en(1'b1), .done(Done), .data_out(instr_mem));
+	mem_system instructionMem(
+		.clk(clk), 
+		.rst_n(rst_n), 
+		.addr(PC), 
+		.data_in(), 
+		.wr(1'b0), 
+		.en(1'b1), 
+		.done(Done), 
+		.data_out(instr_mem),
+		//Wires to mem_ctrl
+		.DataIn_host(DataIn_host),
+		.tx_done_host(tx_done_host),
+		.rd_valid_host(rd_valid_host),
+		.DataOut_host(DataOut_host),
+		.AddrOut_host(AddrOut_host),
+		.op_host(op_host)
+	);
 
 
 	// Assign the instruction to be executed 

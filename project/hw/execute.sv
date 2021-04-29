@@ -43,7 +43,7 @@ module execute(
     logic [31:0] forwarded_LR;
     logic [1:0] forwarded_FL;
 
-    mux2_1 i_mux_2_0(.in0(ExMe_out_LR),.in1(MeWb_out_LR), .sel(forward_LR_sel), .out(forwarded_LR));
+    mux2_1 i_mux_2_0(.in0(ExMe_out_LR),.in1(MeWb_out_LR), .sel({0,forward_LR_sel}), .out(forwarded_LR));
 
     mux4_1 i_mux3_1 (.in_reg(DeEx_out_reg_1), .in_alu(ExMe_out_alu_out), .in_wb(reg_wrt_data), .in_LR(forwarded_LR), .sel(forward1_sel), .out(alu_1));
     mux4_1 i_mux3_2 (.in_reg(DeEx_out_reg_2), .in_alu(ExMe_out_alu_out), .in_wb(reg_wrt_data), .in_LR(32'd0), .sel(forward2_sel), .out(ExMe_in_reg_2));

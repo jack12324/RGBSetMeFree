@@ -7,7 +7,16 @@ module memory(
     ExMe_out_mem_en,
     // Output
     mem_data,
-    done
+    done,
+	// Wires to mem_ctrl
+	DataIn_host,
+	tx_done_host,
+	rd_valid_host,
+	DataOut_host,
+	AddrOut_host,
+	op_host
+
+  // 
   );
   input clk, rst_n;
 
@@ -21,6 +30,15 @@ module memory(
 
   output [31:0] mem_data;
   output done;
+  
+//Wires to mem_ctrl
+	input logic [511:0] DataIn_host;
+	input logic tx_done_host;
+	input logic rd_valid_host;
+
+	output logic [511:0] DataOut_host;
+	output logic [31:0] AddrOut_host;
+	output logic [1:0] op_host;
 
   // TODO: add test bench
 
@@ -31,8 +49,15 @@ module memory(
     .wr(ExMe_out_mem_wrt),
     .en(ExMe_out_mem_en),
     .done(done),
-    .data_out(mem_data)
-  );
+    .data_out(mem_data),
+	// Wires to mem_ctrl
+	.DataIn_host(DataIn_host),
+	.tx_done_host(tx_done_host),
+	.rd_valid_host(rd_valid_host),
+	.DataOut_host(DataOut_host),
+	.AddrOut_host(AddrOut_host),
+	.op_host(op_host)
+    );
    // output logic done, different from data_valid?
 
 
