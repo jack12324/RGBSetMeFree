@@ -112,6 +112,7 @@ module mem_system
 		.cl_out		(cacheLine_out)
 	);
 
+	assign valid_in = 1'b1;
     assign data_valid = done_ctrl;	
 	assign done = ~stallMem;
 	assign CacheHit = hit_ctrl;
