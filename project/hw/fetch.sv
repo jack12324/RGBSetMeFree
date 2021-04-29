@@ -92,6 +92,7 @@ module fetch (clk, rst_n,
 		.addr(PC), 
 		.data_in(), 
 		.wr(1'b0), 
+		.en(1'b1),
 		.done(Done), 
 		.data_out(instr_mem),
 		//Wires to mem_ctrl

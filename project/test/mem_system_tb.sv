@@ -2,6 +2,7 @@ module mem_system_tb ();
     // Clock
 	logic clk;
 	logic rst;
+    logic en;
     logic Wr;
     logic Rd;
 	logic [31 : 0] Addr;
@@ -27,6 +28,7 @@ module mem_system_tb ();
         .clk(clk),
         .rst_n(~rst),
         .wr(Wr),
+        .en(en),
         .addr(Addr),
         .data_in(DataIn),
         .data_out(data_out),
@@ -69,6 +71,7 @@ module mem_system_tb ();
     initial begin
         clk = 1'b0;
         rst = 1'b1;
+        en = 1'b0;
         Rd = 1'b0;
         Wr = 1'b0;
         Addr = 32'd0;
@@ -89,7 +92,7 @@ module mem_system_tb ();
         #2;
         // simulation delay
         
-        if (Done) begin
+        if (data_valid) begin
         n_replies = n_replies + 1;
         if (CacheHit) begin
             n_cache_hits = n_cache_hits + 1;
@@ -112,6 +115,7 @@ module mem_system_tb ();
         end
         Rd = 1'd0;
         Wr = 1'd0;
+        en = 1'd0;
         end // if (Done_ref)
 
         // change inputs for next cycle
@@ -124,6 +128,7 @@ module mem_system_tb ();
             Addr = 32'd0; 
             Rd = 1'd0;
             Wr = 1'd0;
+            en = 1'd0;
             n_requests = n_requests + 1;
             n_replies = n_replies + 1;
             $display("LOG: Done full_random, Requests: %10d, Hits: %10d",
@@ -135,6 +140,7 @@ module mem_system_tb ();
             Addr = 32'd0;
             Rd = 1'd0;
             Wr = 1'd0;
+            en = 1'd0;
             n_requests = n_requests + 1;
             n_replies = n_replies + 1;
             $display("LOG: Done small_random, Requests: %10d, Hits: %10d",
@@ -146,6 +152,7 @@ module mem_system_tb ();
             Addr = 32'd0;
             Rd = 1'd0;
             Wr = 1'd0;
+            en = 1'd0;
             n_requests = n_requests + 1;
             n_replies = n_replies + 1;
             $display("LOG: Done sequential_addr, Requests: %10d, Hits: %10d",
@@ -174,7 +181,7 @@ module mem_system_tb ();
               $display("LOG: ReQNum %4d Wr Addr 0x%04x Value 0x%04x\n",
                        n_replies, Addr, DataIn);
            end
-           $display("ERROR! Request dropped");
+        // $display("ERROR! Request dropped");
         //    $stop();
         //    test_success = 1'b0;               
         //    n_replies = n_requests;	       
@@ -192,6 +199,7 @@ module mem_system_tb ();
                reg_readorwrite = 1;
                if (reg_readorwrite) begin
                   Wr = $random % 2;
+                  en = 1'd1;
                   index = (index < 8)?(index + 1):0;
                   Addr = {18'd0,index,3'd0,2'd0};
                   DataIn = $random % 32'hffff_ffff;
@@ -200,6 +208,7 @@ module mem_system_tb ();
                end else begin
                   Wr = 1'd0;
                   Rd = 1'd0;
+                  en = 1'd0;
                end  // if (reg_readorwrite)
                
             end // if (!Stall)
@@ -219,6 +228,7 @@ module mem_system_tb ();
             reg_readorwrite = 1;
             if (reg_readorwrite) begin
                 Wr = $random % 2;
+                en = 1'd1;
                 Addr = $random & 32'hFFFC;
                 DataIn = $random % 32'hffff;
                 Rd = ~Wr;
@@ -226,6 +236,7 @@ module mem_system_tb ();
             end else begin
                 Wr = 1'd0;
                 Rd = 1'd0;
+                en = 1'd0;
             end  // if (reg_readorwrite) 
         end // if (!Stall)
         end
@@ -244,6 +255,7 @@ module mem_system_tb ();
             reg_readorwrite = 1;
             if (reg_readorwrite) begin
                 Wr = $random % 2;
+                en = 1'd1;
                 Addr = (($random % 32'hffff) & 16'h07FC) | 16'h6000;
                 DataIn = $random % 32'hffff;
                 Rd = ~Wr;
@@ -251,6 +263,7 @@ module mem_system_tb ();
             end else begin
                 Wr = 1'd0;
                 Rd = 1'd0;
+                en = 1'd0;
             end  // if (reg_readorwrite) 
         end // if (!Stall)
         end
