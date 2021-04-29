@@ -68,6 +68,7 @@ always_comb begin
     case(currentState)
         IDLE: begin
             stall = 1'b0;
+            done = 1'b0;
             nextState = Rd_in? CMPRD: Wr_in ? CMPWR: IDLE;
         end
         CMPRD: begin
@@ -91,7 +92,7 @@ always_comb begin
             offset = FloppedAddressIn[5:0];
             //Now the entire cache line is available on cache_line_in
             op_host = 2'b11;            //Signal write to the mem_ctrl;
-            AddrOut_host = FloppedAddressIn;  //CPU Virtual Address must be prefixed
+            AddrOut_host = {FloppedAddressIn[31:6], 6'b0};  //CPU Virtual Address must be prefixed
             DataOut_host = cache_line_in;
             nextState = tx_done_host? MEMRD : MEMWB;
         end
@@ -104,11 +105,12 @@ always_comb begin
             //Now the entire cache line from host is available on dataIn_host
             op_host = 2'b01;            //Signal Read to the mem_ctrl;
             cache_line_out = DataIn_host;
-            AddrOut_host = FloppedAddressIn;  //CPU Virtual Address must be prefixed
+            AddrOut_host = {FloppedAddressIn[31:6], 6'b0};  //CPU Virtual Address must be prefixed
             DataOut_host = cache_line_in;
             replaceLine = tx_done_host? 1'b1: 1'b0;
-            DataOut_mem = tx_done_host & Rd? DataIn_cache : '0;
-            nextState = tx_done_host ? (Rd ? IDLE : CACHEWR) : MEMRD;
+            // DataOut_mem = tx_done_host & Rd? DataIn_cache : '0;
+            done = '0;  //Go to Comp Read again to force a hit on the line and give cache a cycle to get correct output
+            nextState = tx_done_host ? (Rd ? CMPRD : CACHEWR) : MEMRD;
         end
         CACHEWR: begin  //Writes the new word in replaced cache line
             wr_cache = 1'b1;
