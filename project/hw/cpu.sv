@@ -193,7 +193,7 @@ module cpu(
         //logic [31:0] ExMe_in_alu_out;
         //logic [31:0] ExMe_in_PC_next;
         //logic [31:0] ExMe_in_LR_wrt_data;
-        //logic [31:0] ExMe_in_reg_2;
+        logic [31:0] ExMe_in_reg_2;
         //logic [1:0] ExMe_in_FL_wrt_data;
     /////////////////////////////////////////////////////////////////////////////
 
@@ -647,7 +647,7 @@ module cpu(
     .DeEx_out_ALU_OP(DeEx_out_ALU_OP), 
 
 	.ExMe_in_alu_out(ExMe_in_alu_out),
-	.DeEx_out_reg_2(DeEx_out_reg_2),
+	.ExMe_in_reg_2(ExMe_in_reg_2), //could be an issue, see vs DeEx_out_reg_2
 	.ExMe_in_LR(ExMe_in_LR),
 	.ExMe_in_FL(ExMe_in_FL),
 	.ExMe_in_LR_wrt_data(ExMe_in_LR_wrt_data),
