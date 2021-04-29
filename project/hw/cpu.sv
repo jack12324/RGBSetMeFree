@@ -512,8 +512,8 @@ module cpu(clk, rst_n, tx_done, rd_valid, op, data_in, data_out, INT, INT_INSTR,
         .clk(clk),
         .rst_n(rst_n),
         // controls
- 	    .DeEx_out_Branch(),
-        .DeEx_out_Jump(),
+ 	.DeEx_out_Branch(DeEx_out_Branch),
+        .DeEx_out_Jump(DeEx_out_Jump),
         .DeEx_out_ALU_op(DeEx_out_ALU_OP),//lowercase op in execute module
         .forward1_sel(forward1_sel),
         .forward2_sel(forward2_sel),
