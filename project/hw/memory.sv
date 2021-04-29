@@ -14,7 +14,9 @@ module memory(
 	rd_valid_host,
 	DataOut_host,
 	AddrOut_host,
-	op_host
+	op_host,
+// jump start FPU
+	startFPU
 
   // 
   );
@@ -40,6 +42,8 @@ module memory(
 	output logic [31:0] AddrOut_host;
 	output logic [1:0] op_host;
 
+// jump start FPU
+	output logic startFPU;
   // TODO: add test bench
 
   mem_system dataMem(
@@ -63,5 +67,13 @@ module memory(
     );
    // output logic done, different from data_valid?
 
+	// jumpstart FPU
+	always_ff @(posedge clk, negedge rst_n) begin
+		if (!rst_n) 
+			startFPU <= 0;
+		else 
+			// if writing to start address, and the instruction is a store
+			startFPU <= (ExMe_out_alu_out == 32'h1000_0000 && ExMe_out_mem_wrt && ExMe_out_mem_en); // TODO check address, can I do combinational here?
+	end
 
 endmodule
