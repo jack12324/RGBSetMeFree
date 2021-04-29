@@ -86,6 +86,7 @@ module fetch (clk, rst_n,
 	assign out_PC_next = flush ? `NOP : PC;
 
 	// instruction memory access
+	/*
 	mem_system instructionMem(
 		.clk(clk), 
 		.rst_n(rst_n), 
@@ -106,7 +107,26 @@ module fetch (clk, rst_n,
 		.data_valid(),
 		.CacheHit()
 	);
-
+	*/
+  	fake_mem_system #(.FILENAME("project/test_images/memory.h")) dataMem(
+    	.clk(clk), .rst_n(rst_n), 
+    	.addr(ExMe_out_alu_out),
+    	.data_in(ExMe_out_reg_2),
+    	.wr(ExMe_out_mem_wrt),
+    	.en(ExMe_out_mem_en),
+    	.done(done),
+    	.data_out(mem_data),
+	// Wires to mem_ctrl
+	.DataIn_host(DataIn_host),
+	.tx_done_host(tx_done_host),
+	.rd_valid_host(rd_valid_host),
+	.DataOut_host(DataOut_host),
+	.AddrOut_host(AddrOut_host),
+	.op_host(op_host),
+	// extras unused
+	.data_valid(),
+	.CacheHit()
+    	);
 
 	// Assign the instruction to be executed 
 	assign instr = (use_cpu_injection == 1'b1) ? (cpu_injection) : ( (use_INT_INSTR == 1'b1) ? (INT_INSTR) : (instr_mem) ); 

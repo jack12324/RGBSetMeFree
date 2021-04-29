@@ -1,7 +1,8 @@
 // for faking memory to test fetch
 // v1.0 Simulates single cycle memory
 // v2.0 :: TODO Integrate Cache to Read from Rom Image and Mem_system has variable cycle output
-module mem_system
+module fake_mem_system
+#(parameter FILENAME = "project/test_images/rom_image.mem") 
 	(
 	//Memory System does not need reset
 	input clk,
@@ -36,7 +37,8 @@ module mem_system
 	
 	initial begin 
 	        $display("Loading rom."); 
-	        $readmemh("project/test_images/rom_image.mem", test_memory); 
+	        //$readmemh("project/test_images/rom_image.mem", test_memory); 
+	        $readmemh(FILENAME, test_memory); 
 		// relative file path form same place where work folder is
 
 	        $display("Contents of Memory: "); // display
@@ -44,6 +46,6 @@ module mem_system
         	    $display("%x :: %x", test_memory[i], (i+32'h2000));
         	end
     	end
-endmodule : mem_system
+endmodule : fake_mem_system
 
 
