@@ -64,6 +64,7 @@ module mem_system_tb ();
     integer n_cache_hits_total;
     reg     test_success;
     integer req_cycle;
+    integer i;
 
     initial begin
         clk = 1'b0;
@@ -216,7 +217,7 @@ module mem_system_tb ();
             reg_readorwrite = 1;
             if (reg_readorwrite) begin
                 Wr = $random % 2;
-                Addr = ($random % 32'hffff) & 16'hFFFC;
+                Addr = $random & 32'hFFFC;
                 DataIn = $random % 32'hffff;
                 Rd = ~Wr;
                 n_requests = n_requests + 1;               
@@ -270,7 +271,10 @@ module mem_system_tb ();
 
     task generate_dma;
         begin
-        DataIn_host = $urandom % 512'hFFFF_FFFF_FFFF_FFFF_FFFF_FFFF_FFFF_FFFF_FFFF_FFFF_FFFF_FFFF_FFFF_FFFF_FFFF_FFFF_FFFF_FFFF_FFFF_FFFF_FFFF_FFFF_FFFF_FFFF;
+        // DataIn_host = $urandom % 512'hFFFF_FFFF_FFFF_FFFF_FFFF_FFFF_FFFF_FFFF_FFFF_FFFF_FFFF_FFFF_FFFF_FFFF_FFFF_FFFF_FFFF_FFFF_FFFF_FFFF_FFFF_FFFF_FFFF_FFFF;
+        for (i=0; i < 7'h40; i++) begin
+            // i*8 +: 8 is basically (i+1)*8-1:i*8]         end
+            DataIn_host[i*8 +: 8] = ref_dut.mem[{Addr[32:6], i[5:0]}];
         //DataOut_host;    //Don't Care
         tx_done_host = $urandom % 2;
         rd_valid_host = tx_done_host;
