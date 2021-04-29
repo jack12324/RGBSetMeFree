@@ -164,7 +164,7 @@ module decode (
 			end
 			`ADDI: begin
 				ALU_src = 2'd0;
-				imm = {{20{instr[11]}}, instr[10:0]}; // sign extend 12 bit immediate to 32 bits
+				imm[31:0] = {{20{instr[11]}}, instr[10:0]}; // sign extend 12 bit immediate to 32 bits
 				next_reg_wrt_en = 1;
 				next_reg_wrt_sel = instr[26:22];
 				LR_read = instr[21:17]==30;
@@ -178,7 +178,7 @@ module decode (
 			end
 			`SUBI: begin
 				ALU_src = 2'd0;
-				imm = {{20{instr[11]}}, instr[10:0]}; // sign extend 12 bit immediate to 32 bits
+				imm[31:0] = {{20{instr[11]}}, instr[10:0]}; // sign extend 12 bit immediate to 32 bits
 				next_reg_wrt_en = 1;
 				next_reg_wrt_sel = instr[26:22];
 				LR_read = instr[21:17]==30;
@@ -237,7 +237,7 @@ module decode (
 			end
 			`LDI: begin
 				ALU_src = 2'd0;
-				imm = {{16{0}}, instr[15:0]}; // 16 bit immediate to 32 bits, ignore top 16 bits anyway
+				imm[31:0] = {{16{0}}, instr[15:0]}; // 16 bit immediate to 32 bits, ignore top 16 bits anyway
 				mem_en = 1;
 				result_sel = 2'b01;
 				next_reg_wrt_en = 1;
@@ -252,7 +252,7 @@ module decode (
 			end
 			`STI: begin
 				ALU_src = 2'd0;
-				imm = {{16{0}}, instr[15:0]}; // 16 bit immediate to 32 bits, ignore top 16 bits anyway
+				imm[31:0] = {{16{0}}, instr[15:0]}; // 16 bit immediate to 32 bits, ignore top 16 bits anyway
 				mem_en = 1;
 				mem_wrt = 1;
 				LR_read = instr[21:17]==30;

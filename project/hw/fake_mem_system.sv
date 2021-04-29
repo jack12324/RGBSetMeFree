@@ -21,6 +21,8 @@ module fake_mem_system
 	//Addr must be from 0x2000 to 0x2FFF
 	logic [31:0] ram_addr;
 	assign ram_addr = {addr[23:2], 2'b0};	//Rounded Down Word Alignment
+	logic [31:0] test_data = test_memory[ram_addr];
+	logic [31:0] EndianChange = {test_data[7:0], test_data[15:8], test_data[23:16], test_data[31:24]};
 
 	always_ff @(posedge clk) begin
 		if(wr) begin
@@ -29,7 +31,7 @@ module fake_mem_system
 			stall = 1'b0;
 		end
 		else begin
-			data_out <= test_memory[ram_addr];
+			data_out <= EndianChange;
 			stall = 1'b1;
 			done = 1'b1;
 		end
@@ -41,7 +43,7 @@ module fake_mem_system
 	initial begin 
 	        $display("Loading FILENAME:%s", FILENAME);
 	        //$readmemh("project/test_images/rom_image.mem", test_memory); 
-	        $readmemh(FILENAME, test_memory); 
+		$readmemh(FILENAME, test_memory); 
 		// relative file path form same place where work folder is
 
 	        $display("addr :: data "); // display   	    	
