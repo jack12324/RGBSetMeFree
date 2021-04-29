@@ -10,7 +10,7 @@ module mem_system
 	input [31 : 0] addr, 
 	input [31 : 0] data_in, 
 	output logic [31:0] data_out,
-	output logic data_valid,
+	output logic stall,
 	output logic done,
 	//Wires to Mem_ctrl
 	input logic [511:0] DataIn_host,
@@ -113,8 +113,8 @@ module mem_system
 	);
 
 	assign valid_in = 1'b1;
-    assign data_valid = done_ctrl;	
-	assign done = ~stallMem;
+    assign done = done_ctrl;	
+	assign stall = stallMem;
 	assign CacheHit = hit_ctrl;
 
 endmodule 

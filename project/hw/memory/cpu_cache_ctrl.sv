@@ -150,7 +150,7 @@ always_comb begin
         default: begin
             //Mem
             DataOut_mem = '0;
-            stall = '0;
+            stall = ~done;
             done = '0;
             hit_out = '0;
             //DMA
