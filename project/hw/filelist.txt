@@ -52,4 +52,14 @@ memory/mem_ctrl.sv
 memory/mem_system.sv
 memory/ram_block.sv
 
+cci_dma.sv
+cci_mpf_app_conf_default.vh
+cci_mpf_app_conf.vh
+csr_mgr.sv
+csr_mgr.vh
+dma_if.vh
+hal.sv
+memory_map.sv
+mmio_if.vh
+
 QI:afu.qsf
