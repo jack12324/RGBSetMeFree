@@ -244,6 +244,7 @@ module cpu(
     	logic [31:0] ExMe_out_alu_out;
         logic ExMe_out_Branch;
 	    logic ExMe_out_Jump;
+        logic [4:0] ExMe_out_ALU_OP;
     	logic [31:0] ExMe_out_reg_2;
     	logic [31:0] ExMe_out_LR;
     	logic [1:0] ExMe_out_FL;
@@ -641,6 +642,10 @@ module cpu(
         // Inputs to the pipeline registers 
     	// Data signals 
 	.ExMe_in_PC_next(ExMe_in_PC_next),
+    .DeEx_out_Branch(DeEx_out_Branch), 
+	.DeEx_out_Jump(DeEx_out_Jump), 
+    .DeEx_out_ALU_OP(DeEx_out_ALU_OP), 
+
 	.ExMe_in_alu_out(ExMe_in_alu_out),
 	.DeEx_out_reg_2(DeEx_out_reg_2),
 	.ExMe_in_LR(ExMe_in_LR),
@@ -663,6 +668,8 @@ module cpu(
 	.ExMe_out_PC_next(ExMe_out_PC_next),
     .ExMe_out_Branch(ExMe_out_Branch),
     .ExMe_out_Jump(ExMe_out_Jump),
+    .ExMe_out_ALU_OP(ExMe_out_ALU_OP),
+
 	.ExMe_out_alu_out(ExMe_out_alu_out),
 	.ExMe_out_reg_2(ExMe_out_reg_2),
 	.ExMe_out_LR(ExMe_out_LR),
