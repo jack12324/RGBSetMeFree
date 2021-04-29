@@ -56,7 +56,7 @@ namespace priscas
 				{
 					fprintf(stdout, "Error: instruction file (through -i) could not be opened for reading.\n");
 					return;
-					
+
 				}
 			}
 		}
@@ -91,7 +91,7 @@ namespace priscas
 					{
 						Shell_Cload::execute_runtime_directive(chopped);
 					}
-			
+
 					catch(priscas::mt_exception & e)
 					{
 						WriteToError(e.get_err());
@@ -153,7 +153,7 @@ namespace priscas
 
 				const UPString& val = this->ReadFromInput();
 				UPString_Vec chopped = chop_string(val);
-			
+
 
 				if(val.size() == 0)
 				{
@@ -166,7 +166,7 @@ namespace priscas
 					{
 						Shell_Cload::execute_runtime_directive(chopped);
 					}
-			
+
 					catch(priscas::mt_exception & e)
 					{
 						WriteToError(e.get_err());

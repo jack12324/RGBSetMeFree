@@ -20,7 +20,7 @@ module cpu
 		WRITE = 1'b1
 	} cpu_state;
 
-	
+
 	cpu_state state;
 
 	logic [31:0] line_buffer [15:0];
@@ -31,9 +31,9 @@ module cpu
 		io_address = 'h0;
 		op = 2'b01;
 		common_data_bus_out = '0;
-		case(state) 
+		case(state)
 			READ: begin
-				
+
 			end
 			WRITE: begin
 				op = 'b11;
@@ -45,7 +45,6 @@ module cpu
 
 	always_ff @(posedge clk, negedge rst_n) begin
 		if(!rst_n) begin
-
 			for(integer i = 0; i < 16; ++i)
 				line_buffer[i] <= '0;
 			state <= READ;
@@ -86,4 +85,3 @@ module cpu
 	end
 
 endmodule
-

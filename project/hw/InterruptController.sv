@@ -1,9 +1,7 @@
-// Addresses for routines 
-
 module InterruptController(clk, rst_n, IO, ACK, INT, INT_INSTR, IMR_in);
 
     /**
-    Addresses to where the interrupt service routines 
+    Instructions to where the interrupt service routines 
     are stored. Used to send jump instructions.
 
     All ISRs are 0.5KB at the most (about 100 instructions)
@@ -19,17 +17,19 @@ module InterruptController(clk, rst_n, IO, ACK, INT, INT_INSTR, IMR_in);
     parameter INSTR_IO_5 = 32'hA000000A; 
     parameter INSTR_IO_6 = 32'hA000000C; 
     parameter INSTR_IO_7 = 32'hA000000E; 
-    parameter INSTR_NOOP = 32'h00000000;
+    parameter INSTR_NOOP = 32'h78000000;
 
     input clk; // System clock 
     input rst_n; // Active low reset   
 
     input ACK; // Interrupt Acknowledge signal from the CPU 
     input [7:0] IO; // IO request signals. Direct connection to IO device 
+                    // Connect all unused bits to GND (0)
     input [7:0] IMR_in; // input to the IMR register
+                        // If unused, connect to VCC (1)
 
-    output INT; // Interrupt service request signal to the CPU
-    output [31:0] INT_INSTR; // Used to inject Instructions into the CPU pipeline 
+    output reg INT; // Interrupt service request signal to the CPU
+    output reg [31:0] INT_INSTR; // Used to inject Instructions into the CPU pipeline 
 
     reg [7:0] IMR; // Interrupt Mask Register (more information on ff block)
     reg [7:0] IRR; // Interrupt Request Register(more information on ff block)
@@ -38,10 +38,12 @@ module InterruptController(clk, rst_n, IO, ACK, INT, INT_INSTR, IMR_in);
     reg [7:0] clr; // This signal clears the Signal request in the IRR
 
     // States for the control logic stae machine 
-    typedef enum reg [2:0] {IDLE, SERV_REQ, NOOPS, INSTR, WAIT, CLR} state_t;
+    typedef enum reg [2:0] {IDLE, SERV_REQ, NOOPS, INSTR, WAIT, CLR, WAIT_CLR} state_t;
 	state_t state, next_state;
 
     reg [2:0] counter; // Counter for the NoOps to be sent out to the CPU
+
+    wire [7:0] IRR_masked; // Interrupt sevice request with mask applied 
 
     /** 
     Priority Logic
@@ -58,23 +60,27 @@ module InterruptController(clk, rst_n, IO, ACK, INT, INT_INSTR, IMR_in);
     and where they are physically connected, determine the ISR_in signal.
     **/
     always_comb begin
+
+
         // Only service one interrupt at a time 
-        if (IRR[0] == 1'b1) 
+        if (IRR_masked[0] == 1'b1) 
             ISR_in = 8'b00000001;
-        else if (IRR[1] == 1'b1) 
+        else if (IRR_masked[1] == 1'b1) 
             ISR_in = 8'b00000010;
-        else if (IRR[2] == 1'b1) 
+        else if (IRR_masked[2] == 1'b1) 
             ISR_in = 8'b00000100;
-        else if (IRR[3] == 1'b1) 
+        else if (IRR_masked[3] == 1'b1) 
             ISR_in = 8'b00001000;
-        else if (IRR[4] == 1'b1) 
-            ISR_in = 8'b000010000;
-        else if (IRR[5] == 1'b1) 
+        else if (IRR_masked[4] == 1'b1) 
+            ISR_in = 8'b00010000;
+        else if (IRR_masked[5] == 1'b1) 
             ISR_in = 8'b00100000;
-        else if (IRR[6] == 1'b1) 
+        else if (IRR_masked[6] == 1'b1) 
             ISR_in = 8'b01000000;
-        else if (IRR[7] == 1'b1) 
-            ISR_in = 8'b10000000;        
+        else if (IRR_masked[7] == 1'b1) 
+            ISR_in = 8'b10000000;       
+        else 
+            ISR_in = 8'b00000000; 
     end
 
     /** 
@@ -91,6 +97,7 @@ module InterruptController(clk, rst_n, IO, ACK, INT, INT_INSTR, IMR_in);
     - INSTR: Sending jump instruction to CPU
     - WAIT: Waiting for CPU to execute the service routine 
     - CLR: Clear interrupt request 
+    - WAIT_CLR: wait for interrupt to be cleared 1 clk cycle 
     */
     always_comb begin
         // Setting the default values to avoid infered latches 
@@ -117,7 +124,7 @@ module InterruptController(clk, rst_n, IO, ACK, INT, INT_INSTR, IMR_in);
                    next_state = SERV_REQ;
                end 
                else begin 
-                   next_state = SERV_REQ;
+                   next_state = NOOPS;
                end 
             end
 
@@ -127,6 +134,7 @@ module InterruptController(clk, rst_n, IO, ACK, INT, INT_INSTR, IMR_in);
                 INT_INSTR = INSTR_NOOP;
                 if (counter == 3'b101) begin
                     INT_INSTR = INSTR_NOOP;
+                    next_state = INSTR;
                 end
                 else begin
                     next_state = NOOPS;
@@ -136,7 +144,17 @@ module InterruptController(clk, rst_n, IO, ACK, INT, INT_INSTR, IMR_in);
             // Unconsitional transition after 1 cycle: INSTR --> WAIT
             INSTR : begin
                 next_state = WAIT;
-                clr = ISR;
+
+                case (ISR)
+                    8'b00000001 : INT_INSTR = INSTR_IO_0;
+                    8'b00000010 : INT_INSTR = INSTR_IO_1;
+                    8'b00000100 : INT_INSTR = INSTR_IO_2;
+                    8'b00001000 : INT_INSTR = INSTR_IO_3;
+                    8'b00010000 : INT_INSTR = INSTR_IO_4;
+                    8'b00100000 : INT_INSTR = INSTR_IO_5;
+                    8'b01000000 : INT_INSTR = INSTR_IO_6;
+                    8'b10000000 : INT_INSTR = INSTR_IO_7;
+                endcase
                 
             end
 
@@ -151,20 +169,15 @@ module InterruptController(clk, rst_n, IO, ACK, INT, INT_INSTR, IMR_in);
                end 
             end
 
-            // Unconsitional transition after 1 cycle: CLR --> IDLE
+            // Unconsitional transition after 1 cycle: CLR --> WAIT_CLR
             CLR : begin
-                next_state = WAIT;
+                next_state = WAIT_CLR;
+                clr = ISR;  
+            end
 
-                case (ISR)
-                    8'b00000001 : INT_INSTR = INSTR_IO_0;
-                    8'b00000010 : INT_INSTR = INSTR_IO_1;
-                    8'b00000100 : INT_INSTR = INSTR_IO_2;
-                    8'b00001000 : INT_INSTR = INSTR_IO_3;
-                    8'b00010000 : INT_INSTR = INSTR_IO_4;
-                    8'b00100000 : INT_INSTR = INSTR_IO_5;
-                    8'b01000000 : INT_INSTR = INSTR_IO_6;
-                    8'b10000000 : INT_INSTR = INSTR_IO_7;
-                endcase
+            // Unconsitional transition after 1 cycle: WAIT_CLR --> IDLE
+            WAIT_CLR : begin
+                next_state = IDLE;  
             end
 
         endcase
@@ -201,14 +214,14 @@ module InterruptController(clk, rst_n, IO, ACK, INT, INT_INSTR, IMR_in);
             IRR <= {7{1'b0}};
         else if (|IO) begin 
             // Assert the bit, but do not remove if called again
-            IRR[0] <= (IO[0] == 1'b1) ? ( (IRR[0] == 1'b1) ? 1'b1 : 1'b0 ) : (IRR[0]);
-            IRR[1] <= (IO[1] == 1'b1) ? ( (IRR[1] == 1'b1) ? 1'b1 : 1'b0 ) : (IRR[1]);
-            IRR[2] <= (IO[2] == 1'b1) ? ( (IRR[2] == 1'b1) ? 1'b1 : 1'b0 ) : (IRR[2]);
-            IRR[3] <= (IO[3] == 1'b1) ? ( (IRR[3] == 1'b1) ? 1'b1 : 1'b0 ) : (IRR[3]);
-            IRR[4] <= (IO[4] == 1'b1) ? ( (IRR[4] == 1'b1) ? 1'b1 : 1'b0 ) : (IRR[4]);
-            IRR[5] <= (IO[5] == 1'b1) ? ( (IRR[5] == 1'b1) ? 1'b1 : 1'b0 ) : (IRR[5]);
-            IRR[6] <= (IO[6] == 1'b1) ? ( (IRR[6] == 1'b1) ? 1'b1 : 1'b0 ) : (IRR[6]);
-            IRR[7] <= (IO[7] == 1'b1) ? ( (IRR[7] == 1'b1) ? 1'b1 : 1'b0 ) : (IRR[7]);
+            IRR[0] <= (IO[0] == 1'b1) ? ( (IRR[0] == 1'b1) ? 1'b1 : 1'b1 ) : (IRR[0]);
+            IRR[1] <= (IO[1] == 1'b1) ? ( (IRR[1] == 1'b1) ? 1'b1 : 1'b1 ) : (IRR[1]);
+            IRR[2] <= (IO[2] == 1'b1) ? ( (IRR[2] == 1'b1) ? 1'b1 : 1'b1 ) : (IRR[2]);
+            IRR[3] <= (IO[3] == 1'b1) ? ( (IRR[3] == 1'b1) ? 1'b1 : 1'b1 ) : (IRR[3]);
+            IRR[4] <= (IO[4] == 1'b1) ? ( (IRR[4] == 1'b1) ? 1'b1 : 1'b1 ) : (IRR[4]);
+            IRR[5] <= (IO[5] == 1'b1) ? ( (IRR[5] == 1'b1) ? 1'b1 : 1'b1 ) : (IRR[5]);
+            IRR[6] <= (IO[6] == 1'b1) ? ( (IRR[6] == 1'b1) ? 1'b1 : 1'b1 ) : (IRR[6]);
+            IRR[7] <= (IO[7] == 1'b1) ? ( (IRR[7] == 1'b1) ? 1'b1 : 1'b1 ) : (IRR[7]);
         end 
         else if (|clr) begin
             // Clears the interrupts asserted in clear and leaves others
@@ -251,12 +264,16 @@ module InterruptController(clk, rst_n, IO, ACK, INT, INT_INSTR, IMR_in);
     Used to count the cycles sending NoOps. 
     Counter won't go over 5 and it will only count when in the NOOP state.
     **/
-    always @(posedge clk, negedge rst_n) begin 
+    always_ff @(posedge clk, negedge rst_n) begin 
         if (~rst_n)
-            counter <= 3'b000;
+            counter <= 3'b001;
         else 
             // Only count when the control logic is sending NoOps
-            counter <= (state == NOOPS) ? ((counter == 3'b101) ? 3'b101 : (counter + 1'b1)) : 3'b000;
+            // starting at 1 so it noops 5 times
+            counter <= (state == NOOPS) ? ((counter == 3'b101) ? 3'b101 : (counter + 1'b1)) : 3'b001;
     end 
+
+    // Apply the mask to the interrupt requests
+    assign IRR_masked = IRR & IMR;
 
 endmodule 

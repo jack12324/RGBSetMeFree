@@ -68,7 +68,7 @@
 
 `include "cci_mpf_if.vh"
 
-module afu 
+module afu
   (
    input clk,
    input rst,
@@ -77,7 +77,7 @@ module afu
    );
 
    localparam int CL_ADDR_WIDTH = $size(t_ccip_clAddr);
-      
+
    // I want to just use dma.count_t, but apparently
    // either SV or Modelsim doesn't support that. Similarly, I can't
    // just do dma.SIZE_WIDTH without getting errors or warnings about
@@ -85,7 +85,7 @@ module afu
    // some tools. Declaring a function within the interface works just fine in
    // some tools, but in Quartus I get an error about too many ports in the
    // module instantiation.
-   typedef logic [CL_ADDR_WIDTH:0] count_t;   
+   typedef logic [CL_ADDR_WIDTH:0] count_t;
    count_t 	size;
    logic 	go;
    logic 	done;
@@ -162,9 +162,9 @@ module afu
    // Assign the starting addresses from the memory map.
    assign dma.rd_addr = final_addr;
    assign dma.wr_addr = final_addr;
-   
+
    // Use the size (# of cache lines) specified by software.
-   assign dma.rd_size = size;
+   assign dma.rd_size = size; //Comes from memory_map.sv (Change it to FPU DRAM if size)
    assign dma.wr_size = size;
 
    // Start both the read and write channels when the MMIO go is received.
@@ -183,9 +183,6 @@ module afu
 
    // The AFU is done when the DMA is done writing size cache lines.
    assign done = dma.wr_done;
-            
+
 endmodule
-
-
-
 

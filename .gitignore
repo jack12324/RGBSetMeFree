@@ -1,13 +1,21 @@
-*.swp
+*.mpf
+*.cr.mti
+transcript
+*.wlf
+work/
 *.bak
+ECE552/
+*.swp
 *.swo
 *.swn
 *.swm
 synth
 *.jack
 *.mti
-*.mpf
 *transcript
+<<<<<<< HEAD
 .vscode
 *.txt
 *.pyc
+loadfile_all.img
+.vscode/
