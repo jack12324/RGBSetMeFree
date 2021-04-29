@@ -81,7 +81,7 @@ module mem_system_tb ();
         req_cycle = 0;
         #10;
         rst = 1'b0;
-        tx_done_host = 1'b0;
+        tx_done_host = 1'b1;
         
     end
 
@@ -275,8 +275,9 @@ module mem_system_tb ();
         begin
         // DataIn_host = $urandom % 512'hFFFF_FFFF_FFFF_FFFF_FFFF_FFFF_FFFF_FFFF_FFFF_FFFF_FFFF_FFFF_FFFF_FFFF_FFFF_FFFF_FFFF_FFFF_FFFF_FFFF_FFFF_FFFF_FFFF_FFFF;
         for (i=0; i < 7'h40; i++) begin
-            // i*8 +: 8 is basically (i+1)*8-1:i*8]         end
+            // i*8 +: 8 is basically (i+1)*8-1:i*8]         
             DataIn_host[i*8 +: 8] = ref_dut.mem[{Addr[32:6], i[5:0]}];
+		end
         //DataOut_host;    //Don't Care
         tx_done_host = $urandom % 2;
         rd_valid_host = tx_done_host;
