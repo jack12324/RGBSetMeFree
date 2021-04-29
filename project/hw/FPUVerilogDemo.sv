@@ -1,12 +1,13 @@
 module FPUVerilogDemo();
-	logic clk, rst_n, mapped_data_valid, mapped_data_request, done;
-	logic [31:0] mapped_data;
+	localparam START_ADDRESS = 32'h1000_0000;
+	logic clk, rst_n, mapped_data_valid, mapped_data_request, done, start;
+	logic [511:0] mapped_data;
 	FPUDRAM_if dram_if();
 	logic [31:0] mapped_address;
 
-	FPU #(.COL_WIDTH(10), .MEM_BUFFER_WIDTH(512), .CL_WIDTH(64)) dut(.clk(clk), .rst_n(rst_n), .done(done), .mapped_data_valid(mapped_data_valid), .mapped_data_request(mapped_data_request), .mapped_data(mapped_data), .mapped_address(mapped_address), .dram_if(dram_if.FPU));
+	FPU #(.COL_WIDTH(10), .MEM_BUFFER_WIDTH(512), .CL_WIDTH(64), .START_ADDRESS(START_ADDRESS)) dut(.clk(clk), .rst_n(rst_n), .done(done), .start(start), .mapped_data_valid(mapped_data_valid), .mapped_data_request(mapped_data_request), .mapped_data(mapped_data), .mapped_address(mapped_address), .dram_if(dram_if.FPU));
 
-	logic [31:0] start_address, result_address, start_sig;
+	logic [31:0] start_address, result_address;
 	logic [15:0] width, height;
 	logic signed [7:0] filter_conf [8:0];
 	int dram_request_num = 0;
@@ -39,10 +40,10 @@ module FPUVerilogDemo();
 		$readmemh("RGB.txt", input_memory, start_address);
 
 		@(posedge clk);
-		start_sig = 1'b1;
+		start = 1'b1;
 		
 		@(posedge dut.controller.conf.load_config_done);	
-		start_sig = 1'b0;
+		start = 1'b0;
 		
 		@(posedge done);
 		@(posedge clk);
@@ -116,32 +117,31 @@ module FPUVerilogDemo();
 	endtask
 
 	task automatic get_mapped_mem(); 	
-		int M_STARTSIG_ADDRESS = 32'h1000_0120;
-		int M_FILTER_ADDRESS = 32'h1000_0040;
-		int M_DIMS_ADDRESS = 32'h1000_0000;
-		int M_START_ADDRESS = 32'h1000_0020;
-		int M_RESULT_ADDRESS = 32'h1000_0100;
-		int noise = $random();
-		mapped_data_valid = 0;
 		@(posedge clk);
-			if(mapped_data_request)begin
-			for(int i = 0; i < $urandom_range(2,10); i++)
+		mapped_data_valid = 0;
+		if(mapped_data_request)begin
+			for(int i = 0; i < $urandom_range(1,100); i++)
 				@(posedge clk);
 			case (mapped_address)
-				M_STARTSIG_ADDRESS: mapped_data = start_sig;
-				M_FILTER_ADDRESS: mapped_data = {filter_conf[0],filter_conf[1],filter_conf[2],filter_conf[3]};
-				M_FILTER_ADDRESS+4: mapped_data = {filter_conf[4],filter_conf[5],filter_conf[6],filter_conf[7]};
-				M_FILTER_ADDRESS+8: mapped_data = {filter_conf[8], noise[23:0]};
-				M_DIMS_ADDRESS: mapped_data = {width, height};
-				M_START_ADDRESS: mapped_data = start_address;
-				M_RESULT_ADDRESS: mapped_data = result_address;
-				default: mapped_data = 'x;
+				START_ADDRESS: mapped_data[511:344] = {	width, 
+							height, 
+							start_address, 
+							result_address, 
+							filter_conf[0], 
+							filter_conf[1],
+							filter_conf[2],
+							filter_conf[3],
+							filter_conf[4],
+							filter_conf[5],
+							filter_conf[6],
+							filter_conf[7],
+							filter_conf[8]
+							};
+				default: mapped_data = '0;
 			endcase
 			@(posedge clk);
 			mapped_data_valid = 1;
 			@(posedge clk);
-		end else begin
-			mapped_data = '0;
-		end
+		end	
 	endtask
 endmodule

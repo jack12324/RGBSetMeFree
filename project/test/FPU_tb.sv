@@ -1,15 +1,16 @@
 module FPU_tb();
+	parameter START_ADDRESS = 32'h1000_0000;
 	
-	logic clk, rst_n, mapped_data_valid;
-	logic [31:0] mapped_data;
+	logic clk, rst_n, mapped_data_valid, mapped_data_request, start;
+	logic [511:0] mapped_data;
 	FPUDRAM_if dram_if();
 	logic [31:0] mapped_address;
 	logic done;
 
-	FPU #(.COL_WIDTH(10), .MEM_BUFFER_WIDTH(512), .CL_WIDTH(64)) dut(.clk(clk), .rst_n(rst_n), .done(done), .mapped_data_valid(mapped_data_valid), .mapped_data(mapped_data), .mapped_address(mapped_address), .dram_if(dram_if.FPU));
+	FPU #(.COL_WIDTH(10), .MEM_BUFFER_WIDTH(512), .CL_WIDTH(64), .START_ADDRESS(START_ADDRESS)) dut(.clk(clk), .rst_n(rst_n), .start(start), .done(done), .mapped_data_request(mapped_data_request), .mapped_data_valid(mapped_data_valid), .mapped_data(mapped_data), .mapped_address(mapped_address), .dram_if(dram_if.FPU));
 
 	int errors;
-	logic [31:0] start_address, result_address, start_sig;
+	logic [31:0] start_address, result_address;
 	logic [15:0] width, height;
 	logic signed [7:0] filter_conf [8:0];
 	int dram_request_num = 0;
@@ -26,9 +27,11 @@ module FPU_tb();
 	initial forever dramRespond();
 
 	initial begin
+		mapped_data = '0;
 		clk = 1'b0;
 		rst_n = 1'b0;
 		errors = 0;
+		start = 0;
 
 		@(posedge clk);
 		rst_n = 1'b1;
@@ -57,10 +60,10 @@ module FPU_tb();
 		initialize_memories();
 
 		@(posedge clk);
-		start_sig = 1'b1;
+		start = 1'b1;
 		
 		@(posedge dut.controller.conf.load_config_done);	
-		start_sig = 1'b0;
+		start = 1'b0;
 		check_config_vars();
 		
 		@(posedge dut.done);
@@ -90,7 +93,7 @@ module FPU_tb();
 		width = w;
 		height = h;
 		start_address = $urandom_range(0,6553);
-		;result_address = $urandom_range(0,6553);
+		result_address = $urandom_range(0,6553);
 		for(int i = 0; i < 9; i++)
 			filter_conf[i] = $urandom_range(0,2)-1;
 	endtask
@@ -157,28 +160,32 @@ module FPU_tb();
 	endtask
 
 	task automatic get_mapped_mem(); 	
-		int M_STARTSIG_ADDRESS = 32'h1000_0120;
-		int M_FILTER_ADDRESS = 32'h1000_0040;
-		int M_DIMS_ADDRESS = 32'h1000_0000;
-		int M_START_ADDRESS = 32'h1000_0020;
-		int M_RESULT_ADDRESS = 32'h1000_0100;
-		int noise = $random();
+		@(posedge clk);
 		mapped_data_valid = 0;
-		for(int i = 0; i < $urandom_range(2,10); i++)
+		if(mapped_data_request)begin
+			for(int i = 0; i < $urandom_range(1,100); i++)
+				@(posedge clk);
+			case (mapped_address)
+				START_ADDRESS: mapped_data[511:344] = {	width, 
+							height, 
+							start_address, 
+							result_address, 
+							filter_conf[0], 
+							filter_conf[1],
+							filter_conf[2],
+							filter_conf[3],
+							filter_conf[4],
+							filter_conf[5],
+							filter_conf[6],
+							filter_conf[7],
+							filter_conf[8]
+							};
+				default: mapped_data = '0;
+			endcase
 			@(posedge clk);
-		case (mapped_address)
-			M_STARTSIG_ADDRESS: mapped_data = start_sig;
-			M_FILTER_ADDRESS: mapped_data = {filter_conf[0],filter_conf[1],filter_conf[2],filter_conf[3]};
-			M_FILTER_ADDRESS+4: mapped_data = {filter_conf[4],filter_conf[5],filter_conf[6],filter_conf[7]};
-			M_FILTER_ADDRESS+8: mapped_data = {filter_conf[8], noise[23:0]};
-			M_DIMS_ADDRESS: mapped_data = {width, height};
-			M_START_ADDRESS: mapped_data = start_address;
-			M_RESULT_ADDRESS: mapped_data = result_address;
-			default: mapped_data = 'x;
-		endcase
-		@(posedge clk);
-		mapped_data_valid = 1;
-		@(posedge clk);
+			mapped_data_valid = 1;
+			@(posedge clk);
+		end	
 	endtask
 
 	function automatic [7:0] calc_MAC(input[7:0] array0 [8:0], input signed [7:0] array1 [8:0]);
