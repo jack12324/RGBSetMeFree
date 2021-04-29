@@ -181,8 +181,8 @@ module cpu(
         //logic DeEx_out_mem_en;
         //logic [1:0] DeEx_out_result_sel;
         //logic [31:0] DeEx_out_PC_next;
-        //logic [31:0] DeEx_out_reg_1;
-        //logic [31:0] DeEx_out_reg_2;
+        //logic [31:0] DeEx_out_reg_1_data; // note _data
+        //logic [31:0] DeEx_out_reg_2_data; // note _data
         //logic [1:0] DeEx_out_ALU_src;
         //logic [31:0] DeEx_out_imm;
         //logic [1:0] DeEx_out_FL;
@@ -559,8 +559,8 @@ module cpu(
         .DeEx_out_mem_en(DeEx_out_mem_en),
         .DeEx_out_result_sel(DeEx_out_result_sel),
         .DeEx_out_PC_next(DeEx_out_PC_next),    
-        .DeEx_out_reg_1(DeEx_out_reg_1),
-        .DeEx_out_reg_2(DeEx_out_reg_2),
+        .DeEx_out_reg_1(DeEx_out_reg_1_data),
+        .DeEx_out_reg_2(DeEx_out_reg_2_data),
         .DeEx_out_ALU_src(DeEx_out_ALU_src),    
         .DeEx_out_imm(DeEx_out_imm),
         .DeEx_out_FL(DeEx_out_FL),
