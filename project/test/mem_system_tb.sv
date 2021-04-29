@@ -41,10 +41,9 @@ module mem_system_tb ();
         .CacheHit(CacheHit)
     );
     
-    
     mem_system_ref ref_dut(
         .clk(clk),
-        .rst_n(rst_n),
+        .rst_n(~rst),
         .Wr(Wr),
         .Rd(~Wr),
         .Addr_in(Addr),
@@ -80,7 +79,7 @@ module mem_system_tb ();
         test_success = 1'b1;
         req_cycle = 0;
         #10;
-        rst = 1'b1;
+        rst = 1'b0;
         
     end
 
