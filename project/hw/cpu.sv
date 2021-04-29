@@ -193,7 +193,7 @@ module cpu(
         //logic [31:0] ExMe_in_alu_out;
         //logic [31:0] ExMe_in_PC_next;
         //logic [31:0] ExMe_in_LR_wrt_data;
-        //logic [31:0] ExMe_in_reg_2;
+        logic [31:0] ExMe_in_reg_2;
         //logic [1:0] ExMe_in_FL_wrt_data;
     /////////////////////////////////////////////////////////////////////////////
 
@@ -647,7 +647,7 @@ module cpu(
     .DeEx_out_ALU_OP(DeEx_out_ALU_OP), 
 
 	.ExMe_in_alu_out(ExMe_in_alu_out),
-	.DeEx_out_reg_2(DeEx_out_reg_2),
+	.ExMe_in_reg_2(ExMe_in_reg_2), //could be an issue, see vs DeEx_out_reg_2
 	.ExMe_in_LR(ExMe_in_LR),
 	.ExMe_in_FL(ExMe_in_FL),
 	.ExMe_in_LR_wrt_data(ExMe_in_LR_wrt_data),
@@ -775,6 +775,21 @@ module cpu(
 	// connect wires
 	assign ExMe_in_FL = DeEx_out_FL;
 	assign ExMe_in_LR = DeEx_out_LR;
+
+    // FLush logic 
+    // .ExMe_out_Branch(ExMe_out_Branch),
+    // .ExMe_out_Jump(ExMe_out_Jump),
+    // .ExMe_out_ALU_OP(ExMe_out_ALU_OP),
+    // .ExMe_out_FL(ExMe_out_FL),  / N = ExMe_out_FL[1] /  Z = ExMe_out_FL[0]
+
+    assign flush =  (ExMe_out_Branch && ~ExMe_out_Jump) ?  ((ExMe_out_ALU_OP == 2'd0 && ExMe_out_FL[0] == 1) ? (1'b1) :  
+                                                            (ExMe_out_ALU_OP == 2'd1 && ExMe_out_FL[0] == 0) ? (1'b1) : 
+                                                            (ExMe_out_ALU_OP == 2'd2 && ExMe_out_FL[1] == 1) ? (1'b1) : 
+                                                            (ExMe_out_ALU_OP == 2'd3 && ExMe_out_FL[1] == 0) ? (1'b1) : 1'b0) : 
+                                                            ( ExMe_out_Jump ? ( (ExMe_out_ALU_OP == 2'd0 || ExMe_out_ALU_OP == 2'd2) ? (1'b1) : 
+                                                            ((ExMe_out_ALU_OP == 2'd1) ? (1'b1) : 1'b0)) : 1'b0);
+
+
 // todo stalling (insert NOPs, using Done signals and prediction and stuff, see 552)
 // todo flushing (flush up to execute, using Branching, see 552)
 
