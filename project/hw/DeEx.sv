@@ -78,8 +78,8 @@ module DeEx(
     dff  #(.WIDTH(1)) FL_read_ff (.clk(clk), .rst_n(rst_n | flush), .d(DeEx_in_FL_read), .q(DeEx_out_FL_read));
     dff  #(.WIDTH(1)) FL_write_ff (.clk(clk), .rst_n(rst_n | flush), .d(DeEx_in_FL_write), .q(DeEx_out_FL_write));
 
-    dff  #(.WIDTH(32)) reg_1_sel (.clk(clk), .rst_n(rst_n | flush), .d(DeEx_in_reg_1_sel), .q(DeEx_out_reg_1_sel));
-    dff  #(.WIDTH(2)) reg_2_sel (.clk(clk), .rst_n(rst_n | flush), .d(DeEx_in_reg_2_sel), .q(DeEx_out_reg_2_sel));
+    dff  #(.WIDTH(5)) reg_1_sel (.clk(clk), .rst_n(rst_n | flush), .d(DeEx_in_reg_1_sel), .q(DeEx_out_reg_1_sel));
+    dff  #(.WIDTH(5)) reg_2_sel (.clk(clk), .rst_n(rst_n | flush), .d(DeEx_in_reg_2_sel), .q(DeEx_out_reg_2_sel));
 
     dff  #(.WIDTH(2)) ALU_src_ff (.clk(clk), .rst_n(rst_n | flush), .d(DeEx_in_ALU_src), .q(DeEx_out_ALU_src));
     dff  #(.WIDTH(5)) ALU_OP_ff (.clk(clk), .rst_n(rst_n | flush), .d(DeEx_in_ALU_OP), .q(DeEx_out_ALU_OP));

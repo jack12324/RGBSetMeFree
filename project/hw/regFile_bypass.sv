@@ -20,11 +20,11 @@ module regFile_bypass (
 
 	wire [31:0] noBypassRead1, noBypassRead2;
 	regFile registersNoBypass(.read1Data(noBypassRead1), .read2Data(noBypassRead2),  
-					.clk(clk), .rst(rst), .read1RegSel(read1RegSel), .read2RegSel(read2RegSel), 
-					.writeRegSel(writeRegSel), .writeData(writeData), .writeEn(writeEn));
+					.clk(clk), .rst_n(rst_n), .read1RegSel(read1RegSel), .read2RegSel(read2RegSel), 
+					.reg_wrt_sel(reg_wrt_sel), .reg_wrt_data(reg_wrt_data), .reg_wrt_en(reg_wrt_en));
 
 	// bypassing
-	assign read1Data = (writeEn & (read1RegSel==writeRegSel)) ? writeData : noBypassRead1;
-	assign read2Data = (writeEn & (read2RegSel==writeRegSel)) ? writeData : noBypassRead2;
+	assign read1Data = (reg_wrt_en & (read1RegSel==reg_wrt_sel)) ? reg_wrt_data : noBypassRead1;
+	assign read2Data = (reg_wrt_en & (read2RegSel==reg_wrt_sel)) ? reg_wrt_data : noBypassRead2;
 
 endmodule

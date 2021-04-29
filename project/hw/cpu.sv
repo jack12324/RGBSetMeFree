@@ -453,7 +453,7 @@ module cpu(
         .FL_write(DeEx_in_FL_write),
         // control for Execute
         .ALU_src(DeEx_in_ALU_src), //[1:0]
-        .ALU_OP(DeEx_ALU_OP), //[4:0]
+        .ALU_OP(DeEx_in_ALU_OP), //[4:0]
         .Branch(DeEx_in_Branch), 
         .Jump(DeEx_in_Jump),
         // control for Memory
