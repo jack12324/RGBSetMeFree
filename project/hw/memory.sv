@@ -45,6 +45,8 @@ module memory(
 // jump start FPU
 	output logic startFPU;
   // TODO: add test bench
+	
+	logic memStall; 	//Can be added to CPU if needed 
 
   mem_system dataMem(
     .clk(clk), .rst_n(rst_n), 
@@ -62,7 +64,7 @@ module memory(
 	.AddrOut_host(AddrOut_host),
 	.op_host(op_host),
 	// extras unused
-	.data_valid(),
+	.stall(memStall),
 	.CacheHit()
     );
    // output logic done, different from data_valid?
