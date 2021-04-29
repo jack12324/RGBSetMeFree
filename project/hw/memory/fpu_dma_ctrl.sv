@@ -12,7 +12,6 @@ module fpu_dma_ctrl #(
     //Outputs : To mem_ctrl
     output logic [1:0] op,
     output logic [ADDR_WIDTH -1 : 0] raw_address,
-    output logic [ADDR_WIDTH -1 : 0] address_offset,
     output logic [511:0] common_data_bus_read_in   //Naming convention relative to mem_ctrl
 );
 
