@@ -13,6 +13,7 @@ module dff
     input clk, // system clock 
     input rst_n, // Active low re
     input [WIDTH-1:0] d, // input to the FF
+    input we,
 
     // Outputs 
     output logic [WIDTH-1:0] q // output of the FF 
@@ -26,7 +27,7 @@ module dff
         if (~rst_n) begin
             q <= {WIDTH{1'b0}};
         end
-        else begin
+        else if (we) begin
             q <= d;
         end
     end
