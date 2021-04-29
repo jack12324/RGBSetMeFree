@@ -93,6 +93,7 @@ module mem_system_tb ();
         n_requests = 0;
         n_replies = 0;
         n_cache_hits = 0;
+        n_cache_hits_total = 0;
         test_success = 1'b1;
         req_cycle = 0;
         #10;

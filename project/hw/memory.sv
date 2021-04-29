@@ -70,12 +70,15 @@ module memory(
    // output logic done, different from data_valid?
 
 	// jumpstart FPU
-	always_ff @(posedge clk, negedge rst_n) begin
-		if (!rst_n) 
-			startFPU <= 0;
-		else 
-			// if writing to start address, and the instruction is a store
-			startFPU <= (ExMe_out_alu_out == 32'h1000_0000 && ExMe_out_mem_wrt && ExMe_out_mem_en); // TODO check address, can I do combinational here?
-	end
+	// always_ff @(posedge clk, negedge rst_n) begin
+	// 	if (!rst_n) 
+	// 		startFPU <= 0;
+	// 	else 
+	// 		// if writing to start address, and the instruction is a store
+	// 		startFPU <= (ExMe_out_alu_out == 32'h1000_0000 && ExMe_out_mem_wrt && ExMe_out_mem_en); // TODO check address, can I do combinational here?
+	// end
+
+	// Mayukh: This assign statement should be sufficient
+	assign startFPU = (ExMe_out_alu_out == 32'h1000_0000 && ExMe_out_mem_wrt && ExMe_out_mem_en);
 
 endmodule
