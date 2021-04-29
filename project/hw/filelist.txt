@@ -58,8 +58,6 @@ cci_mpf_app_conf.vh
 csr_mgr.sv
 csr_mgr.vh
 dma_if.vh
-hal.sv
-memory_map.sv
 mmio_if.vh
 
 QI:afu.qsf
