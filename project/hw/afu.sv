@@ -88,7 +88,9 @@ module afu
    logic mapped_data_valid;
    logic mapped_data_request;
    logic [511:0] mapped_data;
-   FPUDRAM_if dram_if();
+   //FPUDRAM_if dram_if(); 
+	// todo, maybe instantiate FPURequestController?
+	
    logic [31:0] mapped_address;
    logic done_fpu;
 
