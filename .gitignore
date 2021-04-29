@@ -13,3 +13,5 @@ synth
 *.jack
 *.mti
 *transcript
+loadfile_all.img
+.vscode/

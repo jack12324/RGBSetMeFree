@@ -414,6 +414,7 @@ module cpu(
         .FeDe_in_PC_next(FeDe_in_PC_next), //[31:0]
         .FeDe_in_instr(FeDe_in_instr), //[31:0]
         .flush(flush),
+        .stall(stall),
 
         ////////// OUTPUTS //////////
         .FeDe_out_PC_next(FeDe_out_PC_next), //[31:0]
@@ -481,6 +482,7 @@ module cpu(
         //////////////////////////// Inputs /////////////////////////////
         .clk(clk),
         .rst_n(rst_n),
+        .stall(stall),
         .DeEx_in_PC_next(DeEx_in_PC_next), // [31:0]
         .DeEx_in_reg_1_data(DeEx_in_reg_1_data), // [31:0]
         .DeEx_in_reg_2_data(DeEx_in_reg_1_data), // [31:0]
@@ -641,6 +643,9 @@ module cpu(
     ExMe iEXME(
         // Inputs to the pipeline registers 
     	// Data signals 
+    .clk(clk),
+    .rst_n(rst_n),
+    .stall(stall),
 	.ExMe_in_PC_next(ExMe_in_PC_next),
     .DeEx_out_Branch(DeEx_out_Branch), 
 	.DeEx_out_Jump(DeEx_out_Jump), 
@@ -719,6 +724,7 @@ module cpu(
     MeWb iMEWB(
 	.clk(clk),
 	.rst_n(rst_n),
+    .stall(stall),
     // inputs to the pipeline register
     // data signals  
 	.ExMe_out_alu_out(ExMe_out_alu_out),
@@ -786,8 +792,10 @@ module cpu(
                                                             (ExMe_out_ALU_OP == 2'd1 && ExMe_out_FL[0] == 0) ? (1'b1) : 
                                                             (ExMe_out_ALU_OP == 2'd2 && ExMe_out_FL[1] == 1) ? (1'b1) : 
                                                             (ExMe_out_ALU_OP == 2'd3 && ExMe_out_FL[1] == 0) ? (1'b1) : 1'b0) : 
-                                                            ( ExMe_out_Jump ? ( (ExMe_out_ALU_OP == 2'd0 || ExMe_out_ALU_OP == 2'd2) ? (1'b1) : 
-                                                            ((ExMe_out_ALU_OP == 2'd1) ? (1'b1) : 1'b0)) : 1'b0);
+                                                    ( ExMe_out_Jump ? ( (ExMe_out_ALU_OP == 2'd0 || ExMe_out_ALU_OP == 2'd2) ? (1'b1) : 
+                                                    ((ExMe_out_ALU_OP == 2'd1) ? (1'b1) : 1'b0)) : 1'b0);
+
+    assign stall = MeDone | FeDone; 
 
 
 // todo stalling (insert NOPs, using Done signals and prediction and stuff, see 552)

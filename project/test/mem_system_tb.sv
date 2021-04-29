@@ -41,10 +41,9 @@ module mem_system_tb ();
         .CacheHit(CacheHit)
     );
     
-    
     mem_system_ref ref_dut(
         .clk(clk),
-        .rst_n(rst_n),
+        .rst_n(~rst),
         .Wr(Wr),
         .Rd(~Wr),
         .Addr_in(Addr),
@@ -65,6 +64,7 @@ module mem_system_tb ();
     integer n_cache_hits_total;
     reg     test_success;
     integer req_cycle;
+    integer i;
 
     initial begin
         clk = 1'b0;
@@ -80,7 +80,8 @@ module mem_system_tb ();
         test_success = 1'b1;
         req_cycle = 0;
         #10;
-        rst = 1'b1;
+        rst = 1'b0;
+        tx_done_host = 1'b1;
         
     end
 
@@ -101,6 +102,7 @@ module mem_system_tb ();
                     Data_out_ref, CacheHit);
             if (data_out != Data_out_ref) begin
                 $display("ERROR");
+                $stop();
                 test_success = 1'b0;
             end
         end
@@ -173,8 +175,9 @@ module mem_system_tb ();
                        n_replies, Addr, DataIn);
            end
            $display("ERROR! Request dropped");
-           test_success = 1'b0;               
-           n_replies = n_requests;	       
+        //    $stop();
+        //    test_success = 1'b0;               
+        //    n_replies = n_requests;	       
         end            
      end
     endtask
@@ -185,7 +188,8 @@ module mem_system_tb ();
             if (!rst && (!Stall)) begin
                check_dropped_request;
                generate_dma;
-               reg_readorwrite = $random % 2;
+               // reg_readorwrite = $random % 2;
+               reg_readorwrite = 1;
                if (reg_readorwrite) begin
                   Wr = $random % 2;
                   index = (index < 8)?(index + 1):0;
@@ -211,10 +215,11 @@ module mem_system_tb ();
         if (!rst && (!Stall)) begin
             check_dropped_request;
             generate_dma;
-            reg_readorwrite = $random % 2;
+            // reg_readorwrite = $random % 2;
+            reg_readorwrite = 1;
             if (reg_readorwrite) begin
                 Wr = $random % 2;
-                Addr = ($random % 32'hffff) & 16'hFFFC;
+                Addr = $random & 32'hFFFC;
                 DataIn = $random % 32'hffff;
                 Rd = ~Wr;
                 n_requests = n_requests + 1;               
@@ -235,7 +240,8 @@ module mem_system_tb ();
         if (!rst && (!Stall)) begin
             check_dropped_request;     
             generate_dma;       
-            reg_readorwrite = $random % 2;
+            // reg_readorwrite = $random % 2;
+            reg_readorwrite = 1;
             if (reg_readorwrite) begin
                 Wr = $random % 2;
                 Addr = (($random % 32'hffff) & 16'h07FC) | 16'h6000;
@@ -261,13 +267,17 @@ module mem_system_tb ();
         end else begin
             $display("Test status: SUCCESS");
         end
-        $finish;
+        $stop();
         end
     endtask // end_simulation
 
     task generate_dma;
         begin
-        DataIn_host = $urandom % 512'hFFFF_FFFF_FFFF_FFFF_FFFF_FFFF_FFFF_FFFF_FFFF_FFFF_FFFF_FFFF_FFFF_FFFF_FFFF_FFFF_FFFF_FFFF_FFFF_FFFF_FFFF_FFFF_FFFF_FFFF;
+        // DataIn_host = $urandom % 512'hFFFF_FFFF_FFFF_FFFF_FFFF_FFFF_FFFF_FFFF_FFFF_FFFF_FFFF_FFFF_FFFF_FFFF_FFFF_FFFF_FFFF_FFFF_FFFF_FFFF_FFFF_FFFF_FFFF_FFFF;
+        for (i=0; i < 7'h40; i++) begin
+            // i*8 +: 8 is basically (i+1)*8-1:i*8]         
+            DataIn_host[i*8 +: 8] = ref_dut.mem[{Addr[32:6], i[5:0]}];
+		end
         //DataOut_host;    //Don't Care
         tx_done_host = $urandom % 2;
         rd_valid_host = tx_done_host;
