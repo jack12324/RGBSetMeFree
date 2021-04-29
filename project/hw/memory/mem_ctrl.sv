@@ -180,8 +180,13 @@ module mem_ctrl
 
 						if(op_in == WRITE) begin
 							state <= HOSTOP;
-							line_buffer <= {common_data_bus_read_in, line_buffer[CL_SIZE_WIDTH-1:WORD_SIZE]};					
-						end
+							// Alejandro made this change. I heard Mayukh 
+							// and jack talking about increasing the size 
+							// of the word to be the entire line or something?
+							// I'm gonna suppose we just fill in what is on the bus
+							// since it is the same size as the buffer
+							line_buffer <= common_data_bus_read_in; // OLD:  line_buffer <= {common_data_bus_read_in, line_buffer[CL_SIZE_WIDTH-1:WORD_SIZE]};	// Width of line buffer is 	[CL_SIZE_WIDTH-1:0] --> [511:0]			
+						end																																		// word size is 512, Mayukh and Jack were talking about changing this I think
 						else if(op_in == READ) begin
 							state <= READY;
 						end
@@ -190,7 +195,7 @@ module mem_ctrl
 						// If we are writing, fill the line buffer with
 						// data from common data bus read in
 						if(op_in == WRITE) begin
-							line_buffer <= {common_data_bus_read_in, line_buffer[CL_SIZE_WIDTH-1:WORD_SIZE]};					
+							line_buffer <= common_data_bus_read_in; // OLD: line_buffer <= {common_data_bus_read_in, line_buffer[CL_SIZE_WIDTH-1:WORD_SIZE]};					
 						end
 						fill_count <= fill_count + 1;
 					end
