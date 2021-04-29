@@ -1,8 +1,8 @@
-module FPU#(COL_WIDTH = 10, MEM_BUFFER_WIDTH = 512, CL_WIDTH = 64)(clk, rst_n, done, mapped_data_valid, mapped_data_request, mapped_data, mapped_address, dram_if);
-	
+module FPU#(COL_WIDTH = 10, MEM_BUFFER_WIDTH = 512, CL_WIDTH = 64, START_ADDRESS = 32'h1000_0000)(clk, rst_n, done, start, mapped_data_valid, mapped_data_request, mapped_data, mapped_address, dram_if);
+	//START_ADDRESS is the starting config address	
 	//using different clock speeds doesn't work in testbench
-	input clk, rst_n, mapped_data_valid;
-	input [31:0] mapped_data;
+	input clk, rst_n, mapped_data_valid, start;
+	input [511:0] mapped_data;
 	FPUDRAM_if dram_if;
 	output done, mapped_data_request;
 	output [31:0] mapped_address;
@@ -36,21 +36,22 @@ module FPU#(COL_WIDTH = 10, MEM_BUFFER_WIDTH = 512, CL_WIDTH = 64)(clk, rst_n, d
 																.wr_en_rd_buffer(wr_en_rd_buffer)
 																);
 
-	FPUController #(.MEM_BUFFER_WIDTH(MEM_BUFFER_WIDTH), .COL_WIDTH(COL_WIDTH)) controller(	.clk(clk),
-												.rst_n(rst_n),
-												.mapped_data_valid(mapped_data_valid),
-												.mapped_data_request(mapped_data_request),
-												.shift_cols(shift_cols),
-												.filter(filter),
-												.done(done),
-												.write_col_address(write_col_address),
-												.read_col_address(read_col_address),
-												.rd_buffer_sel(rd_buffer_sel),
-												.wr_buffer_sel(wr_buffer_sel),
-												.wr_en_wr_buffer(wr_en_wr_buffer),
-												.address_mem(mapped_address),
-												.data_mem(mapped_data),
-												.req_if(req_if.CONTROLLER)
+	FPUController #(.MEM_BUFFER_WIDTH(MEM_BUFFER_WIDTH), .COL_WIDTH(COL_WIDTH), .START_ADDRESS(START_ADDRESS)) controller(	.clk(clk),
+																.rst_n(rst_n),
+																.start(start),
+																.mapped_data_valid(mapped_data_valid),
+																.mapped_data_request(mapped_data_request),
+																.shift_cols(shift_cols),
+																.filter(filter),
+																.done(done),
+																.write_col_address(write_col_address),
+																.read_col_address(read_col_address),
+																.rd_buffer_sel(rd_buffer_sel),
+																.wr_buffer_sel(wr_buffer_sel),
+																.wr_en_wr_buffer(wr_en_wr_buffer),
+																.address_mem(mapped_address),
+																.data_mem(mapped_data),
+																.req_if(req_if.CONTROLLER)
 											);
 
  	FPURequestBuffer#(.BUFFER_DEPTH(MEM_BUFFER_WIDTH), .COL_WIDTH(COL_WIDTH)) requestBuffer(.clk(clk),

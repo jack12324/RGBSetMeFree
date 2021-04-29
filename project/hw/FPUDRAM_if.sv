@@ -12,3 +12,20 @@ interface FPUDRAM_if();
 	modport FPU (input dram_ready, request_done, read_data, output request, rd_wr, fpu_ready, address, write_data, request_size);
 	modport DRAM (output dram_ready, request_done, read_data, input request, rd_wr, fpu_ready, address, write_data, request_size);
 endinterface
+
+
+//DELETE THIS STUFF
+modport DRAM (
+	
+output dram_ready, request_done, read_data, 
+input request, rd_wr, fpu_ready, address, write_data, request_size);
+
+//Inputs: From mem_ctrl
+input logic [511:0] common_data_bus_write_out,    
+input logic tx_done,
+input logic rd_valid,
+//Outputs : To mem_ctrl
+output logic [1:0] op,
+output logic [ADDR_WIDTH -1 : 0] raw_address,
+output logic [ADDR_WIDTH -1 : 0] address_offset,
+output logic [511:0] common_data_bus_read_in   //Naming convention relative to mem_ctrl
