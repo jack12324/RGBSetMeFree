@@ -293,4 +293,4 @@ Back to file '/filespace/c/chenke/RGBSetMeFree/project/sim/rtl/ccip_checker.sv'.
 Parsing design file '/filespace/c/chenke/RGBSetMeFree/project/sim/rtl/ase_top.sv'
 Parsing included file '/filespace/c/chenke/opae/share/opae/platform/platform_if/sim/../rtl/platform_if.vh'.
 Back to file '/filespace/c/chenke/RGBSetMeFree/project/sim/rtl/ase_top.sv'.
-CPU time: .288 seconds to compile
+CPU time: .324 seconds to compile

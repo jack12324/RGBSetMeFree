@@ -11,7 +11,7 @@ Warning-[DEBUG_DEP] Option will be deprecated
 Command: vcs -full64 -nc -V +vcs+lic+wait -full64 -debug_pp -Mupdate -lca -j 4 -l \
 vcs_elab.log +vhdllib+work -Mlib=work +lint=TFIPC-L -override_timescale=1ps/1ps -o \
 work/ase_simv ase_top work/ase_libs.so -lrt -lpthread
-/cae/apps/data/synopsys-2020/vcs/Q-2020.03-SP1/linux64/bin/comelab -nc -unielab -nc -verbose -lca -output vcs_elab.log -override_timescale 1ps/1ps -exe work/ase_simv -picarchive -debug 1 -uum   -ldlibs work/ase_libs.so -lrt -lpthread  -mxuumtop ase_top  -verilogcomp  -full64 -nc -V +vcs+lic+wait -full64 -debug_pp -Mupdate -lca -j 4 -l vcs_elab.log +vhdllib+work -Mlib=work +lint=TFIPC-L -override_timescale=1ps/1ps -o work/ase_simv work/ase_libs.so -lrt -lpthread -uum   -elaboration_options /tmp/vcs_20210429060024_2225484/elaboptfile_2225484
+/cae/apps/data/synopsys-2020/vcs/Q-2020.03-SP1/linux64/bin/comelab -nc -unielab -nc -verbose -lca -output vcs_elab.log -override_timescale 1ps/1ps -exe work/ase_simv -picarchive -debug 1 -uum   -ldlibs work/ase_libs.so -lrt -lpthread  -mxuumtop ase_top  -verilogcomp  -full64 -nc -V +vcs+lic+wait -full64 -debug_pp -Mupdate -lca -j 4 -l vcs_elab.log +vhdllib+work -Mlib=work +lint=TFIPC-L -override_timescale=1ps/1ps -o work/ase_simv work/ase_libs.so -lrt -lpthread -uum   -elaboration_options /tmp/vcs_20210429060138_2229246/elaboptfile_2229246
 
 Warning-[LCA_FEATURES_ENABLED] Usage warning
   LCA features enabled by '-lca' argument on the command line.  For more 
@@ -40,10 +40,10 @@ Warning-[DEBUG_DEP] Option will be deprecated
 -Mcrt0= -Mcrtn="" -Mcsrc="" -Mupdate -Mlib=work -Msyslibs=-ldl  -l vcs_elab.log -uum \
 ase_top -mxunielab -uni_make -full64 -nc -V +vcs+lic+wait -full64 -Xcbug=0x1 -lca \
 -j4 +vhdllib+work +lint=TFIPC-L -override_timescale=1ps/1ps -o work/ase_simv -uum \
--elaboration_options=/tmp/vcs_20210429060024_2225484/elaboptfile_2225484 -full64 \
+-elaboration_options=/tmp/vcs_20210429060138_2229246/elaboptfile_2229246 -full64 \
 -picarchive +vcsd +itf+/cae/apps/data/synopsys-2020/vcs/Q-2020.03-SP1/linux64/lib/vcsdp.tab \
 +cli+1 -debug=1 +memcbk +vpi -VHDLelab=-mxunielab -uni_make -nc -nc -verbose -lca \
--override_timescale 1ps/1ps -exe work/ase_simv -uum -elaboration_options /tmp/vcs_20210429060024_2225484/elaboptfile_2225484 \
+-override_timescale 1ps/1ps -exe work/ase_simv -uum -elaboration_options /tmp/vcs_20210429060138_2229246/elaboptfile_2229246 \
 -picarchive -debug 1  -gen_obj -f work/ase_simv.daidir/mxopt.db  
 Top Level Modules:
        ase_top
