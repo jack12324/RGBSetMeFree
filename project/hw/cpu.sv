@@ -775,6 +775,21 @@ module cpu(
 	// connect wires
 	assign ExMe_in_FL = DeEx_out_FL;
 	assign ExMe_in_LR = DeEx_out_LR;
+
+    // FLush logic 
+    // .ExMe_out_Branch(ExMe_out_Branch),
+    // .ExMe_out_Jump(ExMe_out_Jump),
+    // .ExMe_out_ALU_OP(ExMe_out_ALU_OP),
+    // .ExMe_out_FL(ExMe_out_FL),  / N = ExMe_out_FL[1] /  Z = ExMe_out_FL[0]
+
+    assign flush =  (ExMe_out_Branch && ~ExMe_out_Jump) ?  ((ExMe_out_ALU_OP == 2'd0 && ExMe_out_FL[0] == 1) ? (1'b1) :  
+                                                            (ExMe_out_ALU_OP == 2'd1 && ExMe_out_FL[0] == 0) ? (1'b1) : 
+                                                            (ExMe_out_ALU_OP == 2'd2 && ExMe_out_FL[1] == 1) ? (1'b1) : 
+                                                            (ExMe_out_ALU_OP == 2'd3 && ExMe_out_FL[1] == 0) ? (1'b1) : 1'b0) : 
+                                                            ( ExMe_out_Jump ? ( (ExMe_out_ALU_OP == 2'd0 || ExMe_out_ALU_OP == 2'd2) ? (1'b1) : 
+                                                            ((ExMe_out_ALU_OP == 2'd1) ? (1'b1) : 1'b0)) : 1'b0);
+
+
 // todo stalling (insert NOPs, using Done signals and prediction and stuff, see 552)
 // todo flushing (flush up to execute, using Branching, see 552)
 
