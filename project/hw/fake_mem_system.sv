@@ -31,7 +31,7 @@ module fake_mem_system
 		else begin
 			data_out <= test_memory[ram_addr];
 			stall = 1'b1;
-			done = 1'b0;
+			done = 1'b1;
 		end
 	end
 
