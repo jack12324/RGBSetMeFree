@@ -69,7 +69,8 @@ module forwarding (
             forward_FL = 2'd1;
         else if (MeWb_out_FL_write & (MeWb_FL != DeEx_FL))
             forward_FL = 2'd2;
-
+	else
+	    forward_FL = 2'd0;//default
 
 
     end

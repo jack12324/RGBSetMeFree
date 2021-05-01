@@ -12,7 +12,7 @@ module ExMe(
     
 
     input logic [31:0] ExMe_in_alu_out,
-    input logic [31:0] ExMe_in_reg_2,
+    input logic [31:0] ExMe_in_reg_2_data,
     input logic [31:0] ExMe_in_LR,
     input logic [1:0] ExMe_in_FL,
     input logic [31:0] ExMe_in_LR_wrt_data,
@@ -37,7 +37,7 @@ module ExMe(
     
 
     output logic [31:0] ExMe_out_alu_out,
-    output logic [31:0] ExMe_out_reg_2,
+    output logic [31:0] ExMe_out_reg_2_data,
     output logic [31:0] ExMe_out_LR,
     output logic [1:0] ExMe_out_FL,
     output logic [31:0] ExMe_out_LR_wrt_data,
@@ -61,7 +61,7 @@ module ExMe(
     dff  #(.WIDTH(5)) ALU_OP_ff (.clk(clk), .rst_n(rst_n), .d(DeEx_out_ALU_OP), .q(ExMe_out_ALU_OP), .we(stall));
 
     dff  #(.WIDTH(32)) alu_out_ff (.clk(clk), .rst_n(rst_n), .d(ExMe_in_alu_out), .q(ExMe_out_alu_out), .we(stall));
-    dff  #(.WIDTH(32)) reg_2_ff (.clk(clk), .rst_n(rst_n), .d(ExMe_in_reg_2), .q(ExMe_out_reg_2), .we(stall));
+    dff  #(.WIDTH(32)) reg_2_ff (.clk(clk), .rst_n(rst_n), .d(ExMe_in_reg_2_data), .q(ExMe_out_reg_2_data), .we(stall));
     dff  #(.WIDTH(32)) LR_ff (.clk(clk), .rst_n(rst_n), .d(ExMe_in_LR), .q(ExMe_out_LR), .we(stall));
     dff  #(.WIDTH(2)) FL_ff (.clk(clk), .rst_n(rst_n), .d(ExMe_in_FL), .q(ExMe_out_FL), .we(stall));
     dff  #(.WIDTH(32)) LR_wrt_data_ff (.clk(clk), .rst_n(rst_n), .d(ExMe_in_LR_wrt_data), .q(ExMe_out_LR_wrt_data), .we(stall));

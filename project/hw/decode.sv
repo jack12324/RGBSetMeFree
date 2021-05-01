@@ -53,6 +53,8 @@ module decode (
 		ALU_src, ALU_OP, Branch, Jump,
 		mem_wrt, mem_en,
 		result_sel, next_reg_wrt_en, next_reg_wrt_sel,
+		DeEx_in_reg_1_sel,
+		DeEx_in_reg_2_sel,
 		// interrupts 
 		restore, LR_before_int, FL_before_int
 		);
@@ -101,7 +103,9 @@ module decode (
 	output logic [1:0] result_sel;
 	output logic next_reg_wrt_en;
 	output logic [4:0] next_reg_wrt_sel;
-
+	// control for forwarding
+	output logic [4:0] DeEx_in_reg_1_sel;
+	output logic [4:0] DeEx_in_reg_2_sel;
 
 	//assign 
 
@@ -153,6 +157,9 @@ module decode (
 		LR_write = 0;
 		FL_read = 0; 
 		FL_write = 1; // most do
+		// control for forwarding
+		DeEx_in_reg_1_sel = instr[21:17];
+		DeEx_in_reg_2_sel = instr[16:12];
 
 		casex (instr)
 			//ALU
@@ -342,6 +349,10 @@ module decode (
 				LR_write = 1;
 				FL_read = 1; 
 				FL_write = 1; 
+				// control for forwarding
+				DeEx_in_reg_1_sel = 5'b11111;
+				DeEx_in_reg_2_sel = 5'b11111;
+
 			end
 		endcase
 	end

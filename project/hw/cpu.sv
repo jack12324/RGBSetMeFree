@@ -143,7 +143,6 @@ module cpu(
 	logic [31:0] DeEx_out_reg_1_data;
 	logic [31:0] DeEx_out_reg_2_data;
 	logic [31:0] DeEx_out_imm;
-	logic DeEx_flush;
 	// special register stuff
 	logic [31:0] DeEx_out_LR;
 	logic [1:0] DeEx_out_FL;
@@ -197,7 +196,7 @@ module cpu(
         //logic [31:0] ExMe_in_alu_out;
         //logic [31:0] ExMe_in_PC_next;
         //logic [31:0] ExMe_in_LR_wrt_data;
-        logic [31:0] ExMe_in_reg_2;
+        logic [31:0] ExMe_in_reg_2_data;
         //logic [1:0] ExMe_in_FL_wrt_data;
     /////////////////////////////////////////////////////////////////////////////
 
@@ -227,7 +226,7 @@ module cpu(
     // Data signals 
     	logic [31:0] ExMe_in_PC_next;
     	logic [31:0] ExMe_in_alu_out;
-    	logic [31:0] DeEx_out_reg_2;
+    	//logic [31:0] DeEx_out_reg_2_data;
     	logic [31:0] ExMe_in_LR; 
     	logic [1:0] ExMe_in_FL; 
     	logic [31:0] ExMe_in_LR_wrt_data;
@@ -249,7 +248,7 @@ module cpu(
         logic ExMe_out_Branch;
 	    logic ExMe_out_Jump;
         logic [4:0] ExMe_out_ALU_OP;
-    	logic [31:0] ExMe_out_reg_2;
+    	logic [31:0] ExMe_out_reg_2_data;
     	logic [31:0] ExMe_out_LR;
     	logic [1:0] ExMe_out_FL;
     	logic [31:0] ExMe_out_LR_wrt_data;
@@ -270,7 +269,7 @@ module cpu(
     //////////////////////////// Memory Signals ////////////////////////////////
     // Data
   	//logic [31:0] ExMe_out_alu_out;
-  	//logic [31:0] ExMe_out_reg_2;
+  	//logic [31:0] ExMe_out_reg_2_data;
     // Control
   	//logic ExMe_out_mem_wrt;
   	//logic ExMe_out_mem_en;
@@ -418,7 +417,7 @@ module cpu(
         .FeDe_in_PC_next(FeDe_in_PC_next), //[31:0]
         .FeDe_in_instr(FeDe_in_instr), //[31:0]
         .flush(flush),
-        .stall(stall),
+        .stall(~stall),//write enable
 
         ////////// OUTPUTS //////////
         .FeDe_out_PC_next(FeDe_out_PC_next), //[31:0]
@@ -471,6 +470,8 @@ module cpu(
         .result_sel(DeEx_in_result_sel), //[1:0]
         .next_reg_wrt_en(DeEx_in_reg_wrt_en), 
         .next_reg_wrt_sel(DeEx_in_reg_wrt_sel),
+	.DeEx_in_reg_1_sel(DeEx_in_reg_1_sel),
+	.DeEx_in_reg_2_sel(DeEx_in_reg_2_sel),
 
         //////////// INTERRUPT SIGNALS /////////////
         .restore(restore), 
@@ -486,10 +487,10 @@ module cpu(
         //////////////////////////// Inputs /////////////////////////////
         .clk(clk),
         .rst_n(rst_n),
-        .stall(stall),
+        .stall(~stall),
         .DeEx_in_PC_next(DeEx_in_PC_next), // [31:0]
         .DeEx_in_reg_1_data(DeEx_in_reg_1_data), // [31:0]
-        .DeEx_in_reg_2_data(DeEx_in_reg_1_data), // [31:0]
+        .DeEx_in_reg_2_data(DeEx_in_reg_2_data), // [31:0]
         .DeEx_in_imm(DeEx_in_imm), // [31:0]
         .flush(flush),
         // special register stuff
@@ -587,7 +588,7 @@ module cpu(
 	.ExMe_in_alu_out(ExMe_in_alu_out),
         .ExMe_in_PC_next(ExMe_in_PC_next),
         .ExMe_in_LR_wrt_data(ExMe_in_LR_wrt_data),
-        .ExMe_in_reg_2(ExMe_in_reg_2),
+        .ExMe_in_reg_2_data(ExMe_in_reg_2_data),
         .ExMe_in_FL_wrt_data(ExMe_in_FL_wrt_data)
     );
     /////////////////////////////////////////////////////////////////////////////
@@ -649,14 +650,14 @@ module cpu(
     	// Data signals 
     .clk(clk),
     .rst_n(rst_n),
-    .stall(stall),
+    .stall(~stall),
 	.ExMe_in_PC_next(ExMe_in_PC_next),
     .DeEx_out_Branch(DeEx_out_Branch), 
 	.DeEx_out_Jump(DeEx_out_Jump), 
     .DeEx_out_ALU_OP(DeEx_out_ALU_OP), 
 
 	.ExMe_in_alu_out(ExMe_in_alu_out),
-	.ExMe_in_reg_2(ExMe_in_reg_2), //could be an issue, see vs DeEx_out_reg_2
+	.ExMe_in_reg_2_data(ExMe_in_reg_2_data), //could be an issue, see vs DeEx_out_reg_2
 	.ExMe_in_LR(ExMe_in_LR),
 	.ExMe_in_FL(ExMe_in_FL),
 	.ExMe_in_LR_wrt_data(ExMe_in_LR_wrt_data),
@@ -680,7 +681,7 @@ module cpu(
     .ExMe_out_ALU_OP(ExMe_out_ALU_OP),
 
 	.ExMe_out_alu_out(ExMe_out_alu_out),
-	.ExMe_out_reg_2(ExMe_out_reg_2),
+	.ExMe_out_reg_2_data(ExMe_out_reg_2_data),
 	.ExMe_out_LR(ExMe_out_LR),
 	.ExMe_out_FL(ExMe_out_FL),
 	.ExMe_out_LR_wrt_data(ExMe_out_LR_wrt_data),
@@ -706,7 +707,7 @@ module cpu(
 	.rst_n(rst_n),
   // Data
   	.ExMe_out_alu_out(ExMe_out_alu_out),
-  	.ExMe_out_reg_2(ExMe_out_reg_2),
+  	.ExMe_out_reg_2_data(ExMe_out_reg_2_data),
   // Control
   	.ExMe_out_mem_wrt(ExMe_out_mem_wrt),
   	.ExMe_out_mem_en(ExMe_out_mem_en),
@@ -729,7 +730,7 @@ module cpu(
     MeWb iMEWB(
 	.clk(clk),
 	.rst_n(rst_n),
-    .stall(stall),
+    	.stall(~stall),
     // inputs to the pipeline register
     // data signals  
 	.ExMe_out_alu_out(ExMe_out_alu_out),
@@ -786,7 +787,10 @@ module cpu(
 	// connect wires
 	assign ExMe_in_FL = DeEx_out_FL;
 	assign ExMe_in_LR = DeEx_out_LR;
-
+	assign MeWb_in_LR = ExMe_out_LR;
+	assign MeWb_in_FL = ExMe_out_FL;
+	assign MeWb_in_LR_wrt_data = ExMe_out_LR_wrt_data; 
+	assign MeWb_in_FL_wrt_data = ExMe_out_FL_wrt_data;
     // FLush logic 
     // .ExMe_out_Branch(ExMe_out_Branch),
     // .ExMe_out_Jump(ExMe_out_Jump),
@@ -800,7 +804,7 @@ module cpu(
                                                     ( ExMe_out_Jump ? ( (ExMe_out_ALU_OP == 2'd0 || ExMe_out_ALU_OP == 2'd2) ? (1'b1) : 
                                                     ((ExMe_out_ALU_OP == 2'd1) ? (1'b1) : 1'b0)) : 1'b0);
 
-    assign stall = MeDone | FeDone; 
+    assign stall = ~MeDone | ~FeDone; 
 
 
 // todo stalling (insert NOPs, using Done signals and prediction and stuff, see 552)

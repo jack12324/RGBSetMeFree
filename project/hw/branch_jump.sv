@@ -28,7 +28,7 @@ module Branch_Jump(clk, rst_n,
                                 : pc_4))  : pc_4);
 
     assign LR_write = jump && (op_code == 2'd2); // if JAL
-    assign LR_write_val = LR_write ? pc_4 : 32'hxxxx; // if JAL, LR = PC+4
+    assign LR_write_val = LR_write ? pc_4 : 32'hFFFFFFFF; // if JAL, LR = PC+4
 endmodule
 
 

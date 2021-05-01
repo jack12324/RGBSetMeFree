@@ -1,8 +1,9 @@
+//memory is here!
 module memory(
     clk, rst_n,
     // Input
     ExMe_out_alu_out,
-    ExMe_out_reg_2,
+    ExMe_out_reg_2_data,
     ExMe_out_mem_wrt,
     ExMe_out_mem_en,
     // Output
@@ -24,7 +25,7 @@ module memory(
 
   // Data
   input [31:0] ExMe_out_alu_out;
-  input [31:0] ExMe_out_reg_2;
+  input [31:0] ExMe_out_reg_2_data;
 
   // Control
   input ExMe_out_mem_wrt;
@@ -69,7 +70,7 @@ module memory(
   fake_mem_system #(.FILENAME("project/test_images/memory.h")) dataMem(
     .clk(clk), .rst_n(rst_n), 
     .addr(ExMe_out_alu_out),
-    .data_in(ExMe_out_reg_2),
+    .data_in(ExMe_out_reg_2_data),
     .wr(ExMe_out_mem_wrt),
     .en(ExMe_out_mem_en),
     .done(done),

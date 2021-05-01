@@ -73,7 +73,7 @@ module fetch (clk, rst_n,
 			PC <= PC_next;
 	end
 
-	assign PC_next = (restore == 1'b1) ? (PC_before_int) : ((stall && ~flush) ? PC : in_PC_next); 
+	assign PC_next = restore ? PC_before_int : ((stall & ~flush) ? PC : in_PC_next); 
 	// flush and stall updating PC register truth table 
 	// FLUSH	STALL 		UPDATE PC?
 	//   0		  0		    1
