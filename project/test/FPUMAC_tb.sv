@@ -117,9 +117,9 @@ module FPUMAC_tb();
 
 	typedef logic [7:0]test_def[8:0];
 	function automatic test_def assemble(input [7:0] col0 [COL_WIDTH-1:0], input [7:0] col1 [COL_WIDTH-1:0], input [7:0] col2 [COL_WIDTH-1:0], input int index);
-		assemble = {col2[index  ], col1[index  ], col0[index  ],
-			    col2[index+1], col1[index+1], col0[index+1],
-		            col2[index+2], col1[index+2], col0[index+2] };
+		assemble = {col0[index  ], col1[index  ], col2[index  ],
+			    col0[index+1], col1[index+1], col2[index+1],
+		            col0[index+2], col1[index+2], col2[index+2] };
 		return {<<8{assemble}};	
 	endfunction
 
