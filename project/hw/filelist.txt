@@ -48,9 +48,9 @@ csr_mgr.sv
 csr_mgr.vh
 dma_if.vh
 mmio_if.vh
+hal.sv
 
 fifo.sv
-hal.sv
 memory_map.sv
 
 QI:afu.qsf
