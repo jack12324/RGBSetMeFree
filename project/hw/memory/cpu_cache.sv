@@ -53,7 +53,7 @@ assign            wr_word3 =  replaceLine || (go & wr  & ~offset[5] & ~offset[4]
 assign            wr_word4 =  replaceLine || (go & wr  & ~offset[5] & offset[4] & ~offset[3] & ~offset[2] & (match | ~comp));
 assign            wr_word5 =  replaceLine || (go & wr  & ~offset[5] & offset[4] & ~offset[3] & offset[2] & (match | ~comp));
 assign            wr_word6 =  replaceLine || (go & wr  & ~offset[5] & offset[4] & offset[3] & ~offset[2] & (match | ~comp));
-assign            wr_word7 =  replaceLine || (go & wr  & ~offset[5] & offset[4] & ~offset[3] & offset[2] & (match | ~comp));
+assign            wr_word7 =  replaceLine || (go & wr  & ~offset[5] & offset[4] & offset[3] & offset[2] & (match | ~comp));
 
 assign            wr_word8 =  replaceLine || (go & wr  & offset[5] & ~offset[4] & ~offset[3] & ~offset[2] & (match | ~comp));
 assign            wr_word9 =  replaceLine || (go & wr  & offset[5] & ~offset[4] & ~offset[3] & offset[2] & (match | ~comp));

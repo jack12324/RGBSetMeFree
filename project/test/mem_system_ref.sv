@@ -52,10 +52,10 @@ module mem_system_ref (
           end
        end else begin
           if (Wr) begin
-            {mem[Addr], mem[Addr+8'd1], mem[Addr + 8'd2], mem[Addr + 8'd3]} = DataIn;
+            {mem[Addr+8'd3], mem[Addr+8'd2], mem[Addr + 8'd1], mem[Addr + 8'd0]} = DataIn;
           end
           if (Rd) begin
-             DataOut = {mem[Addr], mem[Addr+8'd1], mem[Addr + 8'd2], mem[Addr + 8'd3]};    //Little Endian or Big Endian would affect this. This is little endian
+             DataOut = {mem[Addr+8'd3], mem[Addr+8'd2], mem[Addr + 8'd1], mem[Addr + 8'd0]};    //Little Endian or Big Endian would affect this. This is little endian
           end
           loaded = 1;
        end
