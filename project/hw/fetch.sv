@@ -91,7 +91,7 @@ module fetch (clk, rst_n,
 			PC <= PC_next;
 	end
 
-	assign PC_next = restore ? PC_before_int : ((stall & ~flush) ? PC : pc_fix); 
+	assign PC_next = restore ? PC_before_int : ( ( (stall & ~flush) | use_cpu_injection | use_INT_INSTR) ? PC : pc_fix); 
 
 	// Fix for PC not updating fast enough
 
