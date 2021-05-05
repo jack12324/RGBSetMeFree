@@ -25,7 +25,7 @@ module fetch (clk, rst_n,
 
 	ExMe_out_Branch, 
 	ExMe_out_Jump, 
-    ExMe_out_ALU_OP,
+    	ExMe_out_ALU_OP,
 	ExMe_out_LR, 
 	ExMe_out_FL,
 
