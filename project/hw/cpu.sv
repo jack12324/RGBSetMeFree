@@ -390,6 +390,13 @@ module cpu(
         .use_cpu_injection(use_cpu_injection), 
         .cpu_injection(cpu_injection), 
         .use_INT_INSTR(use_INT_INSTR),
+
+        .ExMe_out_Branch(ExMe_out_Branch), 
+	    .ExMe_out_Jump(ExMe_out_Jump), 
+        .ExMe_out_ALU_OP(ExMe_out_ALU_OP),
+	    .ExMe_out_LR(ExMe_out_LR), 
+	    .ExMe_out_FL(ExMe_out_FL),
+
         ////////// OUTPUTS //////////
         .out_PC_next(FeDe_in_PC_next), //[31:0]
         .instr(FeDe_in_instr), //[31:0]

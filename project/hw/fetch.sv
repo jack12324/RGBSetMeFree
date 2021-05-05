@@ -22,6 +22,14 @@ module fetch (clk, rst_n,
 	cpu_injection, 
 	current_PC, 
 	PC_before_int, 
+
+	ExMe_out_Branch, 
+	ExMe_out_Jump, 
+    ExMe_out_ALU_OP,
+	ExMe_out_LR, 
+	ExMe_out_FL,
+
+
 	// Wires to mem_ctrl
 	DataIn_host,
 	tx_done_host,
@@ -42,6 +50,13 @@ module fetch (clk, rst_n,
     input [31:0] cpu_injection; // Injection from this state machine 
 	input use_INT_INSTR; // signal to use the injected instructions from the interrupt controller
 
+	// inputs for the pc fix
+	input logic ExMe_out_Branch; // for flush
+	input logic ExMe_out_Jump; // for flush
+    input logic [4:0] ExMe_out_ALU_OP; // for flush
+	input logic [31:0] ExMe_out_LR;
+    input logic [1:0] ExMe_out_FL;
+
 	output [31:0] out_PC_next;
 	output [31:0] instr;
 	output Done;
@@ -59,6 +74,9 @@ module fetch (clk, rst_n,
 	output logic [31:0] AddrOut_host;
 	output logic [1:0] op_host;
 
+	logic [31:0] pc_fix;
+	logic [31:0] pc_4;
+
 	logic [31:0] instr_mem; // instruction read from memory 
 							// usually used unless interrupt controller 
 							// or the cpu interrupt fsm are injecting instructions 
@@ -73,7 +91,29 @@ module fetch (clk, rst_n,
 			PC <= PC_next;
 	end
 
-	assign PC_next = restore ? PC_before_int : ((stall & ~flush) ? PC : in_PC_next); 
+	assign PC_next = restore ? PC_before_int : ((stall & ~flush) ? PC : pc_fix); 
+
+	// Fix for PC not updating fast enough
+
+
+	assign pc_4 = PC + 3'h4;
+
+	// Inputs necessary
+	// ExMe_out_Branch
+	// ExMe_out_Jump
+	// ExMe_out_ALU_OP
+	// ExMe_out_LR 
+	// ExMe_out_FL
+	// N = ExMe_out_FL[1]
+    // Z = ExMe_out_FL[0]
+	assign pc_fix = (ExMe_out_Branch && ~ExMe_out_Jump) ? ((ExMe_out_ALU_OP == 2'd0 && ExMe_out_FL[0] == 1) ? (in_PC_next)
+						:  (ExMe_out_ALU_OP == 2'd1 && ExMe_out_FL[0] == 0) ? (in_PC_next)
+							: (ExMe_out_ALU_OP == 2'd2 && ExMe_out_FL[1] == 1) ? (in_PC_next)
+								: (ExMe_out_ALU_OP == 2'd3 && ExMe_out_FL[1] == 0) ? (in_PC_next) : pc_4)
+			: (ExMe_out_Jump ? ((ExMe_out_ALU_OP == 2'd0 || ExMe_out_ALU_OP == 2'd2) ? (in_PC_next)
+						: ((ExMe_out_ALU_OP == 2'd1) ? (in_PC_next)
+							: pc_4))  : pc_4);
+
 	// flush and stall updating PC register truth table 
 	// FLUSH	STALL 		UPDATE PC?
 	//   0		  0		    1
