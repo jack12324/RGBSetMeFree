@@ -70,7 +70,7 @@ module ExMe(
     dff  #(.WIDTH(1)) mem_wrt_ff (.clk(clk), .rst_n(rst_n), .d(DeEx_out_mem_wrt), .q(ExMe_out_mem_wrt), .we(stall));
     dff  #(.WIDTH(1)) mem_en_ff (.clk(clk), .rst_n(rst_n), .d(DeEx_out_mem_en), .q(ExMe_out_mem_en), .we(stall));
     dff  #(.WIDTH(1)) reg_wrt_en_ff (.clk(clk), .rst_n(rst_n), .d(DeEx_out_reg_wrt_en), .q(ExMe_out_reg_wrt_en), .we(stall));
-    dff  #(.WIDTH(5)) reg_wrt_sel_ff (.clk(clk), .rst_n(rst_n), .d(ExMe_out_reg_wrt_sel), .q(ExMe_out_reg_wrt_sel), .we(stall));
+    dff  #(.WIDTH(5)) reg_wrt_sel_ff (.clk(clk), .rst_n(rst_n), .d(DeEx_out_reg_wrt_sel), .q(ExMe_out_reg_wrt_sel), .we(stall));
     dff  #(.WIDTH(2)) result_sel_ff (.clk(clk), .rst_n(rst_n), .d(DeEx_out_result_sel), .q(ExMe_out_result_sel), .we(stall));
     dff  #(.WIDTH(1)) LR_read_ff (.clk(clk), .rst_n(rst_n), .d(DeEx_out_LR_read), .q(ExMe_out_LR_read), .we(stall));
     dff  #(.WIDTH(1)) LR_write_ff (.clk(clk), .rst_n(rst_n), .d(DeEx_out_LR_write), .q(ExMe_out_LR_write), .we(stall));

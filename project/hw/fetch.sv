@@ -149,7 +149,7 @@ module fetch (clk, rst_n,
 		.CacheHit()
 	);
 	*/
-  	fake_mem_system #(.FILENAME("project/test_images/fetch.h")) dataMem(
+  	fake_mem_system #(.FILENAME("project/test_images/store.h")) dataMem(
     	.clk(clk), .rst_n(rst_n), 
     	.addr(PC),
     	.data_in(),

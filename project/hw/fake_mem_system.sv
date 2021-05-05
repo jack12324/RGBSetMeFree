@@ -17,11 +17,12 @@ module fake_mem_system
 	);
 
 	reg [31:0] test_memory [0:4095]; 
-	reg [31:0] EndianChange;
+	//reg [31:0] EndianChange;
 
 	//Addr must be from 0x2000 to 0x2FFF
 	logic [31:0] ram_addr;
-	assign ram_addr = {addr[23:2], 2'b0};	//Rounded Down Word Alignment
+	// PC+4? haha no, PC+1 now
+	assign ram_addr = {2'b0, addr[23:2]};	//Rounded Down Word Alignment
 	always_ff @(posedge clk) begin
 		if(wr) begin
 			test_memory[ram_addr] <= data_in;
@@ -29,8 +30,8 @@ module fake_mem_system
 			stall = 1'b0;
 		end
 		else begin
-			EndianChange <= {test_memory[ram_addr][7:0], test_memory[ram_addr][15:8], test_memory[ram_addr][23:16], test_memory[ram_addr][31:24]};
-			data_out <= EndianChange;
+			//EndianChange <= {test_memory[ram_addr][7:0], test_memory[ram_addr][15:8], test_memory[ram_addr][23:16], test_memory[ram_addr][31:24]};
+			data_out <= test_memory[ram_addr];
 			stall = 1'b1; //unused
 			done = 1'b1;
 		end

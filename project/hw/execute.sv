@@ -65,9 +65,9 @@ module execute(
     assign pc_4 = DeEx_out_PC_next + 4;
     // do pc + 4
 
-    always @(posedge clk) begin
-        casex(DeEx_out_ALU_op)
-            5'b0xxxx: aluOP = DeEx_out_ALU_op[3:0];
+    always_comb begin
+        casex(DeEx_out_ALU_op[4])
+            1'b0: aluOP = DeEx_out_ALU_op[3:0];
             default: aluOP = 4'b1111;// error
         endcase // DeEx_out_ALU_op
     end
