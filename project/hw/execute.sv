@@ -99,6 +99,7 @@ module execute(
     assign ExMe_in_FL_wrt_data[1] = ExMe_in_alu_out[31];
 
 
-    mux2_1 i_mux2_1 (.in0(DeEx_out_reg_2), .in1(ExMe_in_reg_2_data_1), .sel(DeEx_out_ALU_op == 5'b01110), .out(ExMe_in_reg_2_data));
+    // mux2_1 i_mux2_1 (.in0(ExMe_in_reg_2_data_1), .in1(DeEx_out_reg_2), .sel({1'b0,DeEx_out_ALU_op == 5'b01110}), .out(ExMe_in_reg_2_data));
+    assign ExMe_in_reg_2_data = DeEx_out_ALU_op == 5'b01110 ? DeEx_out_reg_2 : ExMe_in_reg_2_data_1;
 
 endmodule
