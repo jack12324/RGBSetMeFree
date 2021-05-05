@@ -105,7 +105,7 @@ module fetch (clk, rst_n,
 	// ExMe_out_LR 
 	// ExMe_out_FL
 	// N = ExMe_out_FL[1]
-    // Z = ExMe_out_FL[0]
+    	// Z = ExMe_out_FL[0]
 	assign pc_fix = (ExMe_out_Branch && ~ExMe_out_Jump) ? ((ExMe_out_ALU_OP == 2'd0 && ExMe_out_FL[0] == 1) ? (in_PC_next)
 						:  (ExMe_out_ALU_OP == 2'd1 && ExMe_out_FL[0] == 0) ? (in_PC_next)
 							: (ExMe_out_ALU_OP == 2'd2 && ExMe_out_FL[1] == 1) ? (in_PC_next)
@@ -149,7 +149,7 @@ module fetch (clk, rst_n,
 		.CacheHit()
 	);
 	*/
-  	fake_mem_system #(.FILENAME("project/test_images/core_instructions.h")) dataMem(
+  	fake_mem_system #(.FILENAME("project/test_images/interrupts.h")) dataMem(
     	.clk(clk), .rst_n(rst_n), 
     	.addr(PC),
     	.data_in(),
