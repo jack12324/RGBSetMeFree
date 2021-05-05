@@ -7,23 +7,9 @@ C:${FPGA_BBB_CCI_SRC}/BBB_cci_mpf/hw/rtl/cci_mpf_sources.txt
 CPU_interrupt_fsm.sv
 DeEx.sv
 ExMe.sv
-FPU.sv
-FPUBuffers.sv
-FPUCntrlReq_if.sv
-FPUConfig_if.sv
-FPUController.sv
-FPUControllerConfigurationLoader.sv
-FPUDRAM_if.sv
-FPUMAC.sv
-FPURequestBuffer.sv
-FPURequestController.sv
 FeDe.sv
-FilterMAC.sv
 InterruptController.sv
 MeWb.sv
-ReadBank.sv
-Single_RAM.sv
-WriteBank.sv
 afu.sv
 alu.sv
 branch_jump.sv
@@ -41,6 +27,8 @@ mux3_1.sv
 regFile.sv
 regFile_bypass.sv
 writeback.sv
+
+FPU/*.sv
 
 memory/cache_if.sv
 memory/cpu_cache_ctrl.sv
