@@ -85,8 +85,8 @@ module fetch (clk, rst_n,
 	wire [31:0] PC_next;
 	always_ff @(posedge clk, negedge rst_n) begin
 		if (!rst_n) 
-			PC <= 32'h00000000; // for testing
-			//PC <= 32'h06002000; // this is where our instruction memory starts
+			//PC <= 32'h00000000; // for testing
+			PC <= 32'h06002000; // this is where our instruction memory starts
 		else 
 			PC <= PC_next;
 	end
@@ -124,10 +124,11 @@ module fetch (clk, rst_n,
 	// PC_next should update even when stalling
 
 	// if flushing, everything becomes NOP
-	assign out_PC_next = flush ? `NOP : PC;
+	//assign out_PC_next = flush ? `NOP : PC; this doesn't make sense, it's the address not instr
+	assign out_PC_next = PC;
 
 	// instruction memory access
-	/*
+	///*
 	mem_system instructionMem(
 		.clk(clk), 
 		.rst_n(rst_n), 
@@ -148,7 +149,8 @@ module fetch (clk, rst_n,
 		.data_valid(),
 		.CacheHit()
 	);
-	*/
+	//*/
+	/*
   	fake_mem_system #(.FILENAME("project/test_images/interrupts.h")) dataMem(
     	.clk(clk), .rst_n(rst_n), 
     	.addr(PC),
@@ -159,6 +161,7 @@ module fetch (clk, rst_n,
     	.done(Done),
     	.data_out(instr_mem)
     	);
+	*/
 
 	// Assign the instruction to be executed 
 	assign instr = (use_cpu_injection == 1'b1) ? (cpu_injection) : ( (use_INT_INSTR == 1'b1) ? (INT_INSTR) : (instr_mem) ); 
