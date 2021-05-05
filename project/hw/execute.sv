@@ -42,16 +42,12 @@ module execute(
 
     logic [31:0] forwarded_LR;
     logic [1:0] forwarded_FL;
-    logic [31:0] DeEx_out_reg_1_1;
+    logic [31:0] ExMe_in_reg_2_data_1;
 
     mux2_1 i_mux_2_0(.in0(ExMe_out_LR),.in1(MeWb_out_LR), .sel({1'b0,forward_LR_sel}), .out(forwarded_LR));
 
-
-    mux2_1 i_mux2_1 (.in0(DeEx_out_reg_2), .in1(DeEx_out_reg_1), .sel(DeEx_out_ALU_op == 5'b01110), .out(DeEx_out_reg_1_1));
-
-
-    mux4_1 i_mux3_1 (.in_reg(DeEx_out_reg_1_1), .in_alu(ExMe_out_alu_out), .in_wb(reg_wrt_data), .in_LR(forwarded_LR), .sel(forward1_sel), .out(alu_1));
-    mux4_1 i_mux3_2 (.in_reg(DeEx_out_reg_2), .in_alu(ExMe_out_alu_out), .in_wb(reg_wrt_data), .in_LR(32'd0), .sel(forward2_sel), .out(ExMe_in_reg_2_data));
+    mux4_1 i_mux3_1 (.in_reg(DeEx_out_reg_1), .in_alu(ExMe_out_alu_out), .in_wb(reg_wrt_data), .in_LR(forwarded_LR), .sel(forward1_sel), .out(alu_1));
+    mux4_1 i_mux3_2 (.in_reg(DeEx_out_reg_2), .in_alu(ExMe_out_alu_out), .in_wb(reg_wrt_data), .in_LR(32'd0), .sel(forward2_sel), .out(ExMe_in_reg_2_data_1));
 
     mux2_1 i_mux2_2 (.in0(DeEx_out_imm), .in1(ExMe_in_reg_2_data), .sel(DeEx_out_ALU_src), .out(alu_2));
 
@@ -102,5 +98,7 @@ module execute(
     assign ExMe_in_FL_wrt_data[0] = !(|ExMe_in_alu_out);
     assign ExMe_in_FL_wrt_data[1] = ExMe_in_alu_out[31];
 
+
+    mux2_1 i_mux2_1 (.in0(DeEx_out_reg_2), .in1(ExMe_in_reg_2_data_1), .sel(DeEx_out_ALU_op == 5'b01110), .out(ExMe_in_reg_2_data));
 
 endmodule
