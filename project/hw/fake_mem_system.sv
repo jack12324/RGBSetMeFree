@@ -22,7 +22,8 @@ module fake_mem_system
 	//Addr must be from 0x2000 to 0x2FFF
 	logic [31:0] ram_addr;
 	// PC+4? haha no, PC+1 now
-	assign ram_addr = {2'b0, addr[23:2]};	//Rounded Down Word Alignment
+	// for fake mem, even in memory stage, every address is divided by 4
+	assign ram_addr = {2'b0, addr[23:2]};	//not currently Rounded Down Word Alignment
 	always_ff @(posedge clk) begin
 		if(wr) begin
 			test_memory[ram_addr] <= data_in;
@@ -31,12 +32,12 @@ module fake_mem_system
 		end
 		else begin
 			//EndianChange <= {test_memory[ram_addr][7:0], test_memory[ram_addr][15:8], test_memory[ram_addr][23:16], test_memory[ram_addr][31:24]};
-			data_out <= test_memory[ram_addr];
+			//data_out <= test_memory[ram_addr];
 			stall = 1'b1; //unused
 			done = 1'b1;
 		end
 	end
-
+	assign data_out = test_memory[ram_addr];
 // instructor recommends the tutorial https://projectf.io/posts/initialize-memory-in-verilog/    
 // which says to do this:
 	
@@ -47,7 +48,7 @@ module fake_mem_system
 		// relative file path form same place where work folder is
 
 	        $display("addr :: data "); // display   	    	
-		for (int i=0; i<10; i++) begin
+		for (int i=0; i<100; i++) begin
         	    $display("%x :: %x", (i+32'h0600), test_memory[i]);//2000 is wrong meanwhile, and 0600 only for fetch inst mem
         	end
     	end
