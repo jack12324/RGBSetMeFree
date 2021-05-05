@@ -53,26 +53,28 @@ module FPUMemoryIntegration_tb();
 		req_if.read_address = '0;
 		req_if.write_address = '0;
 		req_if.input_row_width = '0;
+		req_if.output_row_width = '0;
+		dram_if.read_data = '0;
 
 		@(posedge clk);
 		rst_n = 1'b1;
 		@(posedge clk);
 		write_test('0, MEM_BUFFER_WIDTH, COL_WIDTH-2, '0);
-		write_test('1, MEM_BUFFER_WIDTH, COL_WIDTH-2, 5000);
-		write_test('1, MEM_BUFFER_WIDTH, COL_WIDTH-2, '0);
-		write_test('1, MEM_BUFFER_WIDTH, 3, '0);
-		write_test('1, MEM_BUFFER_WIDTH, 1, '0);
-		write_test('1, 64, COL_WIDTH-2, '0);
-		write_test('1, 320, COL_WIDTH-2, 3000);
-		
+		//write_test('1, MEM_BUFFER_WIDTH, COL_WIDTH-2, 5000);
+		//write_test('1, MEM_BUFFER_WIDTH, COL_WIDTH-2, '0);
+		//write_test('1, MEM_BUFFER_WIDTH, 3, '0);
+		//write_test('1, MEM_BUFFER_WIDTH, 1, '0);
+		//write_test('1, 64, COL_WIDTH-2, '0);
+		//write_test('1, 320, COL_WIDTH-2, 3000);
+		//
 	
-		read_test('0, 448, 50);
-		read_test('0, 64, 50);
-		read_test('0, 512, 50);
-		read_test('1, 664, 0);
+		//read_test('0, 448, 50);
+		//read_test('0, 64, 50);
+		//read_test('0, 512, 50);
+		//read_test('1, 664, 0);
 
-		write_read_test(1,1,512,8,512,0,0);
-		write_read_test(0,1,64,5,560,4,100);
+		//write_read_test(1,1,512,8,512,0,0);
+		//write_read_test(0,1,64,5,560,4,100);
 
 		$stop();
 		
@@ -91,6 +93,7 @@ module FPUMemoryIntegration_tb();
 		req_if.input_row_width = row_width;
 		req_if.write_address = res_address;
 		req_if.read_address = start_address;
+		req_if.output_row_width = write_width;
 		@(posedge clk);
 		req_if.write = 0;
 		req_if.read = 0;
@@ -110,6 +113,7 @@ module FPUMemoryIntegration_tb();
 		req_if.width = width;
 		req_if.height = height;
 		req_if.write_address = res_address;
+		req_if.output_row_width = width;
 		@(posedge clk);
 		req_if.write = 0;
 		
@@ -124,6 +128,7 @@ module FPUMemoryIntegration_tb();
 		req_if.read = 1;
 		req_if.input_row_width = width;
 		req_if.read_address = start_address;
+		req_if.input_row_width = width;
 		@(posedge clk);
 		req_if.read = 0;
 		
