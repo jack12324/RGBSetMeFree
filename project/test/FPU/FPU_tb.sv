@@ -27,6 +27,7 @@ module FPU_tb();
 	initial forever dramRespond();
 
 	initial begin
+		dram_if.read_data = '0;
 		mapped_data = '0;
 		clk = 1'b0;
 		rst_n = 1'b0;

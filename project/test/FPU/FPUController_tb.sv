@@ -3,13 +3,15 @@
 module FPUController_tb();
 	parameter COL_WIDTH = 10;
 	parameter MEM_BUFFER_WIDTH = 512;
+	parameter START_ADDRESS = 32'h1000_0000;
 
 	// Clock
 	logic clk;
 	logic rst_n;
 
-	logic stall, mapped_data_valid, making_request;
-	logic [31:0] data_mem;
+	logic stall, mapped_data_valid, mapped_data_request, start;
+	logic [511:0] mapped_data;
+	logic [31:0] mapped_address;
 
 	logic shift_cols, done, rd_buffer_sel, wr_buffer_sel, wr_en_wr_buffer;
 	logic signed [7:0] filter [8:0];
@@ -20,7 +22,7 @@ module FPUController_tb();
 	always #5 clk = ~clk; 
 
 	int errors;
-	logic [31:0] start_address, result_address, start_sig;
+	logic [31:0] start_address, result_address;
 	logic [15:0] width, height;
 	logic signed [7:0] filter_conf [8:0];
 
@@ -42,7 +44,7 @@ module FPUController_tb();
 
 	FPUCntrlReq_if req_if();
 
-	FPUController #(.MEM_BUFFER_WIDTH(MEM_BUFFER_WIDTH), .COL_WIDTH(COL_WIDTH))controller(.*, .req_if(req_if.CONTROLLER));
+	FPUController #(.MEM_BUFFER_WIDTH(MEM_BUFFER_WIDTH), .COL_WIDTH(COL_WIDTH), .START_ADDRESS(START_ADDRESS))controller(.*, .address_mem(mapped_address), .data_mem(mapped_data), .req_if(req_if.CONTROLLER));
 
 	FPUMAC #(.COL_WIDTH(COL_WIDTH)) mac(.*);
 	FPUBuffers #(.COL_WIDTH(COL_WIDTH)) buff(.*);
@@ -100,10 +102,10 @@ module FPUController_tb();
 		load_and_init_memories();
 
 		@(posedge clk);
-		start_sig = 1'b1;
+		start = 1'b1;
 		
 		@(posedge controller.conf.load_config_done);	
-		start_sig = 1'b0;
+		start = 1'b0;
 		check_config_vars();
 		
 		@(posedge done);
@@ -145,10 +147,10 @@ module FPUController_tb();
 		initialize_memories();
 
 		@(posedge clk);
-		start_sig = 1'b1;
+		start = 1'b1;
 		
 		@(posedge controller.conf.load_config_done);	
-		start_sig = 1'b0;
+		start = 1'b0;
 		check_config_vars();
 		
 		@(posedge done);
@@ -188,21 +190,21 @@ module FPUController_tb();
 		int min_stall = 10;
 		@(posedge clk)
 		if(req_if.read && req_if.write) begin
-			making_request = 1;
+			req_if.making_request = 1;
 			empty_buffer(!rd_buffer_sel, req_if.write_address, req_if.width, req_if.height);
 			fill_buffer(!rd_buffer_sel, req_if.read_address);
 			for(int stall_cyc = 0; stall_cyc < $urandom_range(min_stall,max_stall); stall_cyc++) @(posedge clk);
-			making_request = 0;
+			req_if.making_request = 0;
 		end else if (req_if.read && !req_if.write)begin
-			making_request = 1;
+			req_if.making_request = 1;
 			fill_buffer(!rd_buffer_sel, req_if.read_address);
 			for(int stall_cyc = 0; stall_cyc < $urandom_range(min_stall,max_stall); stall_cyc++) @(posedge clk);
-			making_request = 0;
+			req_if.making_request = 0;
 		end else if (!req_if.read && req_if.write)begin
-			making_request = 1;
+			req_if.making_request = 1;
 			empty_buffer(!rd_buffer_sel, req_if.write_address, req_if.width, req_if.height);
 			for(int stall_cyc = 0; stall_cyc < $urandom_range(min_stall,max_stall); stall_cyc++) @(posedge clk);
-			making_request = 0;
+			req_if.making_request = 0;
 		end
 	endtask
 
@@ -261,28 +263,32 @@ module FPUController_tb();
 	endtask
 
 	task automatic get_mapped_mem(); 	
-		int M_STARTSIG_ADDRESS = 32'h1000_0120;
-		int M_FILTER_ADDRESS = 32'h1000_0040;
-		int M_DIMS_ADDRESS = 32'h1000_0000;
-		int M_START_ADDRESS = 32'h1000_0020;
-		int M_RESULT_ADDRESS = 32'h1000_0100;
-		int noise = $random();
+		@(posedge clk);
 		mapped_data_valid = 0;
-		for(int i = 0; i < $urandom_range(2,10); i++)
+		if(mapped_data_request)begin
+			for(int i = 0; i < $urandom_range(1,100); i++)
+				@(posedge clk);
+			case (mapped_address)
+				START_ADDRESS: mapped_data[511:344] = {	width, 
+							height, 
+							start_address, 
+							result_address, 
+							filter_conf[0], 
+							filter_conf[1],
+							filter_conf[2],
+							filter_conf[3],
+							filter_conf[4],
+							filter_conf[5],
+							filter_conf[6],
+							filter_conf[7],
+							filter_conf[8]
+							};
+				default: mapped_data = '0;
+			endcase
 			@(posedge clk);
-		case (address_mem)
-			M_STARTSIG_ADDRESS: data_mem = start_sig;
-			M_FILTER_ADDRESS: data_mem = {filter_conf[0],filter_conf[1],filter_conf[2],filter_conf[3]};
-			M_FILTER_ADDRESS+4: data_mem = {filter_conf[4],filter_conf[5],filter_conf[6],filter_conf[7]};
-			M_FILTER_ADDRESS+8: data_mem = {filter_conf[8], noise[23:0]};
-			M_DIMS_ADDRESS: data_mem = {width, height};
-			M_START_ADDRESS: data_mem = start_address;
-			M_RESULT_ADDRESS: data_mem = result_address;
-			default: data_mem = 'x;
-		endcase
-		@(posedge clk);
-		mapped_data_valid = 1;
-		@(posedge clk);
+			mapped_data_valid = 1;
+			@(posedge clk);
+		end	
 	endtask
 
 	function automatic [7:0] calc_MAC(input[7:0] array0 [8:0], input signed [7:0] array1 [8:0]);
