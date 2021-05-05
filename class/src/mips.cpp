@@ -234,7 +234,7 @@ namespace priscas
 		if(j_inst(op)) // J, JAL, not JR which is r_inst
 		{
 			w = (w.AsUInt32() | (imm & ((1 << 14) - 1)));
-			w = (w.AsUInt32() | ((op & ((1 << 6) - 1) ) << 26 ));
+			w = (w.AsUInt32() | ((op & ((1 << 6) - 1) ) << 27 ));
 		}
 
 		return w;
