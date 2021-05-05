@@ -683,9 +683,9 @@ module cpu(
     	// Ouputs to the next pipeline stage 
     	// Data signals 
 	.ExMe_out_PC_next(ExMe_out_PC_next),
-    .ExMe_out_Branch(ExMe_out_Branch),
-    .ExMe_out_Jump(ExMe_out_Jump),
-    .ExMe_out_ALU_OP(ExMe_out_ALU_OP),
+    	.ExMe_out_Branch(ExMe_out_Branch),
+    	.ExMe_out_Jump(ExMe_out_Jump),
+    	.ExMe_out_ALU_OP(ExMe_out_ALU_OP),
 
 	.ExMe_out_alu_out(ExMe_out_alu_out),
 	.ExMe_out_reg_2_data(ExMe_out_reg_2_data),

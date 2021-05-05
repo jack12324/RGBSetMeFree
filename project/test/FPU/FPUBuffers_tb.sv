@@ -1,7 +1,7 @@
 module FPUBuffers_tb();
 	parameter COL_WIDTH = 10;
 
-	logic clk, rst_n, shift_rows;
+	logic clk, rst_n, shift_cols;
 	logic [7:0] col_new [COL_WIDTH - 1:0];
 	logic [7:0] col0 [COL_WIDTH - 1:0];
 	logic [7:0] col1 [COL_WIDTH - 1:0];
@@ -47,11 +47,11 @@ module FPUBuffers_tb();
 				col_new[j] = $random();
 			end
 
-			shift_rows = $random();
+			shift_cols = $random();
 
-			expectedCol0 = shift_rows ? col1 : col0;
-			expectedCol1 = shift_rows ? col2 : col1;
-			expectedCol2 = shift_rows ? col_new : col2;
+			expectedCol0 = shift_cols ? col1 : col0;
+			expectedCol1 = shift_cols ? col2 : col1;
+			expectedCol2 = shift_cols ? col_new : col2;
 
 			@(posedge clk)
 			#1
