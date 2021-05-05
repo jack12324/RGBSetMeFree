@@ -226,8 +226,8 @@ namespace priscas
 		if(m_inst(op)) // LDI, STI
 		{
 			w = (w.AsUInt32() | (imm & ((1 << 16) - 1)));
-			w = (w.AsUInt32() | ((rt & ((1 << 5) - 1) ) << 17 )); // note bit 16 is blank
-			w = (w.AsUInt32() | ((rs & ((1 << 5) - 1) ) << 22 ));
+			w = (w.AsUInt32() | ((rs & ((1 << 5) - 1) ) << 17 )); // note bit 16 is blank
+			w = (w.AsUInt32() | ((rd & ((1 << 5) - 1) ) << 22 ));
 			w = (w.AsUInt32() | ((op & ((1 << 6) - 1) ) << 27 ));
 		}
 
