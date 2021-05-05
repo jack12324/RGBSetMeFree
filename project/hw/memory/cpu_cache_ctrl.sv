@@ -146,7 +146,7 @@ always_comb begin
             tag_out = FloppedAddressIn[31:14];
             index = FloppedAddressIn[13:6];
             offset = FloppedAddressIn[5:0];
-            
+            DataOut_cache = FloppedDataIn;
             hit_out = hit_in & validIn_cache;
             done = hit_in & validIn_cache;
             

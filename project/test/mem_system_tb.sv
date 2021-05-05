@@ -107,82 +107,84 @@ module mem_system_tb ();
         // simulation delay
         generate_dma;
         if (~rst && ~Stall) begin
-        n_replies = n_replies + 1;
-        if (CacheHit) begin
-            n_cache_hits = n_cache_hits + 1;
-        end
-        if (Rd) begin
-            $display("LOG: ReqNum %4d Rd Addr 0x%04x Value 0x%04x ValueRef 0x%04x Hit: %1d\n",
-                    n_replies,
-                    Addr,
-                    data_out,
-                    Data_out_ref, CacheHit);
-            if (data_out != Data_out_ref) begin
-                $display("ERROR");
-                // $stop();
-                test_success = 1'b0;
+            n_replies = n_replies + 1;
+            if (CacheHit) begin
+                n_cache_hits = n_cache_hits + 1;
             end
-        end
-        if (Wr) begin
-            $display("LOG: ReqNum %4d Wr Addr 0x%04x Value 0x%04x ValueRef 0x%04x Hit: %1d\n",
-                    n_replies, Addr, DataIn, DataIn, CacheHit);
-        end
-        Rd = 1'd0;
-        Wr = 1'd0;
-        en = 1'd0;
+            if (Rd) begin
+                $display("LOG: ReqNum %4d Rd Addr 0x%04x Value 0x%04x ValueRef 0x%04x Hit: %1d\n",
+                        n_replies,
+                        Addr,
+                        data_out,
+                        Data_out_ref, CacheHit);
+                if (data_out != Data_out_ref) begin
+                    $display("ERROR");
+                    // $stop();
+                    test_success = 1'b0;
+                end
+            end
+            if (Wr) begin
+                $display("LOG: ReqNum %4d Wr Addr 0x%04x Value 0x%04x ValueRef 0x%04x Hit: %1d\n",
+                        n_replies, Addr, DataIn, DataIn, CacheHit);
+            end
+            Rd = 1'd0;
+            Wr = 1'd0;
+            en = 1'd0;
         end // if (Done_ref)
 
         // change inputs for next cycle
         
         #85;
         if (!rst && (!Stall)) begin      
-        if (n_requests < 10) begin
-            full_random_addr;
-        end else if (n_requests == 10) begin
-            Addr = 32'd0; 
-            Rd = 1'd0;
-            Wr = 1'd0;
-            en = 1'd0;
-            n_requests = n_requests + 1;
-            n_replies = n_replies + 1;
-            $display("LOG: Done full_random, Requests: %10d, Hits: %10d",
-                    n_requests,
-                    n_cache_hits );
-            n_cache_hits_total = n_cache_hits_total + n_cache_hits;
-            n_cache_hits = 0;
-        end else if (n_requests == 0) begin //Changed from 100 to 0 temporarily
-            Addr = 32'd0;
-            Rd = 1'd0;
-            Wr = 1'd0;
-            en = 1'd0;
-            n_requests = n_requests + 1;
-            n_replies = n_replies + 1;
-            $display("LOG: Done small_random, Requests: %10d, Hits: %10d",
-                    n_requests,
-                    n_cache_hits );
-            n_cache_hits_total = n_cache_hits_total + n_cache_hits;            
-            n_cache_hits = 0;
-        end else if (n_requests == 0) begin    //Changed from 200 to 0 temporarily
-            Addr = 32'd0;
-            Rd = 1'd0;
-            Wr = 1'd0;
-            en = 1'd0;
-            n_requests = n_requests + 1;
-            n_replies = n_replies + 1;
-            $display("LOG: Done sequential_addr, Requests: %10d, Hits: %10d",
-                    n_requests,
-                    n_cache_hits );
-            n_cache_hits_total = n_cache_hits_total + n_cache_hits;
-            n_cache_hits = 0;
-        end else if (n_requests < 0) begin
-            small_random_addr;
-        end else if (n_requests < 0) begin
-            seq_addr;
-        end else begin
-            end_simulation;
-        end
-        end
-    end
+            if (n_requests < 500) begin
+                full_random_addr;
+                // seq_addr;
+            end 
+            else if (n_requests == 500) begin
+                Addr = 32'd0; 
+                Rd = 1'd0;
+                Wr = 1'd0;
+                en = 1'd0;
+                n_requests = n_requests + 1;
+                n_replies = n_replies + 1;
+                $display("LOG: Done full_random, Requests: %10d, Hits: %10d",
+                        n_requests,
+                        n_cache_hits );
+                n_cache_hits_total = n_cache_hits_total + n_cache_hits;
+                n_cache_hits = 0;
+            end else if (n_requests == 1000) begin //Changed from 100 to 0 temporarily
+                Addr = 32'd0;
+                Rd = 1'd0;
+                Wr = 1'd0;
+                en = 1'd0;
+                n_requests = n_requests + 1;
+                n_replies = n_replies + 1;
+                $display("LOG: Done small_random, Requests: %10d, Hits: %10d",
+                        n_requests,
+                        n_cache_hits );
+                n_cache_hits_total = n_cache_hits_total + n_cache_hits;            
+                n_cache_hits = 0;
+            end else if (n_requests == 2000) begin    //Changed from 200 to 0 temporarily
+                Addr = 32'd0;
+                Rd = 1'd0;
+                Wr = 1'd0;
+                en = 1'd0;
+                n_requests = n_requests + 1;
+                n_replies = n_replies + 1;
+                $display("LOG: Done sequential_addr, Requests: %10d, Hits: %10d",
+                        n_requests,
+                        n_cache_hits );
+                n_cache_hits_total = n_cache_hits_total + n_cache_hits;
+                n_cache_hits = 0;
+            end else if (n_requests < 1000) begin
+                seq_addr;
+            end else if (n_requests < 2000) begin
+                small_random_addr;
+            end else begin
+                end_simulation;
+            end
+        end //if !rst & !stall
+    end //Always
 
     task check_dropped_request;
         begin	
@@ -207,7 +209,7 @@ module mem_system_tb ();
     task seq_addr;
         begin
             if (!rst && (!Stall)) begin
-               check_dropped_request;
+            //    check_dropped_request;
                generate_dma;
                // reg_readorwrite = $random % 2;
                reg_readorwrite = 1;
@@ -236,7 +238,7 @@ module mem_system_tb ();
     task full_random_addr;
         begin
         if (!rst && (!Stall)) begin
-            check_dropped_request;
+            // check_dropped_request;
             generate_dma;
             // reg_readorwrite = $random % 2;
             reg_readorwrite = 1;
@@ -263,7 +265,7 @@ module mem_system_tb ();
         // should generate a lot of cache hits
         begin
         if (!rst && (!Stall)) begin
-            check_dropped_request;     
+            // check_dropped_request;     Not accurate because of Mem_Ctrl signals
             generate_dma;       
             // reg_readorwrite = $random % 2;
             reg_readorwrite = 1;
