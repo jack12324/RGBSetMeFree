@@ -31,6 +31,7 @@ module alu (A, B, Op, Out);
                 else
                     Out = {32{A[31]}};
             end
+            4'b11x1:Out = B;
             default : /* default */;
         endcase
     end
