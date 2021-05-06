@@ -1,0 +1,4 @@
+DPI_STUB_OBJS += ./../work/ase_simv.daidir/vc_hdrs.o
+./../work/ase_simv.daidir/vc_hdrs.o: ./../work/ase_simv.daidir/vc_hdrs.c
+	@$(CC) -I/cae/apps/data/synopsys-2020/vcs/Q-2020.03-SP1/include  -pipe -fPIC    -I/cae/apps/data/synopsys-2020/vcs/Q-2020.03-SP1/include  -fPIC -c -o ./../work/ase_simv.daidir/vc_hdrs.o ./../work/ase_simv.daidir/vc_hdrs.c
+	@strip -g ./../work/ase_simv.daidir/vc_hdrs.o

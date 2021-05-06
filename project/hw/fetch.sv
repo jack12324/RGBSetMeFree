@@ -146,7 +146,7 @@ module fetch (clk, rst_n,
 		.AddrOut_host(AddrOut_host),
 		.op_host(op_host),
 		// extras unused
-		.data_valid(),
+		.stall(),
 		.CacheHit()
 	);
 	//*/
