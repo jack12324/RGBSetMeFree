@@ -123,9 +123,9 @@ namespace priscas
 		const uint64_t OUT_IMG_ADDR		= UINT64_C(0x0); // for testing
 		// MMIO address
 		const uint64_t IMG_SIZE_ADDR	= UINT64_C(0x6000000);
-		const uint64_t IN_ADDR_ADDR		= UINT64_C(0x6000020);
-		const uint64_t FILTER_ADDR 		= UINT64_C(0x6000040);
-		const uint64_t OUT_ADDR_ADDR	= UINT64_C(0x6000100);
+		const uint64_t IN_ADDR_ADDR		= UINT64_C(0x6000004);
+		const uint64_t FILTER_ADDR 		= UINT64_C(0x600000A);
+		const uint64_t OUT_ADDR_ADDR	= UINT64_C(0x6000008);
 		// Instruction Memory
 		const uint64_t INST_ADDR 			= UINT16_C(0x6002000);
 
