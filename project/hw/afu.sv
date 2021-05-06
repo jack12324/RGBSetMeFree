@@ -129,7 +129,7 @@ module afu
  
 
 
-   FPU #(.COL_WIDTH(10), .MEM_BUFFER_WIDTH(512), .CL_WIDTH(64)) iFPU(
+   FPU #(.COL_WIDTH(10), .MEM_BUFFER_WIDTH(512), .CL_WIDTH(64), .START_ADDRESS(32'h6000_0000)) iFPU(
 	.clk(clk), .rst_n(!rst), 
 	.done(done_fpu), .start(startFPU),
 	.mapped_data_valid(mapped_data_valid), 
