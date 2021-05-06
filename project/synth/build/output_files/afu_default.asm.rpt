@@ -1,5 +1,5 @@
 Assembler report for afu_default
-Thu May  6 07:53:18 2021
+Thu May  6 12:28:26 2021
 Quartus Prime Version 19.2.0 Build 57 06/24/2019 Patches 0.01rc SJ Pro Edition
 
 
@@ -40,7 +40,7 @@ https://fpgasoftware.intel.com/eula.
 +---------------------------------------------------------------+
 ; Assembler Summary                                             ;
 +-----------------------+---------------------------------------+
-; Assembler Status      ; Successful - Thu May  6 07:53:17 2021 ;
+; Assembler Status      ; Successful - Thu May  6 12:28:26 2021 ;
 ; Revision Name         ; afu_default                           ;
 ; Top-level Entity Name ; dcp_top                               ;
 ; Family                ; Arria 10                              ;
@@ -95,7 +95,7 @@ https://fpgasoftware.intel.com/eula.
 Info: *******************************************************************
 Info: Running Quartus Prime Assembler
     Info: Version 19.2.0 Build 57 06/24/2019 Patches 0.01rc SJ Pro Edition
-    Info: Processing started: Thu May  6 07:50:58 2021
+    Info: Processing started: Thu May  6 12:26:10 2021
 Info: Command: quartus_asm --read_settings_files=on --write_settings_files=off dcp -c afu_default
 Info (16677): Loading final database
 Info (16734): Loading "final" snapshot for partition "root_partition".
@@ -131,9 +131,9 @@ Warning (20536): Programming file generation feature has been removed from compi
 Warning (18890): The CRC error detection clock divisor has been changed to 2, because the previous divisor 1 is not supported by the current device.
 Info (14757): The PR bitstream ID is 0x30901D8F
 Info: Quartus Prime Assembler was successful. 0 errors, 24 warnings
-    Info: Peak virtual memory: 10751 megabytes
-    Info: Processing ended: Thu May  6 07:53:20 2021
-    Info: Elapsed time: 00:02:22
+    Info: Peak virtual memory: 10862 megabytes
+    Info: Processing ended: Thu May  6 12:28:28 2021
+    Info: Elapsed time: 00:02:18
 
 
 +-----------------------------------------------------------------------------+
@@ -165,8 +165,8 @@ Info: Quartus Prime Assembler was successful. 0 errors, 24 warnings
 ; Option         ; Setting                           ;
 +----------------+-----------------------------------+
 ; JTAG usercode  ; 0xFFFFFFFF                        ;
-; Checksum       ; 0x30CA3509                        ;
-; Design hash    ; 15C2343A6BF741DDB8FB06A482643C96  ;
+; Checksum       ; 0x30B42AF2                        ;
+; Design hash    ; 4F1DD2D657D98610BF658B6F8ECBAA7C  ;
 +----------------+-----------------------------------+
 
 

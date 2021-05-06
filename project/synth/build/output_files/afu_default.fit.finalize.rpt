@@ -1,5 +1,5 @@
 Fitter Finalize Stage Report for afu_default
-Thu May  6 07:49:43 2021
+Thu May  6 12:24:55 2021
 Quartus Prime Version 19.2.0 Build 57 06/24/2019 Patches 0.01rc SJ Pro Edition
 
 
@@ -38,15 +38,15 @@ https://fpgasoftware.intel.com/eula.
 ; Resource                                               ; Usage           ; %    ;
 +--------------------------------------------------------+-----------------+------+
 ;                                                        ;                 ;      ;
-; Programmable power technology high-speed tiles         ; 3,462 / 18,244  ; 19 % ;
-; Programmable power technology low-power tiles          ; 14,782 / 18,244 ; 81 % ;
-;     -- low-power tiles that are used by the design     ; 4,484 / 14,782  ; 30 % ;
-;     -- unused tiles (low-power)                        ; 10,298 / 14,782 ; 70 % ;
+; Programmable power technology high-speed tiles         ; 1,612 / 18,244  ; 9 %  ;
+; Programmable power technology low-power tiles          ; 16,632 / 18,244 ; 91 % ;
+;     -- low-power tiles that are used by the design     ; 5,761 / 16,632  ; 35 % ;
+;     -- unused tiles (low-power)                        ; 10,871 / 16,632 ; 65 % ;
 ;                                                        ;                 ;      ;
-; Programmable power technology high-speed LAB tiles     ; 3,149 / 13,898  ; 23 % ;
-; Programmable power technology low-power LAB tiles      ; 10,749 / 13,898 ; 77 % ;
-;     -- low-power LAB tiles that are used by the design ; 4,071 / 10,749  ; 38 % ;
-;     -- unused LAB tiles (low-power)                    ; 6,678 / 10,749  ; 62 % ;
+; Programmable power technology high-speed LAB tiles     ; 1,323 / 13,898  ; 10 % ;
+; Programmable power technology low-power LAB tiles      ; 12,575 / 13,898 ; 90 % ;
+;     -- low-power LAB tiles that are used by the design ; 5,343 / 12,575  ; 42 % ;
+;     -- unused LAB tiles (low-power)                    ; 7,232 / 12,575  ; 58 % ;
 ;                                                        ;                 ;      ;
 +--------------------------------------------------------+-----------------+------+
 
@@ -57,7 +57,7 @@ https://fpgasoftware.intel.com/eula.
 Info: *******************************************************************
 Info: Running Quartus Prime Fitter
     Info: Version 19.2.0 Build 57 06/24/2019 Patches 0.01rc SJ Pro Edition
-    Info: Processing started: Thu May  6 07:33:02 2021
+    Info: Processing started: Thu May  6 12:09:14 2021
 Info: Command: quartus_fit --read_settings_files=on --write_settings_files=off dcp -c afu_default
 Info: qfit2_default_script.tcl version: #1
 Info: Project  = dcp
