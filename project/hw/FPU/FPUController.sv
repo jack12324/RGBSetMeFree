@@ -2,7 +2,7 @@ module FPUController #(COL_WIDTH = 10, MEM_BUFFER_WIDTH = 512, START_ADDRESS = 3
 
 	input clk, rst_n, mapped_data_valid, start;
 	input [511:0] data_mem;
-	localparam DELAY = 5;
+	localparam DELAY = 6;
 
 	output logic shift_cols, done, rd_buffer_sel, wr_buffer_sel, wr_en_wr_buffer, mapped_data_request;
 	output signed [7:0] filter [8:0];
@@ -11,7 +11,7 @@ module FPUController #(COL_WIDTH = 10, MEM_BUFFER_WIDTH = 512, START_ADDRESS = 3
 	output logic [31:0] address_mem;
 	FPUCntrlReq_if req_if;
 
-	typedef enum {IDLE, LOAD_CONFIG, FILL_BUFF1, ADDR_ALL, ADDR_CHUNK, FILL_BUFF2, FILL_BUFF_FLIP, NEW_ROW, OPERATE, PRE_PAUSE, PRE_PAUSE2,PRE_CHUNK_END1, PRE_CHUNK_END2, PRE_CHUNK_END3, CHUNK_END, PAUSE_CHUNK, UPDATE_BASE, UPDATE_HEIGHT, UPDATE_WRITE, UPDATE_READ, ROW_END, ROW_DONE_WAIT, CHUNK_DONE, PRE_FINAL, FINAL_REQUEST, FINAL_FLIP, WAIT_FINAL, DONE, XXX} state_e;
+	typedef enum {IDLE, LOAD_CONFIG, FILL_BUFF1, ADDR_ALL, ADDR_CHUNK, FILL_BUFF2, FILL_BUFF_FLIP, NEW_ROW, OPERATE, PRE_PAUSE, PRE_PAUSE2,PRE_CHUNK_END1, PRE_CHUNK_END2, PRE_CHUNK_END2_5, PRE_CHUNK_END3, CHUNK_END, PAUSE_CHUNK, UPDATE_BASE, UPDATE_HEIGHT, UPDATE_WRITE, UPDATE_READ, ROW_END, ROW_DONE_WAIT, CHUNK_DONE, PRE_FINAL, FINAL_REQUEST, FINAL_FLIP, WAIT_FINAL, DONE, XXX} state_e;
 	state_e state, next;
 
 	FPUConfig_if conf();
@@ -85,7 +85,8 @@ module FPUController #(COL_WIDTH = 10, MEM_BUFFER_WIDTH = 512, START_ADDRESS = 3
 				else											next = PAUSE_CHUNK;			//@loopback
 
 			PRE_CHUNK_END1:											next = PRE_CHUNK_END2;
-			PRE_CHUNK_END2:											next = PRE_CHUNK_END3;
+			PRE_CHUNK_END2:											next = PRE_CHUNK_END2_5;
+			PRE_CHUNK_END2_5:										next = PRE_CHUNK_END3;
 			PRE_CHUNK_END3:	if(read_col_address == MEM_BUFFER_WIDTH -1)					next = CHUNK_END;
 				else											next = PRE_CHUNK_END3;			//@loopback
 
@@ -241,6 +242,10 @@ module FPUController #(COL_WIDTH = 10, MEM_BUFFER_WIDTH = 512, START_ADDRESS = 3
 					read_inc <= 1;
 					write_inc <= 1;
 				end
+				PRE_CHUNK_END2_5:begin
+					read_inc <= 1;
+					write_inc <= 1;
+				end
 				PRE_CHUNK_END3:begin
 					shift_cols <= 1;
 					read_inc <= 1;
@@ -322,12 +327,12 @@ module FPUController #(COL_WIDTH = 10, MEM_BUFFER_WIDTH = 512, START_ADDRESS = 3
 	always_ff @(posedge clk, negedge rst_n) begin
 		if(!rst_n | read_rst) read_col_address <= 0;
 		else if (read_inc) read_col_address += 1;
-		else if (read_dec) read_col_address -= DELAY;
+		else if (read_dec) read_col_address -= (DELAY+1);
 	end
 	always_ff @(posedge clk, negedge rst_n) begin
 		if(!rst_n | write_rst) write_col_address <= 0;
 		else if (write_inc) write_col_address += 1;
-		else if (write_dec) write_col_address -= DELAY;
+		else if (write_dec) write_col_address -= (DELAY+1);
 	end
 	always_ff @(posedge clk, negedge rst_n) begin
 		if(!rst_n) remaining_height <= 0;
