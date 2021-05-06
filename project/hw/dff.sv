@@ -4,7 +4,8 @@ in the main CPU file
 
 Instantiation: dff  #(.WIDTH()) iDUT (.clk(clk), .rst_n(rst_n), .d(), .q());
 **/
-module dff
+//synthesis doesn't like that this was named dff, must have their own dff module
+module dfflop
     #(
     parameter WIDTH = 1 // This is the width of the DFF
                          // Change to the corrct value when instantiating the module 
