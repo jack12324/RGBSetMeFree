@@ -46,7 +46,7 @@ module memory(
 // jump start FPU
 	output logic startFPU;
   // TODO: add test bench
-	/*
+	///*
   mem_system dataMem(
     .clk(clk), .rst_n(rst_n), 
     .addr(ExMe_out_alu_out),
@@ -66,7 +66,8 @@ module memory(
 	.stall(memStall),
 	.CacheHit()
     );
- */
+ //*/
+  /*
   fake_mem_system #(.FILENAME("project/test_images/memory.h")) dataMem(
     .clk(clk), .rst_n(rst_n), 
     .addr(ExMe_out_alu_out),
@@ -77,7 +78,7 @@ module memory(
     .stall(),//none ig
     .data_out(mem_data)
     );
-	
+  */	
    // output logic done, different from data_valid?
 
 	// jumpstart FPU
