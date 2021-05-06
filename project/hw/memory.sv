@@ -50,7 +50,7 @@ module memory(
   mem_system dataMem(
     .clk(clk), .rst_n(rst_n), 
     .addr(ExMe_out_alu_out),
-    .data_in(ExMe_out_reg_2),
+    .data_in(ExMe_out_reg_2_data),
     .wr(ExMe_out_mem_wrt),
     .en(ExMe_out_mem_en),
     .done(done),
