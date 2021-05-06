@@ -137,7 +137,21 @@ module afu
 	.mapped_data(mapped_data), 
 	.mapped_address(mapped_address), 
 	.dram_if(dram_if.FPU));
+
+   logic [511:0] FeDataIn_host;
+   logic Fetx_done_host;
+   logic Ferd_valid_host;
+   logic [511:0] FeDataOut_host;
+   logic [31:0] FeAddrOut_host;
+   logic [1:0] Feop_host;
    
+   logic [511:0] MeDataIn_host;
+   logic Metx_done_host;
+   logic Merd_valid_host;
+   logic [511:0] MeDataOut_host;
+   logic [31:0] MeAddrOut_host;
+   logic [1:0] Meop_host;
+
    cpu iCPU(
 	.clk(clk), .rst_n(rst_n),
 	.INT(INT), .INT_INSTR(INT_INSTR), .ACK(ACK), // todo where from?
@@ -176,13 +190,13 @@ module afu
   fpu_dma_ctrl iFPUDMA(.clk(clk), .rst_n(~rst), 
 	.dram_if(dram_if.DRAM),
     //Inputs: From mem_ctrl
-    	.common_data_bus_write_out(common_data_bus_write_out),    
+    	.common_data_bus_write_out(common_data_bus_write_out_fpu),    
    	  .tx_done(tx_done),
 	    .rd_valid(rd_valid),
     //Outputs : To mem_ctrl
-	  .op(op),
-	  .raw_address(raw_address),
-	  .common_data_bus_read_in(common_data_bus_read_in)
+	  .op(op_fpu),
+	  .raw_address(raw_address_fpu),
+	  .common_data_bus_read_in(common_data_bus_read_in_fpu)
 	);
 
   fpu_mmio_ctrl iFPUMMIO( 
@@ -194,13 +208,13 @@ module afu
       .mapped_data(mapped_data),
       .mapped_data_valid(mapped_data_valid),
         //Inputs: From mem_ctrl
-      .common_data_bus_write_out(common_data_bus_write_out),    
+      .common_data_bus_write_out(common_data_bus_write_out_mmio),    
       .tx_done(tx_done),
       .rd_valid(rd_valid),
         //Outputs : To mem_ctrl
-      .op(op),
-      .raw_address(raw_address),
-      .common_data_bus_read_in(common_data_bus_read_in)  
+      .op(op_mmio),
+      .raw_address(raw_address_mmio),
+      .common_data_bus_read_in(common_data_bus_read_in_mmio)  
       );
 
   mem_arbiter   iARBITER(
