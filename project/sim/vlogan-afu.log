@@ -980,4 +980,4 @@ Parsing included file '/filespace/c/chenke/RGBSetMeFree/project/hw/mmio_if.vh'.
 Back to file '/filespace/c/chenke/RGBSetMeFree/project/hw/ccip_std_afu.sv'.
 Parsing included file '/filespace/c/chenke/RGBSetMeFree/project/sim/rtl/./afu_json_info.vh'.
 Back to file '/filespace/c/chenke/RGBSetMeFree/project/hw/ccip_std_afu.sv'.
-CPU time: .596 seconds to compile
+CPU time: .820 seconds to compile

@@ -11,7 +11,7 @@ Warning-[DEBUG_DEP] Option will be deprecated
 Command: vcs -full64 -nc -V +vcs+lic+wait -full64 -debug_pp -Mupdate -lca -j 4 -l \
 vcs_elab.log +vhdllib+work -Mlib=work +lint=TFIPC-L -override_timescale=1ps/1ps -o \
 work/ase_simv ase_top work/ase_libs.so -lrt -lpthread
-/cae/apps/data/synopsys-2020/vcs/Q-2020.03-SP1/linux64/bin/comelab -nc -unielab -nc -verbose -lca -output vcs_elab.log -override_timescale 1ps/1ps -exe work/ase_simv -picarchive -debug 1 -uum   -ldlibs work/ase_libs.so -lrt -lpthread  -mxuumtop ase_top  -verilogcomp  -full64 -nc -V +vcs+lic+wait -full64 -debug_pp -Mupdate -lca -j 4 -l vcs_elab.log +vhdllib+work -Mlib=work +lint=TFIPC-L -override_timescale=1ps/1ps -o work/ase_simv work/ase_libs.so -lrt -lpthread -uum   -elaboration_options /tmp/vcs_20210506021131_136298/elaboptfile_136298
+/cae/apps/data/synopsys-2020/vcs/Q-2020.03-SP1/linux64/bin/comelab -nc -unielab -nc -verbose -lca -output vcs_elab.log -override_timescale 1ps/1ps -exe work/ase_simv -picarchive -debug 1 -uum   -ldlibs work/ase_libs.so -lrt -lpthread  -mxuumtop ase_top  -verilogcomp  -full64 -nc -V +vcs+lic+wait -full64 -debug_pp -Mupdate -lca -j 4 -l vcs_elab.log +vhdllib+work -Mlib=work +lint=TFIPC-L -override_timescale=1ps/1ps -o work/ase_simv work/ase_libs.so -lrt -lpthread -uum   -elaboration_options /tmp/vcs_20210506172106_57722/elaboptfile_57722
 
 Warning-[LCA_FEATURES_ENABLED] Usage warning
   LCA features enabled by '-lca' argument on the command line.  For more 
@@ -40,10 +40,10 @@ Warning-[DEBUG_DEP] Option will be deprecated
 -Mcrt0= -Mcrtn="" -Mcsrc="" -Mupdate -Mlib=work -Msyslibs=-ldl  -l vcs_elab.log -uum \
 ase_top -mxunielab -uni_make -full64 -nc -V +vcs+lic+wait -full64 -Xcbug=0x1 -lca \
 -j4 +vhdllib+work +lint=TFIPC-L -override_timescale=1ps/1ps -o work/ase_simv -uum \
--elaboration_options=/tmp/vcs_20210506021131_136298/elaboptfile_136298 -full64 -picarchive \
+-elaboration_options=/tmp/vcs_20210506172106_57722/elaboptfile_57722 -full64 -picarchive \
 +vcsd +itf+/cae/apps/data/synopsys-2020/vcs/Q-2020.03-SP1/linux64/lib/vcsdp.tab +cli+1 \
 -debug=1 +memcbk +vpi -VHDLelab=-mxunielab -uni_make -nc -nc -verbose -lca -override_timescale \
-1ps/1ps -exe work/ase_simv -uum -elaboration_options /tmp/vcs_20210506021131_136298/elaboptfile_136298 \
+1ps/1ps -exe work/ase_simv -uum -elaboration_options /tmp/vcs_20210506172106_57722/elaboptfile_57722 \
 -picarchive -debug 1  -gen_obj -f work/ase_simv.daidir/mxopt.db  
 Top Level Modules:
        ase_top
@@ -547,120 +547,22 @@ Note-[VCS_PARAL] Parallel code-gen enabled
   VCS is running with parallel code generation(-j)...
 
 81 modules and 0 UDP read.
-recompiling module afu
-recompiling module cci_mpf_shim_edge_afu
-recompiling module cci_mpf_pipe_std
-recompiling module altsyncram
-recompiling module cci_mpf_prim_heap_ctrl
-recompiling module platform_shim_ccip_std_afu
-recompiling module FPURequestController
-recompiling module cci_mpf_shim_detect_eop_track_flits
-recompiling package ase_pkg
-recompiling module cci_mpf_prim_fifo_lutram_ctrl
-recompiling module cci_mpf_prim_heap_ctrl_checker
-recompiling module FPUControllerConfigurationLoader
-recompiling module fpu_dma_ctrl
-recompiling module ase_svfifo
-recompiling module cci_mpf_prim_fifo_lutram
-recompiling module platform_shim_ccip
-recompiling module cci_mpf_prim_lutram
-recompiling module FilterMAC
-recompiling package ccip_feature_list_pkg
-recompiling module dff
-recompiling module ase_top
-recompiling package ccis_if_pkg
-recompiling module cci_mpf_csrs
-recompiling module cci_mpf_shim_vtp_pt_walk_if
-recompiling module FPUCntrlReq_if
-recompiling module outoforder_wrf_channel
-recompiling module cci_mpf_svc_vtp
-recompiling module altsyncram
-recompiling module FPUController
-recompiling module cci_mpf_svc_vtp_tlb
-recompiling module cci_mpf_prim_rob
-recompiling module ccip_logger
-recompiling module cci_mpf_prim_fifo_lutram
-recompiling module cci_mpf_shim_buffer_afu
-recompiling module ALTERA_MF_MEMORY_INITIALIZATION
-recompiling module ReadBank
-recompiling module cci_mpf_prim_ram_dualport_byteena
-recompiling module ase_svfifo
-recompiling module fpu_mmio_ctrl
-recompiling package ccip_if_funcs_pkg
-recompiling module cci_mpf_prim_ram_simple_init
-recompiling module cci_mpf_prim_ram_simple
-recompiling package cci_mpf_shim_pkg
-recompiling module Single_RAM
-recompiling module dff
-recompiling package ccip_if_pkg
-recompiling package cci_mpf_csrs_pkg
-recompiling module cci_mpf_shim_pwrite_if
-recompiling module mmio_if
-recompiling module cci_mpf_shim_vtp_tlb_if
-recompiling module ccip_emulator
-recompiling module ccip_checker
-recompiling module altsyncram
-recompiling module mem_system
-recompiling module cci_mpf_svc_vtp_pipe
-recompiling module FPU
-recompiling module csr_mgr
-recompiling module cci_mpf_shim_vtp_chan_l1_caches
-recompiling module cci_mpf_if
-recompiling module cci_mpf_prim_fifo_lutram_ctrl
-recompiling module ccip_wires_to_mpf
-recompiling module mem_arbiter
-recompiling package _vcs_DPI_package
-recompiling module ase_svfifo
-recompiling module FPUBuffers
-recompiling module cci_mpf_prim_fifo_lutram
-recompiling package cci_csr_if_pkg
-recompiling module cci_mpf_prim_ram_simple
-recompiling module ram_block
-recompiling module Single_RAM
-recompiling module dff
-recompiling module dma_if
-recompiling package ccis_if_funcs_pkg
-recompiling module cci_mpf_shim_edge_if
-recompiling module cci_mpf_shim_vtp_svc_if
-recompiling module FPUConfig_if
-recompiling module outoforder_wrf_channel
-recompiling module cci_mpf_shim_vtp
-recompiling module altsyncram
-recompiling module cci_mpf_shim_csr
-recompiling package cci_mpf_if_pkg
-recompiling module cci_mpf_svc_vtp_tlb
-recompiling module hal
-recompiling module cci_mpf_shim_csr_events
-recompiling module cci_mpf_prim_fifo_lutram
-recompiling module cci_mpf_prim_fifo_lutram_ctrl
-recompiling module mem_ctrl
-recompiling module cci_mpf_prim_lutram_init_banked
-recompiling module cci_mpf_shim_detect_eop
-recompiling module cci_mpf_prim_repl_random
-recompiling module ase_svfifo
-recompiling module cci_mpf_prim_arb_rr
-recompiling module cci_mpf_shim_buffer_fiu
-recompiling module cci_mpf_prim_ram_simple_init
-recompiling module cci_mpf_prim_ram_simple
-recompiling module cci_mpf_shim_null
-recompiling module dff
-recompiling package ccip_cfg_pkg
-recompiling module app_csrs
-recompiling module cci_mpf_shim_pwrite_lock_if
-recompiling module FPUDRAM_if
-( cd csrc ; make -f Makefile SNPS_VCS_TMPDIR=/tmp/vcs_20210506021131_136298 product \
+	However, due to incremental compilation, no re-compilation is necessary.
+( cd csrc ; make -f Makefile SNPS_VCS_TMPDIR=/tmp/vcs_20210506172106_57722 product \
 )
 make[1]: Entering directory '/filespace/c/chenke/RGBSetMeFree/project/sim/csrc'
 rm -f _cuarc*.so _csrc*.so pre_vcsobj_*.so share_vcsobj_*.so
+ld -shared  -Bsymbolic  -o .//../work/ase_simv.daidir//_cuarc0.so objs/amcQw_d.o \
+
+rm -f _cuarc0.so
 if [ -x ../work/ase_simv ]; then chmod a-x ../work/ase_simv; fi
 g++  -o ../work/ase_simv -no-pie  -Wl,--no-as-needed    -L/usr/lib/x86_64-linux-gnu \
 -L/lib/x86_64-linux-gnu -Wl,--no-as-needed -rdynamic -Wl,-rpath='$ORIGIN'/ase_simv.daidir \
 -Wl,-rpath=./ase_simv.daidir -Wl,-rpath=/cae/apps/data/synopsys-2020/vcs/Q-2020.03-SP1/linux64/lib \
 -L/cae/apps/data/synopsys-2020/vcs/Q-2020.03-SP1/linux64/lib -Wl,-rpath-link=./  \
-objs/amcQw_d.o   _137439_archive_1.so _137448_archive_1.so _137449_archive_1.so _137450_archive_1.so \
-SIM_l.o       rmapats_mop.o rmapats.o rmar.o rmar_nd.o  rmar_llvm_0_1.o rmar_llvm_0_0.o \
--lnuma -lerrorinf -lsnpsmalloc -lvfs ase_libs.so -lrt -lpthread    -lvcsnew -lsimprofile \
--lvirsim -luclinative /cae/apps/data/synopsys-2020/vcs/Q-2020.03-SP1/linux64/lib/vcs_tls.o \
+_58863_archive_1.so _prev_archive_1.so _cuarc0.so  SIM_l.o       rmapats_mop.o rmapats.o \
+rmar.o rmar_nd.o  rmar_llvm_0_1.o rmar_llvm_0_0.o          -lnuma -lerrorinf -lsnpsmalloc \
+-lvfs ase_libs.so -lrt -lpthread    -lvcsnew -lsimprofile -lvirsim -luclinative /cae/apps/data/synopsys-2020/vcs/Q-2020.03-SP1/linux64/lib/vcs_tls.o \
 -Wl,-whole-archive -lvcsucli -Wl,-no-whole-archive       ./../work/ase_simv.daidir/vc_hdrs.o \
 /cae/apps/data/synopsys-2020/vcs/Q-2020.03-SP1/linux64/lib/vcs_save_restore_new.o \
 -ldl  -lc -lm -lpthread -ldl 
