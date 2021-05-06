@@ -10,7 +10,7 @@ addi $r9, $R0, 9 	;8
 addi $r10, $R0, 10	;9
 addi $r11, $R0, 11	;10
 nop			;11
-jmp 11			;12 infinite loop
+jmp 5			;12 infinite loop
 nop			;13
 nop			;14
 nop			;15
