@@ -143,7 +143,7 @@ module CPU_interrupt_fsm (
             LR_before_int <= 32'h06002000; // this is where our instruction memory starts
             FL_before_int <= 2'b00; // no flags asserted
         end  
-        else begin  
+        else if (state == SAVE_REGS) begin  
             PC_before_int <= current_PC; 
             LR_before_int <= current_LR; 
             FL_before_int <= current_FL;
