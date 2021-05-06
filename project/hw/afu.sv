@@ -272,10 +272,10 @@ module afu
       .host_rd_ready(~dma.empty),
       .host_wr_ready(~dma.full), // removing for now, asked mayuhk about it: & ~dma.host_wr_completed),
       .op(mem_op), // CPU Defined
-      .raw_address(cpu_addr), // Address in the CPU space
+      .raw_address(cpu_addr), // Address in the CPU space //@synth cpu_addr doesn't exist
       .address_offset(wr_addr),
       .common_data_bus_read_in(DMA_Data_in), // CPU data word bus, input
-      .common_data_bus_write_out(cpu_in),
+      .common_data_bus_write_out(cpu_in),  //@synth cpu_in doesn't exist
       .host_data_bus_read_in(dma.rd_data),
       .host_data_bus_write_out(dma.wr_data),
       .corrected_address(final_addr),
