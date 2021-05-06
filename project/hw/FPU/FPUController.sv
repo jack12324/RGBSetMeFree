@@ -2,6 +2,7 @@ module FPUController #(COL_WIDTH = 10, MEM_BUFFER_WIDTH = 512, START_ADDRESS = 3
 
 	input clk, rst_n, mapped_data_valid, start;
 	input [511:0] data_mem;
+	localparam DELAY = 6;
 
 	output logic shift_cols, done, rd_buffer_sel, wr_buffer_sel, wr_en_wr_buffer, mapped_data_request;
 	output signed [7:0] filter [8:0];
@@ -10,7 +11,7 @@ module FPUController #(COL_WIDTH = 10, MEM_BUFFER_WIDTH = 512, START_ADDRESS = 3
 	output logic [31:0] address_mem;
 	FPUCntrlReq_if req_if;
 
-	typedef enum {IDLE, LOAD_CONFIG, FILL_BUFF1, ADDR_ALL, ADDR_CHUNK, FILL_BUFF2, FILL_BUFF_FLIP, NEW_ROW, OPERATE, PRE_PAUSE, PRE_CHUNK_END1, PRE_CHUNK_END2, PRE_CHUNK_END3, CHUNK_END, PAUSE_CHUNK, UPDATE_BASE, UPDATE_HEIGHT, UPDATE_WRITE, UPDATE_READ, ROW_END, ROW_DONE_WAIT, CHUNK_DONE, PRE_FINAL, FINAL_REQUEST, FINAL_FLIP, WAIT_FINAL, DONE, XXX} state_e;
+	typedef enum {IDLE, LOAD_CONFIG, FILL_BUFF1, ADDR_ALL, ADDR_CHUNK, FILL_BUFF2, FILL_BUFF_FLIP, NEW_ROW, OPERATE, PRE_PAUSE, PRE_PAUSE2,PRE_CHUNK_END1, PRE_CHUNK_END2, PRE_CHUNK_END2_5, PRE_CHUNK_END3, CHUNK_END, PAUSE_CHUNK, UPDATE_BASE, UPDATE_HEIGHT, UPDATE_WRITE, UPDATE_READ, ROW_END, ROW_DONE_WAIT, CHUNK_DONE, PRE_FINAL, FINAL_REQUEST, FINAL_FLIP, WAIT_FINAL, DONE, XXX} state_e;
 	state_e state, next;
 
 	FPUConfig_if conf();
@@ -66,23 +67,28 @@ module FPUController #(COL_WIDTH = 10, MEM_BUFFER_WIDTH = 512, START_ADDRESS = 3
 
 			ADDR_ALL: 											next = FILL_BUFF2;
 
-			NEW_ROW: if(read_col_address == 4) 								next = OPERATE;
+			NEW_ROW: if(read_col_address == (3+DELAY)) 								next = OPERATE;
 				 	else										next = NEW_ROW;				//@loopback
 
 			OPERATE: if(read_col_address >= remaining_width)						next = ROW_END;
 				else if(remaining_width != MEM_BUFFER_WIDTH-1 &&
-					 read_col_address == MEM_BUFFER_WIDTH-2 &&
+					 read_col_address == MEM_BUFFER_WIDTH-(1+DELAY) &&
 					 req_if.making_request)								next = PRE_PAUSE;
 				else if(read_col_address == MEM_BUFFER_WIDTH-1)						next = CHUNK_END;
 				else											next = OPERATE;				//@loopback
 
-			PRE_PAUSE:											next = PAUSE_CHUNK;
+			PRE_PAUSE: if(read_col_address == MEM_BUFFER_WIDTH - 2)						next = PRE_PAUSE2;
+					else										next = PRE_PAUSE;			//@loopback
+
+			PRE_PAUSE2:											next = PAUSE_CHUNK;
 			PAUSE_CHUNK: if(!req_if.making_request)								next = PRE_CHUNK_END1;
 				else											next = PAUSE_CHUNK;			//@loopback
 
 			PRE_CHUNK_END1:											next = PRE_CHUNK_END2;
-			PRE_CHUNK_END2:											next = PRE_CHUNK_END3;
-			PRE_CHUNK_END3:											next = CHUNK_END;
+			PRE_CHUNK_END2:											next = PRE_CHUNK_END2_5;
+			PRE_CHUNK_END2_5:										next = PRE_CHUNK_END3;
+			PRE_CHUNK_END3:	if(read_col_address == MEM_BUFFER_WIDTH -1)					next = CHUNK_END;
+				else											next = PRE_CHUNK_END3;			//@loopback
 
 			CHUNK_END: if(write_col_address == MEM_BUFFER_WIDTH-1)						next = UPDATE_BASE;
 				else											next = CHUNK_END;			//@loopback
@@ -220,6 +226,11 @@ module FPUController #(COL_WIDTH = 10, MEM_BUFFER_WIDTH = 512, START_ADDRESS = 3
 				end
 				PRE_PAUSE:begin
 					wr_en_wr_buffer <= 1;
+					read_inc <= 1;
+					write_inc <= 1;
+				end
+				PRE_PAUSE2:begin
+					wr_en_wr_buffer <= 1;
 				end
 				PAUSE_CHUNK: begin 
 				end
@@ -228,6 +239,10 @@ module FPUController #(COL_WIDTH = 10, MEM_BUFFER_WIDTH = 512, START_ADDRESS = 3
 					write_dec <= 1;
 				end
 				PRE_CHUNK_END2:begin
+					read_inc <= 1;
+					write_inc <= 1;
+				end
+				PRE_CHUNK_END2_5:begin
 					read_inc <= 1;
 					write_inc <= 1;
 				end
@@ -312,12 +327,12 @@ module FPUController #(COL_WIDTH = 10, MEM_BUFFER_WIDTH = 512, START_ADDRESS = 3
 	always_ff @(posedge clk, negedge rst_n) begin
 		if(!rst_n | read_rst) read_col_address <= 0;
 		else if (read_inc) read_col_address += 1;
-		else if (read_dec) read_col_address -= 1;
+		else if (read_dec) read_col_address -= (DELAY+1);
 	end
 	always_ff @(posedge clk, negedge rst_n) begin
 		if(!rst_n | write_rst) write_col_address <= 0;
 		else if (write_inc) write_col_address += 1;
-		else if (write_dec) write_col_address -= 1;
+		else if (write_dec) write_col_address -= (DELAY+1);
 	end
 	always_ff @(posedge clk, negedge rst_n) begin
 		if(!rst_n) remaining_height <= 0;

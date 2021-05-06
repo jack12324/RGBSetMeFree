@@ -1,5 +1,5 @@
 Flow report for afu_default
-Thu May  6 07:53:18 2021
+Thu May  6 12:28:26 2021
 Quartus Prime Version 19.2.0 Build 57 06/24/2019 Patches 0.01rc SJ Pro Edition
 
 
@@ -54,19 +54,19 @@ https://fpgasoftware.intel.com/eula.
 +----------------------------------------------------------------------------------------+
 ; Flow Summary                                                                           ;
 +-----------------------------+----------------------------------------------------------+
-; Flow Status                 ; Successful - Thu May  6 07:53:17 2021                    ;
+; Flow Status                 ; Successful - Thu May  6 12:28:26 2021                    ;
 ; Quartus Prime Version       ; 19.2.0 Build 57 06/24/2019 Patches 0.01rc SJ Pro Edition ;
 ; Revision Name               ; afu_default                                              ;
 ; Top-level Entity Name       ; dcp_top                                                  ;
 ; Family                      ; Arria 10                                                 ;
 ; Device                      ; 10AX115N2F40E2LG                                         ;
 ; Timing Models               ; Final                                                    ;
-; Logic utilization (in ALMs) ; 43,716 / 427,200 ( 10 % )                                ;
-; Total registers             ; 62413                                                    ;
+; Logic utilization (in ALMs) ; 44,016 / 427,200 ( 10 % )                                ;
+; Total registers             ; 63660                                                    ;
 ; Total pins                  ; 310 / 826 ( 38 % )                                       ;
 ; Total virtual pins          ; 0                                                        ;
 ; Total block memory bits     ; 2,422,632 / 55,562,240 ( 4 % )                           ;
-; Total DSP Blocks            ; 64 / 1,518 ( 4 % )                                       ;
+; Total DSP Blocks            ; 36 / 1,518 ( 2 % )                                       ;
 ; Total HSSI RX channels      ; 12 / 48 ( 25 % )                                         ;
 ; Total HSSI TX channels      ; 12 / 48 ( 25 % )                                         ;
 ; Total PLLs                  ; 25 / 112 ( 22 % )                                        ;
@@ -104,10 +104,10 @@ https://fpgasoftware.intel.com/eula.
 +-------------------+---------------------+
 ; Option            ; Setting             ;
 +-------------------+---------------------+
-; Start date & time ; 05/06/2021 07:31:28 ;
+; Start date & time ; 05/06/2021 12:07:41 ;
 ; Main task         ; Compilation         ;
 ; Revision Name     ; afu_default         ;
-; Start date & time ; 05/06/2021 07:31:48 ;
+; Start date & time ; 05/06/2021 12:08:00 ;
 ; Main task         ; Compilation         ;
 ; Revision Name     ; afu_default         ;
 +-------------------+---------------------+
@@ -122,7 +122,7 @@ https://fpgasoftware.intel.com/eula.
 ; ALLOW_ANY_RAM_SIZE_FOR_RECOGNITION           ; On                                                                               ; Off           ; --          ; --         ;
 ; ALLOW_DSP_RETIMING                           ; On                                                                               ; Off           ; --          ; --         ;
 ; ALLOW_RAM_RETIMING                           ; On                                                                               ; Off           ; --          ; --         ;
-; COMPILER_SIGNATURE_ID                        ; 250977684130232.162031148828772                                                  ; --            ; --          ; --         ;
+; COMPILER_SIGNATURE_ID                        ; 250977684130232.162032806128032                                                  ; --            ; --          ; --         ;
 ; FITTER_EFFORT                                ; Standard Fit                                                                     ; Auto Fit      ; --          ; --         ;
 ; MAX_CORE_JUNCTION_TEMP                       ; 100                                                                              ; --            ; --          ; --         ;
 ; MIN_CORE_JUNCTION_TEMP                       ; 0                                                                                ; --            ; --          ; --         ;
@@ -171,7 +171,7 @@ https://fpgasoftware.intel.com/eula.
 ; ALLOW_ANY_RAM_SIZE_FOR_RECOGNITION           ; On                                                                               ; Off           ; --          ; --         ;
 ; ALLOW_DSP_RETIMING                           ; On                                                                               ; Off           ; --          ; --         ;
 ; ALLOW_RAM_RETIMING                           ; On                                                                               ; Off           ; --          ; --         ;
-; COMPILER_SIGNATURE_ID                        ; 250977684130232.162031148828772                                                  ; --            ; --          ; --         ;
+; COMPILER_SIGNATURE_ID                        ; 250977684130232.162032806128032                                                  ; --            ; --          ; --         ;
 ; FITTER_EFFORT                                ; Standard Fit                                                                     ; Auto Fit      ; --          ; --         ;
 ; MAX_CORE_JUNCTION_TEMP                       ; 100                                                                              ; --            ; --          ; --         ;
 ; MIN_CORE_JUNCTION_TEMP                       ; 0                                                                                ; --            ; --          ; --         ;
@@ -224,11 +224,11 @@ https://fpgasoftware.intel.com/eula.
 +-----------------+--------------+-------------------------+---------------------+
 ; Module Name     ; Elapsed Time ; Average Processors Used ; Peak Virtual Memory ;
 +-----------------+--------------+-------------------------+---------------------+
-; Synthesis       ; 00:01:30     ; 1.0                     ; 4068 MB             ;
-; Fitter          ; 00:17:03     ; 1.5                     ; 10699 MB            ;
-; Timing Analyzer ; 00:00:41     ; 2.4                     ; 7023 MB             ;
-; Assembler       ; 00:02:19     ; 1.0                     ; 10751 MB            ;
-; Total           ; 00:21:33     ; --                      ; --                  ;
+; Synthesis       ; 00:01:30     ; 1.0                     ; 4054 MB             ;
+; Fitter          ; 00:16:03     ; 1.5                     ; 11161 MB            ;
+; Timing Analyzer ; 00:00:42     ; 2.4                     ; 7009 MB             ;
+; Assembler       ; 00:02:16     ; 1.0                     ; 10862 MB            ;
+; Total           ; 00:20:31     ; --                      ; --                  ;
 +-----------------+--------------+-------------------------+---------------------+
 
 

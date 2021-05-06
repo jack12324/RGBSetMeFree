@@ -2,10 +2,6 @@
 Timing Analyzer Summary
 ------------------------------------------------------------
 
-Type  : Slow 900mV 100C Model Setup 'u0|dcp_iopll|dcp_iopll|clk1x'
-Slack : -14.212
-TNS   : -2816.086
-
 Type  : Slow 900mV 100C Model Setup 'mem|ddr4a|ddr4a_phy_clk_l_2'
 Slack : 0.009
 TNS   : 0.000
@@ -35,7 +31,15 @@ Slack : 0.266
 TNS   : 0.000
 
 Type  : Slow 900mV 100C Model Setup 'u0|dcp_iopll|dcp_iopll|clk100'
-Slack : 0.410
+Slack : 0.303
+TNS   : 0.000
+
+Type  : Slow 900mV 100C Model Setup 'u0|dcp_iopll|dcp_iopll|clk1x'
+Slack : 0.458
+TNS   : 0.000
+
+Type  : Slow 900mV 100C Model Setup 'fpga_top|inst_fiu_top|inst_pcie0_ccib_top|pcie_hip0|pcie_a10_hip_0|pld_clk'
+Slack : 0.477
 TNS   : 0.000
 
 Type  : Slow 900mV 100C Model Setup 'fpga_top|inst_fiu_top|inst_pcie0_ccib_top|pcie_hip0|pcie_a10_hip_0|tx_bonding_clocks[0]'
@@ -48,10 +52,6 @@ TNS   : 0.000
 
 Type  : Slow 900mV 100C Model Setup 'mem|ddr4a|ddr4a_phy_clk_l_0'
 Slack : 0.587
-TNS   : 0.000
-
-Type  : Slow 900mV 100C Model Setup 'fpga_top|inst_fiu_top|inst_pcie0_ccib_top|pcie_hip0|pcie_a10_hip_0|pld_clk'
-Slack : 0.617
 TNS   : 0.000
 
 Type  : Slow 900mV 100C Model Setup 'mem|ddr4a|ddr4a_core_cal_slave_clk'
@@ -94,12 +94,12 @@ Type  : Slow 900mV 100C Model Setup 'fpga_top|inst_fiu_top|inst_hssi_ctrl|ntv0|x
 Slack : 2.439
 TNS   : 0.000
 
-Type  : Slow 900mV 100C Model Setup 'fpga_top|inst_fiu_top|inst_hssi_ctrl|ntv0|xcvr_native_a10_0|g_xcvr_native_insts[1]|rx_pma_clk'
-Slack : 2.532
+Type  : Slow 900mV 100C Model Setup 'fpga_top|inst_fiu_top|inst_ccip_fabric_top|inst_cvl_top|inst_user_clk|qph_user_clk_fpll_u0|xcvr_fpll_a10_0|outclk1'
+Slack : 2.529
 TNS   : 0.000
 
-Type  : Slow 900mV 100C Model Setup 'fpga_top|inst_fiu_top|inst_ccip_fabric_top|inst_cvl_top|inst_user_clk|qph_user_clk_fpll_u0|xcvr_fpll_a10_0|outclk1'
-Slack : 2.597
+Type  : Slow 900mV 100C Model Setup 'fpga_top|inst_fiu_top|inst_hssi_ctrl|ntv0|xcvr_native_a10_0|g_xcvr_native_insts[1]|rx_pma_clk'
+Slack : 2.532
 TNS   : 0.000
 
 Type  : Slow 900mV 100C Model Setup 'hssi_pll_r_0_outclk1'
@@ -110,24 +110,24 @@ Type  : Slow 900mV 100C Model Setup 'hssi_pll_t_outclk1'
 Slack : 2.986
 TNS   : 0.000
 
-Type  : Slow 900mV 100C Model Setup 'fpga_top|inst_fiu_top|inst_hssi_ctrl|ntv0|xcvr_native_a10_0|g_xcvr_native_insts[2]|avmmclk'
-Slack : 3.315
+Type  : Slow 900mV 100C Model Setup 'fpga_top|inst_fiu_top|inst_hssi_ctrl|ntv0|xcvr_native_a10_0|g_xcvr_native_insts[1]|avmmclk'
+Slack : 3.197
 TNS   : 0.000
 
-Type  : Slow 900mV 100C Model Setup 'fpga_top|inst_fiu_top|inst_hssi_ctrl|ntv0|xcvr_native_a10_0|g_xcvr_native_insts[1]|avmmclk'
-Slack : 3.325
+Type  : Slow 900mV 100C Model Setup 'fpga_top|inst_fiu_top|inst_hssi_ctrl|ntv0|xcvr_native_a10_0|g_xcvr_native_insts[2]|avmmclk'
+Slack : 3.270
 TNS   : 0.000
 
 Type  : Slow 900mV 100C Model Setup 'fpga_top|inst_fiu_top|inst_hssi_ctrl|ntv0|xcvr_native_a10_0|g_xcvr_native_insts[0]|avmmclk'
-Slack : 3.435
+Slack : 3.437
 TNS   : 0.000
 
 Type  : Slow 900mV 100C Model Setup 'fpga_top|inst_fiu_top|inst_hssi_ctrl|ntv0|xcvr_native_a10_0|g_xcvr_native_insts[3]|avmmclk'
-Slack : 4.449
+Slack : 4.331
 TNS   : 0.000
 
 Type  : Slow 900mV 100C Model Setup 'fpga_top|inst_fiu_top|inst_pcie0_ccib_top|pcie_hip0|pcie_a10_hip_0|g_xcvr_native_insts[7]|avmmclk'
-Slack : 4.498
+Slack : 4.434
 TNS   : 0.000
 
 Type  : Slow 900mV 100C Model Setup 'fspi_sclk'
@@ -135,7 +135,7 @@ Slack : 4.764
 TNS   : 0.000
 
 Type  : Slow 900mV 100C Model Setup 'fpga_top|inst_fiu_top|inst_pcie0_ccib_top|pcie_hip0|pcie_a10_hip_0|g_xcvr_native_insts[6]|avmmclk'
-Slack : 4.890
+Slack : 4.946
 TNS   : 0.000
 
 Type  : Slow 900mV 100C Model Setup 'vl_qph_user_clk_clkpsc_clk0'
@@ -147,7 +147,7 @@ Slack : 5.231
 TNS   : 0.000
 
 Type  : Slow 900mV 100C Model Setup 'fpga_top|inst_fiu_top|inst_pcie0_ccib_top|pcie_hip0|pcie_a10_hip_0|g_xcvr_native_insts[4]|avmmclk'
-Slack : 5.510
+Slack : 5.494
 TNS   : 0.000
 
 Type  : Slow 900mV 100C Model Setup 'fpga_top|inst_fiu_top|inst_hssi_ctrl|ntv0|xcvr_native_a10_0|g_xcvr_native_insts[0]|tx_pma_div_clk'
@@ -158,20 +158,20 @@ Type  : Slow 900mV 100C Model Setup 'fpga_top|inst_fiu_top|inst_hssi_ctrl|ntv0|x
 Slack : 5.666
 TNS   : 0.000
 
-Type  : Slow 900mV 100C Model Setup 'fpga_top|inst_fiu_top|inst_ccip_fabric_top|inst_cvl_top|inst_user_clk|qph_user_clk_fpll_u0|xcvr_fpll_a10_0|outclk0'
-Slack : 5.743
+Type  : Slow 900mV 100C Model Setup 'fpga_top|inst_fiu_top|inst_pcie0_ccib_top|pcie_hip0|pcie_a10_hip_0|g_xcvr_native_insts[3]|avmmclk'
+Slack : 5.695
 TNS   : 0.000
 
-Type  : Slow 900mV 100C Model Setup 'fpga_top|inst_fiu_top|inst_pcie0_ccib_top|pcie_hip0|pcie_a10_hip_0|g_xcvr_native_insts[3]|avmmclk'
-Slack : 5.750
+Type  : Slow 900mV 100C Model Setup 'fpga_top|inst_fiu_top|inst_ccip_fabric_top|inst_cvl_top|inst_user_clk|qph_user_clk_fpll_u0|xcvr_fpll_a10_0|outclk0'
+Slack : 5.746
 TNS   : 0.000
 
 Type  : Slow 900mV 100C Model Setup 'fpga_top|inst_fiu_top|inst_pcie0_ccib_top|pcie_hip0|pcie_a10_hip_0|g_xcvr_native_insts[2]|avmmclk'
-Slack : 6.073
+Slack : 6.012
 TNS   : 0.000
 
 Type  : Slow 900mV 100C Model Setup 'fpga_top|inst_fiu_top|inst_pcie0_ccib_top|pcie_hip0|pcie_a10_hip_0|g_xcvr_native_insts[1]|avmmclk'
-Slack : 6.436
+Slack : 6.426
 TNS   : 0.000
 
 Type  : Slow 900mV 100C Model Setup 'fpga_top|inst_fiu_top|inst_pcie0_ccib_top|pcie_hip0|pcie_a10_hip_0|g_xcvr_native_insts[0]|avmmclk'
@@ -179,7 +179,7 @@ Slack : 7.409
 TNS   : 0.000
 
 Type  : Slow 900mV 100C Model Setup 'pr_clk_enable_dclk_reg2_user_clk'
-Slack : 10.329
+Slack : 10.208
 TNS   : 0.000
 
 Type  : Slow 900mV 100C Model Setup 'u0|dcp_iopll|dcp_iopll|clk25'
@@ -187,7 +187,7 @@ Slack : 18.260
 TNS   : 0.000
 
 Type  : Slow 900mV 100C Model Setup 'u0|dcp_iopll|dcp_iopll|clk50'
-Slack : 19.183
+Slack : 19.253
 TNS   : 0.000
 
 Type  : Slow 900mV 100C Model Setup 'filtered_sclk_negedge'
@@ -231,7 +231,7 @@ Slack : 0.057
 TNS   : 0.000
 
 Type  : Slow 900mV 100C Model Hold 'PCIE_REFCLK'
-Slack : 0.057
+Slack : 0.058
 TNS   : 0.000
 
 Type  : Slow 900mV 100C Model Hold 'fpga_top|inst_fiu_top|inst_hssi_ctrl|ntv0|xcvr_native_a10_0|g_xcvr_native_insts[2]|rx_pma_clk'
@@ -270,8 +270,8 @@ Type  : Slow 900mV 100C Model Hold 'hssi_pll_r_0_outclk1'
 Slack : 0.087
 TNS   : 0.000
 
-Type  : Slow 900mV 100C Model Hold 'fpga_top|inst_fiu_top|inst_ccip_fabric_top|inst_cvl_top|inst_user_clk|qph_user_clk_fpll_u0|xcvr_fpll_a10_0|outclk0'
-Slack : 0.089
+Type  : Slow 900mV 100C Model Hold 'fpga_top|inst_fiu_top|inst_ccip_fabric_top|inst_cvl_top|inst_user_clk|qph_user_clk_fpll_u0|xcvr_fpll_a10_0|outclk1'
+Slack : 0.088
 TNS   : 0.000
 
 Type  : Slow 900mV 100C Model Hold 'fpga_top|inst_fiu_top|inst_hssi_ctrl|ntv0|xcvr_native_a10_0|g_xcvr_native_insts[3]|rx_pma_clk'
@@ -290,16 +290,16 @@ Type  : Slow 900mV 100C Model Hold 'hssi_pll_t_outclk0'
 Slack : 0.097
 TNS   : 0.000
 
+Type  : Slow 900mV 100C Model Hold 'fpga_top|inst_fiu_top|inst_ccip_fabric_top|inst_cvl_top|inst_user_clk|qph_user_clk_fpll_u0|xcvr_fpll_a10_0|outclk0'
+Slack : 0.103
+TNS   : 0.000
+
 Type  : Slow 900mV 100C Model Hold 'u0|dcp_iopll|dcp_iopll|clk50'
-Slack : 0.102
+Slack : 0.108
 TNS   : 0.000
 
 Type  : Slow 900mV 100C Model Hold 'fspi_sclk'
 Slack : 0.141
-TNS   : 0.000
-
-Type  : Slow 900mV 100C Model Hold 'fpga_top|inst_fiu_top|inst_ccip_fabric_top|inst_cvl_top|inst_user_clk|qph_user_clk_fpll_u0|xcvr_fpll_a10_0|outclk1'
-Slack : 0.143
 TNS   : 0.000
 
 Type  : Slow 900mV 100C Model Hold 'fpga_top|inst_fiu_top|inst_pcie0_ccib_top|pcie_hip0|pcie_a10_hip_0|tx_bonding_clocks[0]'
@@ -387,19 +387,19 @@ Slack : 1.571
 TNS   : 0.000
 
 Type  : Slow 900mV 100C Model Hold 'fpga_top|inst_fiu_top|inst_pcie0_ccib_top|pcie_hip0|pcie_a10_hip_0|g_xcvr_native_insts[6]|avmmclk'
-Slack : 1.795
+Slack : 1.802
 TNS   : 0.000
 
 Type  : Slow 900mV 100C Model Hold 'pr_clk_enable_dclk_reg2_user_clk'
-Slack : 6.953
+Slack : 6.992
 TNS   : 0.000
 
 Type  : Slow 900mV 100C Model Recovery 'u0|dcp_iopll|dcp_iopll|clk1x'
-Slack : 0.383
+Slack : 0.393
 TNS   : 0.000
 
 Type  : Slow 900mV 100C Model Recovery 'fpga_top|inst_fiu_top|inst_pcie0_ccib_top|pcie_hip0|pcie_a10_hip_0|wys~CORE_CLK_OUT'
-Slack : 0.619
+Slack : 0.438
 TNS   : 0.000
 
 Type  : Slow 900mV 100C Model Recovery 'mem|ddr4a|ddr4a_core_usr_clk'
@@ -451,7 +451,7 @@ Slack : 4.529
 TNS   : 0.000
 
 Type  : Slow 900mV 100C Model Recovery 'PCIE_REFCLK'
-Slack : 4.980
+Slack : 4.899
 TNS   : 0.000
 
 Type  : Slow 900mV 100C Model Recovery 'fpga_top|inst_fiu_top|inst_pcie0_ccib_top|pcie_hip0|pcie_a10_hip_0|g_xcvr_native_insts[7]|rx_fref'
@@ -523,7 +523,7 @@ Slack : 39.729
 TNS   : 0.000
 
 Type  : Slow 900mV 100C Model Recovery 'fpga_top|inst_fiu_top|inst_hssi_ctrl|ntv0|xcvr_native_a10_0|g_xcvr_native_insts[0]|tx_pma_clk'
-Slack : 39.922
+Slack : 39.751
 TNS   : 0.000
 
 Type  : Slow 900mV 100C Model Recovery 'fpga_top|inst_fiu_top|inst_hssi_ctrl|ntv0|xcvr_native_a10_0|g_xcvr_native_insts[3]|tx_pma_clk'
@@ -531,7 +531,7 @@ Slack : 40.022
 TNS   : 0.000
 
 Type  : Slow 900mV 100C Model Recovery 'fpga_top|inst_fiu_top|inst_hssi_ctrl|ntv0|xcvr_native_a10_0|g_xcvr_native_insts[2]|tx_pma_clk'
-Slack : 40.498
+Slack : 40.422
 TNS   : 0.000
 
 Type  : Slow 900mV 100C Model Recovery 'fpga_top|inst_fiu_top|inst_hssi_ctrl|ntv0|xcvr_native_a10_0|g_xcvr_native_insts[1]|tx_coreclkin'
@@ -539,7 +539,7 @@ Slack : 41.854
 TNS   : 0.000
 
 Type  : Slow 900mV 100C Model Recovery 'fpga_top|inst_fiu_top|inst_hssi_ctrl|ntv0|xcvr_native_a10_0|g_xcvr_native_insts[0]|tx_coreclkin'
-Slack : 42.308
+Slack : 42.137
 TNS   : 0.000
 
 Type  : Slow 900mV 100C Model Recovery 'fpga_top|inst_fiu_top|inst_hssi_ctrl|ntv0|xcvr_native_a10_0|g_xcvr_native_insts[3]|tx_coreclkin'
@@ -547,7 +547,7 @@ Slack : 42.349
 TNS   : 0.000
 
 Type  : Slow 900mV 100C Model Recovery 'fpga_top|inst_fiu_top|inst_hssi_ctrl|ntv0|xcvr_native_a10_0|g_xcvr_native_insts[2]|tx_coreclkin'
-Slack : 42.530
+Slack : 42.454
 TNS   : 0.000
 
 Type  : Slow 900mV 100C Model Recovery 'altera_reserved_tck'
@@ -687,11 +687,11 @@ Slack : 52.212
 TNS   : 0.000
 
 Type  : Slow 900mV 100C Model Removal 'fpga_top|inst_fiu_top|inst_hssi_ctrl|ntv0|xcvr_native_a10_0|g_xcvr_native_insts[2]|tx_coreclkin'
-Slack : 52.604
+Slack : 52.665
 TNS   : 0.000
 
 Type  : Slow 900mV 100C Model Removal 'fpga_top|inst_fiu_top|inst_hssi_ctrl|ntv0|xcvr_native_a10_0|g_xcvr_native_insts[0]|tx_coreclkin'
-Slack : 52.771
+Slack : 52.777
 TNS   : 0.000
 
 Type  : Slow 900mV 100C Model Removal 'fpga_top|inst_fiu_top|inst_hssi_ctrl|ntv0|xcvr_native_a10_0|g_xcvr_native_insts[1]|tx_coreclkin'
@@ -703,7 +703,7 @@ Slack : 53.594
 TNS   : 0.000
 
 Type  : Slow 900mV 100C Model Removal 'fpga_top|inst_fiu_top|inst_hssi_ctrl|ntv0|xcvr_native_a10_0|g_xcvr_native_insts[2]|tx_pma_clk'
-Slack : 53.810
+Slack : 53.871
 TNS   : 0.000
 
 Type  : Slow 900mV 100C Model Removal 'fpga_top|inst_fiu_top|inst_hssi_ctrl|ntv0|xcvr_native_a10_0|g_xcvr_native_insts[1]|tx_pma_clk'
@@ -711,7 +711,7 @@ Slack : 54.008
 TNS   : 0.000
 
 Type  : Slow 900mV 100C Model Removal 'fpga_top|inst_fiu_top|inst_hssi_ctrl|ntv0|xcvr_native_a10_0|g_xcvr_native_insts[0]|tx_pma_clk'
-Slack : 54.014
+Slack : 54.021
 TNS   : 0.000
 
 Type  : Slow 900mV 100C Model Minimum Pulse Width 'fpga_top|inst_fiu_top|inst_hssi_ctrl|atx0|altera_xcvr_atx_pll_ip_inst|mcgb_serial_clk'
@@ -1106,12 +1106,12 @@ Type  : Slow 900mV 100C Model Minimum Pulse Width 'fpga_top|inst_fiu_top|inst_pc
 Slack : 1.509
 TNS   : 0.000
 
-Type  : Slow 900mV 100C Model Minimum Pulse Width 'vl_qph_user_clk_clkpsc_clk1'
-Slack : 1.554
+Type  : Slow 900mV 100C Model Minimum Pulse Width 'fpga_top|inst_fiu_top|inst_ccip_fabric_top|inst_cvl_top|inst_user_clk|qph_user_clk_fpll_u0|xcvr_fpll_a10_0|outclk1'
+Slack : 1.550
 TNS   : 0.000
 
-Type  : Slow 900mV 100C Model Minimum Pulse Width 'fpga_top|inst_fiu_top|inst_ccip_fabric_top|inst_cvl_top|inst_user_clk|qph_user_clk_fpll_u0|xcvr_fpll_a10_0|outclk1'
-Slack : 1.563
+Type  : Slow 900mV 100C Model Minimum Pulse Width 'vl_qph_user_clk_clkpsc_clk1'
+Slack : 1.554
 TNS   : 0.000
 
 Type  : Slow 900mV 100C Model Minimum Pulse Width 'hssi_pll_r_0_outclk0'
@@ -1251,7 +1251,7 @@ Slack : 3.133
 TNS   : 0.000
 
 Type  : Slow 900mV 100C Model Minimum Pulse Width 'fpga_top|inst_fiu_top|inst_ccip_fabric_top|inst_cvl_top|inst_user_clk|qph_user_clk_fpll_u0|xcvr_fpll_a10_0|outclk0'
-Slack : 3.158
+Slack : 3.166
 TNS   : 0.000
 
 Type  : Slow 900mV 100C Model Minimum Pulse Width 'fpga_top|inst_fiu_top|inst_pcie0_ccib_top|pcie_hip0|pcie_a10_hip_0|tx_clkout'
@@ -1391,7 +1391,7 @@ Slack : 4.931
 TNS   : 0.000
 
 Type  : Slow 900mV 100C Model Minimum Pulse Width 'u0|dcp_iopll|dcp_iopll|clk50'
-Slack : 9.930
+Slack : 9.932
 TNS   : 0.000
 
 Type  : Slow 900mV 100C Model Minimum Pulse Width 'u0|dcp_iopll|dcp_iopll|clk25'
@@ -1424,7 +1424,7 @@ Type  : Slow 900mV 100C Model Max Skew 'set_max_skew'
 Slack : 2.615
 
 Type  : Slow 900mV 100C Model Max Skew 'set_max_skew'
-Slack : 2.662
+Slack : 2.666
 
 Type  : Slow 900mV 100C Model Max Skew 'set_max_skew'
 Slack : 2.683
@@ -1439,7 +1439,7 @@ Type  : Slow 900mV 100C Model Max Skew 'set_max_skew'
 Slack : 3.235
 
 Type  : Slow 900mV 100C Model Max Skew 'set_max_skew'
-Slack : 3.322
+Slack : 3.323
 
 Type  : Slow 900mV 100C Model Max Skew 'set_max_skew'
 Slack : 3.329
@@ -1514,7 +1514,7 @@ Type  : Slow 900mV 100C Model Net Delay 'set_net_delay'
 Slack : 2.632
 
 Type  : Slow 900mV 100C Model Net Delay 'set_net_delay'
-Slack : 2.635
+Slack : 2.636
 
 Type  : Slow 900mV 100C Model Net Delay 'set_net_delay'
 Slack : 2.674
@@ -1565,7 +1565,7 @@ Type  : Slow 900mV 100C Model Net Delay 'set_net_delay'
 Slack : 3.429
 
 Type  : Slow 900mV 100C Model Net Delay 'set_net_delay'
-Slack : 3.463
+Slack : 3.464
 
 Type  : Slow 900mV 100C Model Net Delay 'set_net_delay'
 Slack : 3.479
@@ -1625,14 +1625,10 @@ Type  : Slow 900mV 100C Model Net Delay 'set_net_delay'
 Slack : 31.288
 
 Type  : Slow 900mV 100C Model Net Delay 'set_net_delay'
-Slack : 74.016
+Slack : 73.768
 
 Type  : Slow 900mV 100C Model Net Delay 'set_net_delay'
 Slack : 78.929
-
-Type  : Slow 900mV 0C Model Setup 'u0|dcp_iopll|dcp_iopll|clk1x'
-Slack : -15.228
-TNS   : -2425.951
 
 Type  : Slow 900mV 0C Model Setup 'mem|ddr4b|ddr4b_phy_clk_l_1'
 Slack : 0.078
@@ -1662,20 +1658,24 @@ Type  : Slow 900mV 0C Model Setup 'mem|ddr4b|ddr4b_phy_clk_l_2'
 Slack : 0.278
 TNS   : 0.000
 
+Type  : Slow 900mV 0C Model Setup 'u0|dcp_iopll|dcp_iopll|clk100'
+Slack : 0.479
+TNS   : 0.000
+
 Type  : Slow 900mV 0C Model Setup 'fpga_top|inst_fiu_top|inst_pcie0_ccib_top|pcie_hip0|pcie_a10_hip_0|tx_bonding_clocks[0]'
 Slack : 0.494
 TNS   : 0.000
 
-Type  : Slow 900mV 0C Model Setup 'u0|dcp_iopll|dcp_iopll|clk100'
-Slack : 0.573
+Type  : Slow 900mV 0C Model Setup 'u0|dcp_iopll|dcp_iopll|clk1x'
+Slack : 0.554
+TNS   : 0.000
+
+Type  : Slow 900mV 0C Model Setup 'fpga_top|inst_fiu_top|inst_pcie0_ccib_top|pcie_hip0|pcie_a10_hip_0|pld_clk'
+Slack : 0.602
 TNS   : 0.000
 
 Type  : Slow 900mV 0C Model Setup 'mem|ddr4a|ddr4a_phy_clk_l_0'
 Slack : 0.647
-TNS   : 0.000
-
-Type  : Slow 900mV 0C Model Setup 'fpga_top|inst_fiu_top|inst_pcie0_ccib_top|pcie_hip0|pcie_a10_hip_0|pld_clk'
-Slack : 0.704
 TNS   : 0.000
 
 Type  : Slow 900mV 0C Model Setup 'PCIE_REFCLK'
@@ -1723,7 +1723,7 @@ Slack : 2.482
 TNS   : 0.000
 
 Type  : Slow 900mV 0C Model Setup 'fpga_top|inst_fiu_top|inst_ccip_fabric_top|inst_cvl_top|inst_user_clk|qph_user_clk_fpll_u0|xcvr_fpll_a10_0|outclk1'
-Slack : 2.545
+Slack : 2.485
 TNS   : 0.000
 
 Type  : Slow 900mV 0C Model Setup 'fpga_top|inst_fiu_top|inst_hssi_ctrl|ntv0|xcvr_native_a10_0|g_xcvr_native_insts[1]|rx_pma_clk'
@@ -1739,23 +1739,23 @@ Slack : 3.017
 TNS   : 0.000
 
 Type  : Slow 900mV 0C Model Setup 'fpga_top|inst_fiu_top|inst_hssi_ctrl|ntv0|xcvr_native_a10_0|g_xcvr_native_insts[2]|avmmclk'
-Slack : 3.754
-TNS   : 0.000
-
-Type  : Slow 900mV 0C Model Setup 'fpga_top|inst_fiu_top|inst_hssi_ctrl|ntv0|xcvr_native_a10_0|g_xcvr_native_insts[0]|avmmclk'
-Slack : 3.814
+Slack : 3.706
 TNS   : 0.000
 
 Type  : Slow 900mV 0C Model Setup 'fpga_top|inst_fiu_top|inst_hssi_ctrl|ntv0|xcvr_native_a10_0|g_xcvr_native_insts[1]|avmmclk'
-Slack : 3.826
+Slack : 3.753
 TNS   : 0.000
 
-Type  : Slow 900mV 0C Model Setup 'fpga_top|inst_fiu_top|inst_pcie0_ccib_top|pcie_hip0|pcie_a10_hip_0|g_xcvr_native_insts[7]|avmmclk'
-Slack : 4.815
+Type  : Slow 900mV 0C Model Setup 'fpga_top|inst_fiu_top|inst_hssi_ctrl|ntv0|xcvr_native_a10_0|g_xcvr_native_insts[0]|avmmclk'
+Slack : 3.816
 TNS   : 0.000
 
 Type  : Slow 900mV 0C Model Setup 'fpga_top|inst_fiu_top|inst_hssi_ctrl|ntv0|xcvr_native_a10_0|g_xcvr_native_insts[3]|avmmclk'
-Slack : 4.832
+Slack : 4.733
+TNS   : 0.000
+
+Type  : Slow 900mV 0C Model Setup 'fpga_top|inst_fiu_top|inst_pcie0_ccib_top|pcie_hip0|pcie_a10_hip_0|g_xcvr_native_insts[7]|avmmclk'
+Slack : 4.767
 TNS   : 0.000
 
 Type  : Slow 900mV 0C Model Setup 'fspi_sclk'
@@ -1767,7 +1767,7 @@ Slack : 5.150
 TNS   : 0.000
 
 Type  : Slow 900mV 0C Model Setup 'fpga_top|inst_fiu_top|inst_pcie0_ccib_top|pcie_hip0|pcie_a10_hip_0|g_xcvr_native_insts[6]|avmmclk'
-Slack : 5.302
+Slack : 5.308
 TNS   : 0.000
 
 Type  : Slow 900mV 0C Model Setup 'fpga_top|inst_fiu_top|inst_hssi_ctrl|ntv0|xcvr_native_a10_0|g_xcvr_native_insts[0]|tx_pma_div_clk'
@@ -1783,31 +1783,31 @@ Slack : 5.662
 TNS   : 0.000
 
 Type  : Slow 900mV 0C Model Setup 'fpga_top|inst_fiu_top|inst_ccip_fabric_top|inst_cvl_top|inst_user_clk|qph_user_clk_fpll_u0|xcvr_fpll_a10_0|outclk0'
-Slack : 5.683
+Slack : 5.716
 TNS   : 0.000
 
 Type  : Slow 900mV 0C Model Setup 'fpga_top|inst_fiu_top|inst_pcie0_ccib_top|pcie_hip0|pcie_a10_hip_0|g_xcvr_native_insts[4]|avmmclk'
-Slack : 5.845
+Slack : 5.842
 TNS   : 0.000
 
 Type  : Slow 900mV 0C Model Setup 'fpga_top|inst_fiu_top|inst_pcie0_ccib_top|pcie_hip0|pcie_a10_hip_0|g_xcvr_native_insts[3]|avmmclk'
-Slack : 6.108
+Slack : 6.063
 TNS   : 0.000
 
 Type  : Slow 900mV 0C Model Setup 'fpga_top|inst_fiu_top|inst_pcie0_ccib_top|pcie_hip0|pcie_a10_hip_0|g_xcvr_native_insts[2]|avmmclk'
-Slack : 6.340
+Slack : 6.316
 TNS   : 0.000
 
 Type  : Slow 900mV 0C Model Setup 'fpga_top|inst_fiu_top|inst_pcie0_ccib_top|pcie_hip0|pcie_a10_hip_0|g_xcvr_native_insts[1]|avmmclk'
-Slack : 6.640
+Slack : 6.631
 TNS   : 0.000
 
 Type  : Slow 900mV 0C Model Setup 'fpga_top|inst_fiu_top|inst_pcie0_ccib_top|pcie_hip0|pcie_a10_hip_0|g_xcvr_native_insts[0]|avmmclk'
-Slack : 7.538
+Slack : 7.518
 TNS   : 0.000
 
 Type  : Slow 900mV 0C Model Setup 'pr_clk_enable_dclk_reg2_user_clk'
-Slack : 10.776
+Slack : 10.662
 TNS   : 0.000
 
 Type  : Slow 900mV 0C Model Setup 'u0|dcp_iopll|dcp_iopll|clk25'
@@ -1815,7 +1815,7 @@ Slack : 18.344
 TNS   : 0.000
 
 Type  : Slow 900mV 0C Model Setup 'u0|dcp_iopll|dcp_iopll|clk50'
-Slack : 19.155
+Slack : 19.224
 TNS   : 0.000
 
 Type  : Slow 900mV 0C Model Setup 'filtered_sclk_negedge'
@@ -1823,7 +1823,7 @@ Slack : 19.572
 TNS   : 0.000
 
 Type  : Slow 900mV 0C Model Setup 'altera_reserved_tck'
-Slack : 40.672
+Slack : 40.670
 TNS   : 0.000
 
 Type  : Slow 900mV 0C Model Hold 'fpga_top|inst_fiu_top|inst_pcie0_ccib_top|pcie_hip0|pcie_a10_hip_0|wys~CORE_CLK_OUT'
@@ -1855,7 +1855,7 @@ Slack : 0.049
 TNS   : 0.000
 
 Type  : Slow 900mV 0C Model Hold 'PCIE_REFCLK'
-Slack : 0.050
+Slack : 0.057
 TNS   : 0.000
 
 Type  : Slow 900mV 0C Model Hold 'fpga_top|inst_fiu_top|inst_hssi_ctrl|ntv0|xcvr_native_a10_0|g_xcvr_native_insts[0]|rx_pma_clk'
@@ -1910,20 +1910,20 @@ Type  : Slow 900mV 0C Model Hold 'fpga_top|inst_fiu_top|inst_hssi_ctrl|ntv0|xcvr
 Slack : 0.086
 TNS   : 0.000
 
+Type  : Slow 900mV 0C Model Hold 'u0|dcp_iopll|dcp_iopll|clk50'
+Slack : 0.091
+TNS   : 0.000
+
 Type  : Slow 900mV 0C Model Hold 'hssi_pll_t_outclk0'
 Slack : 0.093
 TNS   : 0.000
 
-Type  : Slow 900mV 0C Model Hold 'fpga_top|inst_fiu_top|inst_ccip_fabric_top|inst_cvl_top|inst_user_clk|qph_user_clk_fpll_u0|xcvr_fpll_a10_0|outclk0'
-Slack : 0.096
-TNS   : 0.000
-
 Type  : Slow 900mV 0C Model Hold 'fpga_top|inst_fiu_top|inst_ccip_fabric_top|inst_cvl_top|inst_user_clk|qph_user_clk_fpll_u0|xcvr_fpll_a10_0|outclk1'
-Slack : 0.096
+Slack : 0.094
 TNS   : 0.000
 
-Type  : Slow 900mV 0C Model Hold 'u0|dcp_iopll|dcp_iopll|clk50'
-Slack : 0.097
+Type  : Slow 900mV 0C Model Hold 'fpga_top|inst_fiu_top|inst_ccip_fabric_top|inst_cvl_top|inst_user_clk|qph_user_clk_fpll_u0|xcvr_fpll_a10_0|outclk0'
+Slack : 0.099
 TNS   : 0.000
 
 Type  : Slow 900mV 0C Model Hold 'fspi_sclk'
@@ -2015,19 +2015,19 @@ Slack : 1.409
 TNS   : 0.000
 
 Type  : Slow 900mV 0C Model Hold 'fpga_top|inst_fiu_top|inst_pcie0_ccib_top|pcie_hip0|pcie_a10_hip_0|g_xcvr_native_insts[6]|avmmclk'
-Slack : 1.622
+Slack : 1.623
 TNS   : 0.000
 
 Type  : Slow 900mV 0C Model Hold 'pr_clk_enable_dclk_reg2_user_clk'
-Slack : 6.721
+Slack : 6.775
 TNS   : 0.000
 
 Type  : Slow 900mV 0C Model Recovery 'u0|dcp_iopll|dcp_iopll|clk1x'
-Slack : 0.494
+Slack : 0.464
 TNS   : 0.000
 
 Type  : Slow 900mV 0C Model Recovery 'fpga_top|inst_fiu_top|inst_pcie0_ccib_top|pcie_hip0|pcie_a10_hip_0|wys~CORE_CLK_OUT'
-Slack : 0.691
+Slack : 0.545
 TNS   : 0.000
 
 Type  : Slow 900mV 0C Model Recovery 'mem|ddr4a|ddr4a_core_usr_clk'
@@ -2079,7 +2079,7 @@ Slack : 4.654
 TNS   : 0.000
 
 Type  : Slow 900mV 0C Model Recovery 'PCIE_REFCLK'
-Slack : 5.167
+Slack : 5.092
 TNS   : 0.000
 
 Type  : Slow 900mV 0C Model Recovery 'fpga_top|inst_fiu_top|inst_pcie0_ccib_top|pcie_hip0|pcie_a10_hip_0|g_xcvr_native_insts[7]|rx_fref'
@@ -2151,7 +2151,7 @@ Slack : 40.236
 TNS   : 0.000
 
 Type  : Slow 900mV 0C Model Recovery 'fpga_top|inst_fiu_top|inst_hssi_ctrl|ntv0|xcvr_native_a10_0|g_xcvr_native_insts[0]|tx_pma_clk'
-Slack : 40.422
+Slack : 40.257
 TNS   : 0.000
 
 Type  : Slow 900mV 0C Model Recovery 'fpga_top|inst_fiu_top|inst_hssi_ctrl|ntv0|xcvr_native_a10_0|g_xcvr_native_insts[3]|tx_pma_clk'
@@ -2159,7 +2159,7 @@ Slack : 40.457
 TNS   : 0.000
 
 Type  : Slow 900mV 0C Model Recovery 'fpga_top|inst_fiu_top|inst_hssi_ctrl|ntv0|xcvr_native_a10_0|g_xcvr_native_insts[2]|tx_pma_clk'
-Slack : 40.886
+Slack : 40.828
 TNS   : 0.000
 
 Type  : Slow 900mV 0C Model Recovery 'fpga_top|inst_fiu_top|inst_hssi_ctrl|ntv0|xcvr_native_a10_0|g_xcvr_native_insts[1]|tx_coreclkin'
@@ -2167,7 +2167,7 @@ Slack : 42.449
 TNS   : 0.000
 
 Type  : Slow 900mV 0C Model Recovery 'fpga_top|inst_fiu_top|inst_hssi_ctrl|ntv0|xcvr_native_a10_0|g_xcvr_native_insts[0]|tx_coreclkin'
-Slack : 42.840
+Slack : 42.675
 TNS   : 0.000
 
 Type  : Slow 900mV 0C Model Recovery 'fpga_top|inst_fiu_top|inst_hssi_ctrl|ntv0|xcvr_native_a10_0|g_xcvr_native_insts[3]|tx_coreclkin'
@@ -2175,7 +2175,7 @@ Slack : 42.863
 TNS   : 0.000
 
 Type  : Slow 900mV 0C Model Recovery 'fpga_top|inst_fiu_top|inst_hssi_ctrl|ntv0|xcvr_native_a10_0|g_xcvr_native_insts[2]|tx_coreclkin'
-Slack : 42.956
+Slack : 42.898
 TNS   : 0.000
 
 Type  : Slow 900mV 0C Model Recovery 'altera_reserved_tck'
@@ -2314,16 +2314,16 @@ Type  : Slow 900mV 0C Model Removal 'fpga_top|inst_fiu_top|inst_hssi_ctrl|ntv0|x
 Slack : 51.952
 TNS   : 0.000
 
-Type  : Slow 900mV 0C Model Removal 'fpga_top|inst_fiu_top|inst_hssi_ctrl|ntv0|xcvr_native_a10_0|g_xcvr_native_insts[2]|tx_coreclkin'
-Slack : 52.456
-TNS   : 0.000
-
 Type  : Slow 900mV 0C Model Removal 'fpga_top|inst_fiu_top|inst_hssi_ctrl|ntv0|xcvr_native_a10_0|g_xcvr_native_insts[1]|tx_coreclkin'
 Slack : 52.465
 TNS   : 0.000
 
+Type  : Slow 900mV 0C Model Removal 'fpga_top|inst_fiu_top|inst_hssi_ctrl|ntv0|xcvr_native_a10_0|g_xcvr_native_insts[2]|tx_coreclkin'
+Slack : 52.503
+TNS   : 0.000
+
 Type  : Slow 900mV 0C Model Removal 'fpga_top|inst_fiu_top|inst_hssi_ctrl|ntv0|xcvr_native_a10_0|g_xcvr_native_insts[0]|tx_coreclkin'
-Slack : 52.544
+Slack : 52.543
 TNS   : 0.000
 
 Type  : Slow 900mV 0C Model Removal 'fpga_top|inst_fiu_top|inst_hssi_ctrl|ntv0|xcvr_native_a10_0|g_xcvr_native_insts[3]|tx_pma_clk'
@@ -2331,7 +2331,7 @@ Slack : 53.433
 TNS   : 0.000
 
 Type  : Slow 900mV 0C Model Removal 'fpga_top|inst_fiu_top|inst_hssi_ctrl|ntv0|xcvr_native_a10_0|g_xcvr_native_insts[2]|tx_pma_clk'
-Slack : 53.693
+Slack : 53.740
 TNS   : 0.000
 
 Type  : Slow 900mV 0C Model Removal 'fpga_top|inst_fiu_top|inst_hssi_ctrl|ntv0|xcvr_native_a10_0|g_xcvr_native_insts[1]|tx_pma_clk'
@@ -2339,7 +2339,7 @@ Slack : 53.750
 TNS   : 0.000
 
 Type  : Slow 900mV 0C Model Removal 'fpga_top|inst_fiu_top|inst_hssi_ctrl|ntv0|xcvr_native_a10_0|g_xcvr_native_insts[0]|tx_pma_clk'
-Slack : 53.851
+Slack : 53.847
 TNS   : 0.000
 
 Type  : Slow 900mV 0C Model Minimum Pulse Width 'fpga_top|inst_fiu_top|inst_hssi_ctrl|atx0|altera_xcvr_atx_pll_ip_inst|mcgb_serial_clk'
@@ -2739,7 +2739,7 @@ Slack : 1.522
 TNS   : 0.000
 
 Type  : Slow 900mV 0C Model Minimum Pulse Width 'fpga_top|inst_fiu_top|inst_ccip_fabric_top|inst_cvl_top|inst_user_clk|qph_user_clk_fpll_u0|xcvr_fpll_a10_0|outclk1'
-Slack : 1.531
+Slack : 1.545
 TNS   : 0.000
 
 Type  : Slow 900mV 0C Model Minimum Pulse Width 'hssi_pll_t_outclk0'
@@ -2859,7 +2859,7 @@ Slack : 1.863
 TNS   : 0.000
 
 Type  : Slow 900mV 0C Model Minimum Pulse Width 'u0|dcp_iopll|dcp_iopll|clk1x'
-Slack : 2.029
+Slack : 2.031
 TNS   : 0.000
 
 Type  : Slow 900mV 0C Model Minimum Pulse Width 'mem|ddr4a|ddr4a_core_cal_slave_clk'
@@ -2875,7 +2875,7 @@ Slack : 3.102
 TNS   : 0.000
 
 Type  : Slow 900mV 0C Model Minimum Pulse Width 'fpga_top|inst_fiu_top|inst_ccip_fabric_top|inst_cvl_top|inst_user_clk|qph_user_clk_fpll_u0|xcvr_fpll_a10_0|outclk0'
-Slack : 3.110
+Slack : 3.129
 TNS   : 0.000
 
 Type  : Slow 900mV 0C Model Minimum Pulse Width 'fpga_top|inst_fiu_top|inst_hssi_ctrl|ntv0|xcvr_native_a10_0|g_xcvr_native_insts[0]|tx_pma_div_clk'
@@ -3019,7 +3019,7 @@ Slack : 4.930
 TNS   : 0.000
 
 Type  : Slow 900mV 0C Model Minimum Pulse Width 'u0|dcp_iopll|dcp_iopll|clk50'
-Slack : 9.925
+Slack : 9.930
 TNS   : 0.000
 
 Type  : Slow 900mV 0C Model Minimum Pulse Width 'u0|dcp_iopll|dcp_iopll|clk25'
@@ -3052,7 +3052,7 @@ Type  : Slow 900mV 0C Model Max Skew 'set_max_skew'
 Slack : 2.598
 
 Type  : Slow 900mV 0C Model Max Skew 'set_max_skew'
-Slack : 2.629
+Slack : 2.636
 
 Type  : Slow 900mV 0C Model Max Skew 'set_max_skew'
 Slack : 2.692
@@ -3253,14 +3253,10 @@ Type  : Slow 900mV 0C Model Net Delay 'set_net_delay'
 Slack : 31.322
 
 Type  : Slow 900mV 0C Model Net Delay 'set_net_delay'
-Slack : 74.286
+Slack : 74.102
 
 Type  : Slow 900mV 0C Model Net Delay 'set_net_delay'
 Slack : 79.025
-
-Type  : Fast 900mV 100C Model Setup 'u0|dcp_iopll|dcp_iopll|clk1x'
-Slack : -4.947
-TNS   : -356.646
 
 Type  : Fast 900mV 100C Model Setup 'fpga_top|inst_fiu_top|inst_pcie0_ccib_top|pcie_hip0|pcie_a10_hip_0|tx_bonding_clocks[0]'
 Slack : 0.799
@@ -3279,7 +3275,7 @@ Slack : 1.128
 TNS   : 0.000
 
 Type  : Fast 900mV 100C Model Setup 'fpga_top|inst_fiu_top|inst_pcie0_ccib_top|pcie_hip0|pcie_a10_hip_0|wys~CORE_CLK_OUT'
-Slack : 1.240
+Slack : 1.249
 TNS   : 0.000
 
 Type  : Fast 900mV 100C Model Setup 'mem|ddr4b|ddr4b_phy_clk_l_2'
@@ -3294,16 +3290,20 @@ Type  : Fast 900mV 100C Model Setup 'mem|ddr4b|ddr4b_phy_clk_l_0'
 Slack : 1.402
 TNS   : 0.000
 
+Type  : Fast 900mV 100C Model Setup 'u0|dcp_iopll|dcp_iopll|clk1x'
+Slack : 1.516
+TNS   : 0.000
+
+Type  : Fast 900mV 100C Model Setup 'u0|dcp_iopll|dcp_iopll|clk100'
+Slack : 1.572
+TNS   : 0.000
+
 Type  : Fast 900mV 100C Model Setup 'mem|ddr4a|ddr4a_phy_clk_l_0'
 Slack : 1.595
 TNS   : 0.000
 
-Type  : Fast 900mV 100C Model Setup 'u0|dcp_iopll|dcp_iopll|clk100'
-Slack : 1.610
-TNS   : 0.000
-
 Type  : Fast 900mV 100C Model Setup 'fpga_top|inst_fiu_top|inst_pcie0_ccib_top|pcie_hip0|pcie_a10_hip_0|pld_clk'
-Slack : 1.664
+Slack : 1.630
 TNS   : 0.000
 
 Type  : Fast 900mV 100C Model Setup 'vl_qph_user_clk_clkpsc_clk1'
@@ -3330,12 +3330,12 @@ Type  : Fast 900mV 100C Model Setup 'fpga_top|inst_fiu_top|inst_hssi_ctrl|ntv0|x
 Slack : 2.798
 TNS   : 0.000
 
-Type  : Fast 900mV 100C Model Setup 'fpga_top|inst_fiu_top|inst_hssi_ctrl|ntv0|xcvr_native_a10_0|g_xcvr_native_insts[3]|rx_pma_clk'
+Type  : Fast 900mV 100C Model Setup 'fpga_top|inst_fiu_top|inst_ccip_fabric_top|inst_cvl_top|inst_user_clk|qph_user_clk_fpll_u0|xcvr_fpll_a10_0|outclk1'
 Slack : 2.837
 TNS   : 0.000
 
-Type  : Fast 900mV 100C Model Setup 'fpga_top|inst_fiu_top|inst_ccip_fabric_top|inst_cvl_top|inst_user_clk|qph_user_clk_fpll_u0|xcvr_fpll_a10_0|outclk1'
-Slack : 2.847
+Type  : Fast 900mV 100C Model Setup 'fpga_top|inst_fiu_top|inst_hssi_ctrl|ntv0|xcvr_native_a10_0|g_xcvr_native_insts[3]|rx_pma_clk'
+Slack : 2.837
 TNS   : 0.000
 
 Type  : Fast 900mV 100C Model Setup 'fpga_top|inst_fiu_top|inst_hssi_ctrl|ntv0|xcvr_native_a10_0|g_xcvr_native_insts[2]|rx_pma_clk'
@@ -3359,7 +3359,7 @@ Slack : 3.274
 TNS   : 0.000
 
 Type  : Fast 900mV 100C Model Setup 'PCIE_REFCLK'
-Slack : 3.412
+Slack : 3.403
 TNS   : 0.000
 
 Type  : Fast 900mV 100C Model Setup 'SYS_RefClk'
@@ -3367,15 +3367,15 @@ Slack : 3.907
 TNS   : 0.000
 
 Type  : Fast 900mV 100C Model Setup 'fpga_top|inst_fiu_top|inst_hssi_ctrl|ntv0|xcvr_native_a10_0|g_xcvr_native_insts[1]|avmmclk'
-Slack : 4.766
+Slack : 4.729
 TNS   : 0.000
 
 Type  : Fast 900mV 100C Model Setup 'fpga_top|inst_fiu_top|inst_hssi_ctrl|ntv0|xcvr_native_a10_0|g_xcvr_native_insts[2]|avmmclk'
-Slack : 4.999
+Slack : 4.994
 TNS   : 0.000
 
 Type  : Fast 900mV 100C Model Setup 'fpga_top|inst_fiu_top|inst_hssi_ctrl|ntv0|xcvr_native_a10_0|g_xcvr_native_insts[0]|avmmclk'
-Slack : 5.123
+Slack : 5.125
 TNS   : 0.000
 
 Type  : Fast 900mV 100C Model Setup 'vl_qph_user_clk_clkpsc_clk0'
@@ -3383,7 +3383,7 @@ Slack : 5.431
 TNS   : 0.000
 
 Type  : Fast 900mV 100C Model Setup 'fpga_top|inst_fiu_top|inst_hssi_ctrl|ntv0|xcvr_native_a10_0|g_xcvr_native_insts[3]|avmmclk'
-Slack : 5.814
+Slack : 5.781
 TNS   : 0.000
 
 Type  : Fast 900mV 100C Model Setup 'fpga_top|inst_fiu_top|inst_hssi_ctrl|ntv0|xcvr_native_a10_0|g_xcvr_native_insts[0]|tx_pma_div_clk'
@@ -3395,11 +3395,11 @@ Slack : 5.927
 TNS   : 0.000
 
 Type  : Fast 900mV 100C Model Setup 'fpga_top|inst_fiu_top|inst_pcie0_ccib_top|pcie_hip0|pcie_a10_hip_0|g_xcvr_native_insts[7]|avmmclk'
-Slack : 6.005
+Slack : 5.977
 TNS   : 0.000
 
 Type  : Fast 900mV 100C Model Setup 'fpga_top|inst_fiu_top|inst_ccip_fabric_top|inst_cvl_top|inst_user_clk|qph_user_clk_fpll_u0|xcvr_fpll_a10_0|outclk0'
-Slack : 6.041
+Slack : 6.042
 TNS   : 0.000
 
 Type  : Fast 900mV 100C Model Setup 'fpga_top|inst_fiu_top|inst_pcie0_ccib_top|pcie_hip0|pcie_a10_hip_0|g_xcvr_native_insts[6]|avmmclk'
@@ -3415,11 +3415,11 @@ Slack : 6.365
 TNS   : 0.000
 
 Type  : Fast 900mV 100C Model Setup 'fpga_top|inst_fiu_top|inst_pcie0_ccib_top|pcie_hip0|pcie_a10_hip_0|g_xcvr_native_insts[4]|avmmclk'
-Slack : 6.629
+Slack : 6.624
 TNS   : 0.000
 
 Type  : Fast 900mV 100C Model Setup 'fpga_top|inst_fiu_top|inst_pcie0_ccib_top|pcie_hip0|pcie_a10_hip_0|g_xcvr_native_insts[3]|avmmclk'
-Slack : 6.891
+Slack : 6.882
 TNS   : 0.000
 
 Type  : Fast 900mV 100C Model Setup 'fpga_top|inst_fiu_top|inst_pcie0_ccib_top|pcie_hip0|pcie_a10_hip_0|g_xcvr_native_insts[2]|avmmclk'
@@ -3435,7 +3435,7 @@ Slack : 8.068
 TNS   : 0.000
 
 Type  : Fast 900mV 100C Model Setup 'pr_clk_enable_dclk_reg2_user_clk'
-Slack : 11.282
+Slack : 11.281
 TNS   : 0.000
 
 Type  : Fast 900mV 100C Model Setup 'u0|dcp_iopll|dcp_iopll|clk25'
@@ -3443,7 +3443,7 @@ Slack : 18.748
 TNS   : 0.000
 
 Type  : Fast 900mV 100C Model Setup 'u0|dcp_iopll|dcp_iopll|clk50'
-Slack : 19.482
+Slack : 19.514
 TNS   : 0.000
 
 Type  : Fast 900mV 100C Model Setup 'filtered_sclk_negedge'
@@ -3530,8 +3530,8 @@ Type  : Fast 900mV 100C Model Hold 'hssi_pll_r_0_outclk0'
 Slack : 0.026
 TNS   : 0.000
 
-Type  : Fast 900mV 100C Model Hold 'fpga_top|inst_fiu_top|inst_ccip_fabric_top|inst_cvl_top|inst_user_clk|qph_user_clk_fpll_u0|xcvr_fpll_a10_0|outclk0'
-Slack : 0.027
+Type  : Fast 900mV 100C Model Hold 'fpga_top|inst_fiu_top|inst_ccip_fabric_top|inst_cvl_top|inst_user_clk|qph_user_clk_fpll_u0|xcvr_fpll_a10_0|outclk1'
+Slack : 0.029
 TNS   : 0.000
 
 Type  : Fast 900mV 100C Model Hold 'hssi_pll_r_0_outclk1'
@@ -3546,12 +3546,12 @@ Type  : Fast 900mV 100C Model Hold 'ETH_RefClk'
 Slack : 0.031
 TNS   : 0.000
 
-Type  : Fast 900mV 100C Model Hold 'fpga_top|inst_fiu_top|inst_ccip_fabric_top|inst_cvl_top|inst_user_clk|qph_user_clk_fpll_u0|xcvr_fpll_a10_0|outclk1'
-Slack : 0.038
+Type  : Fast 900mV 100C Model Hold 'u0|dcp_iopll|dcp_iopll|clk50'
+Slack : 0.034
 TNS   : 0.000
 
-Type  : Fast 900mV 100C Model Hold 'u0|dcp_iopll|dcp_iopll|clk50'
-Slack : 0.043
+Type  : Fast 900mV 100C Model Hold 'fpga_top|inst_fiu_top|inst_ccip_fabric_top|inst_cvl_top|inst_user_clk|qph_user_clk_fpll_u0|xcvr_fpll_a10_0|outclk0'
+Slack : 0.042
 TNS   : 0.000
 
 Type  : Fast 900mV 100C Model Hold 'fpga_top|inst_fiu_top|inst_pcie0_ccib_top|pcie_hip0|pcie_a10_hip_0|tx_bonding_clocks[0]'
@@ -3639,7 +3639,7 @@ Slack : 1.139
 TNS   : 0.000
 
 Type  : Fast 900mV 100C Model Hold 'fpga_top|inst_fiu_top|inst_hssi_ctrl|ntv0|xcvr_native_a10_0|g_xcvr_native_insts[3]|avmmclk'
-Slack : 1.291
+Slack : 1.294
 TNS   : 0.000
 
 Type  : Fast 900mV 100C Model Hold 'fpga_top|inst_fiu_top|inst_pcie0_ccib_top|pcie_hip0|pcie_a10_hip_0|g_xcvr_native_insts[6]|avmmclk'
@@ -3647,7 +3647,7 @@ Slack : 1.400
 TNS   : 0.000
 
 Type  : Fast 900mV 100C Model Hold 'pr_clk_enable_dclk_reg2_user_clk'
-Slack : 6.653
+Slack : 6.670
 TNS   : 0.000
 
 Type  : Fast 900mV 100C Model Recovery 'mem|ddr4a|ddr4a_core_usr_clk'
@@ -3655,11 +3655,11 @@ Slack : 1.474
 TNS   : 0.000
 
 Type  : Fast 900mV 100C Model Recovery 'u0|dcp_iopll|dcp_iopll|clk1x'
-Slack : 1.588
+Slack : 1.584
 TNS   : 0.000
 
 Type  : Fast 900mV 100C Model Recovery 'fpga_top|inst_fiu_top|inst_pcie0_ccib_top|pcie_hip0|pcie_a10_hip_0|wys~CORE_CLK_OUT'
-Slack : 1.713
+Slack : 1.663
 TNS   : 0.000
 
 Type  : Fast 900mV 100C Model Recovery 'u0|dcp_iopll|dcp_iopll|clk100'
@@ -3707,7 +3707,7 @@ Slack : 6.098
 TNS   : 0.000
 
 Type  : Fast 900mV 100C Model Recovery 'PCIE_REFCLK'
-Slack : 6.279
+Slack : 6.248
 TNS   : 0.000
 
 Type  : Fast 900mV 100C Model Recovery 'fpga_top|inst_fiu_top|inst_pcie0_ccib_top|pcie_hip0|pcie_a10_hip_0|g_xcvr_native_insts[7]|rx_pma_clk'
@@ -3779,7 +3779,7 @@ Slack : 42.829
 TNS   : 0.000
 
 Type  : Fast 900mV 100C Model Recovery 'fpga_top|inst_fiu_top|inst_hssi_ctrl|ntv0|xcvr_native_a10_0|g_xcvr_native_insts[0]|tx_pma_clk'
-Slack : 42.944
+Slack : 42.849
 TNS   : 0.000
 
 Type  : Fast 900mV 100C Model Recovery 'fpga_top|inst_fiu_top|inst_hssi_ctrl|ntv0|xcvr_native_a10_0|g_xcvr_native_insts[3]|tx_pma_clk'
@@ -3787,7 +3787,7 @@ Slack : 43.159
 TNS   : 0.000
 
 Type  : Fast 900mV 100C Model Recovery 'fpga_top|inst_fiu_top|inst_hssi_ctrl|ntv0|xcvr_native_a10_0|g_xcvr_native_insts[2]|tx_pma_clk'
-Slack : 43.413
+Slack : 43.390
 TNS   : 0.000
 
 Type  : Fast 900mV 100C Model Recovery 'fpga_top|inst_fiu_top|inst_hssi_ctrl|ntv0|xcvr_native_a10_0|g_xcvr_native_insts[1]|tx_coreclkin'
@@ -3795,7 +3795,7 @@ Slack : 44.220
 TNS   : 0.000
 
 Type  : Fast 900mV 100C Model Recovery 'fpga_top|inst_fiu_top|inst_hssi_ctrl|ntv0|xcvr_native_a10_0|g_xcvr_native_insts[0]|tx_coreclkin'
-Slack : 44.488
+Slack : 44.393
 TNS   : 0.000
 
 Type  : Fast 900mV 100C Model Recovery 'fpga_top|inst_fiu_top|inst_hssi_ctrl|ntv0|xcvr_native_a10_0|g_xcvr_native_insts[3]|tx_coreclkin'
@@ -3803,7 +3803,7 @@ Slack : 44.634
 TNS   : 0.000
 
 Type  : Fast 900mV 100C Model Recovery 'fpga_top|inst_fiu_top|inst_hssi_ctrl|ntv0|xcvr_native_a10_0|g_xcvr_native_insts[2]|tx_coreclkin'
-Slack : 44.759
+Slack : 44.736
 TNS   : 0.000
 
 Type  : Fast 900mV 100C Model Recovery 'altera_reserved_tck'
@@ -3943,11 +3943,11 @@ Slack : 51.562
 TNS   : 0.000
 
 Type  : Fast 900mV 100C Model Removal 'fpga_top|inst_fiu_top|inst_hssi_ctrl|ntv0|xcvr_native_a10_0|g_xcvr_native_insts[2]|tx_coreclkin'
-Slack : 51.788
+Slack : 51.806
 TNS   : 0.000
 
 Type  : Fast 900mV 100C Model Removal 'fpga_top|inst_fiu_top|inst_hssi_ctrl|ntv0|xcvr_native_a10_0|g_xcvr_native_insts[0]|tx_coreclkin'
-Slack : 51.946
+Slack : 51.926
 TNS   : 0.000
 
 Type  : Fast 900mV 100C Model Removal 'fpga_top|inst_fiu_top|inst_hssi_ctrl|ntv0|xcvr_native_a10_0|g_xcvr_native_insts[1]|tx_coreclkin'
@@ -3959,11 +3959,11 @@ Slack : 52.607
 TNS   : 0.000
 
 Type  : Fast 900mV 100C Model Removal 'fpga_top|inst_fiu_top|inst_hssi_ctrl|ntv0|xcvr_native_a10_0|g_xcvr_native_insts[2]|tx_pma_clk'
-Slack : 52.695
+Slack : 52.713
 TNS   : 0.000
 
 Type  : Fast 900mV 100C Model Removal 'fpga_top|inst_fiu_top|inst_hssi_ctrl|ntv0|xcvr_native_a10_0|g_xcvr_native_insts[0]|tx_pma_clk'
-Slack : 52.892
+Slack : 52.872
 TNS   : 0.000
 
 Type  : Fast 900mV 100C Model Removal 'fpga_top|inst_fiu_top|inst_hssi_ctrl|ntv0|xcvr_native_a10_0|g_xcvr_native_insts[1]|tx_pma_clk'
@@ -4366,12 +4366,12 @@ Type  : Fast 900mV 100C Model Minimum Pulse Width 'hssi_pll_t_outclk0'
 Slack : 1.554
 TNS   : 0.000
 
-Type  : Fast 900mV 100C Model Minimum Pulse Width 'vl_qph_user_clk_clkpsc_clk1'
-Slack : 1.567
+Type  : Fast 900mV 100C Model Minimum Pulse Width 'fpga_top|inst_fiu_top|inst_ccip_fabric_top|inst_cvl_top|inst_user_clk|qph_user_clk_fpll_u0|xcvr_fpll_a10_0|outclk1'
+Slack : 1.558
 TNS   : 0.000
 
-Type  : Fast 900mV 100C Model Minimum Pulse Width 'fpga_top|inst_fiu_top|inst_ccip_fabric_top|inst_cvl_top|inst_user_clk|qph_user_clk_fpll_u0|xcvr_fpll_a10_0|outclk1'
-Slack : 1.568
+Type  : Fast 900mV 100C Model Minimum Pulse Width 'vl_qph_user_clk_clkpsc_clk1'
+Slack : 1.567
 TNS   : 0.000
 
 Type  : Fast 900mV 100C Model Minimum Pulse Width 'fpga_top|inst_fiu_top|inst_pcie0_ccib_top|pcie_hip0|pcie_a10_hip_0|wys~CORE_CLK_OUT'
@@ -4487,7 +4487,7 @@ Slack : 1.941
 TNS   : 0.000
 
 Type  : Fast 900mV 100C Model Minimum Pulse Width 'u0|dcp_iopll|dcp_iopll|clk1x'
-Slack : 2.125
+Slack : 2.124
 TNS   : 0.000
 
 Type  : Fast 900mV 100C Model Minimum Pulse Width 'mem|ddr4a|ddr4a_core_cal_slave_clk'
@@ -4495,7 +4495,7 @@ Slack : 2.934
 TNS   : 0.000
 
 Type  : Fast 900mV 100C Model Minimum Pulse Width 'fpga_top|inst_fiu_top|inst_ccip_fabric_top|inst_cvl_top|inst_user_clk|qph_user_clk_fpll_u0|xcvr_fpll_a10_0|outclk0'
-Slack : 3.153
+Slack : 3.150
 TNS   : 0.000
 
 Type  : Fast 900mV 100C Model Minimum Pulse Width 'fpga_top|inst_fiu_top|inst_hssi_ctrl|ntv0|xcvr_native_a10_0|g_xcvr_native_insts[0]|rx_pma_div_clk'
@@ -4647,7 +4647,7 @@ Slack : 4.974
 TNS   : 0.000
 
 Type  : Fast 900mV 100C Model Minimum Pulse Width 'u0|dcp_iopll|dcp_iopll|clk50'
-Slack : 9.921
+Slack : 9.932
 TNS   : 0.000
 
 Type  : Fast 900mV 100C Model Minimum Pulse Width 'u0|dcp_iopll|dcp_iopll|clk25'
@@ -4680,7 +4680,7 @@ Type  : Fast 900mV 100C Model Max Skew 'set_max_skew'
 Slack : 2.870
 
 Type  : Fast 900mV 100C Model Max Skew 'set_max_skew'
-Slack : 2.891
+Slack : 2.899
 
 Type  : Fast 900mV 100C Model Max Skew 'set_max_skew'
 Slack : 2.928
@@ -4785,7 +4785,7 @@ Type  : Fast 900mV 100C Model Net Delay 'set_net_delay'
 Slack : 3.182
 
 Type  : Fast 900mV 100C Model Net Delay 'set_net_delay'
-Slack : 3.222
+Slack : 3.223
 
 Type  : Fast 900mV 100C Model Net Delay 'set_net_delay'
 Slack : 3.244
@@ -4881,14 +4881,10 @@ Type  : Fast 900mV 100C Model Net Delay 'set_net_delay'
 Slack : 31.541
 
 Type  : Fast 900mV 100C Model Net Delay 'set_net_delay'
-Slack : 75.570
+Slack : 75.503
 
 Type  : Fast 900mV 100C Model Net Delay 'set_net_delay'
 Slack : 79.232
-
-Type  : Fast 900mV 0C Model Setup 'u0|dcp_iopll|dcp_iopll|clk1x'
-Slack : -4.142
-TNS   : -240.837
 
 Type  : Fast 900mV 0C Model Setup 'fpga_top|inst_fiu_top|inst_pcie0_ccib_top|pcie_hip0|pcie_a10_hip_0|tx_bonding_clocks[0]'
 Slack : 0.803
@@ -4927,11 +4923,15 @@ Slack : 1.912
 TNS   : 0.000
 
 Type  : Fast 900mV 0C Model Setup 'fpga_top|inst_fiu_top|inst_pcie0_ccib_top|pcie_hip0|pcie_a10_hip_0|pld_clk'
-Slack : 1.980
+Slack : 1.970
+TNS   : 0.000
+
+Type  : Fast 900mV 0C Model Setup 'u0|dcp_iopll|dcp_iopll|clk1x'
+Slack : 2.146
 TNS   : 0.000
 
 Type  : Fast 900mV 0C Model Setup 'u0|dcp_iopll|dcp_iopll|clk100'
-Slack : 2.168
+Slack : 2.149
 TNS   : 0.000
 
 Type  : Fast 900mV 0C Model Setup 'vl_qph_user_clk_clkpsc_clk1'
@@ -4951,7 +4951,7 @@ Slack : 2.739
 TNS   : 0.000
 
 Type  : Fast 900mV 0C Model Setup 'fpga_top|inst_fiu_top|inst_ccip_fabric_top|inst_cvl_top|inst_user_clk|qph_user_clk_fpll_u0|xcvr_fpll_a10_0|outclk1'
-Slack : 2.894
+Slack : 2.891
 TNS   : 0.000
 
 Type  : Fast 900mV 0C Model Setup 'fpga_top|inst_fiu_top|inst_hssi_ctrl|ntv0|xcvr_native_a10_0|g_xcvr_native_insts[0]|rx_pma_clk'
@@ -4987,7 +4987,7 @@ Slack : 3.331
 TNS   : 0.000
 
 Type  : Fast 900mV 0C Model Setup 'PCIE_REFCLK'
-Slack : 4.421
+Slack : 4.408
 TNS   : 0.000
 
 Type  : Fast 900mV 0C Model Setup 'SYS_RefClk'
@@ -4999,15 +4999,15 @@ Slack : 5.578
 TNS   : 0.000
 
 Type  : Fast 900mV 0C Model Setup 'fpga_top|inst_fiu_top|inst_hssi_ctrl|ntv0|xcvr_native_a10_0|g_xcvr_native_insts[1]|avmmclk'
-Slack : 5.659
+Slack : 5.646
 TNS   : 0.000
 
 Type  : Fast 900mV 0C Model Setup 'fpga_top|inst_fiu_top|inst_hssi_ctrl|ntv0|xcvr_native_a10_0|g_xcvr_native_insts[2]|avmmclk'
-Slack : 5.810
+Slack : 5.804
 TNS   : 0.000
 
 Type  : Fast 900mV 0C Model Setup 'fpga_top|inst_fiu_top|inst_hssi_ctrl|ntv0|xcvr_native_a10_0|g_xcvr_native_insts[0]|avmmclk'
-Slack : 5.870
+Slack : 5.871
 TNS   : 0.000
 
 Type  : Fast 900mV 0C Model Setup 'fpga_top|inst_fiu_top|inst_hssi_ctrl|ntv0|xcvr_native_a10_0|g_xcvr_native_insts[0]|tx_pma_div_clk'
@@ -5019,15 +5019,15 @@ Slack : 6.008
 TNS   : 0.000
 
 Type  : Fast 900mV 0C Model Setup 'fpga_top|inst_fiu_top|inst_ccip_fabric_top|inst_cvl_top|inst_user_clk|qph_user_clk_fpll_u0|xcvr_fpll_a10_0|outclk0'
-Slack : 6.098
+Slack : 6.092
 TNS   : 0.000
 
 Type  : Fast 900mV 0C Model Setup 'fpga_top|inst_fiu_top|inst_hssi_ctrl|ntv0|xcvr_native_a10_0|g_xcvr_native_insts[3]|avmmclk'
-Slack : 6.533
+Slack : 6.516
 TNS   : 0.000
 
 Type  : Fast 900mV 0C Model Setup 'fpga_top|inst_fiu_top|inst_pcie0_ccib_top|pcie_hip0|pcie_a10_hip_0|g_xcvr_native_insts[7]|avmmclk'
-Slack : 6.630
+Slack : 6.622
 TNS   : 0.000
 
 Type  : Fast 900mV 0C Model Setup 'fspi_sclk'
@@ -5043,7 +5043,7 @@ Slack : 7.012
 TNS   : 0.000
 
 Type  : Fast 900mV 0C Model Setup 'fpga_top|inst_fiu_top|inst_pcie0_ccib_top|pcie_hip0|pcie_a10_hip_0|g_xcvr_native_insts[4]|avmmclk'
-Slack : 7.201
+Slack : 7.198
 TNS   : 0.000
 
 Type  : Fast 900mV 0C Model Setup 'fpga_top|inst_fiu_top|inst_pcie0_ccib_top|pcie_hip0|pcie_a10_hip_0|g_xcvr_native_insts[3]|avmmclk'
@@ -5055,7 +5055,7 @@ Slack : 7.553
 TNS   : 0.000
 
 Type  : Fast 900mV 0C Model Setup 'fpga_top|inst_fiu_top|inst_pcie0_ccib_top|pcie_hip0|pcie_a10_hip_0|g_xcvr_native_insts[1]|avmmclk'
-Slack : 7.780
+Slack : 7.777
 TNS   : 0.000
 
 Type  : Fast 900mV 0C Model Setup 'fpga_top|inst_fiu_top|inst_pcie0_ccib_top|pcie_hip0|pcie_a10_hip_0|g_xcvr_native_insts[0]|avmmclk'
@@ -5063,7 +5063,7 @@ Slack : 8.369
 TNS   : 0.000
 
 Type  : Fast 900mV 0C Model Setup 'pr_clk_enable_dclk_reg2_user_clk'
-Slack : 11.823
+Slack : 11.816
 TNS   : 0.000
 
 Type  : Fast 900mV 0C Model Setup 'u0|dcp_iopll|dcp_iopll|clk25'
@@ -5071,7 +5071,7 @@ Slack : 18.943
 TNS   : 0.000
 
 Type  : Fast 900mV 0C Model Setup 'u0|dcp_iopll|dcp_iopll|clk50'
-Slack : 19.530
+Slack : 19.535
 TNS   : 0.000
 
 Type  : Fast 900mV 0C Model Setup 'filtered_sclk_negedge'
@@ -5170,16 +5170,16 @@ Type  : Fast 900mV 0C Model Hold 'ETH_RefClk'
 Slack : 0.024
 TNS   : 0.000
 
-Type  : Fast 900mV 0C Model Hold 'fpga_top|inst_fiu_top|inst_ccip_fabric_top|inst_cvl_top|inst_user_clk|qph_user_clk_fpll_u0|xcvr_fpll_a10_0|outclk0'
-Slack : 0.025
-TNS   : 0.000
-
 Type  : Fast 900mV 0C Model Hold 'fpga_top|inst_fiu_top|inst_ccip_fabric_top|inst_cvl_top|inst_user_clk|qph_user_clk_fpll_u0|xcvr_fpll_a10_0|outclk1'
-Slack : 0.032
+Slack : 0.027
 TNS   : 0.000
 
 Type  : Fast 900mV 0C Model Hold 'u0|dcp_iopll|dcp_iopll|clk50'
-Slack : 0.040
+Slack : 0.030
+TNS   : 0.000
+
+Type  : Fast 900mV 0C Model Hold 'fpga_top|inst_fiu_top|inst_ccip_fabric_top|inst_cvl_top|inst_user_clk|qph_user_clk_fpll_u0|xcvr_fpll_a10_0|outclk0'
+Slack : 0.039
 TNS   : 0.000
 
 Type  : Fast 900mV 0C Model Hold 'mem|ddr4a|ddr4a_phy_clk_l_2'
@@ -5247,7 +5247,7 @@ Slack : 0.587
 TNS   : 0.000
 
 Type  : Fast 900mV 0C Model Hold 'fpga_top|inst_fiu_top|inst_pcie0_ccib_top|pcie_hip0|pcie_a10_hip_0|g_xcvr_native_insts[3]|avmmclk'
-Slack : 0.631
+Slack : 0.632
 TNS   : 0.000
 
 Type  : Fast 900mV 0C Model Hold 'fpga_top|inst_fiu_top|inst_hssi_ctrl|ntv0|xcvr_native_a10_0|g_xcvr_native_insts[0]|avmmclk'
@@ -5263,11 +5263,11 @@ Slack : 0.751
 TNS   : 0.000
 
 Type  : Fast 900mV 0C Model Hold 'fpga_top|inst_fiu_top|inst_pcie0_ccib_top|pcie_hip0|pcie_a10_hip_0|g_xcvr_native_insts[7]|avmmclk'
-Slack : 0.899
+Slack : 0.908
 TNS   : 0.000
 
 Type  : Fast 900mV 0C Model Hold 'fpga_top|inst_fiu_top|inst_hssi_ctrl|ntv0|xcvr_native_a10_0|g_xcvr_native_insts[3]|avmmclk'
-Slack : 1.033
+Slack : 1.047
 TNS   : 0.000
 
 Type  : Fast 900mV 0C Model Hold 'fpga_top|inst_fiu_top|inst_pcie0_ccib_top|pcie_hip0|pcie_a10_hip_0|g_xcvr_native_insts[6]|avmmclk'
@@ -5275,19 +5275,19 @@ Slack : 1.095
 TNS   : 0.000
 
 Type  : Fast 900mV 0C Model Hold 'pr_clk_enable_dclk_reg2_user_clk'
-Slack : 6.313
+Slack : 6.329
 TNS   : 0.000
 
 Type  : Fast 900mV 0C Model Recovery 'mem|ddr4a|ddr4a_core_usr_clk'
 Slack : 1.919
 TNS   : 0.000
 
-Type  : Fast 900mV 0C Model Recovery 'u0|dcp_iopll|dcp_iopll|clk1x'
-Slack : 2.045
+Type  : Fast 900mV 0C Model Recovery 'fpga_top|inst_fiu_top|inst_pcie0_ccib_top|pcie_hip0|pcie_a10_hip_0|wys~CORE_CLK_OUT'
+Slack : 2.022
 TNS   : 0.000
 
-Type  : Fast 900mV 0C Model Recovery 'fpga_top|inst_fiu_top|inst_pcie0_ccib_top|pcie_hip0|pcie_a10_hip_0|wys~CORE_CLK_OUT'
-Slack : 2.060
+Type  : Fast 900mV 0C Model Recovery 'u0|dcp_iopll|dcp_iopll|clk1x'
+Slack : 2.048
 TNS   : 0.000
 
 Type  : Fast 900mV 0C Model Recovery 'u0|dcp_iopll|dcp_iopll|clk100'
@@ -5331,7 +5331,7 @@ Slack : 6.552
 TNS   : 0.000
 
 Type  : Fast 900mV 0C Model Recovery 'PCIE_REFCLK'
-Slack : 6.910
+Slack : 6.885
 TNS   : 0.000
 
 Type  : Fast 900mV 0C Model Recovery 'filtered_sclk_negedge'
@@ -5407,7 +5407,7 @@ Slack : 44.130
 TNS   : 0.000
 
 Type  : Fast 900mV 0C Model Recovery 'fpga_top|inst_fiu_top|inst_hssi_ctrl|ntv0|xcvr_native_a10_0|g_xcvr_native_insts[0]|tx_pma_clk'
-Slack : 44.214
+Slack : 44.139
 TNS   : 0.000
 
 Type  : Fast 900mV 0C Model Recovery 'fpga_top|inst_fiu_top|inst_hssi_ctrl|ntv0|xcvr_native_a10_0|g_xcvr_native_insts[3]|tx_pma_clk'
@@ -5415,7 +5415,7 @@ Slack : 44.381
 TNS   : 0.000
 
 Type  : Fast 900mV 0C Model Recovery 'fpga_top|inst_fiu_top|inst_hssi_ctrl|ntv0|xcvr_native_a10_0|g_xcvr_native_insts[2]|tx_pma_clk'
-Slack : 44.596
+Slack : 44.579
 TNS   : 0.000
 
 Type  : Fast 900mV 0C Model Recovery 'fpga_top|inst_fiu_top|inst_hssi_ctrl|ntv0|xcvr_native_a10_0|g_xcvr_native_insts[1]|tx_coreclkin'
@@ -5423,7 +5423,7 @@ Slack : 45.301
 TNS   : 0.000
 
 Type  : Fast 900mV 0C Model Recovery 'fpga_top|inst_fiu_top|inst_hssi_ctrl|ntv0|xcvr_native_a10_0|g_xcvr_native_insts[0]|tx_coreclkin'
-Slack : 45.502
+Slack : 45.425
 TNS   : 0.000
 
 Type  : Fast 900mV 0C Model Recovery 'fpga_top|inst_fiu_top|inst_hssi_ctrl|ntv0|xcvr_native_a10_0|g_xcvr_native_insts[3]|tx_coreclkin'
@@ -5431,7 +5431,7 @@ Slack : 45.631
 TNS   : 0.000
 
 Type  : Fast 900mV 0C Model Recovery 'fpga_top|inst_fiu_top|inst_hssi_ctrl|ntv0|xcvr_native_a10_0|g_xcvr_native_insts[2]|tx_coreclkin'
-Slack : 45.721
+Slack : 45.704
 TNS   : 0.000
 
 Type  : Fast 900mV 0C Model Recovery 'altera_reserved_tck'
@@ -5571,11 +5571,11 @@ Slack : 51.216
 TNS   : 0.000
 
 Type  : Fast 900mV 0C Model Removal 'fpga_top|inst_fiu_top|inst_hssi_ctrl|ntv0|xcvr_native_a10_0|g_xcvr_native_insts[2]|tx_coreclkin'
-Slack : 51.427
+Slack : 51.440
 TNS   : 0.000
 
 Type  : Fast 900mV 0C Model Removal 'fpga_top|inst_fiu_top|inst_hssi_ctrl|ntv0|xcvr_native_a10_0|g_xcvr_native_insts[0]|tx_coreclkin'
-Slack : 51.555
+Slack : 51.537
 TNS   : 0.000
 
 Type  : Fast 900mV 0C Model Removal 'fpga_top|inst_fiu_top|inst_hssi_ctrl|ntv0|xcvr_native_a10_0|g_xcvr_native_insts[1]|tx_coreclkin'
@@ -5587,11 +5587,11 @@ Slack : 52.054
 TNS   : 0.000
 
 Type  : Fast 900mV 0C Model Removal 'fpga_top|inst_fiu_top|inst_hssi_ctrl|ntv0|xcvr_native_a10_0|g_xcvr_native_insts[2]|tx_pma_clk'
-Slack : 52.137
+Slack : 52.150
 TNS   : 0.000
 
 Type  : Fast 900mV 0C Model Removal 'fpga_top|inst_fiu_top|inst_hssi_ctrl|ntv0|xcvr_native_a10_0|g_xcvr_native_insts[0]|tx_pma_clk'
-Slack : 52.299
+Slack : 52.279
 TNS   : 0.000
 
 Type  : Fast 900mV 0C Model Removal 'fpga_top|inst_fiu_top|inst_hssi_ctrl|ntv0|xcvr_native_a10_0|g_xcvr_native_insts[1]|tx_pma_clk'
@@ -6275,7 +6275,7 @@ Slack : 4.979
 TNS   : 0.000
 
 Type  : Fast 900mV 0C Model Minimum Pulse Width 'u0|dcp_iopll|dcp_iopll|clk50'
-Slack : 9.984
+Slack : 9.988
 TNS   : 0.000
 
 Type  : Fast 900mV 0C Model Minimum Pulse Width 'u0|dcp_iopll|dcp_iopll|clk25'
@@ -6308,7 +6308,7 @@ Type  : Fast 900mV 0C Model Max Skew 'set_max_skew'
 Slack : 2.920
 
 Type  : Fast 900mV 0C Model Max Skew 'set_max_skew'
-Slack : 2.929
+Slack : 2.934
 
 Type  : Fast 900mV 0C Model Max Skew 'set_max_skew'
 Slack : 2.963
@@ -6509,7 +6509,7 @@ Type  : Fast 900mV 0C Model Net Delay 'set_net_delay'
 Slack : 31.617
 
 Type  : Fast 900mV 0C Model Net Delay 'set_net_delay'
-Slack : 76.189
+Slack : 76.167
 
 Type  : Fast 900mV 0C Model Net Delay 'set_net_delay'
 Slack : 79.372
