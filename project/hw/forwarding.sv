@@ -52,7 +52,7 @@ module forwarding (
             forward2 = 2'd0;
 
 
-        // 0 => ExMe_FL, 1 => MeWb_FL
+        // 0 => ExMe_LR, 1 => MeWb_LR
         forward_LR = ~ExMe_out_LR_write & MeWb_out_LR_write;
 
         // if (DeEx_FL != ExMe_FL)   // add write FL, add Mem/WB cond
