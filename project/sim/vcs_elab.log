@@ -1,0 +1,570 @@
+
+Warning-[LINX_KRNL] Unsupported Linux kernel
+  Linux kernel '2.6.69-15-amd64' is not supported.
+  Supported versions are 2.4* or 2.6*.
+
+
+Warning-[DEBUG_DEP] Option will be deprecated
+  The option '-debug_pp' will be deprecated in a future release.  Please use 
+  '-debug_acc+pp+dmptf -debug_region+cell+encrypt' instead.
+
+Command: vcs -full64 -nc -V +vcs+lic+wait -full64 -debug_pp -Mupdate -lca -j 4 -l \
+vcs_elab.log +vhdllib+work -Mlib=work +lint=TFIPC-L -override_timescale=1ps/1ps -o \
+work/ase_simv ase_top work/ase_libs.so -lrt -lpthread
+/cae/apps/data/synopsys-2020/vcs/Q-2020.03-SP1/linux64/bin/comelab -nc -unielab -nc -verbose -lca -output vcs_elab.log -override_timescale 1ps/1ps -exe work/ase_simv -picarchive -debug 1 -uum   -ldlibs work/ase_libs.so -lrt -lpthread  -mxuumtop ase_top  -verilogcomp  -full64 -nc -V +vcs+lic+wait -full64 -debug_pp -Mupdate -lca -j 4 -l vcs_elab.log +vhdllib+work -Mlib=work +lint=TFIPC-L -override_timescale=1ps/1ps -o work/ase_simv work/ase_libs.so -lrt -lpthread -uum   -elaboration_options /tmp/vcs_20210506172106_57722/elaboptfile_57722
+
+Warning-[LCA_FEATURES_ENABLED] Usage warning
+  LCA features enabled by '-lca' argument on the command line.  For more 
+  information regarding list of LCA features please refer to Chapter "LCA 
+  features" in the VCS Release Notes
+
+Doing common elaboration 
+
+Warning-[LINX_KRNL] Unsupported Linux kernel
+  Linux kernel '2.6.69-15-amd64' is not supported.
+  Supported versions are 2.4* or 2.6*.
+
+
+Warning-[DEBUG_DEP] Option will be deprecated
+  The option '-debug_pp' will be deprecated in a future release.  Please use 
+  '-debug_acc+pp+dmptf -debug_region+cell+encrypt' instead.
+
+/cae/apps/data/synopsys-2020/vcs/Q-2020.03-SP1/linux64/bin/vcs1 -Mcc=gcc -Mcplusplus=g++ \
+-Masflags= -Mcfl= -pipe -fPIC -O -I/cae/apps/data/synopsys-2020/vcs/Q-2020.03-SP1/include \
+-Mxllcflags= -Mxcflags= -pipe -fPIC -I/cae/apps/data/synopsys-2020/vcs/Q-2020.03-SP1/include \
+-Mldflags=-L/usr/lib/x86_64-linux-gnu -L/lib/x86_64-linux-gnu -Wl,--no-as-needed \
+-rdynamic  -Mout=work/ase_simv -Mamsrun="" -Mvcsaceobjs="" -Mobjects=" /cae/apps/data/synopsys-2020/vcs/Q-2020.03-SP1/linux64/lib/liberrorinf.so \
+/cae/apps/data/synopsys-2020/vcs/Q-2020.03-SP1/linux64/lib/libsnpsmalloc.so /cae/apps/data/synopsys-2020/vcs/Q-2020.03-SP1/linux64/lib/libvfs.so \
+/filespace/c/chenke/RGBSetMeFree/project/sim/work/ase_libs.so -lrt -lpthread " -Mexternalobj= \
+-Msaverestoreobj=/cae/apps/data/synopsys-2020/vcs/Q-2020.03-SP1/linux64/lib/vcs_save_restore_new.o \
+-Mcrt0= -Mcrtn="" -Mcsrc="" -Mupdate -Mlib=work -Msyslibs=-ldl  -l vcs_elab.log -uum \
+ase_top -mxunielab -uni_make -full64 -nc -V +vcs+lic+wait -full64 -Xcbug=0x1 -lca \
+-j4 +vhdllib+work +lint=TFIPC-L -override_timescale=1ps/1ps -o work/ase_simv -uum \
+-elaboration_options=/tmp/vcs_20210506172106_57722/elaboptfile_57722 -full64 -picarchive \
++vcsd +itf+/cae/apps/data/synopsys-2020/vcs/Q-2020.03-SP1/linux64/lib/vcsdp.tab +cli+1 \
+-debug=1 +memcbk +vpi -VHDLelab=-mxunielab -uni_make -nc -nc -verbose -lca -override_timescale \
+1ps/1ps -exe work/ase_simv -uum -elaboration_options /tmp/vcs_20210506172106_57722/elaboptfile_57722 \
+-picarchive -debug 1  -gen_obj -f work/ase_simv.daidir/mxopt.db  
+Top Level Modules:
+       ase_top
+TimeScale is 1 ps / 1 ps
+
+Warning-[IWNF] Implicit wire has no fanin
+/filespace/c/chenke/RGBSetMeFree/project/hw/afu.sv, 142
+  Implicit wire 'rst_n' does not have any driver, please make sure this is 
+  intended.
+
+
+Warning-[IWNF] Implicit wire has no fanin
+/filespace/c/chenke/RGBSetMeFree/project/hw/afu.sv, 179
+  Implicit wire 'common_data_bus_write_out' does not have any driver, please 
+  make sure this is intended.
+
+
+Warning-[IWNF] Implicit wire has no fanin
+/filespace/c/chenke/RGBSetMeFree/project/hw/afu.sv, 261
+  Implicit wire 'cpu_addr' does not have any driver, please make sure this is 
+  intended.
+
+
+Warning-[PCWM-W] Port connection width mismatch
+/filespace/c/chenke/RGBSetMeFree/project/hw/afu.sv, 141
+"cpu iCPU( .clk (clk),  .rst_n (rst_n),  .INT (INT),  .INT_INSTR (INT_INSTR),  .ACK (ACK),  .FeDataIn_host (FeDataIn_host),  .Fetx_done_host (Fetx_done_host),  .Ferd_valid_host (Ferd_valid_host),  .FeDataOut_host (FeDataOut_host),  .FeAddrOut_host (FeAddrOut_host),  .Feop_host (Feop_host),  .MeDataIn_host (MeDataIn_host),  .Metx_done_host (Metx_done_host),  .Merd_valid_host (Merd_valid_host),  .MeDataOut_host (MeDataOut_host),  .MeAddrOut_host (MeAddrOut_host),  .Meop_host (Meop_host),  .startFPU (startFPU));"
+  The following 1-bit expression is connected to 512-bit port "FeDataIn_host" 
+  of module "cpu", instance "iCPU".
+  Expression: FeDataIn_host
+  Instantiated module defined at: 
+  "/filespace/c/chenke/RGBSetMeFree/project/hw/cpu.sv", 1
+  Use +lint=PCWM for more details.
+
+
+Warning-[PCWM-W] Port connection width mismatch
+/filespace/c/chenke/RGBSetMeFree/project/hw/afu.sv, 141
+"cpu iCPU( .clk (clk),  .rst_n (rst_n),  .INT (INT),  .INT_INSTR (INT_INSTR),  .ACK (ACK),  .FeDataIn_host (FeDataIn_host),  .Fetx_done_host (Fetx_done_host),  .Ferd_valid_host (Ferd_valid_host),  .FeDataOut_host (FeDataOut_host),  .FeAddrOut_host (FeAddrOut_host),  .Feop_host (Feop_host),  .MeDataIn_host (MeDataIn_host),  .Metx_done_host (Metx_done_host),  .Merd_valid_host (Merd_valid_host),  .MeDataOut_host (MeDataOut_host),  .MeAddrOut_host (MeAddrOut_host),  .Meop_host (Meop_host),  .startFPU (startFPU));"
+  The following 1-bit expression is connected to 512-bit port "FeDataOut_host"
+  of module "cpu", instance "iCPU".
+  Expression: FeDataOut_host
+  Instantiated module defined at: 
+  "/filespace/c/chenke/RGBSetMeFree/project/hw/cpu.sv", 1
+  Use +lint=PCWM for more details.
+
+
+Warning-[PCWM-W] Port connection width mismatch
+/filespace/c/chenke/RGBSetMeFree/project/hw/afu.sv, 141
+"cpu iCPU( .clk (clk),  .rst_n (rst_n),  .INT (INT),  .INT_INSTR (INT_INSTR),  .ACK (ACK),  .FeDataIn_host (FeDataIn_host),  .Fetx_done_host (Fetx_done_host),  .Ferd_valid_host (Ferd_valid_host),  .FeDataOut_host (FeDataOut_host),  .FeAddrOut_host (FeAddrOut_host),  .Feop_host (Feop_host),  .MeDataIn_host (MeDataIn_host),  .Metx_done_host (Metx_done_host),  .Merd_valid_host (Merd_valid_host),  .MeDataOut_host (MeDataOut_host),  .MeAddrOut_host (MeAddrOut_host),  .Meop_host (Meop_host),  .startFPU (startFPU));"
+  The following 1-bit expression is connected to 32-bit port "FeAddrOut_host" 
+  of module "cpu", instance "iCPU".
+  Expression: FeAddrOut_host
+  Instantiated module defined at: 
+  "/filespace/c/chenke/RGBSetMeFree/project/hw/cpu.sv", 1
+  Use +lint=PCWM for more details.
+
+
+Warning-[PCWM-W] Port connection width mismatch
+/filespace/c/chenke/RGBSetMeFree/project/hw/afu.sv, 141
+"cpu iCPU( .clk (clk),  .rst_n (rst_n),  .INT (INT),  .INT_INSTR (INT_INSTR),  .ACK (ACK),  .FeDataIn_host (FeDataIn_host),  .Fetx_done_host (Fetx_done_host),  .Ferd_valid_host (Ferd_valid_host),  .FeDataOut_host (FeDataOut_host),  .FeAddrOut_host (FeAddrOut_host),  .Feop_host (Feop_host),  .MeDataIn_host (MeDataIn_host),  .Metx_done_host (Metx_done_host),  .Merd_valid_host (Merd_valid_host),  .MeDataOut_host (MeDataOut_host),  .MeAddrOut_host (MeAddrOut_host),  .Meop_host (Meop_host),  .startFPU (startFPU));"
+  The following 1-bit expression is connected to 2-bit port "Feop_host" of 
+  module "cpu", instance "iCPU".
+  Expression: Feop_host
+  Instantiated module defined at: 
+  "/filespace/c/chenke/RGBSetMeFree/project/hw/cpu.sv", 1
+  Use +lint=PCWM for more details.
+
+
+Warning-[PCWM-W] Port connection width mismatch
+/filespace/c/chenke/RGBSetMeFree/project/hw/afu.sv, 141
+"cpu iCPU( .clk (clk),  .rst_n (rst_n),  .INT (INT),  .INT_INSTR (INT_INSTR),  .ACK (ACK),  .FeDataIn_host (FeDataIn_host),  .Fetx_done_host (Fetx_done_host),  .Ferd_valid_host (Ferd_valid_host),  .FeDataOut_host (FeDataOut_host),  .FeAddrOut_host (FeAddrOut_host),  .Feop_host (Feop_host),  .MeDataIn_host (MeDataIn_host),  .Metx_done_host (Metx_done_host),  .Merd_valid_host (Merd_valid_host),  .MeDataOut_host (MeDataOut_host),  .MeAddrOut_host (MeAddrOut_host),  .Meop_host (Meop_host),  .startFPU (startFPU));"
+  The following 1-bit expression is connected to 512-bit port "MeDataIn_host" 
+  of module "cpu", instance "iCPU".
+  Expression: MeDataIn_host
+  Instantiated module defined at: 
+  "/filespace/c/chenke/RGBSetMeFree/project/hw/cpu.sv", 1
+  Use +lint=PCWM for more details.
+
+
+Warning-[PCWM-W] Port connection width mismatch
+/filespace/c/chenke/RGBSetMeFree/project/hw/afu.sv, 141
+"cpu iCPU( .clk (clk),  .rst_n (rst_n),  .INT (INT),  .INT_INSTR (INT_INSTR),  .ACK (ACK),  .FeDataIn_host (FeDataIn_host),  .Fetx_done_host (Fetx_done_host),  .Ferd_valid_host (Ferd_valid_host),  .FeDataOut_host (FeDataOut_host),  .FeAddrOut_host (FeAddrOut_host),  .Feop_host (Feop_host),  .MeDataIn_host (MeDataIn_host),  .Metx_done_host (Metx_done_host),  .Merd_valid_host (Merd_valid_host),  .MeDataOut_host (MeDataOut_host),  .MeAddrOut_host (MeAddrOut_host),  .Meop_host (Meop_host),  .startFPU (startFPU));"
+  The following 1-bit expression is connected to 512-bit port "MeDataOut_host"
+  of module "cpu", instance "iCPU".
+  Expression: MeDataOut_host
+  Instantiated module defined at: 
+  "/filespace/c/chenke/RGBSetMeFree/project/hw/cpu.sv", 1
+  Use +lint=PCWM for more details.
+
+
+Warning-[PCWM-W] Port connection width mismatch
+/filespace/c/chenke/RGBSetMeFree/project/hw/afu.sv, 141
+"cpu iCPU( .clk (clk),  .rst_n (rst_n),  .INT (INT),  .INT_INSTR (INT_INSTR),  .ACK (ACK),  .FeDataIn_host (FeDataIn_host),  .Fetx_done_host (Fetx_done_host),  .Ferd_valid_host (Ferd_valid_host),  .FeDataOut_host (FeDataOut_host),  .FeAddrOut_host (FeAddrOut_host),  .Feop_host (Feop_host),  .MeDataIn_host (MeDataIn_host),  .Metx_done_host (Metx_done_host),  .Merd_valid_host (Merd_valid_host),  .MeDataOut_host (MeDataOut_host),  .MeAddrOut_host (MeAddrOut_host),  .Meop_host (Meop_host),  .startFPU (startFPU));"
+  The following 1-bit expression is connected to 32-bit port "MeAddrOut_host" 
+  of module "cpu", instance "iCPU".
+  Expression: MeAddrOut_host
+  Instantiated module defined at: 
+  "/filespace/c/chenke/RGBSetMeFree/project/hw/cpu.sv", 1
+  Use +lint=PCWM for more details.
+
+
+Warning-[PCWM-W] Port connection width mismatch
+/filespace/c/chenke/RGBSetMeFree/project/hw/afu.sv, 141
+"cpu iCPU( .clk (clk),  .rst_n (rst_n),  .INT (INT),  .INT_INSTR (INT_INSTR),  .ACK (ACK),  .FeDataIn_host (FeDataIn_host),  .Fetx_done_host (Fetx_done_host),  .Ferd_valid_host (Ferd_valid_host),  .FeDataOut_host (FeDataOut_host),  .FeAddrOut_host (FeAddrOut_host),  .Feop_host (Feop_host),  .MeDataIn_host (MeDataIn_host),  .Metx_done_host (Metx_done_host),  .Merd_valid_host (Merd_valid_host),  .MeDataOut_host (MeDataOut_host),  .MeAddrOut_host (MeAddrOut_host),  .Meop_host (Meop_host),  .startFPU (startFPU));"
+  The following 1-bit expression is connected to 2-bit port "Meop_host" of 
+  module "cpu", instance "iCPU".
+  Expression: Meop_host
+  Instantiated module defined at: 
+  "/filespace/c/chenke/RGBSetMeFree/project/hw/cpu.sv", 1
+  Use +lint=PCWM for more details.
+
+
+Warning-[PCWM-W] Port connection width mismatch
+/filespace/c/chenke/RGBSetMeFree/project/hw/afu.sv, 176
+"fpu_dma_ctrl iFPUDMA( .clk (clk),  .rst_n ((~rst)),  .dram_if (afu.dram_if.DRAM),  .common_data_bus_write_out (common_data_bus_write_out),  .tx_done (tx_done),  .rd_valid (rd_valid),  .op (op),  .raw_address (raw_address),  .common_data_bus_read_in (common_data_bus_read_in));"
+  The following 1-bit expression is connected to 512-bit port 
+  "common_data_bus_write_out" of module "fpu_dma_ctrl", instance "iFPUDMA".
+  Expression: common_data_bus_write_out
+  Instantiated module defined at: 
+  "/filespace/c/chenke/RGBSetMeFree/project/hw/memory/fpu_dma_ctrl.sv", 1
+  Use +lint=PCWM for more details.
+
+
+Warning-[PCWM-W] Port connection width mismatch
+/filespace/c/chenke/RGBSetMeFree/project/hw/afu.sv, 176
+"fpu_dma_ctrl iFPUDMA( .clk (clk),  .rst_n ((~rst)),  .dram_if (afu.dram_if.DRAM),  .common_data_bus_write_out (common_data_bus_write_out),  .tx_done (tx_done),  .rd_valid (rd_valid),  .op (op),  .raw_address (raw_address),  .common_data_bus_read_in (common_data_bus_read_in));"
+  The following 1-bit expression is connected to 2-bit port "op" of module 
+  "fpu_dma_ctrl", instance "iFPUDMA".
+  Expression: op
+  Instantiated module defined at: 
+  "/filespace/c/chenke/RGBSetMeFree/project/hw/memory/fpu_dma_ctrl.sv", 1
+  Use +lint=PCWM for more details.
+
+
+Warning-[PCWM-W] Port connection width mismatch
+/filespace/c/chenke/RGBSetMeFree/project/hw/afu.sv, 176
+"fpu_dma_ctrl iFPUDMA( .clk (clk),  .rst_n ((~rst)),  .dram_if (afu.dram_if.DRAM),  .common_data_bus_write_out (common_data_bus_write_out),  .tx_done (tx_done),  .rd_valid (rd_valid),  .op (op),  .raw_address (raw_address),  .common_data_bus_read_in (common_data_bus_read_in));"
+  The following 1-bit expression is connected to 32-bit port "raw_address" of 
+  module "fpu_dma_ctrl", instance "iFPUDMA".
+  Expression: raw_address
+  Instantiated module defined at: 
+  "/filespace/c/chenke/RGBSetMeFree/project/hw/memory/fpu_dma_ctrl.sv", 1
+  Use +lint=PCWM for more details.
+
+
+Warning-[PCWM-W] Port connection width mismatch
+/filespace/c/chenke/RGBSetMeFree/project/hw/afu.sv, 176
+"fpu_dma_ctrl iFPUDMA( .clk (clk),  .rst_n ((~rst)),  .dram_if (afu.dram_if.DRAM),  .common_data_bus_write_out (common_data_bus_write_out),  .tx_done (tx_done),  .rd_valid (rd_valid),  .op (op),  .raw_address (raw_address),  .common_data_bus_read_in (common_data_bus_read_in));"
+  The following 1-bit expression is connected to 512-bit port 
+  "common_data_bus_read_in" of module "fpu_dma_ctrl", instance "iFPUDMA".
+  Expression: common_data_bus_read_in
+  Instantiated module defined at: 
+  "/filespace/c/chenke/RGBSetMeFree/project/hw/memory/fpu_dma_ctrl.sv", 1
+  Use +lint=PCWM for more details.
+
+
+Warning-[PCWM-W] Port connection width mismatch
+/filespace/c/chenke/RGBSetMeFree/project/hw/afu.sv, 188
+"fpu_mmio_ctrl iFPUMMIO( .clk (clk),  .rst_n (rst_n),  .mapped_data_request (mapped_data_request),  .mapped_address (mapped_address),  .mapped_data (mapped_data),  .mapped_data_valid (mapped_data_valid),  .common_data_bus_write_out (common_data_bus_write_out),  .tx_done (tx_done),  .rd_valid (rd_valid),  .op (op),  .raw_address (raw_address),  .common_data_bus_read_in (common_data_bus_read_in));"
+  The following 1-bit expression is connected to 512-bit port 
+  "common_data_bus_write_out" of module "fpu_mmio_ctrl", instance "iFPUMMIO".
+  Expression: common_data_bus_write_out
+  Instantiated module defined at: 
+  "/filespace/c/chenke/RGBSetMeFree/project/hw/memory/fpu_mmio_ctrl.sv", 1
+  Use +lint=PCWM for more details.
+
+
+Warning-[PCWM-W] Port connection width mismatch
+/filespace/c/chenke/RGBSetMeFree/project/hw/afu.sv, 188
+"fpu_mmio_ctrl iFPUMMIO( .clk (clk),  .rst_n (rst_n),  .mapped_data_request (mapped_data_request),  .mapped_address (mapped_address),  .mapped_data (mapped_data),  .mapped_data_valid (mapped_data_valid),  .common_data_bus_write_out (common_data_bus_write_out),  .tx_done (tx_done),  .rd_valid (rd_valid),  .op (op),  .raw_address (raw_address),  .common_data_bus_read_in (common_data_bus_read_in));"
+  The following 1-bit expression is connected to 2-bit port "op" of module 
+  "fpu_mmio_ctrl", instance "iFPUMMIO".
+  Expression: op
+  Instantiated module defined at: 
+  "/filespace/c/chenke/RGBSetMeFree/project/hw/memory/fpu_mmio_ctrl.sv", 1
+  Use +lint=PCWM for more details.
+
+
+Warning-[PCWM-W] Port connection width mismatch
+/filespace/c/chenke/RGBSetMeFree/project/hw/afu.sv, 188
+"fpu_mmio_ctrl iFPUMMIO( .clk (clk),  .rst_n (rst_n),  .mapped_data_request (mapped_data_request),  .mapped_address (mapped_address),  .mapped_data (mapped_data),  .mapped_data_valid (mapped_data_valid),  .common_data_bus_write_out (common_data_bus_write_out),  .tx_done (tx_done),  .rd_valid (rd_valid),  .op (op),  .raw_address (raw_address),  .common_data_bus_read_in (common_data_bus_read_in));"
+  The following 1-bit expression is connected to 32-bit port "raw_address" of 
+  module "fpu_mmio_ctrl", instance "iFPUMMIO".
+  Expression: raw_address
+  Instantiated module defined at: 
+  "/filespace/c/chenke/RGBSetMeFree/project/hw/memory/fpu_mmio_ctrl.sv", 1
+  Use +lint=PCWM for more details.
+
+
+Warning-[PCWM-W] Port connection width mismatch
+/filespace/c/chenke/RGBSetMeFree/project/hw/afu.sv, 188
+"fpu_mmio_ctrl iFPUMMIO( .clk (clk),  .rst_n (rst_n),  .mapped_data_request (mapped_data_request),  .mapped_address (mapped_address),  .mapped_data (mapped_data),  .mapped_data_valid (mapped_data_valid),  .common_data_bus_write_out (common_data_bus_write_out),  .tx_done (tx_done),  .rd_valid (rd_valid),  .op (op),  .raw_address (raw_address),  .common_data_bus_read_in (common_data_bus_read_in));"
+  The following 1-bit expression is connected to 512-bit port 
+  "common_data_bus_read_in" of module "fpu_mmio_ctrl", instance "iFPUMMIO".
+  Expression: common_data_bus_read_in
+  Instantiated module defined at: 
+  "/filespace/c/chenke/RGBSetMeFree/project/hw/memory/fpu_mmio_ctrl.sv", 1
+  Use +lint=PCWM for more details.
+
+
+Warning-[PCWM-W] Port connection width mismatch
+/filespace/c/chenke/RGBSetMeFree/project/hw/afu.sv, 206
+"mem_arbiter iARBITER( .clk (clk),  .rst_n ((~rst)),  .op_src1 (Feop_host),  .raw_address_src1 (FeAddrOut_host),  .common_data_bus_read_in_src1 (FeDataOut_host),  .common_data_bus_write_out_src1 (FeDataIn_host),  .tx_done_src1 (Fetx_done_host),  .rd_valid_src1 (Ferd_valid_host),  .op_src2 (Meop_host),  .raw_address_src2 (MeAddrOut_host),  .common_data_bus_read_in_src2 (MeDataOut_host),  .common_data_bus_write_out_src2 (MeDataIn_host),  .tx_done_src2 (Metx_done_host),  .rd_valid_src2 (Merd_valid_host),  .op_src3 (op_mmio),  .raw_address_src3 (raw_address_mmio),  .common_data_bus_read_in_src3 (common_data_bus_read_in_mmio),  .common_data_bus_write_out_src3 (common_data_bus_write_out_mmio),  .tx_done_src3 (tx_done_mmio),  .rd_valid_src3 (rd_valid_mmio),  .o ... "
+  The following 1-bit expression is connected to 2-bit port "op_src1" of 
+  module "mem_arbiter", instance "iARBITER".
+  Expression: Feop_host
+  Instantiated module defined at: 
+  "/filespace/c/chenke/RGBSetMeFree/project/hw/memory/mem_arbiter.sv", 4
+  Use +lint=PCWM for more details.
+
+
+Warning-[PCWM-W] Port connection width mismatch
+/filespace/c/chenke/RGBSetMeFree/project/hw/afu.sv, 206
+"mem_arbiter iARBITER( .clk (clk),  .rst_n ((~rst)),  .op_src1 (Feop_host),  .raw_address_src1 (FeAddrOut_host),  .common_data_bus_read_in_src1 (FeDataOut_host),  .common_data_bus_write_out_src1 (FeDataIn_host),  .tx_done_src1 (Fetx_done_host),  .rd_valid_src1 (Ferd_valid_host),  .op_src2 (Meop_host),  .raw_address_src2 (MeAddrOut_host),  .common_data_bus_read_in_src2 (MeDataOut_host),  .common_data_bus_write_out_src2 (MeDataIn_host),  .tx_done_src2 (Metx_done_host),  .rd_valid_src2 (Merd_valid_host),  .op_src3 (op_mmio),  .raw_address_src3 (raw_address_mmio),  .common_data_bus_read_in_src3 (common_data_bus_read_in_mmio),  .common_data_bus_write_out_src3 (common_data_bus_write_out_mmio),  .tx_done_src3 (tx_done_mmio),  .rd_valid_src3 (rd_valid_mmio),  .o ... "
+  The following 1-bit expression is connected to 32-bit port 
+  "raw_address_src1" of module "mem_arbiter", instance "iARBITER".
+  Expression: FeAddrOut_host
+  Instantiated module defined at: 
+  "/filespace/c/chenke/RGBSetMeFree/project/hw/memory/mem_arbiter.sv", 4
+  Use +lint=PCWM for more details.
+
+
+Warning-[PCWM-W] Port connection width mismatch
+/filespace/c/chenke/RGBSetMeFree/project/hw/afu.sv, 206
+"mem_arbiter iARBITER( .clk (clk),  .rst_n ((~rst)),  .op_src1 (Feop_host),  .raw_address_src1 (FeAddrOut_host),  .common_data_bus_read_in_src1 (FeDataOut_host),  .common_data_bus_write_out_src1 (FeDataIn_host),  .tx_done_src1 (Fetx_done_host),  .rd_valid_src1 (Ferd_valid_host),  .op_src2 (Meop_host),  .raw_address_src2 (MeAddrOut_host),  .common_data_bus_read_in_src2 (MeDataOut_host),  .common_data_bus_write_out_src2 (MeDataIn_host),  .tx_done_src2 (Metx_done_host),  .rd_valid_src2 (Merd_valid_host),  .op_src3 (op_mmio),  .raw_address_src3 (raw_address_mmio),  .common_data_bus_read_in_src3 (common_data_bus_read_in_mmio),  .common_data_bus_write_out_src3 (common_data_bus_write_out_mmio),  .tx_done_src3 (tx_done_mmio),  .rd_valid_src3 (rd_valid_mmio),  .o ... "
+  The following 1-bit expression is connected to 512-bit port 
+  "common_data_bus_read_in_src1" of module "mem_arbiter", instance "iARBITER".
+  Expression: FeDataOut_host
+  Instantiated module defined at: 
+  "/filespace/c/chenke/RGBSetMeFree/project/hw/memory/mem_arbiter.sv", 4
+  Use +lint=PCWM for more details.
+
+
+Warning-[PCWM-W] Port connection width mismatch
+/filespace/c/chenke/RGBSetMeFree/project/hw/afu.sv, 206
+"mem_arbiter iARBITER( .clk (clk),  .rst_n ((~rst)),  .op_src1 (Feop_host),  .raw_address_src1 (FeAddrOut_host),  .common_data_bus_read_in_src1 (FeDataOut_host),  .common_data_bus_write_out_src1 (FeDataIn_host),  .tx_done_src1 (Fetx_done_host),  .rd_valid_src1 (Ferd_valid_host),  .op_src2 (Meop_host),  .raw_address_src2 (MeAddrOut_host),  .common_data_bus_read_in_src2 (MeDataOut_host),  .common_data_bus_write_out_src2 (MeDataIn_host),  .tx_done_src2 (Metx_done_host),  .rd_valid_src2 (Merd_valid_host),  .op_src3 (op_mmio),  .raw_address_src3 (raw_address_mmio),  .common_data_bus_read_in_src3 (common_data_bus_read_in_mmio),  .common_data_bus_write_out_src3 (common_data_bus_write_out_mmio),  .tx_done_src3 (tx_done_mmio),  .rd_valid_src3 (rd_valid_mmio),  .o ... "
+  The following 1-bit expression is connected to 512-bit port 
+  "common_data_bus_write_out_src1" of module "mem_arbiter", instance 
+  "iARBITER".
+  Expression: FeDataIn_host
+  Instantiated module defined at: 
+  "/filespace/c/chenke/RGBSetMeFree/project/hw/memory/mem_arbiter.sv", 4
+  Use +lint=PCWM for more details.
+
+
+Warning-[PCWM-W] Port connection width mismatch
+/filespace/c/chenke/RGBSetMeFree/project/hw/afu.sv, 206
+"mem_arbiter iARBITER( .clk (clk),  .rst_n ((~rst)),  .op_src1 (Feop_host),  .raw_address_src1 (FeAddrOut_host),  .common_data_bus_read_in_src1 (FeDataOut_host),  .common_data_bus_write_out_src1 (FeDataIn_host),  .tx_done_src1 (Fetx_done_host),  .rd_valid_src1 (Ferd_valid_host),  .op_src2 (Meop_host),  .raw_address_src2 (MeAddrOut_host),  .common_data_bus_read_in_src2 (MeDataOut_host),  .common_data_bus_write_out_src2 (MeDataIn_host),  .tx_done_src2 (Metx_done_host),  .rd_valid_src2 (Merd_valid_host),  .op_src3 (op_mmio),  .raw_address_src3 (raw_address_mmio),  .common_data_bus_read_in_src3 (common_data_bus_read_in_mmio),  .common_data_bus_write_out_src3 (common_data_bus_write_out_mmio),  .tx_done_src3 (tx_done_mmio),  .rd_valid_src3 (rd_valid_mmio),  .o ... "
+  The following 1-bit expression is connected to 2-bit port "op_src2" of 
+  module "mem_arbiter", instance "iARBITER".
+  Expression: Meop_host
+  Instantiated module defined at: 
+  "/filespace/c/chenke/RGBSetMeFree/project/hw/memory/mem_arbiter.sv", 4
+  Use +lint=PCWM for more details.
+
+
+Warning-[PCWM-W] Port connection width mismatch
+/filespace/c/chenke/RGBSetMeFree/project/hw/afu.sv, 206
+"mem_arbiter iARBITER( .clk (clk),  .rst_n ((~rst)),  .op_src1 (Feop_host),  .raw_address_src1 (FeAddrOut_host),  .common_data_bus_read_in_src1 (FeDataOut_host),  .common_data_bus_write_out_src1 (FeDataIn_host),  .tx_done_src1 (Fetx_done_host),  .rd_valid_src1 (Ferd_valid_host),  .op_src2 (Meop_host),  .raw_address_src2 (MeAddrOut_host),  .common_data_bus_read_in_src2 (MeDataOut_host),  .common_data_bus_write_out_src2 (MeDataIn_host),  .tx_done_src2 (Metx_done_host),  .rd_valid_src2 (Merd_valid_host),  .op_src3 (op_mmio),  .raw_address_src3 (raw_address_mmio),  .common_data_bus_read_in_src3 (common_data_bus_read_in_mmio),  .common_data_bus_write_out_src3 (common_data_bus_write_out_mmio),  .tx_done_src3 (tx_done_mmio),  .rd_valid_src3 (rd_valid_mmio),  .o ... "
+  The following 1-bit expression is connected to 32-bit port 
+  "raw_address_src2" of module "mem_arbiter", instance "iARBITER".
+  Expression: MeAddrOut_host
+  Instantiated module defined at: 
+  "/filespace/c/chenke/RGBSetMeFree/project/hw/memory/mem_arbiter.sv", 4
+  Use +lint=PCWM for more details.
+
+
+Warning-[PCWM-W] Port connection width mismatch
+/filespace/c/chenke/RGBSetMeFree/project/hw/afu.sv, 206
+"mem_arbiter iARBITER( .clk (clk),  .rst_n ((~rst)),  .op_src1 (Feop_host),  .raw_address_src1 (FeAddrOut_host),  .common_data_bus_read_in_src1 (FeDataOut_host),  .common_data_bus_write_out_src1 (FeDataIn_host),  .tx_done_src1 (Fetx_done_host),  .rd_valid_src1 (Ferd_valid_host),  .op_src2 (Meop_host),  .raw_address_src2 (MeAddrOut_host),  .common_data_bus_read_in_src2 (MeDataOut_host),  .common_data_bus_write_out_src2 (MeDataIn_host),  .tx_done_src2 (Metx_done_host),  .rd_valid_src2 (Merd_valid_host),  .op_src3 (op_mmio),  .raw_address_src3 (raw_address_mmio),  .common_data_bus_read_in_src3 (common_data_bus_read_in_mmio),  .common_data_bus_write_out_src3 (common_data_bus_write_out_mmio),  .tx_done_src3 (tx_done_mmio),  .rd_valid_src3 (rd_valid_mmio),  .o ... "
+  The following 1-bit expression is connected to 512-bit port 
+  "common_data_bus_read_in_src2" of module "mem_arbiter", instance "iARBITER".
+  Expression: MeDataOut_host
+  Instantiated module defined at: 
+  "/filespace/c/chenke/RGBSetMeFree/project/hw/memory/mem_arbiter.sv", 4
+  Use +lint=PCWM for more details.
+
+
+Warning-[PCWM-W] Port connection width mismatch
+/filespace/c/chenke/RGBSetMeFree/project/hw/afu.sv, 206
+"mem_arbiter iARBITER( .clk (clk),  .rst_n ((~rst)),  .op_src1 (Feop_host),  .raw_address_src1 (FeAddrOut_host),  .common_data_bus_read_in_src1 (FeDataOut_host),  .common_data_bus_write_out_src1 (FeDataIn_host),  .tx_done_src1 (Fetx_done_host),  .rd_valid_src1 (Ferd_valid_host),  .op_src2 (Meop_host),  .raw_address_src2 (MeAddrOut_host),  .common_data_bus_read_in_src2 (MeDataOut_host),  .common_data_bus_write_out_src2 (MeDataIn_host),  .tx_done_src2 (Metx_done_host),  .rd_valid_src2 (Merd_valid_host),  .op_src3 (op_mmio),  .raw_address_src3 (raw_address_mmio),  .common_data_bus_read_in_src3 (common_data_bus_read_in_mmio),  .common_data_bus_write_out_src3 (common_data_bus_write_out_mmio),  .tx_done_src3 (tx_done_mmio),  .rd_valid_src3 (rd_valid_mmio),  .o ... "
+  The following 1-bit expression is connected to 512-bit port 
+  "common_data_bus_write_out_src2" of module "mem_arbiter", instance 
+  "iARBITER".
+  Expression: MeDataIn_host
+  Instantiated module defined at: 
+  "/filespace/c/chenke/RGBSetMeFree/project/hw/memory/mem_arbiter.sv", 4
+  Use +lint=PCWM for more details.
+
+
+Warning-[PCWM-W] Port connection width mismatch
+/filespace/c/chenke/RGBSetMeFree/project/hw/afu.sv, 254
+"mem_ctrl iMEM( .clk (clk),  .rst_n ((~rst)),  .host_init (go),  .host_rd_ready ((~dma.empty)),  .host_wr_ready ((~dma.full)),  .op (mem_op),  .raw_address (cpu_addr),  .address_offset (wr_addr),  .common_data_bus_read_in (DMA_Data_in),  .common_data_bus_write_out (cpu_in),  .host_data_bus_read_in (dma.rd_data),  .host_data_bus_write_out (dma.wr_data),  .corrected_address (final_addr),  .ready (ready),  .tx_done (tx_done),  .rd_valid (rd_valid),  .host_re (local_dma_re),  .host_we (local_dma_we),  .host_rgo (rd_go),  .host_wgo (wr_go));"
+  The following 1-bit expression is connected to 64-bit port "raw_address" of 
+  module "mem_ctrl", instance "iMEM".
+  Expression: cpu_addr
+  Instantiated module defined at: 
+  "/filespace/c/chenke/RGBSetMeFree/project/hw/memory/mem_ctrl.sv", 15
+  Use +lint=PCWM for more details.
+
+
+Warning-[PCWM-W] Port connection width mismatch
+/filespace/c/chenke/RGBSetMeFree/project/hw/afu.sv, 254
+"mem_ctrl iMEM( .clk (clk),  .rst_n ((~rst)),  .host_init (go),  .host_rd_ready ((~dma.empty)),  .host_wr_ready ((~dma.full)),  .op (mem_op),  .raw_address (cpu_addr),  .address_offset (wr_addr),  .common_data_bus_read_in (DMA_Data_in),  .common_data_bus_write_out (cpu_in),  .host_data_bus_read_in (dma.rd_data),  .host_data_bus_write_out (dma.wr_data),  .corrected_address (final_addr),  .ready (ready),  .tx_done (tx_done),  .rd_valid (rd_valid),  .host_re (local_dma_re),  .host_we (local_dma_we),  .host_rgo (rd_go),  .host_wgo (wr_go));"
+  The following 1-bit expression is connected to 512-bit port 
+  "common_data_bus_write_out" of module "mem_ctrl", instance "iMEM".
+  Expression: cpu_in
+  Instantiated module defined at: 
+  "/filespace/c/chenke/RGBSetMeFree/project/hw/memory/mem_ctrl.sv", 15
+  Use +lint=PCWM for more details.
+
+
+Warning-[IWNF] Implicit wire has no fanin
+/filespace/c/chenke/RGBSetMeFree/project/hw/memory.sv, 53
+  Implicit wire 'ExMe_out_reg_2' does not have any driver, please make sure 
+  this is intended.
+
+
+Warning-[PCWM-W] Port connection width mismatch
+/filespace/c/chenke/RGBSetMeFree/project/hw/memory.sv, 50
+"mem_system dataMem( .clk (clk),  .rst_n (rst_n),  .addr (ExMe_out_alu_out),  .data_in (ExMe_out_reg_2),  .wr (ExMe_out_mem_wrt),  .en (ExMe_out_mem_en),  .done (done),  .data_out (mem_data),  .DataIn_host (DataIn_host),  .tx_done_host (tx_done_host),  .rd_valid_host (rd_valid_host),  .DataOut_host (DataOut_host),  .AddrOut_host (AddrOut_host),  .op_host (op_host),  .stall (memStall));"
+  The following 1-bit expression is connected to 32-bit port "data_in" of 
+  module "mem_system", instance "dataMem".
+  Expression: ExMe_out_reg_2
+  Instantiated module defined at: 
+  "/filespace/c/chenke/RGBSetMeFree/project/hw/memory/mem_system.sv", 4
+  Use +lint=PCWM for more details.
+
+
+Warning-[PCWM-W] Port connection width mismatch
+/filespace/c/chenke/RGBSetMeFree/project/hw/FPU/FPUMAC.sv, 14
+" FilterMAC genblk1[0].fmac( .clk (clk),  .rst_n (rst_n),  .array0 ({ << 8 {col0[0], col1[0], col2[0], col0[(0 + 1)], col1[(0 + 1)], col2[(0 + 1)], col0[(0 + 2)], col1[(0 + 2)], col2[(0 + 2)]}}),  .array1 (filter),  .result_pixel (result_pixels[0]));"
+  The following 72-bit expression is connected to 8-bit port "array0" of 
+  module "FilterMAC", instance "genblk1[0].fmac".
+  Expression: { << 8 {col0[0], col1[0], col2[0], col0[(0 + 1)], col1[(0 + 1)],
+  col2[(0 + 1)], col0[(0 + 2)], col1[(0 + 2)], col2[(0 + 2)]}}
+  Instantiated module defined at: 
+  "/filespace/c/chenke/RGBSetMeFree/project/hw/FPU/FilterMAC.sv", 1
+  Use +lint=PCWM for more details.
+
+
+Warning-[PCWM-W] Port connection width mismatch
+/filespace/c/chenke/RGBSetMeFree/project/hw/FPU/FPUMAC.sv, 14
+" FilterMAC genblk1[1].fmac( .clk (clk),  .rst_n (rst_n),  .array0 ({ << 8 {col0[1], col1[1], col2[1], col0[(1 + 1)], col1[(1 + 1)], col2[(1 + 1)], col0[(1 + 2)], col1[(1 + 2)], col2[(1 + 2)]}}),  .array1 (filter),  .result_pixel (result_pixels[1]));"
+  The following 72-bit expression is connected to 8-bit port "array0" of 
+  module "FilterMAC", instance "genblk1[1].fmac".
+  Expression: { << 8 {col0[1], col1[1], col2[1], col0[(1 + 1)], col1[(1 + 1)],
+  col2[(1 + 1)], col0[(1 + 2)], col1[(1 + 2)], col2[(1 + 2)]}}
+  Instantiated module defined at: 
+  "/filespace/c/chenke/RGBSetMeFree/project/hw/FPU/FilterMAC.sv", 1
+  Use +lint=PCWM for more details.
+
+
+Warning-[PCWM-W] Port connection width mismatch
+/filespace/c/chenke/RGBSetMeFree/project/hw/FPU/FPUMAC.sv, 14
+" FilterMAC genblk1[2].fmac( .clk (clk),  .rst_n (rst_n),  .array0 ({ << 8 {col0[2], col1[2], col2[2], col0[(2 + 1)], col1[(2 + 1)], col2[(2 + 1)], col0[(2 + 2)], col1[(2 + 2)], col2[(2 + 2)]}}),  .array1 (filter),  .result_pixel (result_pixels[2]));"
+  The following 72-bit expression is connected to 8-bit port "array0" of 
+  module "FilterMAC", instance "genblk1[2].fmac".
+  Expression: { << 8 {col0[2], col1[2], col2[2], col0[(2 + 1)], col1[(2 + 1)],
+  col2[(2 + 1)], col0[(2 + 2)], col1[(2 + 2)], col2[(2 + 2)]}}
+  Instantiated module defined at: 
+  "/filespace/c/chenke/RGBSetMeFree/project/hw/FPU/FilterMAC.sv", 1
+  Use +lint=PCWM for more details.
+
+
+Warning-[PCWM-W] Port connection width mismatch
+/filespace/c/chenke/RGBSetMeFree/project/hw/FPU/FPUMAC.sv, 14
+" FilterMAC genblk1[3].fmac( .clk (clk),  .rst_n (rst_n),  .array0 ({ << 8 {col0[3], col1[3], col2[3], col0[(3 + 1)], col1[(3 + 1)], col2[(3 + 1)], col0[(3 + 2)], col1[(3 + 2)], col2[(3 + 2)]}}),  .array1 (filter),  .result_pixel (result_pixels[3]));"
+  The following 72-bit expression is connected to 8-bit port "array0" of 
+  module "FilterMAC", instance "genblk1[3].fmac".
+  Expression: { << 8 {col0[3], col1[3], col2[3], col0[(3 + 1)], col1[(3 + 1)],
+  col2[(3 + 1)], col0[(3 + 2)], col1[(3 + 2)], col2[(3 + 2)]}}
+  Instantiated module defined at: 
+  "/filespace/c/chenke/RGBSetMeFree/project/hw/FPU/FilterMAC.sv", 1
+  Use +lint=PCWM for more details.
+
+
+Warning-[PCWM-W] Port connection width mismatch
+/filespace/c/chenke/RGBSetMeFree/project/hw/FPU/FPUMAC.sv, 14
+" FilterMAC genblk1[4].fmac( .clk (clk),  .rst_n (rst_n),  .array0 ({ << 8 {col0[4], col1[4], col2[4], col0[(4 + 1)], col1[(4 + 1)], col2[(4 + 1)], col0[(4 + 2)], col1[(4 + 2)], col2[(4 + 2)]}}),  .array1 (filter),  .result_pixel (result_pixels[4]));"
+  The following 72-bit expression is connected to 8-bit port "array0" of 
+  module "FilterMAC", instance "genblk1[4].fmac".
+  Expression: { << 8 {col0[4], col1[4], col2[4], col0[(4 + 1)], col1[(4 + 1)],
+  col2[(4 + 1)], col0[(4 + 2)], col1[(4 + 2)], col2[(4 + 2)]}}
+  Instantiated module defined at: 
+  "/filespace/c/chenke/RGBSetMeFree/project/hw/FPU/FilterMAC.sv", 1
+  Use +lint=PCWM for more details.
+
+
+Warning-[PCWM-W] Port connection width mismatch
+/filespace/c/chenke/RGBSetMeFree/project/hw/FPU/FPUMAC.sv, 14
+" FilterMAC genblk1[5].fmac( .clk (clk),  .rst_n (rst_n),  .array0 ({ << 8 {col0[5], col1[5], col2[5], col0[(5 + 1)], col1[(5 + 1)], col2[(5 + 1)], col0[(5 + 2)], col1[(5 + 2)], col2[(5 + 2)]}}),  .array1 (filter),  .result_pixel (result_pixels[5]));"
+  The following 72-bit expression is connected to 8-bit port "array0" of 
+  module "FilterMAC", instance "genblk1[5].fmac".
+  Expression: { << 8 {col0[5], col1[5], col2[5], col0[(5 + 1)], col1[(5 + 1)],
+  col2[(5 + 1)], col0[(5 + 2)], col1[(5 + 2)], col2[(5 + 2)]}}
+  Instantiated module defined at: 
+  "/filespace/c/chenke/RGBSetMeFree/project/hw/FPU/FilterMAC.sv", 1
+  Use +lint=PCWM for more details.
+
+
+Warning-[PCWM-W] Port connection width mismatch
+/filespace/c/chenke/RGBSetMeFree/project/hw/FPU/FPUMAC.sv, 14
+" FilterMAC genblk1[6].fmac( .clk (clk),  .rst_n (rst_n),  .array0 ({ << 8 {col0[6], col1[6], col2[6], col0[(6 + 1)], col1[(6 + 1)], col2[(6 + 1)], col0[(6 + 2)], col1[(6 + 2)], col2[(6 + 2)]}}),  .array1 (filter),  .result_pixel (result_pixels[6]));"
+  The following 72-bit expression is connected to 8-bit port "array0" of 
+  module "FilterMAC", instance "genblk1[6].fmac".
+  Expression: { << 8 {col0[6], col1[6], col2[6], col0[(6 + 1)], col1[(6 + 1)],
+  col2[(6 + 1)], col0[(6 + 2)], col1[(6 + 2)], col2[(6 + 2)]}}
+  Instantiated module defined at: 
+  "/filespace/c/chenke/RGBSetMeFree/project/hw/FPU/FilterMAC.sv", 1
+  Use +lint=PCWM for more details.
+
+
+Warning-[PCWM-W] Port connection width mismatch
+/filespace/c/chenke/RGBSetMeFree/project/hw/FPU/FPUMAC.sv, 14
+" FilterMAC genblk1[7].fmac( .clk (clk),  .rst_n (rst_n),  .array0 ({ << 8 {col0[7], col1[7], col2[7], col0[(7 + 1)], col1[(7 + 1)], col2[(7 + 1)], col0[(7 + 2)], col1[(7 + 2)], col2[(7 + 2)]}}),  .array1 (filter),  .result_pixel (result_pixels[7]));"
+  The following 72-bit expression is connected to 8-bit port "array0" of 
+  module "FilterMAC", instance "genblk1[7].fmac".
+  Expression: { << 8 {col0[7], col1[7], col2[7], col0[(7 + 1)], col1[(7 + 1)],
+  col2[(7 + 1)], col0[(7 + 2)], col1[(7 + 2)], col2[(7 + 2)]}}
+  Instantiated module defined at: 
+  "/filespace/c/chenke/RGBSetMeFree/project/hw/FPU/FilterMAC.sv", 1
+  Use +lint=PCWM for more details.
+
+
+Warning-[USVS-ACWCFC] Unsupported SystemVerilog construct
+/filespace/c/chenke/intel-fpga-bbb/BBB_cci_mpf/hw/sim/../rtl/cci_mpf.sv, 403
+"cci_mpf_if_pkg::cci_mpf_c0Rx_isEOP"
+  The always_comb block has nested hierarchical or interface function calls. 
+  The sensitivity list is based on function argument rather than the function 
+  bodies.
+  Please avoid always_comb with nested hierarchical function calls.
+
+
+Warning-[USVS-ACWCFC] Unsupported SystemVerilog construct
+/filespace/c/chenke/intel-fpga-bbb/BBB_cci_mpf/hw/sim/../rtl/cci_mpf.sv, 406
+"cci_mpf_if_pkg::cci_c1Rx_isWriteRsp"
+  The always_comb block has nested hierarchical or interface function calls. 
+  The sensitivity list is based on function argument rather than the function 
+  bodies.
+  Please avoid always_comb with nested hierarchical function calls.
+
+
+Warning-[USVS-ACWCFC] Unsupported SystemVerilog construct
+/filespace/c/chenke/intel-fpga-bbb/BBB_cci_mpf/hw/sim/../rtl/cci-mpf-shims/cci_mpf_shim_edge/cci_mpf_shim_edge_fiu.sv, 319
+"cci_mpf_if_pkg::cci_c0Rx_isReadRsp"
+  The always_comb block has nested hierarchical or interface function calls. 
+  The sensitivity list is based on function argument rather than the function 
+  bodies.
+  Please avoid always_comb with nested hierarchical function calls.
+
+
+Warning-[USVS-ACWCFC] Unsupported SystemVerilog construct
+/filespace/c/chenke/intel-fpga-bbb/BBB_cci_mpf/hw/sim/../rtl/cci-mpf-shims/cci_mpf_shim_rsp_order.sv, 456
+"cci_mpf_if_pkg::cci_c0Rx_isValid"
+  The always_comb block has nested hierarchical or interface function calls. 
+  The sensitivity list is based on function argument rather than the function 
+  bodies.
+  Please avoid always_comb with nested hierarchical function calls.
+
+
+Warning-[USVS-ACWCFC] Unsupported SystemVerilog construct
+/filespace/c/chenke/intel-fpga-bbb/BBB_cci_mpf/hw/sim/../rtl/cci-mpf-shims/cci_mpf_shim_rsp_order.sv, 457
+"cci_mpf_if_pkg::cci_c0Rx_isReadRsp"
+  The always_comb block has nested hierarchical or interface function calls. 
+  The sensitivity list is based on function argument rather than the function 
+  bodies.
+  Please avoid always_comb with nested hierarchical function calls.
+
+
+Warning-[USVS-ACWCFC] Unsupported SystemVerilog construct
+/filespace/c/chenke/intel-fpga-bbb/BBB_cci_mpf/hw/sim/../rtl/cci-mpf-shims/cci_mpf_shim_rsp_order.sv, 479
+"cci_mpf_if_pkg::cci_c0Rx_isReadRsp"
+  The always_comb block has nested hierarchical or interface function calls. 
+  The sensitivity list is based on function argument rather than the function 
+  bodies.
+  Please avoid always_comb with nested hierarchical function calls.
+
+
+Warning-[USVS-ACWCFC] Unsupported SystemVerilog construct
+/filespace/c/chenke/intel-fpga-bbb/BBB_cci_mpf/hw/sim/../rtl/cci-mpf-shims/cci_mpf_shim_rsp_order.sv, 489
+"cci_mpf_if_pkg::cci_c0Rx_isReadRsp"
+  The always_comb block has nested hierarchical or interface function calls. 
+  The sensitivity list is based on function argument rather than the function 
+  bodies.
+  Please avoid always_comb with nested hierarchical function calls.
+
+
+Warning-[USVS-ACWCFC] Unsupported SystemVerilog construct
+/filespace/c/chenke/intel-fpga-bbb/BBB_cci_mpf/hw/sim/../rtl/cci-mpf-shims/cci_mpf_shim_rsp_order.sv, 248
+"cci_mpf_if_pkg::cci_c0Rx_isReadRsp"
+  The always_comb block has nested hierarchical or interface function calls. 
+  The sensitivity list is based on function argument rather than the function 
+  bodies.
+  Please avoid always_comb with nested hierarchical function calls.
+
+Notice: Ports coerced to inout, use -notice for details
+Starting vcs inline pass...
+
+
+Note-[VCS_PARAL] Parallel code-gen enabled
+  VCS is running with parallel code generation(-j)...
+
+81 modules and 0 UDP read.
+	However, due to incremental compilation, no re-compilation is necessary.
+( cd csrc ; make -f Makefile SNPS_VCS_TMPDIR=/tmp/vcs_20210506172106_57722 product \
+)
+make[1]: Entering directory '/filespace/c/chenke/RGBSetMeFree/project/sim/csrc'
+rm -f _cuarc*.so _csrc*.so pre_vcsobj_*.so share_vcsobj_*.so
+ld -shared  -Bsymbolic  -o .//../work/ase_simv.daidir//_cuarc0.so objs/amcQw_d.o \
+
+rm -f _cuarc0.so
+if [ -x ../work/ase_simv ]; then chmod a-x ../work/ase_simv; fi
+g++  -o ../work/ase_simv -no-pie  -Wl,--no-as-needed    -L/usr/lib/x86_64-linux-gnu \
+-L/lib/x86_64-linux-gnu -Wl,--no-as-needed -rdynamic -Wl,-rpath='$ORIGIN'/ase_simv.daidir \
+-Wl,-rpath=./ase_simv.daidir -Wl,-rpath=/cae/apps/data/synopsys-2020/vcs/Q-2020.03-SP1/linux64/lib \
+-L/cae/apps/data/synopsys-2020/vcs/Q-2020.03-SP1/linux64/lib -Wl,-rpath-link=./  \
+_58863_archive_1.so _prev_archive_1.so _cuarc0.so  SIM_l.o       rmapats_mop.o rmapats.o \
+rmar.o rmar_nd.o  rmar_llvm_0_1.o rmar_llvm_0_0.o          -lnuma -lerrorinf -lsnpsmalloc \
+-lvfs ase_libs.so -lrt -lpthread    -lvcsnew -lsimprofile -lvirsim -luclinative /cae/apps/data/synopsys-2020/vcs/Q-2020.03-SP1/linux64/lib/vcs_tls.o \
+-Wl,-whole-archive -lvcsucli -Wl,-no-whole-archive       ./../work/ase_simv.daidir/vc_hdrs.o \
+/cae/apps/data/synopsys-2020/vcs/Q-2020.03-SP1/linux64/lib/vcs_save_restore_new.o \
+-ldl  -lc -lm -lpthread -ldl 
+../work/ase_simv up to date
+make[1]: Leaving directory '/filespace/c/chenke/RGBSetMeFree/project/sim/csrc'

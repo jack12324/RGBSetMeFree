@@ -1,83 +1,64 @@
-// Copyright (c) 2020 University of Florida
+// ***************************************************************************
+// Copyright (c) 2013-2018, Intel Corporation
 //
-// This program is free software: you can redistribute it and/or modify
-// it under the terms of the GNU General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
+// Redistribution and use in source and binary forms, with or without
+// modification, are permitted provided that the following conditions are met:
 //
-// This program is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU General Public License for more details.
+// * Redistributions of source code must retain the above copyright notice,
+// this list of conditions and the following disclaimer.
+// * Redistributions in binary form must reproduce the above copyright notice,
+// this list of conditions and the following disclaimer in the documentation
+// and/or other materials provided with the distribution.
+// * Neither the name of Intel Corporation nor the names of its contributors
+// may be used to endorse or promote products derived from this software
+// without specific prior written permission.
 //
-// You should have received a copy of the GNU General Public License
-// along with this program.  If not, see <https://www.gnu.org/licenses/>.
-
-// Greg Stitt
-// University of Florida
+// THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+// AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+// IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+// ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE
+// LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+// CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+// SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+// INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+// CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+// ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+// POSSIBILITY OF SUCH DAMAGE.
+//
+// ***************************************************************************
 
 // Module Name:  afu.sv
-// Project:      dma_loopback
-// Description:  This AFU provides a loopback DMA test that simply reads
-//               data from one array in the CPU's memory and writes the
-//               received data to a separate array. The AFU uses MMIO to
-//               receive the starting read adress, starting write address,
-//               size (# of cache lines to read/wite), and a go signal. The
-//               AFU asserts a done signal to tell software that the DMA
-//               transfer is complete.
+// Project:      ccip_mmio
+// Description:  Implements an AFU with a single memory-mapped user register to demonstrate
+//               memory-mapped I/O (MMIO) using the Core Cache Interface Protocol (CCI-P).
 //
-//               One key difference with this AFU is that it does not use
-//               CCI-P, which is abstracted away by a hardware abstraction
-//               layer (HAL). Instead, the AFU uses a simplified MMIO interface
-//               and DMA interface.
+//               This module provides a simplified AFU interface since not all the functionality 
+//               of the ccip_std_afu interface is required. Specifically, the afu module provides
+//               a single clock, simplified port names, and all I/O has already been registered,
+//               which is required by any AFU.
 //
-//               The MMIO interface is defined in mmio_if.vh. It behaves
-//               similarly to the CCI-P functionality, except only supports
-//               single-cycle MMIO read responses, which eliminates the need
-//               for transaction IDs. MMIO writes behave identically to
-//               CCI-P.
-//
-//               The DMA read interface takes a starting read address (rd_addr),
-//               and a read size (rd_size) (# of cache lines to read). The rd_go
-//               signal starts the transfer. When data is available from memory
-//               the empty signal is cleared (0 == data available) and the data
-//               is shown on the rd_data port. To read the data, the AFU should
-//               assert the read enable (rd_en) (active high) for one cycle.
-//               The rd_done signal is continuously asserted (active high) after
-//               the AFU reads "size" words from the DMA.
-//
-//               The DMA write interface is similar, again using a starting
-//               write address (wr_addr), write size (wr_size), and go signal.
-//               Before writing data, the AFU must ensure that the write
-//               interface is not full (full == 0). To write data, the AFU
-//               puts the corresponding data on wr_data and asserts wr_en
-//               (active high) for one cycle. The wr_done signal is continuosly
-//               asserted after size cache lines have been written to memory.
-//
-//               All addresses are virtual addresses provided by the software.
-//               All data elements are cachelines.
-//
+// For more information on CCI-P, see the Intel Acceleration Stack for Intel Xeon CPU with 
+// FPGAs Core Cache Interface (CCI-P) Reference Manual
 
-//===================================================================
-// Interface Description
-// clk  : Clock input
-// rst  : Reset input (active high)
-// mmio : Memory-mapped I/O interface. See mmio_if.vh and description above.
-// dma  : DMA interface. See dma_if.vh and description above.
-//===================================================================
-
+`include "platform_if.vh"
 `include "cci_mpf_if.vh"
+`include "afu_json_info.vh"
+`include "mmio_if.vh"
+`include "dma_if.vh"
 
-module afu 
+
+module afu
   (
-   input clk,
-   input rst,
-	 mmio_if.user mmio,
-	 dma_if.peripheral dma
+   input  clk,
+   input  rst, 
+
+   mmio_if.user mmio,
+   dma_if.peripheral dma
    );
 
+   
    localparam int CL_ADDR_WIDTH = $size(t_ccip_clAddr);
-      
+
    // I want to just use dma.count_t, but apparently
    // either SV or Modelsim doesn't support that. Similarly, I can't
    // just do dma.SIZE_WIDTH without getting errors or warnings about
@@ -85,57 +66,253 @@ module afu
    // some tools. Declaring a function within the interface works just fine in
    // some tools, but in Quartus I get an error about too many ports in the
    // module instantiation.
-   typedef logic [CL_ADDR_WIDTH:0] count_t;   
+   typedef logic [CL_ADDR_WIDTH:0] count_t;
    count_t 	size;
    logic 	go;
    logic 	done;
+
+   // The AFU must respond with its AFU ID in response to MMIO reads of the CCI-P device feature 
+   // header (DFH).  The AFU ID is a unique ID for a given program. Here we generated one with 
+   // the "uuidgen" program and stored it in the AFU's JSON file. ASE and synthesis setup scripts
+   // automatically invoke the OPAE afu_json_mgr script to extract the UUID into a constant 
+   // within afu_json_info.vh.
 
    // Software provides 64-bit virtual byte addresses.
    // Again, this constant would ideally get read from the DMA interface if
    // there was widespread tool support.
    localparam int VIRTUAL_BYTE_ADDR_WIDTH = 64;
-   logic [VIRTUAL_BYTE_ADDR_WIDTH-1:0] rd_addr, wr_addr;
 
-   // Instantiate the memory map, which provides the starting read/write
-   // 64-bit virtual byte addresses, a transfer size (in cache lines), and a
-   // go signal. It also sends a done signal back to software.
-   memory_map
-     #(
-       .ADDR_WIDTH(VIRTUAL_BYTE_ADDR_WIDTH),
-       .SIZE_WIDTH(CL_ADDR_WIDTH+1)
-       )
-     memory_map (.*);
+   logic [127:0] afu_id = `AFU_ACCEL_UUID;
 
-   // Assign the starting addresses from the memory map.
-   assign dma.rd_addr = rd_addr;
-   assign dma.wr_addr = wr_addr;
+   //note these connections are not correct, just connecting to something to test synthesis
+   logic mapped_data_valid;
+   logic mapped_data_request;
+   logic [511:0] mapped_data;
+   FPUDRAM_if dram_if(); //todo
+	
+   logic [31:0] mapped_address;
+   logic done_fpu;
+
+   // Interrupt signals
+   logic INT; 
+   logic [31:0] INT_INSTR;
+   logic ACK;
+
    
-   // Use the size (# of cache lines) specified by software.
-   assign dma.rd_size = size;
-   assign dma.wr_size = size;
+    
 
-   // Start both the read and write channels when the MMIO go is received.
-   // Note that writes don't actually occur until dma.wr_en is asserted.
-   assign dma.rd_go = go;
-   assign dma.wr_go = go;
+    
+    // Instantiate the memory map, which provides the starting read/write
+    // 64-bit virtual byte addresses, a transfer size (in cache lines), and a
+    // go signal. It also sends a done signal back to software.
+    memory_map
+    #(
+      .ADDR_WIDTH(VIRTUAL_BYTE_ADDR_WIDTH),
+      .SIZE_WIDTH(CL_ADDR_WIDTH+1)
+      )
+    memory_map (.*);
 
-   // Read from the DMA when there is data available (!dma.empty) and when
-   // it is safe to write data (!dma.full).
-   assign dma.rd_en = !dma.empty && !dma.full;
+    wire local_dma_re, local_dma_we;
+    // HAL memory signals
+    logic tx_done;
+    logic rd_valid;
+    wire [1:0] mem_op;
+    logic [VIRTUAL_BYTE_ADDR_WIDTH-1:0] DMA_Addr;
+    logic [VIRTUAL_BYTE_ADDR_WIDTH-1:0] final_addr;
+    logic [VIRTUAL_BYTE_ADDR_WIDTH-1:0] wr_addr;
+    logic [511:0] DMA_Data_in;
+    //wire tx_done;
+    wire ready;
+    //wire rd_valid;
+    wire rd_go;
+    wire wr_go;
+ 
 
-   // Since this is a simple loopback, write to the DMA anytime we read.
-   // For most applications, write enable would be asserted when there is an
-   // output from a pipeline. In this case, the "pipeline" is a wire.
-   assign dma.wr_en = dma.rd_en;
 
-   // Write the data that is read.
-   assign dma.wr_data = dma.rd_data;
+   FPU #(.COL_WIDTH(10), .MEM_BUFFER_WIDTH(512), .CL_WIDTH(64), .START_ADDRESS(32'h6000_0000)) iFPU(
+	.clk(clk), .rst_n(!rst), 
+	.done(done_fpu), .start(startFPU),
+	.mapped_data_valid(mapped_data_valid), 
+	.mapped_data_request(mapped_data_request), 
+	.mapped_data(mapped_data), 
+	.mapped_address(mapped_address), 
+	.dram_if(dram_if.FPU));
 
-   // The AFU is done when the DMA is done writing size cache lines.
-   assign done = dma.wr_done;
-            
+   logic [511:0] FeDataIn_host;
+   logic Fetx_done_host;
+   logic Ferd_valid_host;
+   logic [511:0] FeDataOut_host;
+   logic [31:0] FeAddrOut_host;
+   logic [1:0] Feop_host;
+   
+   logic [511:0] MeDataIn_host;
+   logic Metx_done_host;
+   logic Merd_valid_host;
+   logic [511:0] MeDataOut_host;
+   logic [31:0] MeAddrOut_host;
+   logic [1:0] Meop_host;
+
+   cpu iCPU(
+	.clk(clk), .rst_n(rst_n),
+	.INT(INT), .INT_INSTR(INT_INSTR), .ACK(ACK), // todo where from?
+	// inst memory
+	.FeDataIn_host(FeDataIn_host),
+	.Fetx_done_host(Fetx_done_host),
+	.Ferd_valid_host(Ferd_valid_host),
+	.FeDataOut_host(FeDataOut_host),
+	.FeAddrOut_host(FeAddrOut_host),
+	.Feop_host(Feop_host),
+	// data memory
+	.MeDataIn_host(MeDataIn_host),
+	.Metx_done_host(Metx_done_host),
+	.Merd_valid_host(Merd_valid_host),
+	.MeDataOut_host(MeDataOut_host),
+	.MeAddrOut_host(MeAddrOut_host),
+	.Meop_host(Meop_host),
+	// jump start FPU
+	.startFPU(startFPU)
+	);
+
+                                                    // Highest Priority                                                      // no masking used
+  InterruptController iINT(.clk(clk), .rst_n(~rst), .IO({7'b0000000, done_fpu}), .ACK(ACK), .INT(INT), .INT_INSTR(INT_INSTR), .IMR_in({8{1'b1}}));
+
+
+
+  logic [511:0] common_data_bus_write_out_mmio, common_data_bus_write_out_fpu;
+  logic tx_done_mmio, tx_done_fpu;
+  logic rd_valid_mmio, rd_valid_fpu;
+  logic [1:0] op_mmio, op_fpu;
+  logic [31:0] raw_address_mmio, raw_address_fpu;
+  logic [511:0] common_data_bus_read_in_mmio, common_data_bus_read_in_fpu;
+  
+
+  //Memory Layout//
+  fpu_dma_ctrl iFPUDMA(.clk(clk), .rst_n(~rst), 
+	.dram_if(dram_if.DRAM),
+    //Inputs: From mem_ctrl
+    	.common_data_bus_write_out(common_data_bus_write_out_fpu),    
+   	  .tx_done(tx_done),
+	    .rd_valid(rd_valid),
+    //Outputs : To mem_ctrl
+	  .op(op_fpu),
+	  .raw_address(raw_address_fpu),
+	  .common_data_bus_read_in(common_data_bus_read_in_fpu)
+	);
+
+  fpu_mmio_ctrl iFPUMMIO( 
+      .clk(clk),
+      .rst_n(rst_n),
+        //FPU I/O
+      .mapped_data_request(mapped_data_request),
+      .mapped_address(mapped_address),
+      .mapped_data(mapped_data),
+      .mapped_data_valid(mapped_data_valid),
+        //Inputs: From mem_ctrl
+      .common_data_bus_write_out(common_data_bus_write_out_mmio),    
+      .tx_done(tx_done),
+      .rd_valid(rd_valid),
+        //Outputs : To mem_ctrl
+      .op(op_mmio),
+      .raw_address(raw_address_mmio),
+      .common_data_bus_read_in(common_data_bus_read_in_mmio)  
+      );
+
+  mem_arbiter   iARBITER(
+      .clk            (clk), 
+      .rst_n          (~rst), 
+        //Inputs from Src1
+      .op_src1                              (Feop_host),
+      .raw_address_src1                     (FeAddrOut_host),
+      .common_data_bus_read_in_src1         (FeDataOut_host),
+      //Outputs to Src1
+      .common_data_bus_write_out_src1       (FeDataIn_host), 
+      .tx_done_src1                         (Fetx_done_host),
+      .rd_valid_src1                        (Ferd_valid_host),
+      //Inputs from Src2
+      .op_src2                              (Meop_host),
+      .raw_address_src2                     (MeAddrOut_host),
+      .common_data_bus_read_in_src2         (MeDataOut_host),
+      //Outputs to Src2
+      .common_data_bus_write_out_src2       (MeDataIn_host), 
+      .tx_done_src2                         (Metx_done_host),
+      .rd_valid_src2                        (Merd_valid_host),
+      //Inputs from Src3
+      .op_src3                              (op_mmio),
+      .raw_address_src3                     (raw_address_mmio),
+      .common_data_bus_read_in_src3         (common_data_bus_read_in_mmio),
+      //Outputs to Src3
+      .common_data_bus_write_out_src3       (common_data_bus_write_out_mmio), 
+      .tx_done_src3                         (tx_done_mmio),
+      .rd_valid_src3                        (rd_valid_mmio),
+
+      //Inputs from Src3
+      .op_src4                              (op_fpu),
+      .raw_address_src4                     (raw_address_fpu),
+      .common_data_bus_read_in_src4         (common_data_bus_read_in_fpu),
+      //Outputs to Src3
+      .common_data_bus_write_out_src4       (common_data_bus_write_out_fpu), 
+      .tx_done_src4                         (tx_done_fpu),
+      .rd_valid_src4                        (rd_valid_fpu),
+
+      //Inputs: From mem_ctrl
+      .common_data_bus_write_out            (dma.wr_data),    
+      .tx_done                              (tx_done),
+      .rd_valid                             (rd_valid),
+      //Outputs : To mem_ctrl
+      .op                                   (mem_op),
+      .raw_address                          (DMA_Addr),
+      .common_data_bus_read_in              (DMA_Data_in)
+      );
+
+  // Memory Controller module
+  mem_ctrl iMEM(
+      .clk(clk),
+      .rst_n(~rst),
+      .host_init(go),
+      .host_rd_ready(~dma.empty),
+      .host_wr_ready(~dma.full), // removing for now, asked mayuhk about it: & ~dma.host_wr_completed),
+      .op(mem_op), // CPU Defined
+      .raw_address(cpu_addr), // Address in the CPU space //@synth cpu_addr doesn't exist
+      .address_offset(wr_addr),
+      .common_data_bus_read_in(DMA_Data_in), // CPU data word bus, input
+      .common_data_bus_write_out(cpu_in),  //@synth cpu_in doesn't exist
+      .host_data_bus_read_in(dma.rd_data),
+      .host_data_bus_write_out(dma.wr_data),
+      .corrected_address(final_addr),
+      .ready(ready), // Usable for the host CPU
+      .tx_done(tx_done), // Again, notifies CPU when ever a read or write is complete
+      .rd_valid(rd_valid), // Notifies CPU whenever the data on the databus is valid
+      .host_re(local_dma_re),
+      .host_we(local_dma_we),
+      .host_rgo(rd_go),
+      .host_wgo(wr_go)
+  );
+
+
+  // Assign the starting addresses from the memory map.
+  assign dma.rd_addr = final_addr;
+  assign dma.wr_addr = final_addr;
+
+  // Use the size (# of cache lines) specified by software.
+  assign dma.rd_size = size; //Comes from memory_map.sv
+  assign dma.wr_size = size;
+
+  // Start both the read and write channels when the MMIO go is received.
+  // Note that writes don't actually occur until dma.wr_en is asserted.
+  assign dma.rd_go = rd_go;
+  assign dma.wr_go = wr_go;
+
+  // Read from the DMA when there is data available (!dma.empty) and when
+  // it is safe to write data (!dma.full).
+  assign dma.rd_en = local_dma_re;
+
+  // Since this is a simple loopback, write to the DMA anytime we read.
+  // For most applications, write enable would be asserted when there is an
+  // output from a pipeline. In this case, the "pipeline" is a wire.
+  assign dma.wr_en = local_dma_we;
+
+  // The AFU is done when the DMA is done writing size cache lines.
+  assign done = dma.wr_done;
+
+
 endmodule
-
-
-
-

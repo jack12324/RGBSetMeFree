@@ -18,3 +18,7 @@ synth
 *.pyc
 loadfile_all.img
 .vscode/
+*.rbf
+*.sof
+"sample memes"/
+

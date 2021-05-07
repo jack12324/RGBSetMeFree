@@ -12,9 +12,10 @@ module FPURequestBuffer#(BUFFER_DEPTH = 512, COL_WIDTH = 10)(clk, rst_n, request
 	input [63:0] request_data_in;
 	input [7:0] write_col [COL_WIDTH - 3: 0];
 
-	output [7:0] read_col [COL_WIDTH-1:0];
+	output logic [7:0] read_col [COL_WIDTH-1:0];
 	output [7:0] request_data_out;
 
+	logic [7:0] read_col_out [COL_WIDTH-1:0];
 	logic [7:0] rb0_out [COL_WIDTH-1:0];
 	logic [7:0] rb1_out [COL_WIDTH-1:0];
 	logic [7:0] wb0_out;
@@ -38,9 +39,13 @@ module FPURequestBuffer#(BUFFER_DEPTH = 512, COL_WIDTH = 10)(clk, rst_n, request
 											.address(wr_en_rd_buffer && !rd_buffer_sel ? request_write_address[BADDR_BITS-1:0] : read_col_address), 
 											.data_out(rb1_out));
 
-	assign read_col = last_rd_buffer_sel ? rb1_out : rb0_out;
+	assign read_col_out = last_rd_buffer_sel ? rb1_out : rb0_out;
 	assign request_data_out = !last_wr_buffer_sel ? wb1_out : wb0_out;
 
+	always_ff @(posedge clk, negedge rst_n)begin
+		if(!rst_n) read_col <= '{default:'0};
+		else read_col <= read_col_out;
+	end
 	always_ff @(posedge clk, negedge rst_n)begin
 		if(!rst_n) last_rd_buffer_sel <= '0;
 		else last_rd_buffer_sel <= rd_buffer_sel;

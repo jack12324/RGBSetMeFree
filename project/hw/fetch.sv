@@ -47,15 +47,15 @@ module fetch (clk, rst_n,
 	input [31:0] INT_INSTR;
 	input restore;
 	input use_cpu_injection; // signal to use the injected instructions from this FSM 
-    input [31:0] cpu_injection; // Injection from this state machine 
+    	input [31:0] cpu_injection; // Injection from this state machine 
 	input use_INT_INSTR; // signal to use the injected instructions from the interrupt controller
 
 	// inputs for the pc fix
 	input logic ExMe_out_Branch; // for flush
 	input logic ExMe_out_Jump; // for flush
-    input logic [4:0] ExMe_out_ALU_OP; // for flush
+    	input logic [4:0] ExMe_out_ALU_OP; // for flush
 	input logic [31:0] ExMe_out_LR;
-    input logic [1:0] ExMe_out_FL;
+    	input logic [1:0] ExMe_out_FL;
 
 	output [31:0] out_PC_next;
 	output [31:0] instr;
@@ -146,7 +146,7 @@ module fetch (clk, rst_n,
 		.AddrOut_host(AddrOut_host),
 		.op_host(op_host),
 		// extras unused
-		.data_valid(),
+		.stall(),
 		.CacheHit()
 	);
 	//*/

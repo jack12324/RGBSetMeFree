@@ -9,9 +9,11 @@ module FilterMAC_tb();
 	logic signed [8:0] array0_signed [8:0];
 	logic [7:0] result_pixel;
 
+	int expected_result_pixel[4:0];
+
 	always #5 clk = ~clk; 
 
-	int errors, i, j, expected_result_pixel, expected_sum;
+	int errors, i, j, expected_sum;
 	
 	FilterMAC mac(.*);
 
@@ -38,25 +40,31 @@ module FilterMAC_tb();
 				array0_signed[j] = array0[j];
 				array1[j] = $random();
 			end
-
+			
+			for(j = 4; j>0; j--)begin
+				expected_result_pixel[j] = expected_result_pixel[j-1];
+			end
 
 			for(j = 0; j<9; j++) begin
 				expected_sum += (array0_signed[j] * array1[j]);
 			end
+			
 
 			if(expected_sum <= 0)begin
-				expected_result_pixel = 0;
+				expected_result_pixel[0] = 0;
 			end else if (expected_sum >= 255)begin
-				expected_result_pixel = 255;
+				expected_result_pixel[0] = 255;
 			end else begin
-				expected_result_pixel = expected_sum;
+				expected_result_pixel[0] = expected_sum;
 			end
 			
 			@(posedge clk)
-			#1
-			if(expected_result_pixel !== result_pixel) begin
-				errors++;
-				$display("Error, incorrect value recorded. Expected: %d, Got: %d", expected_result_pixel, result_pixel);
+			if(i > 4)begin
+				#1
+				if(expected_result_pixel[4] !== result_pixel) begin
+					errors++;
+					$display("Error, incorrect value recorded. Expected: %d, Got: %d", expected_result_pixel[4], result_pixel);
+				end
 			end
 		end
 
@@ -69,6 +77,10 @@ module FilterMAC_tb();
 				array0_signed[j] = array0[j];
 				array1[j] = $urandom_range(0,2)-1;
 			end
+			
+			for(j = 4; j>0; j--)begin
+				expected_result_pixel[j] = expected_result_pixel[j-1];
+			end
 
 
 			for(j = 0; j<9; j++) begin
@@ -76,18 +88,18 @@ module FilterMAC_tb();
 			end
 
 			if(expected_sum <= 0)begin
-				expected_result_pixel = 0;
+				expected_result_pixel[0] = 0;
 			end else if (expected_sum >= 255)begin
-				expected_result_pixel = 255;
+				expected_result_pixel[0] = 255;
 			end else begin
-				expected_result_pixel = expected_sum;
+				expected_result_pixel[0] = expected_sum;
 			end
 			
 			@(posedge clk)
 			#1
-			if(expected_result_pixel !== result_pixel) begin
+			if(expected_result_pixel[4] !== result_pixel) begin
 				errors++;
-				$display("Error, incorrect value recorded. Expected: %d, Got: %d", expected_result_pixel, result_pixel);
+				$display("Error, incorrect value recorded. Expected: %d, Got: %d", expected_result_pixel[4], result_pixel);
 			end
 		end
 

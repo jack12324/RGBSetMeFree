@@ -48,7 +48,7 @@ module fake_mem_system
 		// relative file path form same place where work folder is
 
 	        $display("addr :: data "); // display   	    	
-		for (int i=0; i<100; i++) begin
+		for (int i=0; i<10; i++) begin
         	    $display("%x :: %x", (i+32'h0600), test_memory[i]);//2000 is wrong meanwhile, and 0600 only for fetch inst mem
         	end
     	end

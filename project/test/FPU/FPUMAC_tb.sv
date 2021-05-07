@@ -13,11 +13,11 @@ module FPUMAC_tb();
 	logic signed [7:0] filter [8:0];
 	logic [7:0] result_pixels [COL_WIDTH-3:0];
 
- 	logic [7:0] expected_result_pixels [COL_WIDTH-3:0];
+ 	logic [7:0] [COL_WIDTH-3:0] expected_result_pixels[4:0]; 
 
 	always #5 clk = ~clk; 
 
-	int errors, i, j;
+	int errors, i, j, k;
 	
 	FPUMAC mac(.*);
 
@@ -48,17 +48,25 @@ module FPUMAC_tb();
 			for(j = 0; j < 9; j++) begin
 				filter[j] = $random();
 			end
+			
+			for(j = 4; j>0; j--)begin
+				for(k = 0; k < COL_WIDTH-2; k++) begin
+					expected_result_pixels[j][k] = expected_result_pixels[j-1][k];
+				end
+			end
 
 			for(j = 0; j < COL_WIDTH-2; j++)begin
-				expected_result_pixels[j] = calc_MAC(assemble(col0, col1, col2, j), filter);
+				expected_result_pixels[0][j] = calc_MAC(assemble(col0, col1, col2, j), filter);
 			end
 
 			@(posedge clk)
-			#1
-			for(j = 0; j < COL_WIDTH-2; j++) begin
-				if(expected_result_pixels[j] !== result_pixels[j])begin
-					errors++;
-					$display("Error, incorrect value recorded. Expected: %d, Got: %d", expected_result_pixels[j], result_pixels[j]);
+			if(i > 4)begin
+				#1
+				for(j = 0; j < COL_WIDTH-2; j++) begin
+					if(expected_result_pixels[4][j] !== result_pixels[j])begin
+						errors++;
+						$display("Error, incorrect value recorded. Expected: %d, Got: %d", expected_result_pixels[4][j], result_pixels[j]);
+					end
 				end
 			end
 		end
@@ -74,17 +82,23 @@ module FPUMAC_tb();
 			for(j = 0; j < 9; j++) begin
 				filter[j] = $urandom_range(0,2)-1;
 			end
+			
+			for(j = 4; j>0; j--)begin
+				for(k = 0; k < COL_WIDTH-2; k++) begin
+					expected_result_pixels[j][k] = expected_result_pixels[j-1][k];
+				end
+			end
 
 			for(j = 0; j < COL_WIDTH-2; j++)begin
-				expected_result_pixels[j] = calc_MAC(assemble(col0, col1, col2, j), filter);
+				expected_result_pixels[0][j] = calc_MAC(assemble(col0, col1, col2, j), filter);
 			end
 
 			@(posedge clk)
 			#1
 			for(j = 0; j < COL_WIDTH-2; j++) begin
-				if(expected_result_pixels[j] !== result_pixels[j])begin
+				if(expected_result_pixels[4][j] !== result_pixels[j])begin
 					errors++;
-					$display("Error, incorrect value recorded. Expected: %d, Got: %d", expected_result_pixels[j], result_pixels[j]);
+					$display("Error, incorrect value recorded. Expected: %d, Got: %d", expected_result_pixels[4][j], result_pixels[j]);
 				end
 			end
 		end

@@ -200,7 +200,7 @@
 						end
 						else if(op == WRITE && !bubble && host_wr_ready) begin
 							// Wait a cycle to let any address changes propagate down the chain.
-							bubble <= bubble + 1;
+							bubble <= ~bubble;
 						end
 					end
 	

@@ -23,7 +23,7 @@ module Branch_Jump(clk, rst_n,
                             :  (op_code == 2'd1 && Z == 0) ? (pc_4 + reg_a)
                                 : (op_code == 2'd2 && N == 1) ? (pc_4 + reg_a)
                                     : (op_code == 2'd3 && N == 0) ? (pc_4 + reg_a) : pc_4)
-                : (jump ? ((op_code == 2'd0 || op_code == 2'd2) ? (immi << 2)
+                : (jump ? ((op_code == 2'd0 || op_code == 2'd2) ? immi // (immi << 2) Decode already does this 
                             : ((op_code == 2'd1) ? (reg_a << 2)
                                 : pc_4))  : pc_4);
 

@@ -38,20 +38,20 @@ module MeWb(
     output logic MeWb_out_FL_write
 );
 
-    dff  #(.WIDTH(32)) alu_out_ff (.clk(clk), .rst_n(rst_n), .d(ExMe_out_alu_out), .q(MeWb_out_alu_out), .we(stall));
-    dff  #(.WIDTH(32)) mem_data_ff (.clk(clk), .rst_n(rst_n), .d(mem_data), .q(MeWb_out_mem_data), .we(stall));
-    dff  #(.WIDTH(32)) PC_next_ff (.clk(clk), .rst_n(rst_n), .d(ExMe_out_PC_next), .q(MeWb_out_PC_next), .we(stall));
-    dff  #(.WIDTH(32)) LR_ff (.clk(clk), .rst_n(rst_n), .d(MeWb_in_LR), .q(MeWb_out_LR), .we(stall));
-    dff  #(.WIDTH(2)) FL_ff (.clk(clk), .rst_n(rst_n), .d(MeWb_in_FL), .q(MeWb_out_FL), .we(stall));
-    dff  #(.WIDTH(32)) LR_wrt_data_ff (.clk(clk), .rst_n(rst_n), .d(MeWb_in_LR_wrt_data), .q(MeWb_out_LR_wrt_data), .we(stall));
-    dff  #(.WIDTH(2)) FL_wrt_data_ff (.clk(clk), .rst_n(rst_n), .d(MeWb_in_FL_wrt_data), .q(MeWb_out_FL_wrt_data), .we(stall));
-
-    dff  #(.WIDTH(2)) result_sel_ff (.clk(clk), .rst_n(rst_n), .d(ExMe_out_result_sel), .q(MeWb_out_result_sel), .we(stall));
-    dff  #(.WIDTH(1)) reg_wrt_en_ff (.clk(clk), .rst_n(rst_n), .d(ExMe_out_reg_wrt_en), .q(MeWb_out_reg_wrt_en), .we(stall));
-    dff  #(.WIDTH(5)) reg_wrt_sel_ff (.clk(clk), .rst_n(rst_n), .d(ExMe_out_reg_wrt_sel), .q(MeWb_out_reg_wrt_sel), .we(stall));
-    dff  #(.WIDTH(1)) LR_read_ff (.clk(clk), .rst_n(rst_n), .d(ExMe_out_LR_read), .q(MeWb_out_LR_read), .we(stall));
-    dff  #(.WIDTH(1)) LR_write_ff (.clk(clk), .rst_n(rst_n), .d(ExMe_out_LR_write), .q(MeWb_out_LR_write), .we(stall));
-    dff  #(.WIDTH(1)) FL_read_ff (.clk(clk), .rst_n(rst_n), .d(ExMe_out_FL_read), .q(MeWb_out_FL_read), .we(stall));
-    dff  #(.WIDTH(1)) FL_write_ff (.clk(clk), .rst_n(rst_n), .d(ExMe_out_FL_write), .q(MeWb_out_FL_write), .we(stall));
+    dfflop  #(.WIDTH(32)) alu_out_ff (.clk(clk), .rst_n(rst_n), .d(ExMe_out_alu_out), .q(MeWb_out_alu_out), .we(stall));
+    dfflop  #(.WIDTH(32)) mem_data_ff (.clk(clk), .rst_n(rst_n), .d(mem_data), .q(MeWb_out_mem_data), .we(stall));
+    dfflop  #(.WIDTH(32)) PC_next_ff (.clk(clk), .rst_n(rst_n), .d(ExMe_out_PC_next), .q(MeWb_out_PC_next), .we(stall));
+    dfflop  #(.WIDTH(32)) LR_ff (.clk(clk), .rst_n(rst_n), .d(MeWb_in_LR), .q(MeWb_out_LR), .we(stall));
+    dfflop  #(.WIDTH(2)) FL_ff (.clk(clk), .rst_n(rst_n), .d(MeWb_in_FL), .q(MeWb_out_FL), .we(stall));
+    dfflop  #(.WIDTH(32)) LR_wrt_data_ff (.clk(clk), .rst_n(rst_n), .d(MeWb_in_LR_wrt_data), .q(MeWb_out_LR_wrt_data), .we(stall));
+    dfflop  #(.WIDTH(2)) FL_wrt_data_ff (.clk(clk), .rst_n(rst_n), .d(MeWb_in_FL_wrt_data), .q(MeWb_out_FL_wrt_data), .we(stall));
+       
+    dfflop  #(.WIDTH(2)) result_sel_ff (.clk(clk), .rst_n(rst_n), .d(ExMe_out_result_sel), .q(MeWb_out_result_sel), .we(stall));
+    dfflop  #(.WIDTH(1)) reg_wrt_en_ff (.clk(clk), .rst_n(rst_n), .d(ExMe_out_reg_wrt_en), .q(MeWb_out_reg_wrt_en), .we(stall));
+    dfflop  #(.WIDTH(5)) reg_wrt_sel_ff (.clk(clk), .rst_n(rst_n), .d(ExMe_out_reg_wrt_sel), .q(MeWb_out_reg_wrt_sel), .we(stall));
+    dfflop  #(.WIDTH(1)) LR_read_ff (.clk(clk), .rst_n(rst_n), .d(ExMe_out_LR_read), .q(MeWb_out_LR_read), .we(stall));
+    dfflop  #(.WIDTH(1)) LR_write_ff (.clk(clk), .rst_n(rst_n), .d(ExMe_out_LR_write), .q(MeWb_out_LR_write), .we(stall));
+    dfflop  #(.WIDTH(1)) FL_read_ff (.clk(clk), .rst_n(rst_n), .d(ExMe_out_FL_read), .q(MeWb_out_FL_read), .we(stall));
+    dfflop  #(.WIDTH(1)) FL_write_ff (.clk(clk), .rst_n(rst_n), .d(ExMe_out_FL_write), .q(MeWb_out_FL_write), .we(stall));
 
 endmodule
